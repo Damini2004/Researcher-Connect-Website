@@ -83,11 +83,17 @@ export default function UserHeader() {
                                 )}
                             </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent className="w-64">
                             {link.children.map((childLink) => (
                                 <DropdownMenuItem key={childLink.href} asChild>
-                                    <Link href={childLink.href} className="flex items-center gap-2">
-                                        <childLink.icon className="h-4 w-4" />
+                                    <Link 
+                                      href={childLink.href} 
+                                      className={cn(
+                                        "flex items-center gap-2",
+                                        pathname === childLink.href && "bg-accent text-accent-foreground"
+                                      )}
+                                    >
+                                        <childLink.icon className="h-4 w-4 text-muted-foreground" />
                                         <span>{childLink.label}</span>
                                     </Link>
                                 </DropdownMenuItem>
