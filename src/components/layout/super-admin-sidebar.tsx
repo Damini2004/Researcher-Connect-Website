@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -36,7 +37,7 @@ export default function SuperAdminSidebar() {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} legacyBehavior passHref>
+              <Link href={item.href}>
                 <SidebarMenuButton
                   isActive={pathname.startsWith(item.href)}
                   icon={<item.icon />}
@@ -49,7 +50,7 @@ export default function SuperAdminSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <Link href="/" legacyBehavior passHref>
+        <Link href="/">
           <SidebarMenuButton icon={<LogOut />}>Logout</SidebarMenuButton>
         </Link>
       </SidebarFooter>

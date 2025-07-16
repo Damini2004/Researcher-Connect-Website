@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -40,7 +41,7 @@ export default function SubAdminSidebar() {
             const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
             return (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href} legacyBehavior passHref>
+                <Link href={item.href}>
                   <SidebarMenuButton
                     isActive={isActive}
                     icon={<item.icon />}
@@ -54,7 +55,7 @@ export default function SubAdminSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <Link href="/" legacyBehavior passHref>
+        <Link href="/">
           <SidebarMenuButton icon={<LogOut />}>Logout</SidebarMenuButton>
         </Link>
       </SidebarFooter>
