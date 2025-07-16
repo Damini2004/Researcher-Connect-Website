@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, BookOpen, ChevronDown, FileText, Book, Presentation, MessageSquare, ThumbsUp, Library, Users } from "lucide-react";
+import { Menu, BookOpen, ChevronDown, FileText, Book, Presentation, MessageSquare, ThumbsUp, Library, Users, Award, DraftingCompass, TrendingUp, Globe } from "lucide-react";
 import { Logo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -27,6 +27,14 @@ const publicationSubMenu = [
     { href: "/publications/digital-library", label: "Digital Library", icon: Library },
 ]
 
+const iprServicesSubMenu = [
+    { href: "/ipr-services/patent", label: "Patent", icon: Award },
+    { href: "/ipr-services/copyright", label: "Copyright", icon: FileText },
+    { href: "/ipr-services/trademark", label: "Trademark", icon: TrendingUp },
+    { href: "/ipr-services/industrial-design", label: "Industrial Design", icon: DraftingCompass },
+    { href: "/ipr-services/global-ip", label: "Global IP", icon: Globe },
+]
+
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
@@ -35,7 +43,11 @@ const navLinks = [
     label: "Publications",
     children: publicationSubMenu
   },
-  { href: "/ipr-services", label: "IPR Services" },
+  { 
+    href: "/ipr-services", 
+    label: "IPR Services",
+    children: iprServicesSubMenu
+  },
   { href: "/internship", label: "Internship" },
   { href: "/research-support", label: "Research Support" },
   { href: "/conference", label: "Conference" },
@@ -56,7 +68,7 @@ export default function UserHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -65,22 +77,19 @@ export default function UserHeader() {
               JournalEdge
             </span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="flex items-center space-x-1 text-sm font-medium">
             {navLinks.map((link) => 
                 link.children ? (
                     <DropdownMenu key={link.href}>
                         <DropdownMenuTrigger asChild>
                             <button
                                 className={cn(
-                                    "relative flex items-center gap-1 transition-colors hover:text-primary",
-                                    pathname.startsWith(link.href) ? "text-primary" : "text-muted-foreground"
+                                    "px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1",
+                                    pathname.startsWith(link.href) ? "text-primary bg-primary/10" : "text-foreground/70"
                                 )}
                             >
                                 {link.label}
                                 <ChevronDown className="h-4 w-4" />
-                                {pathname.startsWith(link.href) && (
-                                    <span className="absolute bottom-[-22px] left-0 w-full h-0.5 bg-primary"></span>
-                                )}
                             </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-64">
@@ -105,14 +114,11 @@ export default function UserHeader() {
                         key={link.href}
                         href={link.href}
                         className={cn(
-                        "relative transition-colors hover:text-primary",
-                        pathname === link.href ? "text-primary" : "text-muted-foreground"
+                            "px-3 py-2 rounded-md transition-colors hover:text-primary",
+                            pathname === link.href ? "text-primary bg-primary/10" : "text-foreground/70"
                         )}
                     >
                         {link.label}
-                        {pathname === link.href && (
-                        <span className="absolute bottom-[-22px] left-0 w-full h-0.5 bg-primary"></span>
-                        )}
                     </Link>
                 )
             )}
