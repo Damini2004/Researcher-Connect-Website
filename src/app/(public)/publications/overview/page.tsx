@@ -25,7 +25,7 @@ const termsAndConditions = [
 export default function PublicationsOverviewPage() {
   return (
     <div className="bg-background">
-        <div className="container py-12 md:py-20">
+      <div className="container mx-auto px-4 py-12 md:py-20">
             {/* Header Section with Carousel */}
             <div className="relative mb-16 rounded-xl overflow-hidden shadow-lg">
                 <Carousel
