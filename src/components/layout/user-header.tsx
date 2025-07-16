@@ -26,7 +26,7 @@ export default function UserHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -41,8 +41,8 @@ export default function UserHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-3 py-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground",
-                  pathname === link.href ? "bg-accent text-accent-foreground" : "text-foreground/60"
+                  "px-3 py-2 rounded-md transition-colors hover:text-primary",
+                  pathname === link.href ? "text-primary font-semibold" : "text-foreground/60"
                 )}
               >
                 {link.label}
@@ -77,8 +77,8 @@ export default function UserHeader() {
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className={cn(
-                    "px-4 py-2 rounded-md text-base transition-colors hover:bg-accent",
-                    pathname === link.href ? "bg-accent text-accent-foreground font-semibold" : "text-foreground/80 hover:text-foreground"
+                    "px-4 py-2 rounded-md text-base transition-colors hover:text-primary",
+                    pathname === link.href ? "bg-accent text-primary font-semibold" : "text-foreground/80"
                   )}
                 >
                   {link.label}
