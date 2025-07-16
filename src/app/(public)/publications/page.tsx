@@ -43,8 +43,11 @@ export default function PublicationsPage() {
                         <CardTitle className="text-xl">{pub.title}</CardTitle>
                         <CardDescription>{pub.authors}</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-grow">
+                    <CardContent className="flex-grow space-y-2">
                         <p className="text-sm text-muted-foreground">{pub.journal}, {pub.year}</p>
+                        <Link href="#" className="text-sm text-primary hover:underline">
+                            Read more...
+                        </Link>
                     </CardContent>
                     <CardFooter>
                          <Button asChild variant="secondary">
