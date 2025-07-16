@@ -182,6 +182,37 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        <section id="partners" className="w-full py-12 md:py-24 lg:py-32 bg-background">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Associations & Partners</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  We are proud to collaborate with leading institutions and organizations in the academic community.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl grid-cols-2 items-center gap-6 py-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                University Hub
+              </div>
+              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                Research Foundation
+              </div>
+              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                Scholar Society
+              </div>
+              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                Innovate Press
+              </div>
+              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                Global Science Initiative
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
