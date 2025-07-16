@@ -6,10 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const publications = [
-  { id: 1, title: "The Future of AI in Academic Research", authors: "Dr. Eva Rostova, Dr. Kenji Tanaka", journal: "Journal of Innovative Technology", year: 2023, imageSrc: "https://placehold.co/150x200.png", imageHint: "abstract shapes" },
-  { id: 2, title: "Quantum Computing's Impact on Cryptography", authors: "Dr. Samuel Greene", journal: "Annals of Computer Science", year: 2023, imageSrc: "https://placehold.co/150x200.png", imageHint: "quantum computer" },
-  { id: 3, title: "A Meta-Analysis of Climate Change Models", authors: "Dr. Chloe Bennette, Dr. Omar Al-Jamil", journal: "Global Environmental Studies", year: 2022, imageSrc: "https://placehold.co/150x200.png", imageHint: "earth climate" },
-  { id: 4, title: "Advances in Gene-Editing with CRISPR-Cas9", authors: "Dr. Maria Rodriguez", journal: "Genetics & Molecular Biology Review", year: 2022, imageSrc: "https://placehold.co/150x200.png", imageHint: "dna helix" },
+  { id: 1, title: "The Future of AI in Academic Research", authors: "Dr. Eva Rostova, Dr. Kenji Tanaka", journal: "Journal of Innovative Technology", year: 2023, imageSrc: "https://placehold.co/400x300.png", imageHint: "abstract shapes" },
+  { id: 2, title: "Quantum Computing's Impact on Cryptography", authors: "Dr. Samuel Greene", journal: "Annals of Computer Science", year: 2023, imageSrc: "https://placehold.co/400x300.png", imageHint: "quantum computer" },
+  { id: 3, title: "A Meta-Analysis of Climate Change Models", authors: "Dr. Chloe Bennette, Dr. Omar Al-Jamil", journal: "Global Environmental Studies", year: 2022, imageSrc: "https://placehold.co/400x300.png", imageHint: "earth climate" },
+  { id: 4, title: "Advances in Gene-Editing with CRISPR-Cas9", authors: "Dr. Maria Rodriguez", journal: "Genetics & Molecular Biology Review", year: 2022, imageSrc: "https://placehold.co/400x300.png", imageHint: "dna helix" },
+  { id: 5, title: "Nanotechnology in Modern Medicine", authors: "Dr. Kenji Tanaka", journal: "Journal of Nanomedicine", year: 2023, imageSrc: "https://placehold.co/400x300.png", imageHint: "nanotechnology medical" },
+  { id: 6, title: "The Philosophy of Consciousness", authors: "Dr. Alistair Finch", journal: "Mind & Philosophy", year: 2021, imageSrc: "https://placehold.co/400x300.png", imageHint: "brain neurons" },
 ]
 
 export default function PublicationsPage() {
@@ -24,39 +26,35 @@ export default function PublicationsPage() {
         </div>
       </div>
 
-      <div className="grid gap-8 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {publications.map(pub => (
-          <Card key={pub.id} className="hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr]">
-                <div className="p-4">
-                    <Image 
-                        src={pub.imageSrc}
-                        alt={`Cover for ${pub.title}`}
-                        width={180}
-                        height={240}
-                        data-ai-hint={pub.imageHint}
-                        className="rounded-md object-cover w-full h-full"
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <CardHeader>
-                        <CardTitle className="text-xl">{pub.title}</CardTitle>
-                        <CardDescription>{pub.authors}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow space-y-2">
-                        <p className="text-sm text-muted-foreground">{pub.journal}, {pub.year}</p>
-                        <Link href="#" className="text-sm text-primary hover:underline">
-                            Read more...
+          <Card key={pub.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col overflow-hidden">
+            <Image 
+                src={pub.imageSrc}
+                alt={`Cover for ${pub.title}`}
+                width={400}
+                height={300}
+                data-ai-hint={pub.imageHint}
+                className="w-full object-cover"
+            />
+            <div className="flex flex-col flex-grow">
+                <CardHeader>
+                    <CardTitle className="text-xl leading-snug">{pub.title}</CardTitle>
+                    <CardDescription className="pt-1">{pub.authors}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow space-y-2">
+                    <p className="text-sm text-muted-foreground">{pub.journal}, {pub.year}</p>
+                    <Link href="#" className="text-sm text-primary hover:underline">
+                        Read more...
+                    </Link>
+                </CardContent>
+                <CardFooter>
+                     <Button asChild variant="secondary" className="w-full">
+                        <Link href="#">
+                            View Journal <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
-                    </CardContent>
-                    <CardFooter>
-                         <Button asChild variant="secondary">
-                            <Link href="#">
-                                View Journal <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                        </Button>
-                    </CardFooter>
-                </div>
+                    </Button>
+                </CardFooter>
             </div>
           </Card>
         ))}
