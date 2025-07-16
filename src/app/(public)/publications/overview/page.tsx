@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, AlertTriangle } from "lucide-react";
 import Image from "next/image";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 const plagiarismPolicies = [
     { text: "Plagiarized articles will be rejected (Must be 20% below including references).", icon: AlertTriangle, iconColor: "text-destructive" },
@@ -23,16 +24,59 @@ const termsAndConditions = [
 
 export default function PublicationsOverviewPage() {
   return (
-    <div className="bg-secondary/20">
+    <div className="bg-background">
         <div className="container py-12 md:py-20">
-            {/* Header Section */}
-            <div className="text-center mb-16 bg-gradient-to-b from-background to-secondary/10 py-10 rounded-xl shadow-inner">
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-                    <span className="text-primary">IFERP</span> Publications
-                </h1>
-                <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
-                    IFERP Journals are peer-reviewed and collaborative journals that strive to publish the most fascinating and dependable source of current information on Arts & Science, Management, Engineering, and Technology.
-                </p>
+            {/* Header Section with Carousel */}
+            <div className="relative mb-16 rounded-xl overflow-hidden shadow-lg">
+                <Carousel
+                    className="w-full"
+                    opts={{
+                        loop: true,
+                    }}
+                >
+                    <CarouselContent>
+                        <CarouselItem>
+                            <Image
+                                src="https://placehold.co/1200x400.png"
+                                alt="Background 1"
+                                data-ai-hint="library books"
+                                width={1200}
+                                height={400}
+                                className="w-full h-[400px] object-cover"
+                            />
+                        </CarouselItem>
+                        <CarouselItem>
+                             <Image
+                                src="https://placehold.co/1200x400.png"
+                                alt="Background 2"
+                                data-ai-hint="research lab"
+                                width={1200}
+                                height={400}
+                                className="w-full h-[400px] object-cover"
+                            />
+                        </CarouselItem>
+                         <CarouselItem>
+                             <Image
+                                src="https://placehold.co/1200x400.png"
+                                alt="Background 3"
+                                data-ai-hint="academic conference"
+                                width={1200}
+                                height={400}
+                                className="w-full h-[400px] object-cover"
+                            />
+                        </CarouselItem>
+                    </CarouselContent>
+                </Carousel>
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <div className="text-center text-white p-4">
+                        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                            <span className="text-primary">IFERP</span> Publications
+                        </h1>
+                        <p className="mt-6 text-lg text-white/90 max-w-3xl mx-auto">
+                            IFERP Journals are peer-reviewed and collaborative journals that strive to publish the most fascinating and dependable source of current information on Arts & Science, Management, Engineering, and Technology.
+                        </p>
+                    </div>
+                </div>
             </div>
 
             {/* Main Content with Image */}
