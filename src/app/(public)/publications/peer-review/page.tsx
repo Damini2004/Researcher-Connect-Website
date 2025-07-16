@@ -40,7 +40,7 @@ export default function PeerReviewPage() {
                     </p>
                 </div>
 
-                <div className="flex items-center justify-center flex-wrap gap-x-4 gap-y-8">
+                <div className="flex items-center justify-center flex-wrap gap-x-4 gap-y-8 mx-auto">
                     {reviewSteps.map((step, index) => (
                         <React.Fragment key={index}>
                             <div className="flex flex-col items-center text-center w-48">
