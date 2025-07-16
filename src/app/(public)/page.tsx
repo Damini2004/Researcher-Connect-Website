@@ -193,22 +193,12 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl grid-cols-2 items-center gap-6 py-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                University Hub
-              </div>
-              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                Research Foundation
-              </div>
-              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                Scholar Society
-              </div>
-              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                Innovate Press
-              </div>
-              <div className="flex justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                Global Science Initiative
-              </div>
+            <div className="mx-auto grid max-w-5xl grid-cols-2 items-center justify-items-center gap-y-12 gap-x-6 py-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 1" data-ai-hint="logo company" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 2" data-ai-hint="logo brand" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 3" data-ai-hint="logo business" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 4" data-ai-hint="logo tech" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 5" data-ai-hint="logo education" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
             </div>
           </div>
         </section>
