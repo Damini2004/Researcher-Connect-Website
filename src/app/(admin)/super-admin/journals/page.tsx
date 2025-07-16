@@ -1,15 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-
-const allSubmissions = [
-  { id: 'S001', title: "The Future of AI in Academic Research", author: "Dr. Eva Rostova", status: "Done", subAdmin: "Dr. Alisha Gupta", date: "2023-10-26", imageSrc: "https://placehold.co/400x300.png", imageHint: "abstract shapes" },
-  { id: 'S002', title: "Quantum Computing's Impact on Cryptography", author: "Dr. Samuel Greene", status: "In Progress", subAdmin: "Dr. Alisha Gupta", date: "2023-11-05", imageSrc: "https://placehold.co/400x300.png", imageHint: "quantum computer" },
-  { id: 'S003', title: "A Meta-Analysis of Climate Change Models", author: "Dr. Chloe Bennette", status: "Done", subAdmin: "Dr. Chloe Davis", date: "2023-11-15", imageSrc: "https://placehold.co/400x300.png", imageHint: "earth climate" },
-  { id: 'S004', title: "Advances in Gene-Editing with CRISPR-Cas9", author: "Dr. Maria Rodriguez", status: "Canceled", subAdmin: "Dr. Chloe Davis", date: "2023-11-20", imageSrc: "https://placehold.co/400x300.png", imageHint: "dna helix" },
-  { id: 'S005', title: "New Economic Theories for a Digital World", author: "Dr. John Smith", status: "Verification Pending", subAdmin: "Unassigned", date: "2023-12-01", imageSrc: "https://placehold.co/400x300.png", imageHint: "digital world" },
-  { id: 'S006', title: "The Philosophy of Consciousness", author: "Dr. Alistair Finch", status: "Done", subAdmin: "Dr. Alisha Gupta", date: "2023-09-10", imageSrc: "https://placehold.co/400x300.png", imageHint: "brain neurons" },
-];
+import { allSubmissions } from "@/lib/mock-data";
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",

@@ -25,12 +25,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { journals } from "@/lib/mock-data";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   title: z.string().min(5, "Title must be at least 5 characters."),
-  journalType: z.string({ required_error: "Please select a journal type." }),
+  journalId: z.string({ required_error: "Please select a journal to submit to." }),
   manuscriptFile: z
     .custom<FileList>()
     .refine((files) => files?.length > 0, "A manuscript file is required.")
@@ -111,22 +112,20 @@ export default function JournalSubmissionForm() {
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="journalType"
+              name="journalId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Journal Type</FormLabel>
+                  <FormLabel>Journal</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a type" />
+                        <SelectValue placeholder="Select a journal" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="research-article">Research Article</SelectItem>
-                      <SelectItem value="review-paper">Review Paper</SelectItem>
-                      <SelectItem value="case-study">Case Study</SelectItem>
-                      <SelectItem value="technical-note">Technical Note</SelectItem>
-                      <SelectItem value="book-review">Book Review</SelectItem>
+                      {journals.map((journal) => (
+                        <SelectItem key={journal.id} value={journal.id}>{journal.name}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
