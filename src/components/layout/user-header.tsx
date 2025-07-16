@@ -14,6 +14,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 const publicationSubMenu = [
@@ -166,9 +167,19 @@ export default function UserHeader() {
                             Submit Journal
                         </Button>
                     </Link>
-                    <Link href="/login" className="ml-4">
-                        <User className="h-6 w-6 text-foreground/60 hover:text-primary" />
-                    </Link>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="ml-4 rounded-full">
+                                <User className="h-6 w-6 text-foreground/60" />
+                                <span className="sr-only">User Menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                           <DropdownMenuItem asChild>
+                                <Link href="/login">Login</Link>
+                           </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
 
