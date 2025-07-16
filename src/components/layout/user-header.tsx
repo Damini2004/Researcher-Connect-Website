@@ -1,11 +1,14 @@
+
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, BookOpen } from "lucide-react";
 import { Logo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -20,6 +23,7 @@ const navLinks = [
 
 export default function UserHeader() {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -31,12 +35,15 @@ export default function UserHeader() {
               JournalEdge
             </span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navLinks.slice(0, 5).map((link) => (
+          <nav className="flex items-center space-x-1 text-sm font-medium">
+            {navLinks.slice(0, 7).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors hover:text-foreground/80 text-foreground/60"
+                className={cn(
+                  "px-3 py-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground",
+                  pathname === link.href ? "bg-accent text-accent-foreground" : "text-foreground/60"
+                )}
               >
                 {link.label}
               </Link>
@@ -63,13 +70,16 @@ export default function UserHeader() {
               <Logo className="h-6 w-6" />
               <span className="font-bold">JournalEdge</span>
             </Link>
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-foreground/80 hover:text-foreground"
+                  className={cn(
+                    "px-4 py-2 rounded-md text-base transition-colors hover:bg-accent",
+                    pathname === link.href ? "bg-accent text-accent-foreground font-semibold" : "text-foreground/80 hover:text-foreground"
+                  )}
                 >
                   {link.label}
                 </Link>
