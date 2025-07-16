@@ -83,7 +83,7 @@ export default function SubmitJournalPage() {
                   <CardHeader className="text-center p-8 md:p-10">
                       <CardTitle className="text-3xl">Submission Details</CardTitle>
                       <CardDescription>
-                          Fill out the form below. Our AI will help suggest relevant tags for your work.
+                          Fill out the form below to submit your manuscript for review.
                       </CardDescription>
                   </CardHeader>
                   <CardContent className="p-8 md:p-10 pt-0">
