@@ -32,7 +32,7 @@ export default function UserHeader() {
             </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navLinks.slice(0, 4).map((link) => (
+            {navLinks.slice(0, 5).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
