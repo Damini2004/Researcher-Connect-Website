@@ -21,7 +21,6 @@ const publicationSubMenu = [
     { href: "/publications/overview", label: "Overview", icon: FileText },
     { href: "/publications/journal-support", label: "Journals Publication Support", icon: Book },
     { href: "/publications/journal-selection", label: "Journal Selection", icon: ThumbsUp },
-    { href: "/publications/book-publication", label: "Book Publication", icon: BookOpen },
     { href: "/publications/conference-proceedings", label: "Conference Proceedings", icon: Presentation },
     { href: "/publications/response-to-reviewers", label: "Response To Reviewers", icon: MessageSquare },
     { href: "/publications/peer-review", label: "Pre-Submission Peer Review", icon: Users },
