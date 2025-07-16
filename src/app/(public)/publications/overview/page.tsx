@@ -23,10 +23,10 @@ const termsAndConditions = [
 
 export default function PublicationsOverviewPage() {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary/20">
         <div className="container py-12 md:py-20">
             {/* Header Section */}
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 bg-gradient-to-b from-background to-secondary/10 py-10 rounded-xl shadow-inner">
                 <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                     <span className="text-primary">IFERP</span> Publications
                 </h1>
@@ -36,11 +36,11 @@ export default function PublicationsOverviewPage() {
             </div>
 
             {/* Main Content with Image */}
-            <Card className="overflow-hidden mb-16 shadow-lg border-2 border-primary/10">
+            <Card className="overflow-hidden mb-16 shadow-xl border-2 border-primary/10 transition-shadow duration-300 hover:shadow-primary/20">
                 <div className="grid md:grid-cols-2">
                     <div className="p-8 md:p-10 flex flex-col justify-center">
-                        <h2 className="text-2xl font-bold tracking-tight text-primary mb-4">Expert Publishing Assistance</h2>
-                        <p className="text-muted-foreground">
+                        <h2 className="text-3xl font-bold tracking-tight text-primary mb-4">Expert Publishing Assistance</h2>
+                        <p className="text-muted-foreground text-lg">
                             IFERP provides help, assistance, and direction in preparation for SCI and SCIE journal publishing. The SCI & SCIE Indexed Journal Search might be exhausting. Get help with SCI and SCIE Indexed journal publishing.
                         </p>
                     </div>
@@ -58,9 +58,9 @@ export default function PublicationsOverviewPage() {
 
             {/* Policies Grid */}
             <div className="grid md:grid-cols-2 gap-8">
-                <Card className="hover:shadow-xl transition-shadow duration-300">
+                <Card className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10">
                     <CardHeader>
-                        <CardTitle>Plagiarism Policy & Publication Ethics</CardTitle>
+                        <CardTitle className="text-2xl">Plagiarism Policy & Publication Ethics</CardTitle>
                         <CardDescription>Maintaining the integrity of academic research.</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -74,9 +74,9 @@ export default function PublicationsOverviewPage() {
                         </ul>
                     </CardContent>
                 </Card>
-                <Card className="hover:shadow-xl transition-shadow duration-300">
+                <Card className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10">
                     <CardHeader>
-                        <CardTitle>Publication Terms & Conditions</CardTitle>
+                        <CardTitle className="text-2xl">Publication Terms & Conditions</CardTitle>
                          <CardDescription>Guidelines for authors submitting their work.</CardDescription>
                     </CardHeader>
                     <CardContent>
