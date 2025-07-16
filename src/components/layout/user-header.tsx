@@ -167,19 +167,12 @@ export default function UserHeader() {
                             Submit Journal
                         </Button>
                     </Link>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="ml-4 rounded-full">
-                                <User className="h-6 w-6 text-foreground/60" />
-                                <span className="sr-only">User Menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                           <DropdownMenuItem asChild>
-                                <Link href="/login">Login</Link>
-                           </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button variant="ghost" size="icon" className="ml-4 rounded-full" asChild>
+                        <Link href="/login">
+                            <User className="h-6 w-6 text-foreground/60" />
+                            <span className="sr-only">Login</span>
+                        </Link>
+                    </Button>
                 </div>
             </div>
 
