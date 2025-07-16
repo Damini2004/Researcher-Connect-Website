@@ -99,6 +99,89 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        <section id="highlights" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-background px-3 py-1 text-sm font-medium">Highlights</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Visuals from the Forefront of Research</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Explore stunning imagery and visualizations from papers published through JournalEdge.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-12">
+              <div className="relative group overflow-hidden rounded-xl">
+                <Image
+                  src="https://placehold.co/400x600.png"
+                  alt="Highlight 1"
+                  width={400}
+                  height={600}
+                  data-ai-hint="galaxy stars"
+                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-4">
+                  <h3 className="text-lg font-bold text-white">Cosmic Structures</h3>
+                  <p className="text-sm text-white/80">Mapping the universe's web.</p>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-xl">
+                <Image
+                  src="https://placehold.co/400x600.png"
+                  alt="Highlight 2"
+                  width={400}
+                  height={600}
+                  data-ai-hint="dna strand"
+                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-4">
+                  <h3 className="text-lg font-bold text-white">Genetic Sequencing</h3>
+                  <p className="text-sm text-white/80">Visualizing the code of life.</p>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-xl">
+                <Image
+                  src="https://placehold.co/400x600.png"
+                  alt="Highlight 3"
+                  width={400}
+                  height={600}
+                  data-ai-hint="neural network"
+                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-4">
+                  <h3 className="text-lg font-bold text-white">Neural Pathways</h3>
+                  <p className="text-sm text-white/80">The architecture of thought.</p>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-xl">
+                <Image
+                  src="https://placehold.co/400x600.png"
+                  alt="Highlight 4"
+                  width={400}
+                  height={600}
+                  data-ai-hint="nanotechnology material"
+                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-4">
+                  <h3 className="text-lg font-bold text-white">Nanomaterials</h3>
+                  <p className="text-sm text-white/80">Engineering at the atomic scale.</p>
+                </div>
+              </div>
+            </div>
+             <div className="mt-12 text-center">
+              <Button asChild>
+                <Link href="/publications">
+                  Explore All Publications <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
