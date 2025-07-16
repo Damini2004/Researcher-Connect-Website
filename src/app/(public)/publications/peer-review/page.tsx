@@ -1,4 +1,5 @@
 import { FileUp, Search, UserCheck, MessageSquare, CheckCircle, ChevronRight } from "lucide-react";
+import React from "react";
 
 const reviewSteps = [
     {
