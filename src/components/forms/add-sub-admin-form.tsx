@@ -55,29 +55,38 @@ export default function AddSubAdminForm() {
       address: values.address,
     };
 
-    const result = await addSubAdmin(plainData);
+    try {
+      const result = await addSubAdmin(plainData);
 
-    if (result.success) {
-      toast({
-        title: "Sub Admin Added",
-        description: `An invitation has been sent to ${values.name}.`,
-      });
-      form.reset();
-      
-      const closeButton = document.querySelector('[data-radix-dialog-close]');
-      if (closeButton instanceof HTMLElement) {
-          closeButton.click();
+      if (result.success) {
+        toast({
+          title: "Sub Admin Added",
+          description: `An invitation has been sent to ${values.name}.`,
+        });
+        form.reset();
+        
+        const closeButton = document.querySelector('[data-radix-dialog-close]');
+        if (closeButton instanceof HTMLElement) {
+            closeButton.click();
+        }
+        
+        router.refresh();
+      } else {
+        toast({
+          title: "Error",
+          description: result.message,
+          variant: "destructive",
+        });
       }
-      
-      router.refresh();
-    } else {
-      toast({
-        title: "Error",
-        description: result.message,
-        variant: "destructive",
-      });
+    } catch (error) {
+       toast({
+          title: "Error",
+          description: "An unexpected error occurred.",
+          variant: "destructive",
+        });
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   }
 
   return (
