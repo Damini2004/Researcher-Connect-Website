@@ -6,9 +6,11 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot } from
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { z } from 'zod';
 
+// Zod schema for FormData parsing
 const AddJournalFormSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
+  image: z.instanceof(File).refine(file => file.size > 0, 'An image is required.'),
   status: z.enum(["Active", "Inactive", "Archived"]),
 });
 
@@ -25,23 +27,23 @@ export async function addJournal(formData: FormData): Promise<{ success: boolean
   const parsed = AddJournalFormSchema.safeParse(values);
 
   if (!parsed.success) {
+    console.error("Form validation failed:", parsed.error.flatten().fieldErrors);
     return { success: false, message: 'Invalid form data.' };
   }
 
-  const imageFile = formData.get('image') as File;
-  if (!imageFile || imageFile.size === 0) {
-    return { success: false, message: 'Cover image is required.' };
-  }
-
+  const { journalName, description, status, image } = parsed.data;
+  
   try {
     // 1. Upload image to Firebase Storage
-    const storageRef = ref(storage, `journal-covers/${Date.now()}-${imageFile.name}`);
-    const uploadResult = await uploadBytes(storageRef, imageFile);
+    const storageRef = ref(storage, `journal-covers/${Date.now()}-${image.name}`);
+    const uploadResult = await uploadBytes(storageRef, image);
     const imageUrl = await getDownloadURL(uploadResult.ref);
 
     // 2. Save journal data to Firestore
     await addDoc(collection(db, 'journals'), {
-      ...parsed.data,
+      journalName,
+      description,
+      status,
       imageSrc: imageUrl,
       createdAt: new Date(),
     });
