@@ -17,7 +17,6 @@ export default function InternshipPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Define the async data fetching function directly inside useEffect
     const fetchInternships = async () => {
       setIsLoading(true);
       try {
@@ -35,10 +34,9 @@ export default function InternshipPage() {
       }
     };
     
-    // Call the function
     fetchInternships();
     
-  }, [toast]); // The dependency array is now correct
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
     <div className="container py-12 md:py-24">
