@@ -74,8 +74,9 @@ export async function getInternships(): Promise<Internship[]> {
         });
         return internships;
     } catch (error) {
-        console.error("Error fetching internships: ", error);
-        return [];
+        console.error("Error fetching internships from service: ", error);
+        // Re-throw the error so the component can catch it
+        throw error;
     }
 }
 
