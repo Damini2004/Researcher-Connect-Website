@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 
 const menuItems = [
   { href: "/super-admin/sub-admins", label: "Sub Admins", icon: Users },
-  { href: "/super-admin/journals", label: "Journal Listings", icon: BookCopy },
+  { href: "/super-admin/journals", label: "Journal List", icon: BookCopy },
 ];
 
 export default function SuperAdminSidebar() {

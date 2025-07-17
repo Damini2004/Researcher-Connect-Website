@@ -17,7 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const menuItems = [
-  { href: "/sub-admin", label: "Journal Submissions", icon: FileText, exact: true },
+  { href: "/sub-admin", label: "Paper Submission", icon: FileText, exact: true },
   { href: "/sub-admin/approved", label: "Approved Papers", icon: CheckSquare },
   { href: "/sub-admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { href: "/sub-admin/settings", label: "Profile Settings", icon: Settings },
