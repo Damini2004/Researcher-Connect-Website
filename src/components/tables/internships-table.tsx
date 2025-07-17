@@ -29,38 +29,22 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search, MoreHorizontal, Trash2 } from "lucide-react";
-import { getInternships, deleteInternship, Internship } from "@/services/internshipService";
+import { deleteInternship, Internship } from "@/services/internshipService";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Button } from "../ui/button";
 
-export default function InternshipsTable() {
+interface InternshipsTableProps {
+  internships: Internship[];
+  isLoading: boolean;
+  onInternshipDeleted: () => void;
+}
+
+export default function InternshipsTable({ internships, isLoading, onInternshipDeleted }: InternshipsTableProps) {
   const { toast } = useToast();
-  const [internships, setInternships] = React.useState<Internship[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   const [filter, setFilter] = React.useState("");
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   const [selectedInternship, setSelectedInternship] = React.useState<Internship | null>(null);
-
-  const fetchInternships = React.useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const fetchedInternships = await getInternships();
-      setInternships(fetchedInternships);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Could not fetch internships.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [toast]);
-
-  React.useEffect(() => {
-    fetchInternships();
-  }, [fetchInternships]);
   
   const handleDeleteClick = (internship: Internship) => {
     setSelectedInternship(internship);
@@ -72,11 +56,7 @@ export default function InternshipsTable() {
 
     const result = await deleteInternship(selectedInternship.id);
     if (result.success) {
-      toast({
-        title: "Internship Deleted",
-        description: `"${selectedInternship.name}" has been successfully deleted.`,
-      });
-      setInternships(internships.filter(j => j.id !== selectedInternship.id));
+      onInternshipDeleted();
     } else {
        toast({
         title: "Error",

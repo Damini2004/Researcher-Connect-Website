@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { addInternship } from "@/services/internshipService";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(5, "Internship name must be at least 5 characters."),
@@ -38,7 +37,6 @@ interface AddInternshipFormProps {
 
 export default function AddInternshipForm({ onInternshipAdded }: AddInternshipFormProps) {
   const { toast } = useToast();
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -93,13 +91,8 @@ export default function AddInternshipForm({ onInternshipAdded }: AddInternshipFo
     });
 
     if (result.success) {
-      toast({
-        title: "Internship Added Successfully!",
-        description: `The internship "${values.name}" has been added.`,
-      });
       form.reset();
       onInternshipAdded();
-      router.refresh(); // This will refresh server components and tables
     } else {
       toast({
         title: "Error",
