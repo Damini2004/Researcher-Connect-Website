@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -23,11 +24,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-const subAdmins = [
-  { id: 1, name: "Dr. Alisha Gupta", email: "alisha.g@example.com", status: "approved", joinDate: "2023-01-15" },
-  { id: 2, name: "Dr. Ben Carter", email: "ben.c@example.com", status: "pending", joinDate: "2023-03-22" },
-  { id: 3, name: "Dr. Chloe Davis", email: "chloe.d@example.com", status: "approved", joinDate: "2022-11-30" },
-  { id: 4, name: "Dr. David Rodriguez", email: "david.r@example.com", status: "denied", joinDate: "2023-05-10" },
+const subAdmins: any[] = [
+  // Mock data removed. Will be fetched from database.
 ];
 
 const statusConfig = {
@@ -72,50 +70,58 @@ export default function SubAdminTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredAdmins.map((admin) => {
-              const status = statusConfig[admin.status as keyof typeof statusConfig];
-              return (
-                <TableRow key={admin.id}>
-                  <TableCell className="font-medium">{admin.name}</TableCell>
-                  <TableCell>{admin.email}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="flex items-center w-fit">
-                        <status.icon className={`mr-2 h-3 w-3 ${status.color.replace('bg-', 'text-')}`} />
-                        {status.label}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{admin.joinDate}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {admin.status === "pending" && (
-                            <DropdownMenuItem>
-                                <CheckCircle className="mr-2 h-4 w-4"/>
-                                Approve
-                            </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4"/>
-                            Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-destructive">
-                            <Trash2 className="mr-2 h-4 w-4"/>
-                            Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+            {filteredAdmins.length > 0 ? (
+              filteredAdmins.map((admin) => {
+                const status = statusConfig[admin.status as keyof typeof statusConfig];
+                return (
+                  <TableRow key={admin.id}>
+                    <TableCell className="font-medium">{admin.name}</TableCell>
+                    <TableCell>{admin.email}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="flex items-center w-fit">
+                          <status.icon className={`mr-2 h-3 w-3 ${status.color.replace('bg-', 'text-')}`} />
+                          {status.label}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{admin.joinDate}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button aria-haspopup="true" size="icon" variant="ghost">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          {admin.status === "pending" && (
+                              <DropdownMenuItem>
+                                  <CheckCircle className="mr-2 h-4 w-4"/>
+                                  Approve
+                              </DropdownMenuItem>
+                          )}
+                          <DropdownMenuItem>
+                              <Edit className="mr-2 h-4 w-4"/>
+                              Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-destructive">
+                              <Trash2 className="mr-2 h-4 w-4"/>
+                              Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+                <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
+                        No sub-admins found.
+                    </TableCell>
                 </TableRow>
-              );
-            })}
+            )}
           </TableBody>
         </Table>
       </CardContent>
