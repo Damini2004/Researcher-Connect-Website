@@ -18,12 +18,14 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addSubAdmin } from "@/services/subAdminService";
 import { useRouter } from "next/navigation";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
-  affiliation: z.string().min(2, "Affiliation is required."),
-  expertise: z.string().min(2, "Area of expertise is required."),
+  phone: z.string().min(10, "Please enter a valid phone number."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
+  address: z.string().min(5, "Address is required."),
 });
 
 export default function AddSubAdminForm() {
@@ -36,8 +38,9 @@ export default function AddSubAdminForm() {
     defaultValues: {
       name: "",
       email: "",
-      affiliation: "",
-      expertise: "",
+      phone: "",
+      password: "",
+      address: "",
     },
   });
 
@@ -97,12 +100,12 @@ export default function AddSubAdminForm() {
         />
         <FormField
           control={form.control}
-          name="affiliation"
+          name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Affiliation</FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., Cambridge University" {...field} />
+                <Input placeholder="+1 234 567 890" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,12 +113,25 @@ export default function AddSubAdminForm() {
         />
         <FormField
           control={form.control}
-          name="expertise"
+          name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Area of Expertise</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., Artificial Intelligence" {...field} />
+                <Input type="password" placeholder="••••••••" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Textarea placeholder="123 Main St, Anytown, USA" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

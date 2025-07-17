@@ -9,8 +9,8 @@ export interface SubAdmin {
   id: string;
   name: string;
   email: string;
-  affiliation: string;
-  expertise: string;
+  phone: string;
+  address: string;
   status: "pending" | "approved" | "denied";
   joinDate: string; // Storing as ISO string
 }
@@ -18,22 +18,23 @@ export interface SubAdmin {
 const addSubAdminSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("A valid email is required."),
-  affiliation: z.string().min(2, "Affiliation is required."),
-  expertise: z.string().min(2, "Area of expertise is required."),
+  phone: z.string().min(10, "A valid phone number is required."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
+  address: z.string().min(5, "Address is required."),
 });
 
-export async function addSubAdmin(data: { name: string, email: string, affiliation: string, expertise: string }): Promise<{ success: boolean; message: string }> {
+export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Promise<{ success: boolean; message: string }> {
   try {
     const validationResult = addSubAdminSchema.safeParse(data);
     if (!validationResult.success) {
       return { success: false, message: validationResult.error.errors[0].message };
     }
 
+    // Don't store the password directly. In a real app, this would be hashed.
+    const { password, ...subAdminData } = validationResult.data;
+
     await addDoc(collection(db, 'subAdmins'), {
-      name: data.name,
-      email: data.email,
-      affiliation: data.affiliation,
-      expertise: data.expertise,
+      ...subAdminData,
       status: 'pending',
       joinDate: new Date().toISOString(),
     });
@@ -62,8 +63,8 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
                 id: doc.id,
                 name: data.name,
                 email: data.email,
-                affiliation: data.affiliation,
-                expertise: data.expertise,
+                phone: data.phone,
+                address: data.address,
                 status: data.status,
                 joinDate: joinDate,
             });

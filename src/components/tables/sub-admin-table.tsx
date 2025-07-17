@@ -61,8 +61,8 @@ export default function SubAdminTable() {
     (admin) =>
       admin.name.toLowerCase().includes(filter.toLowerCase()) ||
       admin.email.toLowerCase().includes(filter.toLowerCase()) ||
-      admin.affiliation.toLowerCase().includes(filter.toLowerCase()) ||
-      admin.expertise.toLowerCase().includes(filter.toLowerCase())
+      admin.phone.toLowerCase().includes(filter.toLowerCase()) ||
+      admin.address.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
@@ -72,7 +72,7 @@ export default function SubAdminTable() {
         <div className="relative mt-2">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input 
-                placeholder="Filter by name, email, expertise..." 
+                placeholder="Filter by name, email, phone..." 
                 className="pl-8"
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
@@ -85,8 +85,8 @@ export default function SubAdminTable() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Affiliation</TableHead>
-              <TableHead>Expertise</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Address</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Join Date</TableHead>
               <TableHead>
@@ -106,8 +106,8 @@ export default function SubAdminTable() {
                   <TableRow key={admin.id}>
                     <TableCell className="font-medium">{admin.name}</TableCell>
                     <TableCell>{admin.email}</TableCell>
-                    <TableCell>{admin.affiliation}</TableCell>
-                    <TableCell>{admin.expertise}</TableCell>
+                    <TableCell>{admin.phone}</TableCell>
+                    <TableCell className="max-w-xs truncate">{admin.address}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="flex items-center w-fit gap-2">
                           <statusInfo.icon className={`h-3 w-3 ${statusInfo.color}`} />
