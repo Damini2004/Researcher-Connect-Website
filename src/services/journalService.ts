@@ -6,7 +6,7 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot } from
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { z } from 'zod';
 
-// Zod schema for FormData parsing
+// Zod schema for FormData parsing on the server
 const AddJournalFormSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
@@ -24,6 +24,7 @@ export interface Journal {
 }
 
 export async function addJournal(formData: FormData): Promise<{ success: boolean; message: string }> {
+  // Directly get the values from formData
   const values = {
     journalName: formData.get('journalName'),
     description: formData.get('description'),
@@ -31,11 +32,12 @@ export async function addJournal(formData: FormData): Promise<{ success: boolean
     image: formData.get('image'),
   };
   
+  // Validate the extracted values
   const parsed = AddJournalFormSchema.safeParse(values);
 
   if (!parsed.success) {
     console.error("Form validation failed:", parsed.error.flatten().fieldErrors);
-    return { success: false, message: 'Invalid form data.' };
+    return { success: false, message: 'Invalid form data. Please check all fields.' };
   }
 
   const { journalName, description, status, image } = parsed.data;
@@ -58,7 +60,8 @@ export async function addJournal(formData: FormData): Promise<{ success: boolean
     return { success: true, message: 'Journal added successfully!' };
   } catch (error) {
     console.error("Error adding journal:", error);
-    return { success: false, message: 'Failed to add journal.' };
+    // It's helpful to be more specific if possible, but for security, a general message is safer for the client.
+    return { success: false, message: 'Failed to add journal. An unexpected error occurred.' };
   }
 }
 
