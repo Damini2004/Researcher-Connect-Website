@@ -13,23 +13,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedInternship, setSelectedInternship] = useState<Internship | null>(null);
-  const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
     const fetchInternships = async () => {
       setIsLoading(true);
-      const data = await getInternships();
-      setInternships(data);
-      setIsLoading(false);
+      try {
+        const data = await getInternships();
+        setInternships(data);
+      } catch (error) {
+        console.error("Failed to fetch internships", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchInternships();
   }, []);
-
-  const handleRegisterClick = (internship: Internship) => {
-    setSelectedInternship(internship);
-    setIsRegistering(true);
-  };
 
   return (
     <div className="container py-12 md:py-24">
@@ -74,19 +72,17 @@ export default function InternshipPage() {
                 <CardFooter className="p-0 mt-6">
                    <Dialog>
                       <DialogTrigger asChild>
-                         <Button onClick={() => handleRegisterClick(internship)}>Register Now</Button>
+                         <Button>Register Now</Button>
                       </DialogTrigger>
-                       {selectedInternship?.id === internship.id && (
-                          <DialogContent className="sm:max-w-md">
-                            <DialogHeader>
-                              <DialogTitle>Register for: {selectedInternship.name}</DialogTitle>
-                              <DialogDescription>
-                                Please fill out your details below to apply. We will get back to you shortly.
-                              </DialogDescription>
-                            </DialogHeader>
-                            <ContactForm />
-                          </DialogContent>
-                       )}
+                      <DialogContent className="sm:max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Register for: {internship.name}</DialogTitle>
+                          <DialogDescription>
+                            Please fill out your details below to apply. We will get back to you shortly.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <ContactForm />
+                      </DialogContent>
                    </Dialog>
                 </CardFooter>
               </div>
