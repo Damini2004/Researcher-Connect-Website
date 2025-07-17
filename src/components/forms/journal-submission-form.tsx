@@ -43,15 +43,6 @@ const formSchema = z.object({
   content: z.string().min(100, "Content must be at least 100 characters."),
 });
 
-const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (error) => reject(error);
-    });
-};
-
 export default function JournalSubmissionForm() {
   const { toast } = useToast();
   const router = useRouter();
@@ -92,50 +83,33 @@ export default function JournalSubmissionForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-
-    const file = values.manuscriptFile[0];
-    if (!file) {
-        toast({ title: "Error", description: "Manuscript file is missing.", variant: "destructive" });
-        setIsSubmitting(false);
-        return;
-    }
     
-    try {
-        const base64File = await fileToBase64(file);
-        
-        const formData = new FormData();
-        formData.append('fullName', values.fullName);
-        formData.append('email', values.email);
-        formData.append('title', values.title);
-        formData.append('journalId', values.journalId);
-        formData.append('content', values.content);
-        formData.append('manuscriptFile', base64File);
+    const formData = new FormData();
+    formData.append('fullName', values.fullName);
+    formData.append('email', values.email);
+    formData.append('title', values.title);
+    formData.append('journalId', values.journalId);
+    formData.append('content', values.content);
+    formData.append('manuscriptFile', values.manuscriptFile[0]);
 
-        const result = await addSubmission(formData);
+    const result = await addSubmission(formData);
 
-        if (result.success) {
-            toast({
-                title: "Submission Successful!",
-                description: "Your journal has been submitted for review.",
-            });
-            form.reset();
-            router.refresh();
-        } else {
-            toast({
-                title: "Submission Failed",
-                description: result.message,
-                variant: "destructive",
-            });
-        }
-    } catch (error) {
+    if (result.success) {
         toast({
-            title: "Error",
-            description: "An unexpected error occurred while processing the file.",
+            title: "Submission Successful!",
+            description: "Your journal has been submitted for review.",
+        });
+        form.reset();
+        router.refresh();
+    } else {
+        toast({
+            title: "Submission Failed",
+            description: result.message,
             variant: "destructive",
         });
-    } finally {
-        setIsSubmitting(false);
     }
+
+    setIsSubmitting(false);
   }
 
   return (

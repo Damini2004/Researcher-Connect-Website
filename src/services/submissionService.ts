@@ -1,9 +1,10 @@
+
 // src/services/submissionService.ts
 'use server';
 
 import { db, storage } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, orderBy, query } from 'firebase/firestore';
-import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { z } from 'zod';
 
 // Zod schema for form data validation
@@ -30,33 +31,30 @@ export interface Submission {
 
 export async function addSubmission(formData: FormData): Promise<{ success: boolean; message: string }> {
   try {
-    const data = {
+    const file = formData.get('manuscriptFile') as File | null;
+    const submissionData = {
         fullName: formData.get('fullName') as string,
         email: formData.get('email') as string,
         title: formData.get('title') as string,
         journalId: formData.get('journalId') as string,
         content: formData.get('content') as string,
-        manuscriptFile: formData.get('manuscriptFile') as string, // Base64 string
     };
     
     // Validate text fields
-    const validationResult = submissionSchema.safeParse(data);
+    const validationResult = submissionSchema.safeParse(submissionData);
     if (!validationResult.success) {
         return { success: false, message: validationResult.error.errors[0].message };
     }
 
-    if (!data.manuscriptFile) {
-        return { success: false, message: 'Manuscript file is required.' };
+    if (!file || !(file instanceof File)) {
+        return { success: false, message: 'Manuscript file is required and must be a valid file.' };
     }
+    
+    const fileBuffer = await file.arrayBuffer();
 
     // Upload manuscript to Firebase Storage
-    const storageRef = ref(storage, `manuscripts/${Date.now()}-${validationResult.data.title}.pdf`);
-    // Ensure the base64 string is in the correct data_url format
-    const dataUrl = data.manuscriptFile.startsWith('data:') 
-        ? data.manuscriptFile 
-        : `data:application/pdf;base64,${data.manuscriptFile}`;
-    
-    const uploadResult = await uploadString(storageRef, dataUrl, 'data_url');
+    const storageRef = ref(storage, `manuscripts/${Date.now()}-${file.name}`);
+    const uploadResult = await uploadBytes(storageRef, fileBuffer, { contentType: 'application/pdf' });
     const manuscriptUrl = await getDownloadURL(uploadResult.ref);
 
     // Save submission data to Firestore
