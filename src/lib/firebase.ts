@@ -8,7 +8,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAojn8bWZM_s19xhK9kn8F0CpB0JcW2bjA",
   authDomain: "journellisting.firebaseapp.com",
   projectId: "journellisting",
-  storageBucket: "journellisting.appspot.com",
+  storageBucket: "journellisting.firebasestorage.app",
   messagingSenderId: "96866013897",
   appId: "1:96866013897:web:5d3d2ad16b83610b907318",
   measurementId: "G-30NMKYLKQG"
