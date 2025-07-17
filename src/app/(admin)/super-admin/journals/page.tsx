@@ -7,6 +7,14 @@ import Image from "next/image";
 import { allSubmissions } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -15,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Eye, Edit, Trash2, PlusCircle } from "lucide-react";
+import JournalSubmissionForm from "@/components/forms/journal-submission-form";
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -31,10 +40,23 @@ export default function ViewJournalsPage() {
             <h1 className="text-2xl font-bold tracking-tight">All Journal Submissions</h1>
             <p className="text-muted-foreground">A complete list of all journal submissions in the system.</p>
         </div>
-        <Button>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Journal
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Journal
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[625px]">
+            <DialogHeader>
+              <DialogTitle>Add New Journal Submission</DialogTitle>
+              <DialogDescription>
+                Fill out the form below to add a new journal to the system.
+              </DialogDescription>
+            </DialogHeader>
+            <JournalSubmissionForm />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
