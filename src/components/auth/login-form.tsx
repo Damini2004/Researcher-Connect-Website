@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +25,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { verifySubAdminCredentials } from "@/services/subAdminService";
+import * as React from "react";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email."),
@@ -36,6 +39,7 @@ const formSchema = z.object({
 export default function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,13 +49,43 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // This is a mock login. In a real app, you'd call an auth service.
-    toast({
-      title: "Login Successful",
-      description: `Redirecting to ${values.role} dashboard...`,
-    });
-    router.push(`/${values.role}`);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+
+    if (values.role === 'super-admin') {
+      // This is a mock login for super-admin. 
+      // In a real app, you'd have a separate verification.
+      if (values.email === 'superadmin@journaledge.com' && values.password === 'password') {
+          toast({
+            title: "Login Successful",
+            description: "Redirecting to super-admin dashboard...",
+          });
+          router.push(`/${values.role}`);
+      } else {
+           toast({
+            title: "Login Failed",
+            description: "Invalid credentials for super admin.",
+            variant: "destructive",
+          });
+      }
+    } else if (values.role === 'sub-admin') {
+      const result = await verifySubAdminCredentials(values.email, values.password);
+      if (result.success) {
+        toast({
+          title: "Login Successful",
+          description: "Redirecting to sub-admin dashboard...",
+        });
+        router.push(`/${values.role}`);
+      } else {
+        toast({
+          title: "Login Failed",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    }
+
+    setIsSubmitting(false);
   }
 
   return (
@@ -111,8 +145,8 @@ export default function LoginForm() {
             />
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing In...' : 'Sign In'}
             </Button>
             <Button variant="link" size="sm" asChild>
                 <Link href="/">Back to Home</Link>

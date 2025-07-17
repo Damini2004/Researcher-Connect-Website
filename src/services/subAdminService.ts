@@ -1,8 +1,9 @@
+
 // src/services/subAdminService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface SubAdmin {
@@ -12,7 +13,8 @@ export interface SubAdmin {
   phone: string;
   address: string;
   status: "pending" | "approved" | "denied";
-  joinDate: string; // Storing as ISO string
+  joinDate: string; 
+  password?: string; // Should be handled securely, only present for creation
 }
 
 const addSubAdminSchema = z.object({
@@ -30,9 +32,16 @@ export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Prom
       return { success: false, message: validationResult.error.errors[0].message };
     }
 
-    // Don't store the password directly. In a real app, this would be hashed.
-    const { password, ...subAdminData } = validationResult.data;
+    const { ...subAdminData } = validationResult.data;
 
+    // Check if email already exists
+    const q = query(collection(db, 'subAdmins'), where('email', '==', subAdminData.email), limit(1));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+        return { success: false, message: 'A user with this email already exists.' };
+    }
+
+    // Don't store the password directly in a real app. This is for prototype purposes.
     await addDoc(collection(db, 'subAdmins'), {
       ...subAdminData,
       status: 'pending',
@@ -74,4 +83,33 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
         console.error("Error fetching sub-admins: ", error);
         return [];
     }
+}
+
+export async function verifySubAdminCredentials(email: string, password_provided: string): Promise<{ success: boolean; message: string }> {
+  try {
+    const q = query(collection(db, 'subAdmins'), where('email', '==', email), limit(1));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      return { success: false, message: 'Invalid email or password.' };
+    }
+
+    const subAdminDoc = querySnapshot.docs[0];
+    const subAdminData = subAdminDoc.data() as SubAdmin;
+
+    if (subAdminData.status !== 'approved') {
+        return { success: false, message: 'Your account is not approved yet. Please contact the super admin.' };
+    }
+    
+    // In a real app, use a secure hashing library like bcrypt to compare passwords.
+    // For this prototype, we're comparing plaintext.
+    if (subAdminData.password !== password_provided) {
+      return { success: false, message: 'Invalid email or password.' };
+    }
+
+    return { success: true, message: 'Login successful!' };
+  } catch (error) {
+    console.error("Error verifying sub-admin credentials:", error);
+    return { success: false, message: 'An unexpected error occurred during login.' };
+  }
 }
