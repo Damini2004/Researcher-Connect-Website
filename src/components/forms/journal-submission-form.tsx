@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { getJournals, type Journal } from "@/services/journalService";
+import { addSubmission } from "@/services/submissionService";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -32,7 +34,7 @@ const formSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
   journalId: z.string({ required_error: "Please select a journal to submit to." }),
   manuscriptFile: z
-    .custom<FileList>()
+    .any()
     .refine((files) => files?.length > 0, "A manuscript file is required.")
     .refine(
       (files) => files?.[0]?.type === "application/pdf",
@@ -41,16 +43,27 @@ const formSchema = z.object({
   content: z.string().min(100, "Content must be at least 100 characters."),
 });
 
+const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
 export default function JournalSubmissionForm() {
   const { toast } = useToast();
+  const router = useRouter();
   const [journals, setJournals] = React.useState<Journal[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   React.useEffect(() => {
     async function fetchJournals() {
       try {
         const fetchedJournals = await getJournals();
-        setJournals(fetchedJournals);
+        setJournals(fetchedJournals.filter(j => j.status === 'Active'));
       } catch (error) {
         console.error("Failed to fetch journals:", error);
         toast({
@@ -74,14 +87,55 @@ export default function JournalSubmissionForm() {
       content: "",
     },
   });
+  
+  const fileRef = form.register("manuscriptFile");
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Submission Successful!",
-      description: "Your journal has been submitted for review.",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+
+    const file = values.manuscriptFile[0];
+    if (!file) {
+        toast({ title: "Error", description: "Manuscript file is missing.", variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+    }
+    
+    try {
+        const base64File = await fileToBase64(file);
+        
+        const formData = new FormData();
+        formData.append('fullName', values.fullName);
+        formData.append('email', values.email);
+        formData.append('title', values.title);
+        formData.append('journalId', values.journalId);
+        formData.append('content', values.content);
+        formData.append('manuscriptFile', base64File);
+
+        const result = await addSubmission(formData);
+
+        if (result.success) {
+            toast({
+                title: "Submission Successful!",
+                description: "Your journal has been submitted for review.",
+            });
+            form.reset();
+            router.refresh();
+        } else {
+            toast({
+                title: "Submission Failed",
+                description: result.message,
+                variant: "destructive",
+            });
+        }
+    } catch (error) {
+        toast({
+            title: "Error",
+            description: "An unexpected error occurred while processing the file.",
+            variant: "destructive",
+        });
+    } finally {
+        setIsSubmitting(false);
+    }
   }
 
   return (
@@ -161,7 +215,7 @@ export default function JournalSubmissionForm() {
                         <Input 
                             type="file" 
                             accept=".pdf"
-                            {...form.register("manuscriptFile")}
+                            {...fileRef}
                         />
                     </FormControl>
                     <FormMessage />
@@ -187,8 +241,8 @@ export default function JournalSubmissionForm() {
           )}
         />
         
-        <Button type="submit" size="lg" className="w-full">
-          Submit for Review
+        <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit for Review"}
         </Button>
       </form>
     </Form>
