@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addSubAdmin } from "@/services/subAdminService";
 import { Textarea } from "../ui/textarea";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -35,7 +34,6 @@ interface AddSubAdminFormProps {
 export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +49,7 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
+    // Create a plain data object to ensure it's serializable
     const plainData = {
       name: values.name,
       email: values.email,
@@ -74,8 +73,7 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
             closeButton.click();
         }
         
-        onAdminAdded();
-        router.refresh();
+        onAdminAdded(); // This will re-fetch the admins list
       } else {
         toast({
           title: "Error",
