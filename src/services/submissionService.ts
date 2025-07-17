@@ -51,7 +51,12 @@ export async function addSubmission(formData: FormData): Promise<{ success: bool
 
     // Upload manuscript to Firebase Storage
     const storageRef = ref(storage, `manuscripts/${Date.now()}-${validationResult.data.title}.pdf`);
-    const uploadResult = await uploadString(storageRef, data.manuscriptFile, 'data_url');
+    // Ensure the base64 string is in the correct data_url format
+    const dataUrl = data.manuscriptFile.startsWith('data:') 
+        ? data.manuscriptFile 
+        : `data:application/pdf;base64,${data.manuscriptFile}`;
+    
+    const uploadResult = await uploadString(storageRef, dataUrl, 'data_url');
     const manuscriptUrl = await getDownloadURL(uploadResult.ref);
 
     // Save submission data to Firestore
