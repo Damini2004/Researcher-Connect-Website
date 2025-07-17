@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface Internship {
@@ -72,6 +72,7 @@ export async function getInternships(): Promise<Internship[]> {
                 createdAt: data.createdAt.toDate().toISOString(),
             });
         });
+        console.log("Fetched internships:", internships);
         return internships;
     } catch (error) {
         console.error("Error fetching internships from service: ", error);
