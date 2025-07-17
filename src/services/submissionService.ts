@@ -31,7 +31,7 @@ export interface Submission {
     content: string;
     manuscriptData: string; // Storing Base64 data
     status: "Verification Pending" | "In Progress" | "Done" | "Canceled";
-    submittedAt: Date;
+    submittedAt: string; // Changed to string to be serializable
 }
 
 interface AddSubmissionData {
@@ -87,7 +87,7 @@ export async function getSubmissions(): Promise<Submission[]> {
                 content: data.content,
                 manuscriptData: data.manuscriptData,
                 status: data.status,
-                submittedAt: data.submittedAt.toDate(),
+                submittedAt: data.submittedAt.toDate().toISOString(),
             });
         });
         return submissions;
@@ -116,7 +116,8 @@ export async function updateSubmission(id: string, data: UpdateSubmissionData): 
         
         const result: Submission = {
             id: updatedDoc.id,
-            ...updatedData
+            ...updatedData,
+            submittedAt: updatedData.submittedAt.toDate().toISOString(),
         } as Submission;
 
         return { success: true, message: 'Submission updated successfully!', updatedSubmission: result };
