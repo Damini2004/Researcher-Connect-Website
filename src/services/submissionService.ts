@@ -49,6 +49,9 @@ export async function addSubmission(formData: FormData): Promise<{ success: bool
     if (!file || !(file instanceof File)) {
         return { success: false, message: 'Manuscript file is required and must be a valid file.' };
     }
+     if (file.type !== 'application/pdf') {
+        return { success: false, message: 'Only PDF files are allowed.' };
+    }
     
     const fileBuffer = await file.arrayBuffer();
 

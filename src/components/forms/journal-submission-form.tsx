@@ -90,7 +90,18 @@ export default function JournalSubmissionForm() {
     formData.append('title', values.title);
     formData.append('journalId', values.journalId);
     formData.append('content', values.content);
-    formData.append('manuscriptFile', values.manuscriptFile[0]);
+    
+    if (values.manuscriptFile && values.manuscriptFile.length > 0) {
+        formData.append('manuscriptFile', values.manuscriptFile[0]);
+    } else {
+        toast({
+            title: "Submission Failed",
+            description: "Manuscript file is missing.",
+            variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+    }
 
     const result = await addSubmission(formData);
 
