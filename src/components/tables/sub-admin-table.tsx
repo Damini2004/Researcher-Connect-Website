@@ -45,21 +45,30 @@ export default function SubAdminTable({ subAdmins, isLoading, onStatusChange }: 
 
   const handleStatusUpdate = async (id: string, status: 'approved' | 'denied') => {
     setIsUpdating(id);
-    const result = await updateSubAdminStatus(id, status);
-    if (result.success) {
-      toast({
-        title: "Status Updated",
-        description: result.message,
-      });
-      onStatusChange();
-    } else {
-      toast({
+    try {
+      const result = await updateSubAdminStatus(id, status);
+      if (result.success) {
+        toast({
+          title: "Status Updated",
+          description: result.message,
+        });
+        onStatusChange();
+      } else {
+        toast({
+          title: "Error",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+       toast({
         title: "Error",
-        description: result.message,
+        description: "An unexpected error occurred while updating status.",
         variant: "destructive",
       });
+    } finally {
+      setIsUpdating(null);
     }
-    setIsUpdating(null);
   };
 
   const filteredAdmins = subAdmins.filter(
@@ -115,8 +124,8 @@ export default function SubAdminTable({ subAdmins, isLoading, onStatusChange }: 
                     <TableCell className="max-w-xs truncate">{admin.address}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="flex items-center w-fit gap-2">
-                          <statusInfo.icon className={`h-3 w-3 ${statusInfo.color}`} />
-                          {statusInfo.label}
+                          {statusInfo && <statusInfo.icon className={`h-3 w-3 ${statusInfo.color}`} />}
+                          {statusInfo ? statusInfo.label : admin.status}
                       </Badge>
                     </TableCell>
                     <TableCell>{admin.joinDate}</TableCell>
@@ -132,11 +141,11 @@ export default function SubAdminTable({ subAdmins, isLoading, onStatusChange }: 
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           {admin.status === "pending" && (
                             <>
-                              <DropdownMenuItem onSelect={() => handleStatusUpdate(admin.id, 'approved')}>
+                              <DropdownMenuItem onSelect={(e) => { e.preventDefault(); handleStatusUpdate(admin.id, 'approved'); }}>
                                   <CheckCircle className="mr-2 h-4 w-4"/>
                                   Approve
                               </DropdownMenuItem>
-                              <DropdownMenuItem onSelect={() => handleStatusUpdate(admin.id, 'denied')} className="text-destructive">
+                              <DropdownMenuItem onSelect={(e) => { e.preventDefault(); handleStatusUpdate(admin.id, 'denied'); }} className="text-destructive">
                                   <XCircle className="mr-2 h-4 w-4"/>
                                   Deny
                               </DropdownMenuItem>
