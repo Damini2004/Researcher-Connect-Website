@@ -1,10 +1,8 @@
 
-"use client";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { allSubmissions } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,21 +22,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Eye, Edit, Trash2, PlusCircle } from "lucide-react";
 import AddJournalForm from "@/components/forms/add-journal-form";
+import { getJournals, Journal } from "@/services/journalService";
 
 const statusColors: { [key: string]: string } = {
+  Active: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+  Inactive: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+  Archived: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
   "In Progress": "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
   Canceled: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   "Verification Pending": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
 };
 
-export default function ViewJournalsPage() {
+export default async function ViewJournalsPage() {
+  const journals = await getJournals();
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-            <h1 className="text-2xl font-bold tracking-tight">All Journal Submissions</h1>
-            <p className="text-muted-foreground">A complete list of all journal submissions in the system.</p>
+            <h1 className="text-2xl font-bold tracking-tight">All Journals</h1>
+            <p className="text-muted-foreground">A complete list of all journals in the system.</p>
         </div>
         <Dialog>
           <DialogTrigger asChild>
@@ -60,21 +64,21 @@ export default function ViewJournalsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {allSubmissions.map(submission => (
-          <Card key={submission.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col overflow-hidden">
+        {journals.map(journal => (
+          <Card key={journal.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col overflow-hidden">
             <Image 
-                src={submission.imageSrc}
-                alt={`Cover for ${submission.title}`}
+                src={journal.imageSrc}
+                alt={`Cover for ${journal.journalName}`}
                 width={400}
                 height={300}
-                data-ai-hint={submission.imageHint}
+                data-ai-hint="journal cover"
                 className="w-full object-cover"
             />
             <div className="flex flex-col flex-grow">
                 <CardHeader className="flex-row items-start justify-between">
                     <div>
-                        <CardTitle className="text-xl leading-snug">{submission.title}</CardTitle>
-                        <CardDescription className="pt-1">{submission.author}</CardDescription>
+                        <CardTitle className="text-xl leading-snug">{journal.journalName}</CardTitle>
+                        <CardDescription className="pt-1 line-clamp-2">{journal.description}</CardDescription>
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -99,12 +103,10 @@ export default function ViewJournalsPage() {
                     </DropdownMenu>
                 </CardHeader>
                 <CardContent className="flex-grow space-y-2">
-                    <p className="text-sm text-muted-foreground">Submitted on: {submission.date}</p>
-                    <p className="text-sm text-muted-foreground">Assigned to: {submission.subAdmin}</p>
-                    <p className="text-sm text-muted-foreground">ID: <span className="font-mono">{submission.id}</span></p>
+                    <p className="text-sm text-muted-foreground">ID: <span className="font-mono">{journal.id}</span></p>
                 </CardContent>
                 <CardFooter>
-                  <Badge className={`${statusColors[submission.status]} w-full justify-center`}>{submission.status}</Badge>
+                  <Badge className={`${statusColors[journal.status]} w-full justify-center`}>{journal.status}</Badge>
                 </CardFooter>
             </div>
           </Card>

@@ -24,6 +24,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { addJournal } from "@/services/journalService";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
@@ -42,6 +44,8 @@ const formSchema = z.object({
 
 export default function AddJournalForm() {
   const { toast } = useToast();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,13 +56,34 @@ export default function AddJournalForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Journal Added Successfully!",
-      description: `The journal "${values.journalName}" has been added to the system.`,
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    const formData = new FormData();
+    formData.append('journalName', values.journalName);
+    formData.append('description', values.description);
+    formData.append('status', values.status);
+    if (values.image[0]) {
+      formData.append('image', values.image[0]);
+    }
+
+    const result = await addJournal(formData);
+
+    if (result.success) {
+      toast({
+        title: "Journal Added Successfully!",
+        description: `The journal "${values.journalName}" has been added.`,
+      });
+      form.reset();
+      // A simple way to refresh the journal list page
+      router.refresh();
+    } else {
+      toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
+    setIsSubmitting(false);
   }
 
   return (
@@ -131,8 +156,8 @@ export default function AddJournalForm() {
               )}
             />
         </div>
-        <Button type="submit" size="lg" className="w-full">
-          Save Journal
+        <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Saving..." : "Save Journal"}
         </Button>
       </form>
     </Form>
