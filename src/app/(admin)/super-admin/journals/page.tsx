@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Eye, Edit, Trash2, PlusCircle } from "lucide-react";
-import JournalSubmissionForm from "@/components/forms/journal-submission-form";
+import AddJournalForm from "@/components/forms/add-journal-form";
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -49,12 +49,12 @@ export default function ViewJournalsPage() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[625px]">
             <DialogHeader>
-              <DialogTitle>Add New Journal Submission</DialogTitle>
+              <DialogTitle>Add New Journal</DialogTitle>
               <DialogDescription>
                 Fill out the form below to add a new journal to the system.
               </DialogDescription>
             </DialogHeader>
-            <JournalSubmissionForm />
+            <AddJournalForm />
           </DialogContent>
         </Dialog>
       </div>
