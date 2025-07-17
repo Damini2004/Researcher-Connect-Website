@@ -5,5 +5,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <SidebarProvider>{children}</SidebarProvider>;
+  return (
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-muted/40">{children}</div>
+    </SidebarProvider>
+  );
 }
