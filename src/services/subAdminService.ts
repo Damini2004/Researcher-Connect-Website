@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface SubAdmin {
@@ -24,11 +24,26 @@ const addSubAdminSchema = z.object({
   address: z.string().min(5, "Address is required."),
 });
 
+const updateSubAdminSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  phone: z.string().min(10, "Please enter a valid phone number."),
+  address: z.string().min(5, "Address is required."),
+});
+
+
 type AddSubAdminData = z.infer<typeof addSubAdminSchema>;
+type UpdateSubAdminData = z.infer<typeof updateSubAdminSchema>;
 
 type AddSubAdminResult = {
   success: boolean;
   message: string;
+}
+
+type UpdateSubAdminResult = {
+  success: boolean;
+  message: string;
+  updatedAdmin?: SubAdmin;
 }
 
 export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminResult> {
@@ -46,12 +61,10 @@ export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminRes
         return { success: false, message: 'A user with this email already exists.' };
     }
     
-    const joinDate = new Date();
-
     await addDoc(collection(db, 'subAdmins'), {
       ...subAdminData,
       status: 'pending',
-      joinDate: joinDate.toISOString(),
+      joinDate: new Date().toISOString(),
     });
     
     return { success: true, message: 'Sub-admin added successfully.' };
@@ -69,11 +82,11 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
         const subAdmins: SubAdmin[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
-            const joinDate = new Date(data.joinDate).toLocaleDateString('en-US', {
+            const joinDate = data.joinDate ? new Date(data.joinDate).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
-            });
+            }) : 'N/A';
             subAdmins.push({
                 id: doc.id,
                 name: data.name,
@@ -107,8 +120,6 @@ export async function verifySubAdminCredentials(email: string, password_provided
         return { success: false, message: 'Your account is not approved yet. Please contact the super admin.' };
     }
     
-    // In a real app, use a secure hashing library like bcrypt to compare passwords.
-    // For this prototype, we're comparing plaintext.
     if (subAdminData.password !== password_provided) {
       return { success: false, message: 'Invalid email or password.' };
     }
@@ -135,5 +146,63 @@ export async function updateSubAdminStatus(id: string, status: 'approved' | 'den
     console.error("Error updating sub-admin status:", error);
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
     return { success: false, message: `Failed to update status: ${errorMessage}` };
+  }
+}
+
+export async function updateSubAdmin(id: string, data: UpdateSubAdminData): Promise<UpdateSubAdminResult> {
+  try {
+    const validationResult = updateSubAdminSchema.safeParse(data);
+    if (!validationResult.success) {
+      return { success: false, message: validationResult.error.errors[0].message };
+    }
+
+    const subAdminRef = doc(db, 'subAdmins', id);
+    const docSnap = await getDoc(subAdminRef);
+
+    if (!docSnap.exists()) {
+      return { success: false, message: "Sub-admin not found." };
+    }
+    
+    // Check if the email is being changed and if the new email already exists for another user
+    const currentEmail = docSnap.data().email;
+    if (data.email !== currentEmail) {
+        const q = query(collection(db, 'subAdmins'), where('email', '==', data.email), limit(1));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            return { success: false, message: 'Another user with this email already exists.' };
+        }
+    }
+
+    await updateDoc(subAdminRef, validationResult.data);
+
+    const updatedDocSnap = await getDoc(subAdminRef);
+    const updatedData = updatedDocSnap.data();
+
+    if (!updatedData) {
+      throw new Error("Could not retrieve updated document.");
+    }
+    
+    const joinDate = updatedData.joinDate ? new Date(updatedData.joinDate).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    }) : 'N/A';
+
+    return {
+      success: true,
+      message: "Sub-admin updated successfully.",
+      updatedAdmin: {
+        id: updatedDocSnap.id,
+        name: updatedData.name,
+        email: updatedData.email,
+        phone: updatedData.phone,
+        address: updatedData.address,
+        status: updatedData.status,
+        joinDate: joinDate,
+      },
+    };
+
+  } catch (error) {
+    console.error("Error updating sub-admin:", error);
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { success: false, message: `Failed to update sub-admin: ${errorMessage}` };
   }
 }

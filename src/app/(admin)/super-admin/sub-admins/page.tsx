@@ -16,11 +16,13 @@ import AddSubAdminForm from "@/components/forms/add-sub-admin-form";
 import { useEffect, useState } from "react";
 import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function ManageSubAdminsPage() {
   const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const router = useRouter();
 
   const fetchAdmins = async () => {
     setIsLoading(true);
@@ -36,6 +38,22 @@ export default function ManageSubAdminsPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  const handleAdminAdded = () => {
+    toast({
+      title: "Sub Admin Added",
+      description: "The list has been updated.",
+    });
+    fetchAdmins();
+  };
+
+  const handleAdminUpdated = (updatedAdmin: SubAdmin) => {
+    setSubAdmins(prevAdmins => 
+        prevAdmins.map(admin => 
+            admin.id === updatedAdmin.id ? updatedAdmin : admin
+        )
+    );
   };
 
   useEffect(() => {
@@ -68,11 +86,16 @@ export default function ManageSubAdminsPage() {
                 set to 'Pending' status by default.
               </DialogDescription>
             </DialogHeader>
-            <AddSubAdminForm onAdminAdded={fetchAdmins} />
+            <AddSubAdminForm onAdminAdded={handleAdminAdded} />
           </DialogContent>
         </Dialog>
       </div>
-      <SubAdminTable subAdmins={subAdmins} isLoading={isLoading} onStatusChange={fetchAdmins} />
+      <SubAdminTable
+        subAdmins={subAdmins}
+        isLoading={isLoading}
+        onAdminChange={fetchAdmins}
+        onAdminUpdated={handleAdminUpdated}
+      />
     </div>
   );
 }
