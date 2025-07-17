@@ -10,9 +10,10 @@ import { z } from 'zod';
 const AddJournalFormSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
-  image: z.instanceof(File).refine(file => file.size > 0, 'An image is required.'),
   status: z.enum(["Active", "Inactive", "Archived"]),
+  image: z.instanceof(File).refine(file => file.size > 0, 'An image is required.'),
 });
+
 
 export interface Journal {
     id: string;
@@ -23,7 +24,13 @@ export interface Journal {
 }
 
 export async function addJournal(formData: FormData): Promise<{ success: boolean; message: string }> {
-  const values = Object.fromEntries(formData.entries());
+  const values = {
+    journalName: formData.get('journalName'),
+    description: formData.get('description'),
+    status: formData.get('status'),
+    image: formData.get('image'),
+  };
+  
   const parsed = AddJournalFormSchema.safeParse(values);
 
   if (!parsed.success) {
