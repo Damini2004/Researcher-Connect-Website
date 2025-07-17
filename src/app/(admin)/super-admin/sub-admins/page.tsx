@@ -41,10 +41,6 @@ export default function ManageSubAdminsPage() {
     fetchAdmins();
   }, [toast]);
 
-  const handleAdminAdded = (newAdmin: SubAdmin) => {
-    setSubAdmins((prevAdmins) => [newAdmin, ...prevAdmins]);
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -71,7 +67,7 @@ export default function ManageSubAdminsPage() {
                 set to 'Pending' status by default.
               </DialogDescription>
             </DialogHeader>
-            <AddSubAdminForm onAdminAdded={handleAdminAdded} />
+            <AddSubAdminForm />
           </DialogContent>
         </Dialog>
       </div>

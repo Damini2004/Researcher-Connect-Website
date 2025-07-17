@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { addSubAdmin, type SubAdmin } from "@/services/subAdminService";
+import { addSubAdmin } from "@/services/subAdminService";
 import { Textarea } from "../ui/textarea";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -27,12 +28,9 @@ const formSchema = z.object({
   address: z.string().min(5, "Address is required."),
 });
 
-interface AddSubAdminFormProps {
-  onAdminAdded: (newAdmin: SubAdmin) => void;
-}
-
-export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) {
+export default function AddSubAdminForm() {
   const { toast } = useToast();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,7 +47,6 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
-    // Create a plain, serializable object to pass to the server action.
     const plainData = {
       name: values.name,
       email: values.email,
@@ -60,17 +57,19 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
 
     const result = await addSubAdmin(plainData);
 
-    if (result.success && result.newAdmin) {
+    if (result.success) {
       toast({
         title: "Sub Admin Added",
         description: `An invitation has been sent to ${values.name}.`,
       });
-      onAdminAdded(result.newAdmin);
       form.reset();
+      
       const closeButton = document.querySelector('[data-radix-dialog-close]');
       if (closeButton instanceof HTMLElement) {
           closeButton.click();
       }
+      
+      router.refresh();
     } else {
       toast({
         title: "Error",
