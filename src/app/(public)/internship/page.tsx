@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getInternships, Internship } from "@/services/internshipService";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
@@ -51,17 +51,17 @@ export default function InternshipPage() {
              <Card key={i} className="flex flex-col">
                 <Skeleton className="h-[250px] w-full" />
                 <div className="flex flex-col flex-grow p-6">
-                  <CardHeader className="p-0 mb-4">
+                  <div className="p-0 mb-4">
                       <Skeleton className="h-6 w-3/4" />
-                  </CardHeader>
-                  <CardContent className="p-0 flex-grow space-y-2">
+                  </div>
+                  <div className="p-0 flex-grow space-y-2">
                      <Skeleton className="h-4 w-full" />
                      <Skeleton className="h-4 w-full" />
                      <Skeleton className="h-4 w-2/3" />
-                  </CardContent>
-                  <CardFooter className="p-0 mt-6">
+                  </div>
+                  <div className="p-0 mt-6">
                     <Skeleton className="h-10 w-32" />
-                  </CardFooter>
+                  </div>
                 </div>
             </Card>
           ))}
@@ -80,7 +80,7 @@ export default function InternshipPage() {
                 <CardContent className="p-0 flex-grow">
                   <p className="text-muted-foreground line-clamp-4">{internship.description}</p>
                 </CardContent>
-                <CardFooter className="p-0 mt-6">
+                <div className="p-0 mt-6">
                    <Dialog>
                       <DialogTrigger asChild>
                          <Button>Register Now</Button>
@@ -95,7 +95,7 @@ export default function InternshipPage() {
                         <ContactForm />
                       </DialogContent>
                    </Dialog>
-                </CardFooter>
+                </div>
               </div>
             </Card>
           ))}
