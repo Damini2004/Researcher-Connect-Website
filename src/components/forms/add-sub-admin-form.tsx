@@ -16,8 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { addSubAdmin } from "@/services/subAdminService";
-import { useRouter } from "next/navigation";
+import { addSubAdmin, type SubAdmin } from "@/services/subAdminService";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
@@ -28,9 +27,12 @@ const formSchema = z.object({
   address: z.string().min(5, "Address is required."),
 });
 
-export default function AddSubAdminForm() {
+interface AddSubAdminFormProps {
+  onAdminAdded: (newAdmin: SubAdmin) => void;
+}
+
+export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) {
   const { toast } = useToast();
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,17 +50,17 @@ export default function AddSubAdminForm() {
     setIsSubmitting(true);
     const result = await addSubAdmin(values);
 
-    if (result.success) {
+    if (result.success && result.newAdmin) {
       toast({
         title: "Sub Admin Added",
         description: `An invitation has been sent to ${values.name}.`,
       });
+      onAdminAdded(result.newAdmin);
       form.reset();
       const closeButton = document.querySelector('[data-radix-dialog-close]');
       if (closeButton instanceof HTMLElement) {
           closeButton.click();
       }
-      router.refresh(); 
     } else {
       toast({
         title: "Error",

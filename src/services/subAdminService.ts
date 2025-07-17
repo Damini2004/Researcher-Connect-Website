@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy, doc, getDoc } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface SubAdmin {
@@ -25,7 +25,13 @@ const addSubAdminSchema = z.object({
   address: z.string().min(5, "Address is required."),
 });
 
-export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Promise<{ success: boolean; message: string }> {
+type AddSubAdminResult = {
+  success: boolean;
+  message: string;
+  newAdmin?: SubAdmin;
+}
+
+export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Promise<AddSubAdminResult> {
   try {
     const validationResult = addSubAdminSchema.safeParse(data);
     if (!validationResult.success) {
@@ -40,15 +46,28 @@ export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Prom
     if (!querySnapshot.empty) {
         return { success: false, message: 'A user with this email already exists.' };
     }
+    
+    const joinDate = new Date();
 
     // Don't store the password directly in a real app. This is for prototype purposes.
-    await addDoc(collection(db, 'subAdmins'), {
+    const docRef = await addDoc(collection(db, 'subAdmins'), {
       ...subAdminData,
       status: 'pending',
-      joinDate: new Date().toISOString(),
+      joinDate: joinDate.toISOString(),
     });
+    
+    const newAdmin: SubAdmin = {
+        id: docRef.id,
+        ...subAdminData,
+        status: 'pending',
+        joinDate: joinDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }),
+    };
 
-    return { success: true, message: 'Sub-admin added successfully.' };
+    return { success: true, message: 'Sub-admin added successfully.', newAdmin };
   } catch (error) {
     console.error("Error adding sub-admin:", error);
     const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';

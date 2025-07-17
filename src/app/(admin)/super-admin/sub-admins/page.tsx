@@ -1,3 +1,6 @@
+
+"use client";
+
 import SubAdminTable from "@/components/tables/sub-admin-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +13,38 @@ import {
 } from "@/components/ui/dialog";
 import { PlusCircle } from "lucide-react";
 import AddSubAdminForm from "@/components/forms/add-sub-admin-form";
+import { useEffect, useState } from "react";
+import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ManageSubAdminsPage() {
+  const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    async function fetchAdmins() {
+      setIsLoading(true);
+      try {
+        const data = await getSubAdmins();
+        setSubAdmins(data);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Could not fetch sub-admins.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAdmins();
+  }, [toast]);
+
+  const handleAdminAdded = (newAdmin: SubAdmin) => {
+    setSubAdmins((prevAdmins) => [newAdmin, ...prevAdmins]);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -38,11 +71,11 @@ export default function ManageSubAdminsPage() {
                 set to 'Pending' status by default.
               </DialogDescription>
             </DialogHeader>
-            <AddSubAdminForm />
+            <AddSubAdminForm onAdminAdded={handleAdminAdded} />
           </DialogContent>
         </Dialog>
       </div>
-      <SubAdminTable />
+      <SubAdminTable subAdmins={subAdmins} isLoading={isLoading} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -23,8 +23,7 @@ import { MoreHorizontal, Search, CheckCircle, XCircle, Edit, Trash2, Clock } fro
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
-import { useToast } from "@/hooks/use-toast";
+import { SubAdmin } from "@/services/subAdminService";
 
 const statusConfig = {
     approved: { label: "Approved", icon: CheckCircle, color: "text-green-500" },
@@ -32,30 +31,13 @@ const statusConfig = {
     denied: { label: "Denied", icon: XCircle, color: "text-red-500" },
 };
 
-export default function SubAdminTable() {
-  const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState("");
-  const { toast } = useToast();
+interface SubAdminTableProps {
+  subAdmins: SubAdmin[];
+  isLoading: boolean;
+}
 
-  useEffect(() => {
-    async function fetchAdmins() {
-      setIsLoading(true);
-      try {
-        const data = await getSubAdmins();
-        setSubAdmins(data);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Could not fetch sub-admins.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchAdmins();
-  }, []);
+export default function SubAdminTable({ subAdmins, isLoading }: SubAdminTableProps) {
+  const [filter, setFilter] = useState("");
 
   const filteredAdmins = subAdmins.filter(
     (admin) =>
