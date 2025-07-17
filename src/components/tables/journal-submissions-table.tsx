@@ -42,6 +42,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { getSubmissions, deleteSubmission, type Submission } from '@/services/submissionService';
 import EditSubmissionForm from '../forms/edit-submission-form';
+import { cn } from '@/lib/utils';
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
