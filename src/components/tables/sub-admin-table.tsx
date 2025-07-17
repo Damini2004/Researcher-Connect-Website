@@ -60,7 +60,9 @@ export default function SubAdminTable() {
   const filteredAdmins = subAdmins.filter(
     (admin) =>
       admin.name.toLowerCase().includes(filter.toLowerCase()) ||
-      admin.email.toLowerCase().includes(filter.toLowerCase())
+      admin.email.toLowerCase().includes(filter.toLowerCase()) ||
+      admin.affiliation.toLowerCase().includes(filter.toLowerCase()) ||
+      admin.expertise.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
@@ -70,7 +72,7 @@ export default function SubAdminTable() {
         <div className="relative mt-2">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input 
-                placeholder="Filter by name or email..." 
+                placeholder="Filter by name, email, expertise..." 
                 className="pl-8"
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
@@ -83,6 +85,8 @@ export default function SubAdminTable() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Affiliation</TableHead>
+              <TableHead>Expertise</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Join Date</TableHead>
               <TableHead>
@@ -93,7 +97,7 @@ export default function SubAdminTable() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">Loading...</TableCell>
+                <TableCell colSpan={7} className="h-24 text-center">Loading...</TableCell>
               </TableRow>
             ) : filteredAdmins.length > 0 ? (
               filteredAdmins.map((admin) => {
@@ -102,6 +106,8 @@ export default function SubAdminTable() {
                   <TableRow key={admin.id}>
                     <TableCell className="font-medium">{admin.name}</TableCell>
                     <TableCell>{admin.email}</TableCell>
+                    <TableCell>{admin.affiliation}</TableCell>
+                    <TableCell>{admin.expertise}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="flex items-center w-fit gap-2">
                           <statusInfo.icon className={`h-3 w-3 ${statusInfo.color}`} />
@@ -142,7 +148,7 @@ export default function SubAdminTable() {
               })
             ) : (
                 <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">
+                    <TableCell colSpan={7} className="h-24 text-center">
                         No sub-admins found.
                     </TableCell>
                 </TableRow>

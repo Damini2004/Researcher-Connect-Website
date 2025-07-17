@@ -9,6 +9,8 @@ export interface SubAdmin {
   id: string;
   name: string;
   email: string;
+  affiliation: string;
+  expertise: string;
   status: "pending" | "approved" | "denied";
   joinDate: string; // Storing as ISO string
 }
@@ -16,9 +18,11 @@ export interface SubAdmin {
 const addSubAdminSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("A valid email is required."),
+  affiliation: z.string().min(2, "Affiliation is required."),
+  expertise: z.string().min(2, "Area of expertise is required."),
 });
 
-export async function addSubAdmin(data: { name: string, email: string }): Promise<{ success: boolean; message: string }> {
+export async function addSubAdmin(data: { name: string, email: string, affiliation: string, expertise: string }): Promise<{ success: boolean; message: string }> {
   try {
     const validationResult = addSubAdminSchema.safeParse(data);
     if (!validationResult.success) {
@@ -28,6 +32,8 @@ export async function addSubAdmin(data: { name: string, email: string }): Promis
     await addDoc(collection(db, 'subAdmins'), {
       name: data.name,
       email: data.email,
+      affiliation: data.affiliation,
+      expertise: data.expertise,
       status: 'pending',
       joinDate: new Date().toISOString(),
     });
@@ -56,6 +62,8 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
                 id: doc.id,
                 name: data.name,
                 email: data.email,
+                affiliation: data.affiliation,
+                expertise: data.expertise,
                 status: data.status,
                 joinDate: joinDate,
             });

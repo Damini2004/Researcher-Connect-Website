@@ -22,6 +22,8 @@ import { useRouter } from "next/navigation";
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
+  affiliation: z.string().min(2, "Affiliation is required."),
+  expertise: z.string().min(2, "Area of expertise is required."),
 });
 
 export default function AddSubAdminForm() {
@@ -34,6 +36,8 @@ export default function AddSubAdminForm() {
     defaultValues: {
       name: "",
       email: "",
+      affiliation: "",
+      expertise: "",
     },
   });
 
@@ -64,7 +68,7 @@ export default function AddSubAdminForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 py-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4">
         <FormField
           control={form.control}
           name="name"
@@ -86,6 +90,32 @@ export default function AddSubAdminForm() {
               <FormLabel>Email Address</FormLabel>
               <FormControl>
                 <Input placeholder="jane.smith@university.edu" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="affiliation"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Affiliation</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Cambridge University" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="expertise"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Area of Expertise</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Artificial Intelligence" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
