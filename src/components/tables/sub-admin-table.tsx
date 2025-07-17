@@ -55,7 +55,7 @@ export default function SubAdminTable() {
       }
     }
     fetchAdmins();
-  }, [toast]);
+  }, []);
 
   const filteredAdmins = subAdmins.filter(
     (admin) =>
