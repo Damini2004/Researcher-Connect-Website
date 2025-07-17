@@ -100,7 +100,7 @@ export default function InternshipPage() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 text-muted-foreground">
+        <div className="flex items-center justify-center text-center py-16 text-muted-foreground">
             <p>No internship opportunities are available at this time. Please check back later.</p>
         </div>
       )}
