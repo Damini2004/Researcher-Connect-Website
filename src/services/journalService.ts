@@ -6,14 +6,12 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot } from
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { z } from 'zod';
 
-// Zod schema for FormData parsing on the server
-const AddJournalFormSchema = z.object({
+// Zod schema for validation, now used more carefully.
+const JournalDataSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
   status: z.enum(["Active", "Inactive", "Archived"]),
-  image: z.instanceof(File).refine(file => file.size > 0, 'An image is required.'),
 });
-
 
 export interface Journal {
     id: string;
@@ -24,24 +22,25 @@ export interface Journal {
 }
 
 export async function addJournal(formData: FormData): Promise<{ success: boolean; message: string }> {
-  // Directly get the values from formData
-  const values = {
-    journalName: formData.get('journalName'),
-    description: formData.get('description'),
-    status: formData.get('status'),
-    image: formData.get('image'),
-  };
-  
-  // Validate the extracted values
-  const parsed = AddJournalFormSchema.safeParse(values);
+  const journalName = formData.get('journalName') as string;
+  const description = formData.get('description') as string;
+  const status = formData.get('status') as "Active" | "Inactive" | "Archived";
+  const image = formData.get('image') as File | null;
 
-  if (!parsed.success) {
-    console.error("Form validation failed:", parsed.error.flatten().fieldErrors);
-    return { success: false, message: 'Invalid form data. Please check all fields.' };
+  // Manual validation
+  if (!image || image.size === 0) {
+    return { success: false, message: 'Cover image is required.' };
+  }
+  if (!image.type.startsWith('image/')) {
+    return { success: false, message: 'Only image files are allowed.' };
   }
 
-  const { journalName, description, status, image } = parsed.data;
-  
+  const validationResult = JournalDataSchema.safeParse({ journalName, description, status });
+  if (!validationResult.success) {
+      const firstError = validationResult.error.errors[0].message;
+      return { success: false, message: firstError };
+  }
+
   try {
     // 1. Upload image to Firebase Storage
     const storageRef = ref(storage, `journal-covers/${Date.now()}-${image.name}`);
@@ -60,11 +59,9 @@ export async function addJournal(formData: FormData): Promise<{ success: boolean
     return { success: true, message: 'Journal added successfully!' };
   } catch (error) {
     console.error("Error adding journal:", error);
-    // It's helpful to be more specific if possible, but for security, a general message is safer for the client.
     return { success: false, message: 'Failed to add journal. An unexpected error occurred.' };
   }
 }
-
 
 export async function getJournals(): Promise<Journal[]> {
     try {
