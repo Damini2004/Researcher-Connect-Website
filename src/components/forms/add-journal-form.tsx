@@ -31,7 +31,7 @@ const formSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
   image: z
-    .custom<FileList>()
+    .any()
     .refine((files) => files?.length > 0, "A cover image is required.")
     .refine(
       (files) => files?.[0]?.type.startsWith("image/"),
@@ -56,8 +56,11 @@ export default function AddJournalForm() {
     },
   });
 
+  const fileRef = form.register("image");
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
+    
     const formData = new FormData();
     formData.append('journalName', values.journalName);
     formData.append('description', values.description);
@@ -65,6 +68,14 @@ export default function AddJournalForm() {
     
     if (values.image && values.image.length > 0) {
       formData.append('image', values.image[0]);
+    } else {
+       toast({
+        title: "Error",
+        description: "Cover image is required.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
     }
 
     const result = await addJournal(formData);
@@ -75,6 +86,11 @@ export default function AddJournalForm() {
         description: `The journal "${values.journalName}" has been added.`,
       });
       form.reset();
+      // This will close the dialog if it's open, by unmounting the component
+      const closeButton = document.querySelector('[data-radix-dialog-close]');
+      if (closeButton instanceof HTMLElement) {
+          closeButton.click();
+      }
       router.refresh();
     } else {
       toast({
@@ -127,7 +143,7 @@ export default function AddJournalForm() {
                 <FormItem>
                   <FormLabel>Cover Image</FormLabel>
                   <FormControl>
-                    <Input type="file" accept="image/*" {...form.register("image")} />
+                    <Input type="file" accept="image/*" {...fileRef} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

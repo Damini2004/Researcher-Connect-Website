@@ -4,13 +4,6 @@
 import { db, storage } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { z } from 'zod';
-
-const JournalSchema = z.object({
-  journalName: z.string().min(5, "Journal name must be at least 5 characters."),
-  description: z.string().min(20, "Description must be at least 20 characters."),
-  status: z.enum(["Active", "Inactive", "Archived"]),
-});
 
 export interface Journal {
     id: string;
@@ -27,13 +20,16 @@ export async function addJournal(formData: FormData): Promise<{ success: boolean
     const status = formData.get('status') as "Active" | "Inactive" | "Archived";
     const image = formData.get('image') as File | null;
 
-    const validationResult = JournalSchema.safeParse({ journalName, description, status });
-
-    if (!validationResult.success) {
-        const firstError = validationResult.error.errors[0].message;
-        return { success: false, message: firstError };
+    // Server-side validation
+    if (!journalName || journalName.length < 5) {
+      return { success: false, message: 'Journal name must be at least 5 characters.' };
     }
-
+    if (!description || description.length < 20) {
+      return { success: false, message: 'Description must be at least 20 characters.' };
+    }
+    if (!status || !['Active', 'Inactive', 'Archived'].includes(status)) {
+        return { success: false, message: 'Invalid status provided.' };
+    }
     if (!image || image.size === 0) {
       return { success: false, message: 'Cover image is required.' };
     }
@@ -58,6 +54,10 @@ export async function addJournal(formData: FormData): Promise<{ success: boolean
     return { success: true, message: 'Journal added successfully!' };
   } catch (error) {
     console.error("Error adding journal:", error);
+    // It's helpful to know what kind of error it is
+    if (error instanceof Error) {
+        return { success: false, message: `Failed to add journal: ${error.message}` };
+    }
     return { success: false, message: 'Failed to add journal. An unexpected error occurred.' };
   }
 }
