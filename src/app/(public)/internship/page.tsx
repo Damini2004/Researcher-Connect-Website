@@ -22,6 +22,7 @@ export default function InternshipPage() {
         setInternships(data);
       } catch (error) {
         console.error("Failed to fetch internships", error);
+        // Optionally, show a toast message to the user
       } finally {
         setIsLoading(false);
       }
@@ -39,19 +40,21 @@ export default function InternshipPage() {
       {isLoading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(3)].map((_, i) => (
-             <Card key={i}>
+             <Card key={i} className="flex flex-col">
                 <Skeleton className="h-[250px] w-full" />
-                <CardHeader>
-                    <Skeleton className="h-6 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
-                </CardHeader>
-                <CardContent>
-                   <Skeleton className="h-4 w-full mb-2" />
-                   <Skeleton className="h-4 w-full" />
-                </CardContent>
-                <CardFooter>
-                  <Skeleton className="h-10 w-32" />
-                </CardFooter>
+                <div className="flex flex-col flex-grow p-6">
+                  <CardHeader className="p-0 mb-4">
+                      <Skeleton className="h-6 w-3/4" />
+                  </CardHeader>
+                  <CardContent className="p-0 flex-grow space-y-2">
+                     <Skeleton className="h-4 w-full" />
+                     <Skeleton className="h-4 w-full" />
+                     <Skeleton className="h-4 w-2/3" />
+                  </CardContent>
+                  <CardFooter className="p-0 mt-6">
+                    <Skeleton className="h-10 w-32" />
+                  </CardFooter>
+                </div>
             </Card>
           ))}
         </div>
