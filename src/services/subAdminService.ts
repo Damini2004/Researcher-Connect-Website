@@ -1,4 +1,3 @@
-
 // src/services/subAdminService.ts
 'use server';
 
@@ -131,7 +130,8 @@ export async function updateSubAdminStatus(id: string, status: 'approved' | 'den
     await updateDoc(subAdminRef, { status });
 
     return { success: true, message: `Sub-admin status updated to ${status}.` };
-  } catch (error) {
+  } catch (error)
+   {
     console.error("Error updating sub-admin status:", error);
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
     return { success: false, message: `Failed to update status: ${errorMessage}` };
