@@ -28,9 +28,12 @@ const formSchema = z.object({
   address: z.string().min(5, "Address is required."),
 });
 
-export default function AddSubAdminForm() {
+interface AddSubAdminFormProps {
+  onAdminAdded: () => void;
+}
+
+export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) {
   const { toast } = useToast();
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,7 +73,7 @@ export default function AddSubAdminForm() {
             closeButton.click();
         }
         
-        router.refresh();
+        onAdminAdded();
       } else {
         toast({
           title: "Error",

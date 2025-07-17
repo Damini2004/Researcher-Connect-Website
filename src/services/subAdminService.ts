@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface SubAdmin {
@@ -30,7 +30,6 @@ type AddSubAdminData = z.infer<typeof addSubAdminSchema>;
 type AddSubAdminResult = {
   success: boolean;
   message: string;
-  newAdmin?: SubAdmin;
 }
 
 export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminResult> {
@@ -50,24 +49,13 @@ export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminRes
     
     const joinDate = new Date();
 
-    const docRef = await addDoc(collection(db, 'subAdmins'), {
+    await addDoc(collection(db, 'subAdmins'), {
       ...subAdminData,
       status: 'pending',
       joinDate: joinDate.toISOString(),
     });
     
-    const newAdmin: SubAdmin = {
-        id: docRef.id,
-        ...subAdminData,
-        status: 'pending',
-        joinDate: joinDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }),
-    };
-
-    return { success: true, message: 'Sub-admin added successfully.', newAdmin };
+    return { success: true, message: 'Sub-admin added successfully.' };
   } catch (error) {
     console.error("Error adding sub-admin:", error);
     const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
@@ -130,5 +118,22 @@ export async function verifySubAdminCredentials(email: string, password_provided
   } catch (error) {
     console.error("Error verifying sub-admin credentials:", error);
     return { success: false, message: 'An unexpected error occurred during login.' };
+  }
+}
+
+export async function updateSubAdminStatus(id: string, status: 'approved' | 'denied'): Promise<{ success: boolean, message: string }> {
+  try {
+    if (!id || !status) {
+      return { success: false, message: "Invalid arguments provided." };
+    }
+
+    const subAdminRef = doc(db, "subAdmins", id);
+    await updateDoc(subAdminRef, { status });
+
+    return { success: true, message: `Sub-admin status updated to ${status}.` };
+  } catch (error) {
+    console.error("Error updating sub-admin status:", error);
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+    return { success: false, message: `Failed to update status: ${errorMessage}` };
   }
 }

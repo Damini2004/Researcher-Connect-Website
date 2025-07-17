@@ -23,7 +23,8 @@ import { MoreHorizontal, Search, CheckCircle, XCircle, Edit, Trash2, Clock } fro
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { SubAdmin } from "@/services/subAdminService";
+import { SubAdmin, updateSubAdminStatus } from "@/services/subAdminService";
+import { useToast } from "@/hooks/use-toast";
 
 const statusConfig = {
     approved: { label: "Approved", icon: CheckCircle, color: "text-green-500" },
@@ -34,10 +35,32 @@ const statusConfig = {
 interface SubAdminTableProps {
   subAdmins: SubAdmin[];
   isLoading: boolean;
+  onStatusChange: () => void;
 }
 
-export default function SubAdminTable({ subAdmins, isLoading }: SubAdminTableProps) {
+export default function SubAdminTable({ subAdmins, isLoading, onStatusChange }: SubAdminTableProps) {
   const [filter, setFilter] = useState("");
+  const { toast } = useToast();
+  const [isUpdating, setIsUpdating] = useState<string | null>(null);
+
+  const handleStatusUpdate = async (id: string, status: 'approved' | 'denied') => {
+    setIsUpdating(id);
+    const result = await updateSubAdminStatus(id, status);
+    if (result.success) {
+      toast({
+        title: "Status Updated",
+        description: result.message,
+      });
+      onStatusChange();
+    } else {
+      toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
+    setIsUpdating(null);
+  };
 
   const filteredAdmins = subAdmins.filter(
     (admin) =>
@@ -100,7 +123,7 @@ export default function SubAdminTable({ subAdmins, isLoading }: SubAdminTablePro
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button aria-haspopup="true" size="icon" variant="ghost">
+                          <Button aria-haspopup="true" size="icon" variant="ghost" disabled={isUpdating === admin.id}>
                             <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">Toggle menu</span>
                           </Button>
@@ -108,10 +131,16 @@ export default function SubAdminTable({ subAdmins, isLoading }: SubAdminTablePro
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           {admin.status === "pending" && (
-                              <DropdownMenuItem>
+                            <>
+                              <DropdownMenuItem onSelect={() => handleStatusUpdate(admin.id, 'approved')}>
                                   <CheckCircle className="mr-2 h-4 w-4"/>
                                   Approve
                               </DropdownMenuItem>
+                              <DropdownMenuItem onSelect={() => handleStatusUpdate(admin.id, 'denied')} className="text-destructive">
+                                  <XCircle className="mr-2 h-4 w-4"/>
+                                  Deny
+                              </DropdownMenuItem>
+                            </>
                           )}
                           <DropdownMenuItem>
                               <Edit className="mr-2 h-4 w-4"/>

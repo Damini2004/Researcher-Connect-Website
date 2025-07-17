@@ -22,22 +22,23 @@ export default function ManageSubAdminsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  useEffect(() => {
-    async function fetchAdmins() {
-      setIsLoading(true);
-      try {
-        const data = await getSubAdmins();
-        setSubAdmins(data);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Could not fetch sub-admins.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
+  const fetchAdmins = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getSubAdmins();
+      setSubAdmins(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not fetch sub-admins.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  useEffect(() => {
     fetchAdmins();
   }, [toast]);
 
@@ -67,11 +68,11 @@ export default function ManageSubAdminsPage() {
                 set to 'Pending' status by default.
               </DialogDescription>
             </DialogHeader>
-            <AddSubAdminForm />
+            <AddSubAdminForm onAdminAdded={fetchAdmins} />
           </DialogContent>
         </Dialog>
       </div>
-      <SubAdminTable subAdmins={subAdmins} isLoading={isLoading} />
+      <SubAdminTable subAdmins={subAdmins} isLoading={isLoading} onStatusChange={fetchAdmins} />
     </div>
   );
 }
