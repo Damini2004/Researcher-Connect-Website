@@ -106,6 +106,8 @@ export default function AddJournalForm() {
         description: `The journal "${values.journalName}" has been added.`,
       });
       form.reset();
+      // This is a bit of a hack to programmatically close the dialog.
+      // A more robust solution might involve lifting state up.
       const closeButton = document.querySelector('[data-radix-dialog-close]');
       if (closeButton instanceof HTMLElement) {
           closeButton.click();
