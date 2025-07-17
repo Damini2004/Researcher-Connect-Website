@@ -105,6 +105,42 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
     }
 }
 
+export async function getSubAdminByEmail(email: string): Promise<{ success: boolean; message: string; subAdmin?: SubAdmin }> {
+  try {
+    const q = query(collection(db, 'subAdmins'), where('email', '==', email), limit(1));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      return { success: false, message: 'Sub-admin not found.' };
+    }
+
+    const docSnap = querySnapshot.docs[0];
+    const data = docSnap.data();
+    const joinDate = data.joinDate ? new Date(data.joinDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }) : 'N/A';
+
+    const subAdmin: SubAdmin = {
+      id: docSnap.id,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      status: data.status,
+      joinDate: joinDate,
+    };
+    
+    return { success: true, message: 'Sub-admin found.', subAdmin };
+  } catch (error) {
+    console.error("Error fetching sub-admin by email:", error);
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { success: false, message: `Failed to fetch sub-admin: ${errorMessage}` };
+  }
+}
+
+
 export async function verifySubAdminCredentials(email: string, password_provided: string): Promise<{ success: boolean; message: string }> {
   try {
     const q = query(collection(db, 'subAdmins'), where('email', '==', email), limit(1));

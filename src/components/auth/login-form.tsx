@@ -71,6 +71,9 @@ export default function LoginForm() {
     } else if (values.role === 'sub-admin') {
       const result = await verifySubAdminCredentials(values.email, values.password);
       if (result.success) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('currentUserEmail', values.email);
+        }
         toast({
           title: "Login Successful",
           description: "Redirecting to sub-admin dashboard...",
