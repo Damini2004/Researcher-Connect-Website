@@ -24,39 +24,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { addJournal } from "@/services/journalService";
-import { useRouter } from "next/navigation";
+import { updateJournal, type Journal } from "@/services/journalService";
 
 const formSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
-  image: z
-    .any()
-    .refine((files) => files?.length > 0, "A cover image is required.")
-    .refine(
-      (files) => files?.[0]?.type.startsWith("image/"),
-      "Only image files are allowed."
-    ),
+  image: z.any().optional(),
   status: z.enum(["Active", "Inactive", "Archived"], {
     required_error: "Please select a status for the journal.",
   }),
 });
 
-interface AddJournalFormProps {
-    onJournalAdded: () => void;
+interface EditJournalFormProps {
+    journal: Journal;
+    onJournalUpdated: (updatedJournal: Journal) => void;
+    onClose: () => void;
 }
 
-export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) {
+export default function EditJournalForm({ journal, onJournalUpdated, onClose }: EditJournalFormProps) {
   const { toast } = useToast();
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      journalName: "",
-      description: "",
-      status: "Active",
+      journalName: journal.journalName,
+      description: journal.description,
+      status: journal.status,
     },
   });
 
@@ -73,11 +67,17 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
+    
+    const updateData: Partial<Journal> & { id: string } = {
+        id: journal.id,
+        journalName: values.journalName,
+        description: values.description,
+        status: values.status,
+    };
 
-    let imageSrc = "";
     if (values.image && values.image.length > 0) {
         try {
-            imageSrc = await convertFileToBase64(values.image[0]);
+            updateData.imageSrc = await convertFileToBase64(values.image[0]);
         } catch (error) {
             toast({
                 title: "Error",
@@ -87,31 +87,17 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
             setIsSubmitting(false);
             return;
         }
-    } else {
-       toast({
-        title: "Error",
-        description: "Cover image is required.",
-        variant: "destructive",
-      });
-      setIsSubmitting(false);
-      return;
     }
 
-    const result = await addJournal({
-        journalName: values.journalName,
-        description: values.description,
-        status: values.status,
-        imageSrc: imageSrc,
-    });
+    const result = await updateJournal(journal.id, updateData);
 
-    if (result.success) {
+    if (result.success && result.updatedJournal) {
       toast({
-        title: "Journal Added Successfully!",
-        description: `The journal "${values.journalName}" has been added.`,
+        title: "Journal Updated!",
+        description: `The journal "${values.journalName}" has been updated.`,
       });
-      form.reset();
-      onJournalAdded();
-      router.refresh();
+      onJournalUpdated(result.updatedJournal);
+      onClose();
     } else {
       toast({
         title: "Error",
@@ -161,7 +147,7 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
               name="image"
               render={() => (
                 <FormItem>
-                  <FormLabel>Cover Image</FormLabel>
+                  <FormLabel>New Cover Image (Optional)</FormLabel>
                   <FormControl>
                     <Input type="file" accept="image/*" {...fileRef} />
                   </FormControl>
@@ -193,7 +179,7 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
             />
         </div>
         <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save Journal"}
+          {isSubmitting ? "Saving..." : "Save Changes"}
         </Button>
       </form>
     </Form>

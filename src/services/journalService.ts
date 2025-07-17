@@ -3,7 +3,8 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { z } from 'zod';
 
 export interface Journal {
     id: string;
@@ -13,6 +14,14 @@ export interface Journal {
     imageSrc: string;
 }
 
+const journalSchema = z.object({
+    journalName: z.string().min(5, "Journal name must be at least 5 characters."),
+    description: z.string().min(20, "Description must be at least 20 characters."),
+    status: z.enum(["Active", "Inactive", "Archived"]),
+    imageSrc: z.string().optional(), // Optional on update if no new image is provided
+});
+
+
 interface AddJournalData {
     journalName: string;
     description: string;
@@ -20,40 +29,30 @@ interface AddJournalData {
     imageSrc: string;
 }
 
-export async function addJournal(data: AddJournalData): Promise<{ success: boolean; message: string }> {
+export async function addJournal(data: AddJournalData): Promise<{ success: boolean; message: string; newJournal?: Journal }> {
   try {
-    const { journalName, description, status, imageSrc } = data;
-
-    // Server-side validation
-    if (!journalName || journalName.length < 5) {
-      return { success: false, message: 'Journal name must be at least 5 characters.' };
-    }
-    if (!description || description.length < 20) {
-      return { success: false, message: 'Description must be at least 20 characters.' };
-    }
-    if (!status || !['Active', 'Inactive', 'Archived'].includes(status)) {
-        return { success: false, message: 'Invalid status provided.' };
-    }
-    if (!imageSrc) {
-      return { success: false, message: 'Cover image is required.' };
+    const validationResult = journalSchema.extend({
+        imageSrc: z.string().min(1, "Image is required.")
+    }).safeParse(data);
+    
+    if (!validationResult.success) {
+      return { success: false, message: validationResult.error.errors[0].message };
     }
 
-    // Save journal data to Firestore with Base64 image
-    await addDoc(collection(db, 'journals'), {
-      journalName,
-      description,
-      status,
-      imageSrc, // Storing the Base64 string
+    const docRef = await addDoc(collection(db, 'journals'), {
+      ...validationResult.data,
       createdAt: new Date(),
     });
 
-    return { success: true, message: 'Journal added successfully!' };
+    return { 
+        success: true, 
+        message: 'Journal added successfully!',
+        newJournal: { id: docRef.id, ...validationResult.data }
+    };
   } catch (error) {
     console.error("Error adding journal:", error);
-    if (error instanceof Error) {
-        return { success: false, message: `Failed to add journal: ${error.message}` };
-    }
-    return { success: false, message: 'Failed to add journal. An unexpected error occurred.' };
+    const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { success: false, message: `Failed to add journal: ${message}` };
   }
 }
 
@@ -75,5 +74,64 @@ export async function getJournals(): Promise<Journal[]> {
     } catch (error) {
         console.error("Error fetching journals: ", error);
         return [];
+    }
+}
+
+export async function updateJournal(id: string, data: Partial<AddJournalData>): Promise<{ success: boolean; message: string; updatedJournal?: Journal }> {
+    try {
+        const validationResult = journalSchema.partial().safeParse(data);
+        if (!validationResult.success) {
+            return { success: false, message: validationResult.error.errors[0].message };
+        }
+
+        const journalRef = doc(db, 'journals', id);
+        await updateDoc(journalRef, validationResult.data);
+
+        const updatedDoc = await getDoc(journalRef);
+        const updatedData = updatedDoc.data();
+
+        if (!updatedData) {
+            throw new Error("Could not retrieve updated document.");
+        }
+
+        const result: Journal = {
+            id: updatedDoc.id,
+            journalName: updatedData.journalName,
+            description: updatedData.description,
+            status: updatedData.status,
+            imageSrc: updatedData.imageSrc
+        }
+
+        return { success: true, message: 'Journal updated successfully!', updatedJournal: result };
+    } catch (error) {
+        console.error("Error updating journal:", error);
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to update journal: ${message}` };
+    }
+}
+
+export async function deleteJournal(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        if (!id) {
+            return { success: false, message: 'Journal ID is required.' };
+        }
+        await deleteDoc(doc(db, 'journals', id));
+        return { success: true, message: 'Journal deleted successfully.' };
+    } catch (error) {
+        console.error("Error deleting journal:", error);
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to delete journal: ${message}` };
+    }
+}
+
+export async function updateJournalStatus(id: string, status: "Active" | "Inactive" | "Archived"): Promise<{ success: boolean; message: string; }> {
+    try {
+        const journalRef = doc(db, 'journals', id);
+        await updateDoc(journalRef, { status });
+        return { success: true, message: "Status updated successfully." };
+    } catch (error) {
+        console.error("Error updating journal status:", error);
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to update status: ${message}` };
     }
 }
