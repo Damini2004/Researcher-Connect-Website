@@ -41,6 +41,7 @@ export default function ProfileSettingsForm() {
   
   React.useEffect(() => {
     async function fetchCurrentUser() {
+      setIsLoading(true);
       if (typeof window !== 'undefined') {
         const email = localStorage.getItem('currentUserEmail');
         if (email) {
@@ -54,6 +55,8 @@ export default function ProfileSettingsForm() {
           } else {
              toast({ title: "Error", description: "Could not fetch user data.", variant: "destructive" });
           }
+        } else {
+            toast({ title: "Not logged in", description: "Could not find user credentials.", variant: "destructive" });
         }
         setIsLoading(false);
       }
@@ -62,7 +65,9 @@ export default function ProfileSettingsForm() {
   }, [form, toast]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // In a real app, you would have a service function to submit this request.
+    // e.g., createProfileUpdateRequest(currentUser.id, values);
+    console.log("Profile update request:", values);
     toast({
       title: "Request Sent!",
       description: "Your profile update request has been sent to the super admin for approval.",
