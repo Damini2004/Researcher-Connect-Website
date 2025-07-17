@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { SubAdmin, updateSubAdminStatus } from "@/services/subAdminService";
 import { useToast } from "@/hooks/use-toast";
 import EditSubAdminForm from "../forms/edit-sub-admin-form";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 
 const statusConfig = {
     approved: { label: "Approved", icon: CheckCircle, color: "text-green-500" },
@@ -91,7 +91,6 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
 
   const handleEditSuccess = (updatedAdmin: SubAdmin) => {
     onAdminUpdated(updatedAdmin);
-    setIsEditDialogOpen(false);
   };
 
   return (
@@ -157,11 +156,11 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {admin.status === "pending" && (
                               <>
-                                <DropdownMenuItem onSelect={() => handleStatusUpdate(admin.id, 'approved')}>
+                                <DropdownMenuItem onSelect={(e) => { e.preventDefault(); handleStatusUpdate(admin.id, 'approved'); }}>
                                     <CheckCircle className="mr-2 h-4 w-4"/>
                                     Approve
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onSelect={() => handleStatusUpdate(admin.id, 'denied')} className="text-destructive">
+                                <DropdownMenuItem onSelect={(e) => { e.preventDefault(); handleStatusUpdate(admin.id, 'denied'); }} className="text-destructive">
                                     <XCircle className="mr-2 h-4 w-4"/>
                                     Deny
                                 </DropdownMenuItem>
@@ -206,6 +205,7 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
             <EditSubAdminForm
               admin={selectedAdmin}
               onAdminUpdated={handleEditSuccess}
+              onClose={() => setIsEditDialogOpen(false)}
             />
           )}
         </DialogContent>

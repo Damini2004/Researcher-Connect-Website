@@ -18,20 +18,31 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { SubAdmin, updateSubAdmin } from "@/services/subAdminService";
 import { Textarea } from "../ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   phone: z.string().min(10, "Please enter a valid phone number."),
   address: z.string().min(5, "Address is required."),
+  status: z.enum(["pending", "approved", "denied"], {
+    required_error: "Please select a status.",
+  }),
 });
 
 interface EditSubAdminFormProps {
   admin: SubAdmin;
   onAdminUpdated: (admin: SubAdmin) => void;
+  onClose: () => void;
 }
 
-export default function EditSubAdminForm({ admin, onAdminUpdated }: EditSubAdminFormProps) {
+export default function EditSubAdminForm({ admin, onAdminUpdated, onClose }: EditSubAdminFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -42,6 +53,7 @@ export default function EditSubAdminForm({ admin, onAdminUpdated }: EditSubAdmin
       email: admin.email,
       phone: admin.phone,
       address: admin.address,
+      status: admin.status,
     },
   });
 
@@ -53,6 +65,7 @@ export default function EditSubAdminForm({ admin, onAdminUpdated }: EditSubAdmin
       email: values.email,
       phone: values.phone,
       address: values.address,
+      status: values.status,
     };
 
     try {
@@ -64,6 +77,7 @@ export default function EditSubAdminForm({ admin, onAdminUpdated }: EditSubAdmin
           description: `Profile for ${values.name} has been updated.`,
         });
         onAdminUpdated(result.updatedAdmin);
+        onClose();
       } else {
         toast({
           title: "Error",
@@ -133,6 +147,28 @@ export default function EditSubAdminForm({ admin, onAdminUpdated }: EditSubAdmin
               <FormControl>
                 <Textarea placeholder="123 Main St, Anytown, USA" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Status</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a status" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="denied">Denied</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
