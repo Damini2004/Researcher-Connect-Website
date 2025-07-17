@@ -58,16 +58,31 @@ export default function AddJournalForm() {
 
   const fileRef = form.register("image");
 
+  const convertFileToBase64 = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+      });
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    
-    const formData = new FormData();
-    formData.append('journalName', values.journalName);
-    formData.append('description', values.description);
-    formData.append('status', values.status);
-    
+
+    let imageSrc = "";
     if (values.image && values.image.length > 0) {
-      formData.append('image', values.image[0]);
+        try {
+            imageSrc = await convertFileToBase64(values.image[0]);
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to read image file.",
+                variant: "destructive",
+            });
+            setIsSubmitting(false);
+            return;
+        }
     } else {
        toast({
         title: "Error",
@@ -78,7 +93,12 @@ export default function AddJournalForm() {
       return;
     }
 
-    const result = await addJournal(formData);
+    const result = await addJournal({
+        journalName: values.journalName,
+        description: values.description,
+        status: values.status,
+        imageSrc: imageSrc,
+    });
 
     if (result.success) {
       toast({
@@ -86,7 +106,6 @@ export default function AddJournalForm() {
         description: `The journal "${values.journalName}" has been added.`,
       });
       form.reset();
-      // This will close the dialog if it's open, by unmounting the component
       const closeButton = document.querySelector('[data-radix-dialog-close]');
       if (closeButton instanceof HTMLElement) {
           closeButton.click();
