@@ -34,7 +34,7 @@ export default function InternshipPage() {
       }
     };
     fetchInternships();
-  }, [toast]);
+  }, []);
 
   return (
     <div className="container py-12 md:py-24">
