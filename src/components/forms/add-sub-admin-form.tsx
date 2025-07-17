@@ -48,7 +48,17 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    const result = await addSubAdmin(values);
+    
+    // Create a plain, serializable object to pass to the server action.
+    const plainData = {
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      password: values.password,
+      address: values.address,
+    };
+
+    const result = await addSubAdmin(plainData);
 
     if (result.success && result.newAdmin) {
       toast({

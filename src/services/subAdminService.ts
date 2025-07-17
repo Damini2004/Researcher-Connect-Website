@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy, doc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, query, where, limit, orderBy } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface SubAdmin {
@@ -14,7 +14,7 @@ export interface SubAdmin {
   address: string;
   status: "pending" | "approved" | "denied";
   joinDate: string; 
-  password?: string; // Should be handled securely, only present for creation
+  password?: string;
 }
 
 const addSubAdminSchema = z.object({
@@ -25,13 +25,15 @@ const addSubAdminSchema = z.object({
   address: z.string().min(5, "Address is required."),
 });
 
+type AddSubAdminData = z.infer<typeof addSubAdminSchema>;
+
 type AddSubAdminResult = {
   success: boolean;
   message: string;
   newAdmin?: SubAdmin;
 }
 
-export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Promise<AddSubAdminResult> {
+export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminResult> {
   try {
     const validationResult = addSubAdminSchema.safeParse(data);
     if (!validationResult.success) {
