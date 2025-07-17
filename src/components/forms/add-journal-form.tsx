@@ -62,7 +62,9 @@ export default function AddJournalForm() {
     formData.append('journalName', values.journalName);
     formData.append('description', values.description);
     formData.append('status', values.status);
-    if (values.image[0]) {
+    
+    // Correctly get the File object from the FileList
+    if (values.image && values.image.length > 0) {
       formData.append('image', values.image[0]);
     }
 
