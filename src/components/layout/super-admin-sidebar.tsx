@@ -13,7 +13,7 @@ import {
   SidebarMenuBadge
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { Users, BookCopy, LogOut, HelpCircle } from "lucide-react";
+import { Users, BookCopy, LogOut, HelpCircle, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,6 +24,7 @@ interface SuperAdminSidebarProps {
 const menuItems = [
   { href: "/super-admin/sub-admins", label: "Sub Admins", icon: Users },
   { href: "/super-admin/journals", label: "Journal List", icon: BookCopy },
+  { href: "/super-admin/internships", label: "Internships", icon: Briefcase },
   { href: "/super-admin/enquiries", label: "Admin Enquiries", icon: HelpCircle, badgeId: "enquiries" },
 ];
 

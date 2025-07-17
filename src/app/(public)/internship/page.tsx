@@ -1,7 +1,36 @@
+
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { getInternships, Internship } from "@/services/internshipService";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import ContactForm from "@/components/forms/contact-form";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function InternshipPage() {
+  const [internships, setInternships] = useState<Internship[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedInternship, setSelectedInternship] = useState<Internship | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  useEffect(() => {
+    const fetchInternships = async () => {
+      setIsLoading(true);
+      const data = await getInternships();
+      setInternships(data);
+      setIsLoading(false);
+    };
+    fetchInternships();
+  }, []);
+
+  const handleRegisterClick = (internship: Internship) => {
+    setSelectedInternship(internship);
+    setIsRegistering(true);
+  };
+
   return (
     <div className="container py-12 md:py-24">
       <div className="text-center mb-12">
@@ -9,28 +38,66 @@ export default function InternshipPage() {
         <p className="mt-4 text-lg text-muted-foreground">Gain hands-on experience in the world of academic publishing and research.</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Editorial Assistant Intern</CardTitle>
-            <CardDescription>Remote | 3 Months</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">Assist our editorial teams with manuscript processing, peer-review coordination, and author communication. A great opportunity for those interested in the mechanics of academic publishing.</p>
-            <Button variant="outline">Learn More</Button>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>AI in Research Intern</CardTitle>
-            <CardDescription>Remote | 6 Months</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">Work with our technology team to improve and expand our AI-driven tools. Requires a background in machine learning, NLP, and data science. Help shape the future of research tech.</p>
-            <Button variant="outline">Learn More</Button>
-          </CardContent>
-        </Card>
-      </div>
+      {isLoading ? (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[...Array(3)].map((_, i) => (
+             <Card key={i}>
+                <Skeleton className="h-[250px] w-full" />
+                <CardHeader>
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                </CardHeader>
+                <CardContent>
+                   <Skeleton className="h-4 w-full mb-2" />
+                   <Skeleton className="h-4 w-full" />
+                </CardContent>
+                <CardFooter>
+                  <Skeleton className="h-10 w-32" />
+                </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : internships.length > 0 ? (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {internships.map(internship => (
+            <Card key={internship.id} className="flex flex-col">
+              <div className="relative h-[250px] w-full overflow-hidden">
+                <Image src={internship.imageSrc} alt={internship.name} fill className="object-cover"/>
+              </div>
+              <div className="flex flex-col flex-grow p-6">
+                <CardHeader className="p-0 mb-4">
+                  <CardTitle>{internship.name}</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0 flex-grow">
+                  <p className="text-muted-foreground line-clamp-4">{internship.description}</p>
+                </CardContent>
+                <CardFooter className="p-0 mt-6">
+                   <Dialog>
+                      <DialogTrigger asChild>
+                         <Button onClick={() => handleRegisterClick(internship)}>Register Now</Button>
+                      </DialogTrigger>
+                       {selectedInternship?.id === internship.id && (
+                          <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                              <DialogTitle>Register for: {selectedInternship.name}</DialogTitle>
+                              <DialogDescription>
+                                Please fill out your details below to apply. We will get back to you shortly.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <ContactForm />
+                          </DialogContent>
+                       )}
+                   </Dialog>
+                </CardFooter>
+              </div>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-16 text-muted-foreground">
+            <p>No internship opportunities are available at this time. Please check back later.</p>
+        </div>
+      )}
     </div>
   );
 }
