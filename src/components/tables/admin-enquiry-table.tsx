@@ -14,26 +14,8 @@ import { Check, X, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
-// Mock data for profile update requests.
-// In a real app, this would be fetched from a database.
-const enquiryRequests = [
-  {
-    id: 'REQ001',
-    subAdminName: 'Dr. Alisha Gupta',
-    requestDate: '2023-06-10',
-    currentEmail: 'alisha.g@example.com',
-    requestedEmail: 'alisha.gupta.updates@example.com',
-    status: 'Pending',
-  },
-  {
-    id: 'REQ002',
-    subAdminName: 'Dr. Ben Carter',
-    requestDate: '2023-06-12',
-    currentEmail: 'ben.c@example.com',
-    requestedEmail: 'ben.carter.new@example.com',
-    status: 'Pending',
-  },
-];
+// Mock data has been removed. In a real app, this would be fetched from a database.
+const enquiryRequests: any[] = [];
 
 export default function AdminEnquiryTable() {
   return (
