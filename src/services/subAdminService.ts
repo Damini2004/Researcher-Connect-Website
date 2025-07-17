@@ -40,7 +40,6 @@ export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Prom
 
     const { ...subAdminData } = validationResult.data;
 
-    // Check if email already exists
     const q = query(collection(db, 'subAdmins'), where('email', '==', subAdminData.email), limit(1));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
@@ -49,7 +48,6 @@ export async function addSubAdmin(data: z.infer<typeof addSubAdminSchema>): Prom
     
     const joinDate = new Date();
 
-    // Don't store the password directly in a real app. This is for prototype purposes.
     const docRef = await addDoc(collection(db, 'subAdmins'), {
       ...subAdminData,
       status: 'pending',
