@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { getInternships, Internship } from "@/services/internshipService";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import ContactForm from "@/components/forms/contact-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -16,26 +16,29 @@ export default function InternshipPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  const fetchInternships = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await getInternships();
-      setInternships(data);
-    } catch (error) {
-      console.error("Failed to fetch internships", error);
-      toast({
-          title: "Error",
-          description: "Could not load internship opportunities. Please try again later.",
-          variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [toast]);
-
   useEffect(() => {
+    // Define the async data fetching function directly inside useEffect
+    const fetchInternships = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getInternships();
+        setInternships(data);
+      } catch (error) {
+        console.error("Failed to fetch internships", error);
+        toast({
+            title: "Error",
+            description: "Could not load internship opportunities. Please try again later.",
+            variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    // Call the function
     fetchInternships();
-  }, [fetchInternships]);
+    
+  }, [toast]); // The dependency array is now correct
 
   return (
     <div className="container py-12 md:py-24">
