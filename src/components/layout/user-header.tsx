@@ -48,6 +48,7 @@ const mainNavLinks = [
     label: "IPR Services",
     children: iprServicesSubMenu
   },
+  { href: "/contact-us", label: "Contact Us" },
 ];
 
 const topNavLinks = [
