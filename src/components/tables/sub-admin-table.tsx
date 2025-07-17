@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -23,19 +23,40 @@ import { MoreHorizontal, Search, CheckCircle, XCircle, Edit, Trash2, Clock } fro
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
-const subAdmins: any[] = [
-  // Mock data removed. Will be fetched from database.
-];
+import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
+import { useToast } from "@/hooks/use-toast";
 
 const statusConfig = {
-    approved: { label: "Approved", icon: CheckCircle, color: "bg-green-500" },
-    pending: { label: "Pending", icon: Clock, color: "bg-yellow-500" },
-    denied: { label: "Denied", icon: XCircle, color: "bg-red-500" },
+    approved: { label: "Approved", icon: CheckCircle, color: "text-green-500" },
+    pending: { label: "Pending", icon: Clock, color: "text-yellow-500" },
+    denied: { label: "Denied", icon: XCircle, color: "text-red-500" },
 };
 
 export default function SubAdminTable() {
+  const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState("");
+  const { toast } = useToast();
+
+  useEffect(() => {
+    async function fetchAdmins() {
+      setIsLoading(true);
+      try {
+        const data = await getSubAdmins();
+        setSubAdmins(data);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Could not fetch sub-admins.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAdmins();
+  }, [toast]);
+
   const filteredAdmins = subAdmins.filter(
     (admin) =>
       admin.name.toLowerCase().includes(filter.toLowerCase()) ||
@@ -70,17 +91,21 @@ export default function SubAdminTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredAdmins.length > 0 ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">Loading...</TableCell>
+              </TableRow>
+            ) : filteredAdmins.length > 0 ? (
               filteredAdmins.map((admin) => {
-                const status = statusConfig[admin.status as keyof typeof statusConfig];
+                const statusInfo = statusConfig[admin.status as keyof typeof statusConfig];
                 return (
                   <TableRow key={admin.id}>
                     <TableCell className="font-medium">{admin.name}</TableCell>
                     <TableCell>{admin.email}</TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="flex items-center w-fit">
-                          <status.icon className={`mr-2 h-3 w-3 ${status.color.replace('bg-', 'text-')}`} />
-                          {status.label}
+                      <Badge variant="outline" className="flex items-center w-fit gap-2">
+                          <statusInfo.icon className={`h-3 w-3 ${statusInfo.color}`} />
+                          {statusInfo.label}
                       </Badge>
                     </TableCell>
                     <TableCell>{admin.joinDate}</TableCell>
