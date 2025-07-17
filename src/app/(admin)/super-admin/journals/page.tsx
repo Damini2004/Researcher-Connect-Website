@@ -1,7 +1,20 @@
+
+"use client";
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { allSubmissions } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react";
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -30,9 +43,32 @@ export default function ViewJournalsPage() {
                 className="w-full object-cover"
             />
             <div className="flex flex-col flex-grow">
-                <CardHeader>
-                    <CardTitle className="text-xl leading-snug">{submission.title}</CardTitle>
-                    <CardDescription className="pt-1">{submission.author}</CardDescription>
+                <CardHeader className="flex-row items-start justify-between">
+                    <div>
+                        <CardTitle className="text-xl leading-snug">{submission.title}</CardTitle>
+                        <CardDescription className="pt-1">{submission.author}</CardDescription>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button aria-haspopup="true" size="icon" variant="ghost">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                          <Eye className="mr-2 h-4 w-4" /> View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Edit className="mr-2 h-4 w-4" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-destructive">
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                 </CardHeader>
                 <CardContent className="flex-grow space-y-2">
                     <p className="text-sm text-muted-foreground">Submitted on: {submission.date}</p>
