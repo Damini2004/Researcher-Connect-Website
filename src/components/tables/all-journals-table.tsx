@@ -33,13 +33,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -49,6 +42,12 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import EditJournalForm from "../forms/edit-journal-form";
+
+const statusVariant: { [key in Journal['status']]: "default" | "secondary" | "destructive" } = {
+  Active: "default",
+  Inactive: "secondary",
+  Archived: "destructive",
+}
 
 export default function AllJournalsTable() {
   const { toast } = useToast();
@@ -77,27 +76,6 @@ export default function AllJournalsTable() {
     }
     fetchJournals();
   }, [toast]);
-
-  const handleStatusChange = async (journalId: string, status: Journal['status']) => {
-    const originalJournals = [...journals];
-    
-    setJournals(journals.map(j => j.id === journalId ? { ...j, status } : j));
-
-    const result = await updateJournalStatus(journalId, status);
-    if (!result.success) {
-      setJournals(originalJournals);
-      toast({
-        title: "Error",
-        description: "Failed to update status. Please try again.",
-        variant: "destructive",
-      });
-    } else {
-        toast({
-            title: "Success",
-            description: "Journal status updated.",
-        });
-    }
-  };
 
   const handleEditClick = (journal: Journal) => {
     setSelectedJournal(journal);
@@ -198,19 +176,7 @@ export default function AllJournalsTable() {
                       <p className="truncate">{journal.description}</p>
                     </TableCell>
                     <TableCell>
-                      <Select 
-                        defaultValue={journal.status}
-                        onValueChange={(value: Journal['status']) => handleStatusChange(journal.id, value)}
-                      >
-                        <SelectTrigger className="w-[120px]">
-                          <SelectValue placeholder="Update status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Active">Active</SelectItem>
-                          <SelectItem value="Inactive">Inactive</SelectItem>
-                          <SelectItem value="Archived">Archived</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Badge variant={statusVariant[journal.status]}>{journal.status}</Badge>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
