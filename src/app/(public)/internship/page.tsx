@@ -9,10 +9,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ContactForm from "@/components/forms/contact-form";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchInternships = async () => {
@@ -22,13 +24,17 @@ export default function InternshipPage() {
         setInternships(data);
       } catch (error) {
         console.error("Failed to fetch internships", error);
-        // Optionally, show a toast message to the user
+        toast({
+            title: "Error",
+            description: "Could not load internship opportunities. Please try again later.",
+            variant: "destructive",
+        });
       } finally {
         setIsLoading(false);
       }
     };
     fetchInternships();
-  }, []);
+  }, [toast]);
 
   return (
     <div className="container py-12 md:py-24">
