@@ -35,6 +35,7 @@ interface AddSubAdminFormProps {
 export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,6 +74,7 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
             closeButton.click();
         }
         
+        router.refresh();
         onAdminAdded();
       } else {
         toast({

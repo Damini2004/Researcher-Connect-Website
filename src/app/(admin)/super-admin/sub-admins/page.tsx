@@ -40,7 +40,7 @@ export default function ManageSubAdminsPage() {
 
   useEffect(() => {
     fetchAdmins();
-  }, [toast]);
+  }, []);
 
   return (
     <div className="space-y-6">
