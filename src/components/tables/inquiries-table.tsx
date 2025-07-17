@@ -1,5 +1,7 @@
+
 "use client";
 
+import * as React from "react";
 import {
   Table,
   TableBody,
@@ -19,43 +21,72 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Archive, MailOpen, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-// Mock data has been removed.
-const inquiries: any[] = [];
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { getInquiries, type Inquiry } from "@/services/inquiryService";
+import { useToast } from "@/hooks/use-toast";
 
 export default function InquiriesTable() {
+  const { toast } = useToast();
+  const [inquiries, setInquiries] = React.useState<Inquiry[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchInquiries() {
+      setIsLoading(true);
+      try {
+        const fetchedInquiries = await getInquiries();
+        setInquiries(fetchedInquiries);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Could not fetch inquiries.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchInquiries();
+  }, [toast]);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Inbox</CardTitle>
+        <CardDescription>Review and manage user inquiries from the contact form.</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>From</TableHead>
-              <TableHead>Subject</TableHead>
+              <TableHead className="hidden md:table-cell">Subject</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead className="hidden md:table-cell">Date</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {inquiries.length > 0 ? (
+            {isLoading ? (
+               <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  Loading inquiries...
+                </TableCell>
+              </TableRow>
+            ) : inquiries.length > 0 ? (
               inquiries.map((inquiry) => (
                 <TableRow key={inquiry.id} data-state={inquiry.status === 'New' ? 'selected' : ''} className="data-[state=selected]:bg-muted/50">
                   <TableCell>
                       <div className="font-medium">{inquiry.name}</div>
                       <div className="text-sm text-muted-foreground">{inquiry.email}</div>
                   </TableCell>
-                  <TableCell>{inquiry.subject}</TableCell>
+                  <TableCell className="hidden md:table-cell max-w-sm truncate">{inquiry.subject}</TableCell>
                   <TableCell>
                     <Badge variant={inquiry.status === 'New' ? 'default' : 'secondary'}>{inquiry.status}</Badge>
                   </TableCell>
-                  <TableCell>{inquiry.date}</TableCell>
+                  <TableCell className="hidden md:table-cell">{new Date(inquiry.date).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -83,7 +114,7 @@ export default function InquiriesTable() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="text-center h-24">
+                <TableCell colSpan={5} className="h-24 text-center">
                   No inquiries found.
                 </TableCell>
               </TableRow>

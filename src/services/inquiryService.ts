@@ -1,8 +1,9 @@
+
 // src/services/inquiryService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, DocumentData, addDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface Enquiry {
@@ -56,7 +57,7 @@ export async function addInquiry(data: z.infer<typeof inquirySchema>): Promise<{
         await addDoc(collection(db, 'inquiries'), {
             ...validationResult.data,
             status: 'New',
-            date: new Date().toISOString(),
+            date: new Date(),
         });
 
         return { success: true, message: 'Inquiry submitted successfully.' };
@@ -64,5 +65,29 @@ export async function addInquiry(data: z.infer<typeof inquirySchema>): Promise<{
         const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
         console.error("Error adding inquiry:", error);
         return { success: false, message: `Failed to submit inquiry: ${message}` };
+    }
+}
+
+export async function getInquiries(): Promise<Inquiry[]> {
+    try {
+        const q = query(collection(db, 'inquiries'), orderBy('date', 'desc'));
+        const querySnapshot = await getDocs(q);
+        const inquiries: Inquiry[] = [];
+        querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+            const data = doc.data();
+            inquiries.push({
+                id: doc.id,
+                name: data.name,
+                email: data.email,
+                subject: data.subject,
+                message: data.message,
+                status: data.status,
+                date: data.date.toDate().toISOString(),
+            });
+        });
+        return inquiries;
+    } catch (error) {
+        console.error("Error fetching inquiries: ", error);
+        return [];
     }
 }
