@@ -23,13 +23,17 @@ export interface Inquiry {
     message: string;
     date: string;
     status: 'New' | 'Read' | 'Archived';
+    type: string; // e.g., 'General Inquiry', 'Internship Application'
+    details?: string; // e.g., Internship Name
 }
 
 const inquirySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
-  subject: z.string().min(5, "Subject must be at least 5 characters."),
+  subject: z.string().min(5, "Subject must be at least 5 characters.").optional(),
   message: z.string().min(20, "Message must be at least 20 characters."),
+  type: z.string().default('General Inquiry'),
+  details: z.string().optional(),
 });
 
 export async function getPendingEnquiryCount(): Promise<number> {
@@ -54,8 +58,18 @@ export async function addInquiry(data: z.infer<typeof inquirySchema>): Promise<{
             return { success: false, message: validationResult.error.errors[0].message };
         }
 
+        const dataToSave = validationResult.data;
+        if (dataToSave.type === 'Internship Application' && !dataToSave.subject) {
+            dataToSave.subject = `Internship: ${dataToSave.details || 'N/A'}`;
+        }
+        
+        if (!dataToSave.subject) {
+            return { success: false, message: "Subject is required for this type of inquiry." };
+        }
+
+
         await addDoc(collection(db, 'inquiries'), {
-            ...validationResult.data,
+            ...dataToSave,
             status: 'New',
             date: new Date(),
         });
@@ -82,6 +96,8 @@ export async function getInquiries(): Promise<Inquiry[]> {
                 subject: data.subject,
                 message: data.message,
                 status: data.status,
+                type: data.type || 'General Inquiry',
+                details: data.details,
                 date: data.date.toDate().toISOString(),
             });
         });

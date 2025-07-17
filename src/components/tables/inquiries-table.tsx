@@ -19,11 +19,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Archive, MailOpen, Trash2 } from "lucide-react";
+import { MoreHorizontal, Archive, MailOpen, Trash2, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getInquiries, type Inquiry } from "@/services/inquiryService";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export default function InquiriesTable() {
   const { toast } = useToast();
@@ -60,7 +61,7 @@ export default function InquiriesTable() {
           <TableHeader>
             <TableRow>
               <TableHead>From</TableHead>
-              <TableHead className="hidden md:table-cell">Subject</TableHead>
+              <TableHead>Subject / Details</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="hidden md:table-cell">Date</TableHead>
               <TableHead>
@@ -82,7 +83,17 @@ export default function InquiriesTable() {
                       <div className="font-medium">{inquiry.name}</div>
                       <div className="text-sm text-muted-foreground">{inquiry.email}</div>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell max-w-sm truncate">{inquiry.subject}</TableCell>
+                  <TableCell className="max-w-sm truncate">
+                    {inquiry.type === 'Internship Application' && (
+                        <div className="flex items-center gap-2 text-sm">
+                            <Briefcase className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-semibold">{inquiry.details}</span>
+                        </div>
+                    )}
+                     {inquiry.type !== 'Internship Application' && (
+                        <span>{inquiry.subject}</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={inquiry.status === 'New' ? 'default' : 'secondary'}>{inquiry.status}</Badge>
                   </TableCell>

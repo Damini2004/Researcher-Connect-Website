@@ -23,20 +23,26 @@ import { Send } from "lucide-react";
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
-  subject: z.string().min(5, "Subject must be at least 5 characters."),
+  subject: z.string().min(5, "Subject must be at least 5 characters.").optional(),
   message: z.string().min(20, "Message must be at least 20 characters."),
 });
 
-export default function ContactForm() {
+interface ContactFormProps {
+  inquiryType?: string;
+  details?: string;
+}
+
+export default function ContactForm({ inquiryType, details }: ContactFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const isInternshipApplication = inquiryType === "Internship Application";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
-      subject: "",
+      subject: isInternshipApplication ? `Internship Application: ${details}` : "",
       message: "",
     },
   });
@@ -44,13 +50,24 @@ export default function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      const result = await addInquiry(values);
+      const result = await addInquiry({
+        ...values,
+        type: inquiryType || 'General Inquiry',
+        details: details,
+      });
+
       if (result.success) {
         toast({
           title: "Message Sent!",
           description: "Thank you for contacting us. We will get back to you shortly.",
         });
         form.reset();
+        // Close dialog if possible
+        const closeButton = document.querySelector('[data-radix-dialog-close]') as HTMLElement;
+        if (closeButton) {
+            closeButton.click();
+        }
+
       } else {
         toast({
           title: "Error",
@@ -100,25 +117,27 @@ export default function ContactForm() {
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="subject"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Subject</FormLabel>
-              <FormControl>
-                <Input placeholder="Regarding my submission..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!isInternshipApplication && (
+            <FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subject</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Regarding my submission..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        )}
         <FormField
           control={form.control}
           name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Message</FormLabel>
+              <FormLabel>Your Message / Cover Letter</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Please type your message here."

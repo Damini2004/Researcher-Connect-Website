@@ -18,7 +18,6 @@ export default function InternshipPage() {
 
   useEffect(() => {
     const fetchInternships = async () => {
-      setIsLoading(true);
       try {
         const data = await getInternships();
         setInternships(data);
@@ -86,12 +85,15 @@ export default function InternshipPage() {
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-md">
                         <DialogHeader>
-                          <DialogTitle>Register for: {internship.name}</DialogTitle>
+                          <DialogTitle>Apply for: {internship.name}</DialogTitle>
                           <DialogDescription>
                             Please fill out your details below to apply. We will get back to you shortly.
                           </DialogDescription>
                         </DialogHeader>
-                        <ContactForm />
+                        <ContactForm 
+                           inquiryType="Internship Application"
+                           details={internship.name}
+                        />
                       </DialogContent>
                    </Dialog>
                 </div>
