@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { journals } from "@/lib/mock-data";
+import { getJournals, type Journal } from "@/services/journalService";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -44,7 +43,27 @@ const formSchema = z.object({
 
 export default function JournalSubmissionForm() {
   const { toast } = useToast();
-  const fileRef = React.useRef<HTMLInputElement>(null);
+  const [journals, setJournals] = React.useState<Journal[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchJournals() {
+      try {
+        const fetchedJournals = await getJournals();
+        setJournals(fetchedJournals);
+      } catch (error) {
+        console.error("Failed to fetch journals:", error);
+        toast({
+          title: "Error",
+          description: "Could not load journals. Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchJournals();
+  }, [toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -116,15 +135,15 @@ export default function JournalSubmissionForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Journal</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a journal" />
+                        <SelectValue placeholder={isLoading ? "Loading journals..." : "Select a journal"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {journals.map((journal) => (
-                        <SelectItem key={journal.id} value={journal.id}>{journal.name}</SelectItem>
+                        <SelectItem key={journal.id} value={journal.id}>{journal.journalName}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
