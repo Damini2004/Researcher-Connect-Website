@@ -17,7 +17,6 @@ export default function InternshipPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Define the data fetching function inside useEffect to ensure it has stable references.
     const fetchInternships = async () => {
       setIsLoading(true);
       try {
@@ -35,10 +34,7 @@ export default function InternshipPage() {
       }
     };
     
-    // Call the function to fetch data.
     fetchInternships();
-    
-    // The empty dependency array ensures this effect runs only once when the component mounts.
   }, []); 
 
   return (
