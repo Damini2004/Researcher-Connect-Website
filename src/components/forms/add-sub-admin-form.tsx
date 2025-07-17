@@ -74,8 +74,8 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
             closeButton.click();
         }
         
-        router.refresh();
         onAdminAdded();
+        router.refresh();
       } else {
         toast({
           title: "Error",
