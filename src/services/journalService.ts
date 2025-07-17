@@ -6,8 +6,7 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot } from
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { z } from 'zod';
 
-// Zod schema for validation, now used more carefully.
-const JournalDataSchema = z.object({
+const JournalSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
   description: z.string().min(20, "Description must be at least 20 characters."),
   status: z.enum(["Active", "Inactive", "Archived"]),
@@ -22,26 +21,26 @@ export interface Journal {
 }
 
 export async function addJournal(formData: FormData): Promise<{ success: boolean; message: string }> {
-  const journalName = formData.get('journalName') as string;
-  const description = formData.get('description') as string;
-  const status = formData.get('status') as "Active" | "Inactive" | "Archived";
-  const image = formData.get('image') as File | null;
-
-  // Manual validation
-  if (!image || image.size === 0) {
-    return { success: false, message: 'Cover image is required.' };
-  }
-  if (!image.type.startsWith('image/')) {
-    return { success: false, message: 'Only image files are allowed.' };
-  }
-
-  const validationResult = JournalDataSchema.safeParse({ journalName, description, status });
-  if (!validationResult.success) {
-      const firstError = validationResult.error.errors[0].message;
-      return { success: false, message: firstError };
-  }
-
   try {
+    const journalName = formData.get('journalName') as string;
+    const description = formData.get('description') as string;
+    const status = formData.get('status') as "Active" | "Inactive" | "Archived";
+    const image = formData.get('image') as File | null;
+
+    const validationResult = JournalSchema.safeParse({ journalName, description, status });
+
+    if (!validationResult.success) {
+        const firstError = validationResult.error.errors[0].message;
+        return { success: false, message: firstError };
+    }
+
+    if (!image || image.size === 0) {
+      return { success: false, message: 'Cover image is required.' };
+    }
+    if (!image.type.startsWith('image/')) {
+      return { success: false, message: 'Only image files are allowed.' };
+    }
+
     // 1. Upload image to Firebase Storage
     const storageRef = ref(storage, `journal-covers/${Date.now()}-${image.name}`);
     const uploadResult = await uploadBytes(storageRef, image);

@@ -63,7 +63,6 @@ export default function AddJournalForm() {
     formData.append('description', values.description);
     formData.append('status', values.status);
     
-    // Correctly get the File object from the FileList
     if (values.image && values.image.length > 0) {
       formData.append('image', values.image[0]);
     }
@@ -76,7 +75,6 @@ export default function AddJournalForm() {
         description: `The journal "${values.journalName}" has been added.`,
       });
       form.reset();
-      // A simple way to refresh the journal list page
       router.refresh();
     } else {
       toast({
