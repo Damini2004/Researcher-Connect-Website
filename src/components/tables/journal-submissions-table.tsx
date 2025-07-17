@@ -71,6 +71,18 @@ export default function JournalSubmissionsTable() {
     });
   };
 
+  const handleViewPdf = (base64Data: string) => {
+    const byteCharacters = atob(base64Data.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const file = new Blob([byteArray], { type: 'application/pdf;base64' });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL, '_blank');
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -132,7 +144,7 @@ export default function JournalSubmissionsTable() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onSelect={() => window.open(submission.manuscriptUrl, '_blank')}>
+                            <DropdownMenuItem onSelect={() => handleViewPdf(submission.manuscriptData)}>
                               <Eye className="mr-2 h-4 w-4" /> View PDF
                             </DropdownMenuItem>
                             <DropdownMenuItem>

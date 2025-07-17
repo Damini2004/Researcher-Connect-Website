@@ -2,9 +2,8 @@
 // src/services/submissionService.ts
 'use server';
 
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, orderBy, query } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { z } from 'zod';
 
 // Zod schema for form data validation
@@ -14,6 +13,7 @@ const submissionSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
   journalId: z.string(),
   content: z.string().min(100, "Content must be at least 100 characters."),
+  manuscriptData: z.string().startsWith("data:application/pdf;base64,"),
 });
 
 // Interface for submission data structure in Firestore
@@ -24,46 +24,31 @@ export interface Submission {
     title: string;
     journalId: string;
     content: string;
-    manuscriptUrl: string;
+    manuscriptData: string; // Storing Base64 data
     status: "Verification Pending" | "In Progress" | "Done" | "Canceled";
     submittedAt: Date;
 }
 
-export async function addSubmission(formData: FormData): Promise<{ success: boolean; message: string }> {
+interface AddSubmissionData {
+    fullName: string;
+    email: string;
+    title: string;
+    journalId: string;
+    content: string;
+    manuscriptData: string;
+}
+
+export async function addSubmission(data: AddSubmissionData): Promise<{ success: boolean; message: string }> {
   try {
-    const file = formData.get('manuscriptFile') as File | null;
-    const submissionData = {
-        fullName: formData.get('fullName') as string,
-        email: formData.get('email') as string,
-        title: formData.get('title') as string,
-        journalId: formData.get('journalId') as string,
-        content: formData.get('content') as string,
-    };
-    
-    // Validate text fields
-    const validationResult = submissionSchema.safeParse(submissionData);
+    // Validate incoming data
+    const validationResult = submissionSchema.safeParse(data);
     if (!validationResult.success) {
         return { success: false, message: validationResult.error.errors[0].message };
     }
 
-    if (!file || !(file instanceof File)) {
-        return { success: false, message: 'Manuscript file is required and must be a valid file.' };
-    }
-     if (file.type !== 'application/pdf') {
-        return { success: false, message: 'Only PDF files are allowed.' };
-    }
-    
-    const fileBuffer = await file.arrayBuffer();
-
-    // Upload manuscript to Firebase Storage
-    const storageRef = ref(storage, `manuscripts/${Date.now()}-${file.name}`);
-    const uploadResult = await uploadBytes(storageRef, fileBuffer, { contentType: 'application/pdf' });
-    const manuscriptUrl = await getDownloadURL(uploadResult.ref);
-
     // Save submission data to Firestore
     await addDoc(collection(db, 'submissions'), {
         ...validationResult.data,
-        manuscriptUrl,
         status: 'Verification Pending',
         submittedAt: new Date(),
     });
@@ -93,7 +78,7 @@ export async function getSubmissions(): Promise<Submission[]> {
                 title: data.title,
                 journalId: data.journalId,
                 content: data.content,
-                manuscriptUrl: data.manuscriptUrl,
+                manuscriptData: data.manuscriptData,
                 status: data.status,
                 submittedAt: data.submittedAt.toDate(),
             });

@@ -81,29 +81,45 @@ export default function JournalSubmissionForm() {
   
   const fileRef = form.register("manuscriptFile");
 
+  const convertFileToBase64 = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+      });
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    
-    const formData = new FormData();
-    formData.append('fullName', values.fullName);
-    formData.append('email', values.email);
-    formData.append('title', values.title);
-    formData.append('journalId', values.journalId);
-    formData.append('content', values.content);
-    
+
+    let manuscriptData = "";
     if (values.manuscriptFile && values.manuscriptFile.length > 0) {
-        formData.append('manuscriptFile', values.manuscriptFile[0]);
+        try {
+            manuscriptData = await convertFileToBase64(values.manuscriptFile[0]);
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to read manuscript file.",
+                variant: "destructive",
+            });
+            setIsSubmitting(false);
+            return;
+        }
     } else {
-        toast({
-            title: "Submission Failed",
-            description: "Manuscript file is missing.",
-            variant: "destructive",
-        });
-        setIsSubmitting(false);
-        return;
+       toast({
+        title: "Submission Failed",
+        description: "Manuscript file is missing.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
     }
 
-    const result = await addSubmission(formData);
+    const result = await addSubmission({
+      ...values,
+      manuscriptData,
+    });
 
     if (result.success) {
         toast({
