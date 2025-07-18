@@ -96,6 +96,7 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
                 address: data.address,
                 status: data.status,
                 joinDate: joinDate,
+                password: data.password,
             });
         });
         return subAdmins;
