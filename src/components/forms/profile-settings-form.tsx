@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +20,7 @@ import { Send } from "lucide-react";
 import * as React from "react";
 import { getSubAdminByEmail, SubAdmin } from "@/services/subAdminService";
 import { Skeleton } from "../ui/skeleton";
+import { createEnquiry } from "@/services/enquiryService";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -30,6 +32,7 @@ export default function ProfileSettingsForm() {
   const { toast } = useToast();
   const [currentUser, setCurrentUser] = React.useState<SubAdmin | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,14 +67,35 @@ export default function ProfileSettingsForm() {
     fetchCurrentUser();
   }, [form, toast]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, you would have a service function to submit this request.
-    // e.g., createProfileUpdateRequest(currentUser.id, values);
-    console.log("Profile update request:", values);
-    toast({
-      title: "Request Sent!",
-      description: "Your profile update request has been sent to the super admin for approval.",
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!currentUser) {
+        toast({ title: "Error", description: "No user data found to submit request.", variant: "destructive" });
+        return;
+    }
+    setIsSubmitting(true);
+    
+    const result = await createEnquiry({
+        subAdminId: currentUser.id,
+        subAdminName: currentUser.name,
+        currentEmail: currentUser.email,
+        requestedName: values.fullName,
+        requestedEmail: values.email,
     });
+    
+    if (result.success) {
+        toast({
+            title: "Request Sent!",
+            description: "Your profile update request has been sent to the super admin for approval.",
+        });
+    } else {
+        toast({
+            title: "Error Sending Request",
+            description: result.message,
+            variant: "destructive"
+        });
+    }
+
+    setIsSubmitting(false);
   }
 
   if (isLoading) {
@@ -123,9 +147,9 @@ export default function ProfileSettingsForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitting}>
             <Send className="mr-2 h-4 w-4" />
-            Send Update Request
+            {isSubmitting ? "Sending..." : "Send Update Request"}
         </Button>
       </form>
     </Form>
