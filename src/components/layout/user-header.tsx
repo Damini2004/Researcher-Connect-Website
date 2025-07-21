@@ -119,9 +119,9 @@ export default function UserHeader() {
   return (
     <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
         {/* Top Bar */}
-        <div className="bg-[#800020] text-white">
+        <div className="bg-red-600 text-white">
             <div className="container mx-auto flex h-10 items-center justify-between px-4">
-                <nav className="hidden md:flex items-center space-x-6 text-sm">
+                <nav className="hidden md:flex items-center space-x-6 text-base">
                     {topNavLinks.map(link => (
                         <Link key={link.href} href={link.href} className="hover:text-yellow-300 transition-colors">
                             {link.label}
