@@ -13,7 +13,7 @@ const submissionSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
   journalId: z.string(),
   content: z.string().min(100, "Content must be at least 100 characters."),
-  manuscriptData: z.string().startsWith("data:application/pdf;base64,"),
+  manuscriptData: z.string(), // Base64 data can be any string
 });
 
 const updateSubmissionSchema = z.object({

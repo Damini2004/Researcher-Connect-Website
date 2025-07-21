@@ -37,8 +37,17 @@ const formSchema = z.object({
     .any()
     .refine((files) => files?.length > 0, "A manuscript file is required.")
     .refine(
-      (files) => files?.[0]?.type === "application/pdf",
-      "Only PDF files are allowed."
+      (files) => {
+        const file = files?.[0];
+        if (!file) return false;
+        const allowedTypes = [
+          "application/pdf",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ];
+        return allowedTypes.includes(file.type);
+      },
+      "Only PDF, DOC, or DOCX files are allowed."
     ),
   content: z.string().min(100, "Content must be at least 100 characters."),
 });
@@ -211,11 +220,11 @@ export default function JournalSubmissionForm() {
               name="manuscriptFile"
               render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Manuscript File (PDF)</FormLabel>
+                    <FormLabel>Manuscript File (PDF, DOC, DOCX)</FormLabel>
                     <FormControl>
                         <Input 
                             type="file" 
-                            accept=".pdf"
+                            accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                             {...fileRef}
                         />
                     </FormControl>
