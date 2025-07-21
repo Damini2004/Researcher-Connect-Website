@@ -37,7 +37,7 @@ export default function PublicationsOverviewPage() {
                     <CarouselContent>
                         <CarouselItem>
                             <Image
-                                src="https://placehold.co/1200x400.png"
+                                src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200&h=400&auto=format&fit=crop"
                                 alt="Background 1"
                                 data-ai-hint="library books"
                                 width={1200}
@@ -47,7 +47,7 @@ export default function PublicationsOverviewPage() {
                         </CarouselItem>
                         <CarouselItem>
                              <Image
-                                src="https://placehold.co/1200x400.png"
+                                src="https://images.unsplash.com/photo-1579165466949-3180a3d056d5?q=80&w=1200&h=400&auto=format&fit=crop"
                                 alt="Background 2"
                                 data-ai-hint="research lab"
                                 width={1200}
@@ -57,7 +57,7 @@ export default function PublicationsOverviewPage() {
                         </CarouselItem>
                          <CarouselItem>
                              <Image
-                                src="https://placehold.co/1200x400.png"
+                                src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?q=80&w=1200&h=400&auto=format&fit=crop"
                                 alt="Background 3"
                                 data-ai-hint="academic conference"
                                 width={1200}
@@ -90,7 +90,7 @@ export default function PublicationsOverviewPage() {
                     </div>
                     <div className="relative min-h-[300px] md:min-h-0">
                          <Image
-                            src="https://placehold.co/600x400.png"
+                            src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=600&h=400&auto=format&fit=crop"
                             alt="Researchers collaborating"
                             data-ai-hint="research collaboration"
                             fill

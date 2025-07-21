@@ -28,7 +28,7 @@ export default function CopyrightPage() {
                 <div className="container px-4 md:px-6">
                     <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
                          <Image
-                            src="https://placehold.co/600x400.png"
+                            src="https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=600&h=400&auto=format&fit=crop"
                             width="600"
                             height="400"
                             alt="Copyright Symbol"

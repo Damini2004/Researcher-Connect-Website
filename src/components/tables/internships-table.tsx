@@ -118,7 +118,7 @@ export default function InternshipsTable({ internships, isLoading, onInternshipD
                   <TableRow key={internship.id}>
                     <TableCell>
                       <Image
-                        src={internship.imageSrc || "https://placehold.co/64x64.png"}
+                        src={internship.imageSrc || "https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=64&h=64&auto=format&fit=crop"}
                         alt={internship.name}
                         width={64}
                         height={64}

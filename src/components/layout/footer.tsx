@@ -109,7 +109,7 @@ const Footer = () => {
                                 <span className="absolute bottom-[-4px] left-0 h-0.5 w-12 bg-[#D32F2F]"></span>
                             </h3>
                             <div className="bg-white p-2 rounded-md inline-block">
-                                <Image src="https://placehold.co/150x80.png" width={150} height={80} alt="Our Brand" data-ai-hint="logo brand" />
+                                <Image src="https://logodix.com/logo/796417.png" width={150} height={80} alt="Our Brand" data-ai-hint="logo brand" />
                             </div>
                         </div>
                     </div>

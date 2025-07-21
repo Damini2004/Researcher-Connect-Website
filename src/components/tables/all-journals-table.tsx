@@ -163,7 +163,7 @@ export default function AllJournalsTable() {
                   <TableRow key={journal.id}>
                     <TableCell>
                       <Image
-                        src={journal.imageSrc || "https://placehold.co/64x64.png"}
+                        src={journal.imageSrc || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=64&h=64&auto=format&fit=crop"}
                         alt={journal.journalName}
                         width={64}
                         height={64}

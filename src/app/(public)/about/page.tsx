@@ -16,7 +16,7 @@ export default function AboutPage() {
         </div>
         <div className="flex justify-center">
           <Image
-            src="https://placehold.co/500x500.png"
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=500&h=500&auto=format&fit=crop"
             width={500}
             height={500}
             alt="Team"

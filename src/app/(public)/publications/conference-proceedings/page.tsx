@@ -45,7 +45,7 @@ export default function ConferenceProceedingsPage() {
                             </div>
                         </div>
                         <Image
-                            src="https://placehold.co/600x400.png"
+                            src="https://images.unsplash.com/photo-1587825140708-df876c1b3df1?q=80&w=600&h=400&auto=format&fit=crop"
                             width="600"
                             height="400"
                             alt="Conference Presentation"

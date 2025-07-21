@@ -12,7 +12,7 @@ export default function ConferencePage() {
 
       <Card className="overflow-hidden">
         <Image 
-          src="https://placehold.co/1200x400.png"
+          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&h=400&auto=format&fit=crop"
           width={1200}
           height={400}
           alt="Conference banner"

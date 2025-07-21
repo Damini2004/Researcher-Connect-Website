@@ -18,7 +18,7 @@ export default function IndustrialDesignPage() {
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
                         <Image 
-                            src="https://placehold.co/500x500.png"
+                            src="https://images.unsplash.com/photo-1525972776854-3ed3413337a7?q=80&w=500&h=500&auto=format&fit=crop"
                             alt="Stylish product design"
                             data-ai-hint="product design"
                             fill

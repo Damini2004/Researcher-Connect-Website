@@ -36,7 +36,7 @@ export default function TrademarkPage() {
                         </Button>
                     </div>
                     <div className="relative h-full min-h-[300px] md:min-h-[400px] rounded-r-lg overflow-hidden">
-                        <Image src="https://placehold.co/600x400.png" alt="Trademark" data-ai-hint="brand logo" layout="fill" objectFit="cover" />
+                        <Image src="https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?q=80&w=600&h=400&auto=format&fit=crop" alt="Trademark" data-ai-hint="brand logo" layout="fill" objectFit="cover" />
                     </div>
                 </Card>
 

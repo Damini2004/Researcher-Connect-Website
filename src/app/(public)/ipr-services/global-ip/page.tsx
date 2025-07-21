@@ -38,7 +38,7 @@ export default function GlobalIpPage() {
         <div>
             <section className="relative h-[500px] bg-gray-800 text-white">
                 <Image 
-                    src="https://placehold.co/1600x500.png"
+                    src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=1600&h=500&auto=format&fit=crop"
                     alt="Global map"
                     data-ai-hint="world map"
                     fill

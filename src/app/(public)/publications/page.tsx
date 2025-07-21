@@ -6,12 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const publications = [
-  { id: 1, title: "The Future of AI in Academic Research", authors: "Dr. Eva Rostova, Dr. Kenji Tanaka", journal: "Journal of Innovative Technology", year: 2023, imageSrc: "https://placehold.co/400x300.png", imageHint: "abstract shapes" },
-  { id: 2, title: "Quantum Computing's Impact on Cryptography", authors: "Dr. Samuel Greene", journal: "Annals of Computer Science", year: 2023, imageSrc: "https://placehold.co/400x300.png", imageHint: "quantum computer" },
-  { id: 3, title: "A Meta-Analysis of Climate Change Models", authors: "Dr. Chloe Bennette, Dr. Omar Al-Jamil", journal: "Global Environmental Studies", year: 2022, imageSrc: "https://placehold.co/400x300.png", imageHint: "earth climate" },
-  { id: 4, title: "Advances in Gene-Editing with CRISPR-Cas9", authors: "Dr. Maria Rodriguez", journal: "Genetics & Molecular Biology Review", year: 2022, imageSrc: "https://placehold.co/400x300.png", imageHint: "dna helix" },
-  { id: 5, title: "Nanotechnology in Modern Medicine", authors: "Dr. Kenji Tanaka", journal: "Journal of Nanomedicine", year: 2023, imageSrc: "https://placehold.co/400x300.png", imageHint: "nanotechnology medical" },
-  { id: 6, title: "The Philosophy of Consciousness", authors: "Dr. Alistair Finch", journal: "Mind & Philosophy", year: 2021, imageSrc: "https://placehold.co/400x300.png", imageHint: "brain neurons" },
+  { id: 1, title: "The Future of AI in Academic Research", authors: "Dr. Eva Rostova, Dr. Kenji Tanaka", journal: "Journal of Innovative Technology", year: 2023, imageSrc: "https://images.unsplash.com/photo-1620712943543-bcc4658e7485?q=80&w=400&h=300&auto=format&fit=crop", imageHint: "abstract shapes" },
+  { id: 2, title: "Quantum Computing's Impact on Cryptography", authors: "Dr. Samuel Greene", journal: "Annals of Computer Science", year: 2023, imageSrc: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400&h=300&auto=format&fit=crop", imageHint: "quantum computer" },
+  { id: 3, title: "A Meta-Analysis of Climate Change Models", authors: "Dr. Chloe Bennette, Dr. Omar Al-Jamil", journal: "Global Environmental Studies", year: 2022, imageSrc: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&h=300&auto=format&fit=crop", imageHint: "earth climate" },
+  { id: 4, title: "Advances in Gene-Editing with CRISPR-Cas9", authors: "Dr. Maria Rodriguez", journal: "Genetics & Molecular Biology Review", year: 2022, imageSrc: "https://images.unsplash.com/photo-1533735380053-eb8d0759b24a?q=80&w=400&h=300&auto=format&fit=crop", imageHint: "dna helix" },
+  { id: 5, title: "Nanotechnology in Modern Medicine", authors: "Dr. Kenji Tanaka", journal: "Journal of Nanomedicine", year: 2023, imageSrc: "https://images.unsplash.com/photo-1581093450021-4a7360e9a118?q=80&w=400&h=300&auto=format&fit=crop", imageHint: "nanotechnology medical" },
+  { id: 6, title: "The Philosophy of Consciousness", authors: "Dr. Alistair Finch", journal: "Mind & Philosophy", year: 2021, imageSrc: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=400&h=300&auto=format&fit=crop", imageHint: "brain neurons" },
 ]
 
 export default function PublicationsPage() {

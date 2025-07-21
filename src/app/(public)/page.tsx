@@ -39,7 +39,7 @@ export default function HomePage() {
               <div className="relative group">
                  <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-xl blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
                 <Image
-                  src="https://placehold.co/600x400.png"
+                  src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&h=400&auto=format&fit=crop"
                   width="600"
                   height="400"
                   alt="Hero"
@@ -114,7 +114,7 @@ export default function HomePage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-12">
               <div className="relative group overflow-hidden rounded-xl">
                 <Image
-                  src="https://placehold.co/400x600.png"
+                  src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=400&h=600&auto=format&fit=crop"
                   alt="Highlight 1"
                   width={400}
                   height={600}
@@ -129,7 +129,7 @@ export default function HomePage() {
               </div>
               <div className="relative group overflow-hidden rounded-xl">
                 <Image
-                  src="https://placehold.co/400x600.png"
+                  src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=400&h=600&auto=format&fit=crop"
                   alt="Highlight 2"
                   width={400}
                   height={600}
@@ -144,7 +144,7 @@ export default function HomePage() {
               </div>
               <div className="relative group overflow-hidden rounded-xl">
                 <Image
-                  src="https://placehold.co/400x600.png"
+                  src="https://images.unsplash.com/photo-1694833256053-53538407f354?q=80&w=400&h=600&auto=format&fit=crop"
                   alt="Highlight 3"
                   width={400}
                   height={600}
@@ -159,7 +159,7 @@ export default function HomePage() {
               </div>
               <div className="relative group overflow-hidden rounded-xl">
                 <Image
-                  src="https://placehold.co/400x600.png"
+                  src="https://images.unsplash.com/photo-1554474812-70c7c394865f?q=80&w=400&h=600&auto=format&fit=crop"
                   alt="Highlight 4"
                   width={400}
                   height={600}
@@ -194,11 +194,11 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl grid-cols-2 items-center justify-items-center gap-y-12 gap-x-6 py-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 1" data-ai-hint="logo company" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
-              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 2" data-ai-hint="logo brand" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
-              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 3" data-ai-hint="logo business" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
-              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 4" data-ai-hint="logo tech" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
-              <Image src="https://placehold.co/150x60.png" width={150} height={60} alt="Partner Logo 5" data-ai-hint="logo education" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://logodix.com/logo/2038481.png" width={150} height={60} alt="Partner Logo 1" data-ai-hint="logo company" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://logodix.com/logo/1993463.png" width={150} height={60} alt="Partner Logo 2" data-ai-hint="logo brand" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://logodix.com/logo/1712867.png" width={150} height={60} alt="Partner Logo 3" data-ai-hint="logo business" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://logodix.com/logo/1101923.png" width={150} height={60} alt="Partner Logo 4" data-ai-hint="logo tech" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
+              <Image src="https://logodix.com/logo/647339.png" width={150} height={60} alt="Partner Logo 5" data-ai-hint="logo education" className="opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0" />
             </div>
           </div>
         </section>

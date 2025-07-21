@@ -40,7 +40,7 @@ export default function ResponseToReviewersPage() {
                         </div>
                         <div className="relative min-h-[250px] md:min-h-0 md:h-full">
                             <Image
-                                src="https://placehold.co/600x400.png"
+                                src="https://images.unsplash.com/photo-1516534775068-ba3e7458af70?q=80&w=600&h=400&auto=format&fit=crop"
                                 alt="Collaborative discussion"
                                 data-ai-hint="discussion feedback"
                                 fill

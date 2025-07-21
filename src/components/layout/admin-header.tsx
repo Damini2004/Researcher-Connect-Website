@@ -38,7 +38,7 @@ export default function AdminHeader({
             className="overflow-hidden rounded-full"
           >
             <Avatar>
-              <AvatarImage src="https://placehold.co/32x32.png" data-ai-hint="avatar placeholder" alt="Admin" />
+              <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=32&h=32&auto=format&fit=crop" data-ai-hint="avatar placeholder" alt="Admin" />
               <AvatarFallback>
                 <User />
               </AvatarFallback>

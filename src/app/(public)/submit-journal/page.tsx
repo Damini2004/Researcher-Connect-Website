@@ -28,7 +28,7 @@ export default function SubmitJournalPage() {
       {/* Hero Section */}
       <section className="relative w-full h-[400px] bg-primary/10 flex items-center justify-center text-center px-4">
           <Image
-              src="https://placehold.co/1600x400.png"
+              src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600&h=400&auto=format&fit=crop"
               alt="Researcher writing"
               data-ai-hint="research writing"
               fill
