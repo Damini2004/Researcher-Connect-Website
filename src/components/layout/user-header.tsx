@@ -46,7 +46,7 @@ const publicationSubMenu = [
     { href: "/publications/conference-proceedings", label: "Conference Proceedings", icon: Presentation },
     { href: "/publications/response-to-reviewers", label: "Response To Reviewers", icon: MessageSquare },
     { href: "/publications/peer-review", label: "Pre-Submission Peer Review", icon: Users },
-    { href: "/publications/journal-listing", label: "Journal Listing", icon: Library },
+    { href: "/publications/digital-library", label: "Journal Listing", icon: Library },
 ]
 
 const iprServicesSubMenu = [
@@ -67,12 +67,12 @@ const conferenceSubMenuLinks = [
 ]
 
 const conferenceSubMenuItems = [
-    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "bg-red-700" },
-    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "bg-blue-900" },
-    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "bg-red-700" },
-    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "bg-blue-900" },
-    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "bg-red-700" },
-    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "bg-blue-900" },
+    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "bg-primary/90 hover:bg-primary" },
+    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "bg-blue-900 hover:bg-blue-950" },
+    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "bg-primary/90 hover:bg-primary" },
+    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "bg-blue-900 hover:bg-blue-950" },
+    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "bg-primary/90 hover:bg-primary" },
+    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "bg-blue-900 hover:bg-blue-950" },
 ]
 
 const mainNavLinks = [
@@ -116,21 +116,21 @@ export default function UserHeader() {
 
   const ConferenceMegaMenu = () => (
     <PopoverContent className="w-screen max-w-4xl p-0" sideOffset={15}>
-        <div className="grid grid-cols-12 rounded-lg overflow-hidden shadow-lg">
-            <div className="col-span-4 bg-white p-6">
-                <nav className="flex flex-col gap-1">
+        <div className="grid grid-cols-12 rounded-lg overflow-hidden shadow-2xl border bg-card">
+            <div className="col-span-4 bg-background p-6">
+                <nav className="flex flex-col space-y-1">
                     {conferenceSubMenuLinks.map(link => (
-                        <Link key={link.label} href={link.href} className="block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 font-medium">
+                        <Link key={link.label} href={link.href} className="block px-3 py-2 text-sm text-foreground/80 rounded-md hover:bg-accent hover:text-accent-foreground font-medium transition-colors duration-200">
                             {link.label}
                         </Link>
                     ))}
                 </nav>
             </div>
-            <div className="col-span-8 p-6 bg-gray-50">
-                <div className="grid grid-cols-3 gap-4">
+            <div className="col-span-8 p-6 bg-secondary/50">
+                <div className="grid grid-cols-3 gap-2">
                     {conferenceSubMenuItems.map(item => (
-                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 rounded-lg text-white transition-transform hover:-translate-y-1", item.color)}>
-                            <item.icon className="h-10 w-10 mb-2" />
+                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 rounded-lg text-white transition-all duration-300 hover:scale-105", item.color)}>
+                            <item.icon className="h-10 w-10 mb-2 transition-transform duration-300 group-hover:rotate-6" />
                             <span className="text-sm font-semibold">{item.label}</span>
                         </Link>
                     ))}
