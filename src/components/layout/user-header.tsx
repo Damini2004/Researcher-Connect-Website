@@ -67,12 +67,12 @@ const conferenceSubMenuLinks = [
 ]
 
 const conferenceSubMenuItems = [
-    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "bg-primary/90 hover:bg-primary" },
+    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "border hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "border hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "border hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "border hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "border hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "border hover:bg-primary/10 hover:text-primary" },
 ]
 
 const mainNavLinks = [
@@ -129,7 +129,7 @@ export default function UserHeader() {
             <div className="col-span-8 p-6 bg-secondary/50">
                 <div className="grid grid-cols-3">
                     {conferenceSubMenuItems.map(item => (
-                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 text-white transition-all duration-300 hover:scale-105", item.color)}>
+                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 text-foreground transition-all duration-300 hover:scale-105", item.color)}>
                             <item.icon className="h-10 w-10 mb-2 transition-transform duration-300 group-hover:rotate-6" />
                             <span className="text-sm font-semibold">{item.label}</span>
                         </Link>
