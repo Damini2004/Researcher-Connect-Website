@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { getConferences, Conference } from "@/services/conferenceService";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ConferencePage() {
