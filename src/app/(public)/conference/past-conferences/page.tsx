@@ -71,9 +71,9 @@ export default function PastConferencesPage() {
             ))}
         </div>
       ) : pastConferences.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {pastConferences.map((conference) => (
-            <Card key={conference.id} className="flex flex-col">
+            <Card key={conference.id} className="flex flex-col w-full max-w-sm">
               <div className="relative h-[200px] w-full">
                 <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover rounded-t-lg" data-ai-hint="conference event"/>
               </div>
