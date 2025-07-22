@@ -41,7 +41,7 @@ export default function SponsorsPage() {
   return (
     <div className="bg-secondary/50">
         <div className="container py-16 md:py-24 space-y-24">
-            <section>
+            <section className="flex flex-col items-center">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Sponsors & Exhibitors</h1>
                     <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
