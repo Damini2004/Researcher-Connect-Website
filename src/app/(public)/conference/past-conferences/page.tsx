@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { getConferences, Conference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
 
 export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
@@ -52,7 +51,6 @@ export default function PastConferencesPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
                 <Card key={i}>
-                    <Skeleton className="h-[200px] w-full rounded-t-lg" />
                     <CardHeader>
                         <Skeleton className="h-6 w-3/4 mb-2" />
                         <div className="space-y-2">
