@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import Image from "next/image";
 
 // Custom Icons for Conference Menu
 const UpcomingConferencesIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -118,6 +119,16 @@ export default function UserHeader() {
     <PopoverContent className="w-screen max-w-3xl p-0 overflow-hidden shadow-2xl border bg-card" sideOffset={15}>
         <div className="grid grid-cols-12">
             <div className="col-span-4 bg-background p-6">
+                 <div className="mb-4">
+                    <Image 
+                        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=300&h=200&auto=format&fit=crop"
+                        width={300}
+                        height={200}
+                        alt="Conference"
+                        data-ai-hint="conference presentation"
+                        className="rounded-lg object-cover"
+                    />
+                </div>
                 <nav className="flex flex-col space-y-1">
                     {conferenceSubMenuLinks.map(link => (
                         <Link key={link.label} href={link.href} className="block px-3 py-2 text-sm text-foreground/80 rounded-md hover:bg-accent hover:text-accent-foreground font-medium transition-colors duration-200">
@@ -126,7 +137,7 @@ export default function UserHeader() {
                     ))}
                 </nav>
             </div>
-            <div className="col-span-8 p-6 bg-secondary/50">
+            <div className="col-span-8 p-0 bg-secondary/50">
                 <div className="grid grid-cols-3">
                     {conferenceSubMenuItems.map(item => (
                         <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 text-foreground transition-all duration-300 hover:scale-105", item.color)}>
@@ -349,3 +360,4 @@ export default function UserHeader() {
     
 
     
+
