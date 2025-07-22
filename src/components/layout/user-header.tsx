@@ -68,11 +68,11 @@ const conferenceSubMenuLinks = [
 
 const conferenceSubMenuItems = [
     { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "bg-blue-900 hover:bg-blue-950" },
+    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "bg-primary/90 hover:bg-primary" },
     { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "bg-blue-900 hover:bg-blue-950" },
+    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "bg-primary/90 hover:bg-primary" },
     { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "bg-primary/90 hover:bg-primary" },
-    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "bg-blue-900 hover:bg-blue-950" },
+    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "bg-primary/90 hover:bg-primary" },
 ]
 
 const mainNavLinks = [
@@ -115,8 +115,8 @@ export default function UserHeader() {
   }
 
   const ConferenceMegaMenu = () => (
-    <PopoverContent className="w-screen max-w-3xl p-0" sideOffset={15}>
-        <div className="grid grid-cols-12 overflow-hidden shadow-2xl border bg-card">
+    <PopoverContent className="w-screen max-w-3xl p-0 overflow-hidden shadow-2xl border bg-card" sideOffset={15}>
+        <div className="grid grid-cols-12">
             <div className="col-span-4 bg-background p-6">
                 <nav className="flex flex-col space-y-1">
                     {conferenceSubMenuLinks.map(link => (
@@ -345,5 +345,7 @@ export default function UserHeader() {
     </header>
   );
 }
+
+    
 
     
