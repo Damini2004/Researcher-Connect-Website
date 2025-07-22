@@ -116,7 +116,7 @@ export default function UserHeader() {
 
   const ConferenceMegaMenu = () => (
     <PopoverContent className="w-screen max-w-3xl p-0" sideOffset={15}>
-        <div className="grid grid-cols-12 rounded-lg overflow-hidden shadow-2xl border bg-card">
+        <div className="grid grid-cols-12 overflow-hidden shadow-2xl border bg-card">
             <div className="col-span-4 bg-background p-6">
                 <nav className="flex flex-col space-y-1">
                     {conferenceSubMenuLinks.map(link => (
@@ -127,9 +127,9 @@ export default function UserHeader() {
                 </nav>
             </div>
             <div className="col-span-8 p-6 bg-secondary/50">
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3">
                     {conferenceSubMenuItems.map(item => (
-                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 rounded-lg text-white transition-all duration-300 hover:scale-105", item.color)}>
+                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 text-white transition-all duration-300 hover:scale-105", item.color)}>
                             <item.icon className="h-10 w-10 mb-2 transition-transform duration-300 group-hover:rotate-6" />
                             <span className="text-sm font-semibold">{item.label}</span>
                         </Link>
@@ -345,3 +345,5 @@ export default function UserHeader() {
     </header>
   );
 }
+
+    
