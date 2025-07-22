@@ -59,12 +59,12 @@ const iprServicesSubMenu = [
 ]
 
 const conferenceSubMenuLinks = [
-    { href: "#", label: "About IFERP Conference" },
-    { href: "#", label: "Plan a Scientific Conference" },
-    { href: "#", label: "Sponsors & Exhibitors" },
-    { href: "#", label: "Awards & Recognition" },
-    { href: "#", label: "Workshops & Courses" },
-    { href: "#", label: "Conference FAQ" },
+    { href: "/conference/about-conference", label: "About IFERP Conference" },
+    { href: "/conference/plan-conference", label: "Plan a Scientific Conference" },
+    { href: "/conference/sponsors", label: "Sponsors & Exhibitors" },
+    { href: "/conference/awards", label: "Awards & Recognition" },
+    { href: "/conference/workshops", label: "Workshops & Courses" },
+    { href: "/conference/faq", label: "Conference FAQ" },
 ]
 
 const conferenceSubMenuItems = [
@@ -360,4 +360,5 @@ export default function UserHeader() {
     
 
     
+
 
