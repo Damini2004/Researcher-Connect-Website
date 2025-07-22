@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { getConferences, Conference } from "@/services/conferenceService";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ConferencePage() {
@@ -78,14 +77,6 @@ export default function ConferencePage() {
       </div>
 
       <Card className="overflow-hidden shadow-xl border-primary/10">
-        <Image 
-          src={displayConference.imageSrc}
-          width={1200}
-          height={400}
-          alt="Conference banner"
-          data-ai-hint="conference academic"
-          className="w-full h-[400px] object-cover"
-        />
         <CardHeader>
           <CardTitle className="text-2xl">Join us in {displayConference.location} | {displayConference.date}</CardTitle>
           <CardDescription>
