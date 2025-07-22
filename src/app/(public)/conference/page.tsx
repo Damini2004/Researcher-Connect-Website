@@ -24,20 +24,15 @@ export default function ConferencePage() {
 
         // Find the most recent upcoming conference
         const upcoming = allConferences
-          .filter(conf => {
-              try {
-                  return new Date(conf.date) >= now;
-              } catch (e) {
-                  return false;
-              }
-          })
+          .filter(conf => conf.dateObject >= now)
           .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         
         if (upcoming.length > 0) {
             setConference(upcoming[0]);
         } else if (allConferences.length > 0) {
             // Fallback to the most recently created conference if no upcoming ones are found
-            setConference(allConferences[0]);
+            const sortedByCreation = [...allConferences].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setConference(sortedByCreation[0]);
         }
 
       } catch (error) {
@@ -61,7 +56,6 @@ export default function ConferencePage() {
                 <Skeleton className="h-6 w-1/2 mx-auto mt-4" />
             </div>
             <Card className="overflow-hidden">
-                <Skeleton className="h-[400px] w-full" />
                 <CardHeader>
                     <Skeleton className="h-8 w-1/2" />
                     <Skeleton className="h-5 w-3/4 mt-2" />
@@ -98,9 +92,6 @@ export default function ConferencePage() {
       </div>
 
       <Card className="overflow-hidden shadow-xl border-primary/10">
-        <div className="relative h-[400px] w-full">
-            <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
-        </div>
         <CardHeader>
           <CardTitle className="text-2xl">Join us in {conference.location} | {conference.date}</CardTitle>
           <CardDescription>

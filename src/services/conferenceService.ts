@@ -1,4 +1,3 @@
-
 // src/services/conferenceService.ts
 'use server';
 
@@ -10,7 +9,8 @@ export interface Conference {
     id: string;
     title: string;
     description: string;
-    date: string;
+    date: string; // The original string date
+    dateObject: Date; // A reliable Date object for comparisons
     location: string;
     imageSrc: string;
     createdAt: string;
@@ -32,7 +32,7 @@ interface AddConferenceData {
     imageSrc: string;
 }
 
-export async function addConference(data: AddConferenceData): Promise<{ success: boolean; message: string; newConference?: Conference }> {
+export async function addConference(data: AddConferenceData): Promise<{ success: boolean; message: string; newConference?: Partial<Conference> }> {
   try {
     const validationResult = conferenceSchema.safeParse(data);
     
@@ -70,11 +70,20 @@ export async function getConferences(): Promise<Conference[]> {
         const conferences: Conference[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
+            const dateString = data.date;
+            const dateObject = new Date(dateString);
+            
+            // Handle potential "Invalid Date" issues by setting a fallback
+            if (isNaN(dateObject.getTime())) {
+                console.warn(`Invalid date string encountered: "${dateString}" for document ID: ${doc.id}`);
+            }
+
             conferences.push({
                 id: doc.id,
                 title: data.title,
                 description: data.description,
-                date: data.date,
+                date: dateString,
+                dateObject: dateObject, // Provide the parsed Date object
                 location: data.location,
                 imageSrc: data.imageSrc,
                 createdAt: data.createdAt.toDate().toISOString(),

@@ -23,11 +23,8 @@ export default function UpcomingConferencesPage() {
         now.setHours(0, 0, 0, 0); // Set to start of today for comparison
 
         const upcoming = allConferences.filter(conf => {
-            try {
-                return new Date(conf.date) >= now;
-            } catch (e) {
-                return false;
-            }
+            // Use the reliable dateObject for comparison
+            return conf.dateObject >= now;
         });
 
         setUpcomingConferences(upcoming);

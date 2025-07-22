@@ -24,11 +24,8 @@ export default function PastConferencesPage() {
         now.setHours(0, 0, 0, 0); // Set to start of today for comparison
 
         const past = allConferences.filter(conf => {
-            try {
-                return new Date(conf.date) < now;
-            } catch (e) {
-                return false;
-            }
+            // Use the reliable dateObject for comparison
+            return conf.dateObject < now;
         });
 
         setPastConferences(past);
