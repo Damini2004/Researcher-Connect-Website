@@ -115,7 +115,7 @@ export default function UserHeader() {
   }
 
   const ConferenceMegaMenu = () => (
-    <PopoverContent className="w-screen max-w-4xl p-0" sideOffset={15}>
+    <PopoverContent className="w-screen max-w-3xl p-0" sideOffset={15}>
         <div className="grid grid-cols-12 rounded-lg overflow-hidden shadow-2xl border bg-card">
             <div className="col-span-4 bg-background p-6">
                 <nav className="flex flex-col space-y-1">
