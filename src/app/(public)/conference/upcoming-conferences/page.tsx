@@ -1,30 +1,49 @@
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
-
-const upcomingConferences = [
-    {
-        title: "International Conference on Artificial Intelligence and Machine Learning",
-        date: "October 10-12, 2024",
-        location: "San Francisco, USA",
-        description: "Explore the latest breakthroughs in AI, from neural networks to quantum machine learning."
-    },
-    {
-        title: "Global Summit on Renewable Energy and Sustainability",
-        date: "November 5-7, 2024",
-        location: "Berlin, Germany",
-        description: "Join experts to discuss innovations in sustainable energy, climate policy, and green technologies."
-    },
-    {
-        title: "World Congress on Biomedical Engineering",
-        date: "December 1-4, 2024",
-        location: "Virtual Event",
-        description: "A virtual gathering of the brightest minds in biomedical engineering and medical technology."
-    }
-];
+import { useEffect, useState } from "react";
+import { getConferences, Conference } from "@/services/conferenceService";
+import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UpcomingConferencesPage() {
+  const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchAndFilterConferences = async () => {
+      setIsLoading(true);
+      try {
+        const allConferences = await getConferences();
+        const now = new Date();
+        now.setHours(0, 0, 0, 0); // Set to start of today for comparison
+
+        const upcoming = allConferences.filter(conf => {
+            try {
+                return new Date(conf.date) >= now;
+            } catch (e) {
+                return false;
+            }
+        });
+
+        setUpcomingConferences(upcoming);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Could not fetch conferences.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAndFilterConferences();
+  }, [toast]);
+
   return (
     <div className="bg-secondary/50">
         <div className="container py-16 md:py-24">
@@ -35,33 +54,60 @@ export default function UpcomingConferencesPage() {
             </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingConferences.map((conference, index) => (
-            <Card key={index} className="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                <CardHeader>
-                <CardTitle>{conference.title}</CardTitle>
-                <div className="flex flex-col sm:flex-row gap-4 pt-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>{conference.date}</span>
+        {isLoading ? (
+             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[...Array(3)].map((_, i) => (
+                    <Card key={i} className="flex flex-col">
+                        <CardHeader>
+                           <Skeleton className="h-6 w-3/4 mb-2" />
+                           <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                                <Skeleton className="h-5 w-1/2" />
+                                <Skeleton className="h-5 w-1/2" />
+                           </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow space-y-2">
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-2/3" />
+                        </CardContent>
+                        <CardFooter>
+                            <Skeleton className="h-10 w-full" />
+                        </CardFooter>
+                    </Card>
+                ))}
+             </div>
+        ) : upcomingConferences.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {upcomingConferences.map((conference) => (
+                <Card key={conference.id} className="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                    <CardHeader>
+                    <CardTitle>{conference.title}</CardTitle>
+                    <div className="flex flex-col sm:flex-row gap-4 pt-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4" />
+                            <span>{conference.date}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4" />
+                            <span>{conference.location}</span>
+                        </div>
                     </div>
-                     <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
-                        <span>{conference.location}</span>
-                    </div>
-                </div>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                <p className="text-muted-foreground">{conference.description}</p>
-                </CardContent>
-                <CardFooter>
-                <Button className="w-full">
-                    Register Now <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                </CardFooter>
-            </Card>
-            ))}
-        </div>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                    <p className="text-muted-foreground line-clamp-3">{conference.description}</p>
+                    </CardContent>
+                    <CardFooter>
+                    <Button className="w-full">
+                        Register Now <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    </CardFooter>
+                </Card>
+                ))}
+            </div>
+        ) : (
+             <div className="text-center py-16">
+                <p className="text-muted-foreground">There are no upcoming conferences at the moment. Please check back later!</p>
+            </div>
+        )}
         </div>
     </div>
   );
