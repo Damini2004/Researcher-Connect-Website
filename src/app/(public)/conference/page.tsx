@@ -19,12 +19,12 @@ export default function ConferencePage() {
       try {
         const allConferences = await getConferences();
         const now = new Date();
-        now.setHours(0, 0, 0, 0);
+        now.setUTCHours(0, 0, 0, 0);
 
-        // Find the most recent upcoming conference
+        // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
           .filter(conf => conf.dateObject >= now)
-          .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+          .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
         
         if (upcoming.length > 0) {
             setConference(upcoming[0]);

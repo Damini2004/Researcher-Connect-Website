@@ -21,10 +21,9 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
         const now = new Date();
-        now.setHours(0, 0, 0, 0); // Set to start of today for comparison
+        now.setUTCHours(0, 0, 0, 0);
 
         const past = allConferences.filter(conf => {
-            // Use the reliable dateObject for comparison
             return conf.dateObject < now;
         });
 

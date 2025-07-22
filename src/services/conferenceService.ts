@@ -71,9 +71,11 @@ export async function getConferences(): Promise<Conference[]> {
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
             const dateString = data.date;
-            const dateObject = new Date(dateString);
+
+            // Correctly parse the date string as UTC to avoid timezone issues.
+            // "July 28, 2024" becomes "2024-07-28T00:00:00.000Z"
+            const dateObject = new Date(dateString + ' UTC');
             
-            // Handle potential "Invalid Date" issues by setting a fallback
             if (isNaN(dateObject.getTime())) {
                 console.warn(`Invalid date string encountered: "${dateString}" for document ID: ${doc.id}`);
             }
@@ -83,7 +85,7 @@ export async function getConferences(): Promise<Conference[]> {
                 title: data.title,
                 description: data.description,
                 date: dateString,
-                dateObject: dateObject, // Provide the parsed Date object
+                dateObject: dateObject,
                 location: data.location,
                 imageSrc: data.imageSrc,
                 createdAt: data.createdAt.toDate().toISOString(),
