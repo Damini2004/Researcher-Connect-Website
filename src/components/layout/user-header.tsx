@@ -24,7 +24,7 @@ const publicationSubMenu = [
     { href: "/publications/conference-proceedings", label: "Conference Proceedings", icon: Presentation },
     { href: "/publications/response-to-reviewers", label: "Response To Reviewers", icon: MessageSquare },
     { href: "/publications/peer-review", label: "Pre-Submission Peer Review", icon: Users },
-    { href: "/publications/digital-library", label: "Digital Library", icon: Library },
+    { href: "/publications/digital-library", label: "Journal Listing", icon: Library },
 ]
 
 const iprServicesSubMenu = [
