@@ -1,5 +1,4 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
@@ -29,25 +28,20 @@ const faqs = [
 export default function FaqPage() {
   return (
     <div className="container py-12 md:py-24">
-      <div className="text-center mb-12">
+      <div className="text-center mb-16">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Frequently Asked Questions</h1>
-        <p className="mt-4 text-lg text-muted-foreground">Find answers to common questions about our conferences.</p>
+        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Find answers to common questions about our conferences.</p>
       </div>
-      <Card className="max-w-3xl mx-auto">
-        <CardHeader>
-          <CardTitle>Conference FAQs</CardTitle>
-        </CardHeader>
-        <CardContent>
-            <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, index) => (
-                    <AccordionItem key={index} value={`item-${index}`}>
-                        <AccordionTrigger>{faq.question}</AccordionTrigger>
-                        <AccordionContent>{faq.answer}</AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-        </CardContent>
-      </Card>
+      <div className="max-w-3xl mx-auto">
+        <Accordion type="single" collapsible className="w-full space-y-4">
+            {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="bg-secondary/50 rounded-lg px-6">
+                    <AccordionTrigger className="text-left hover:no-underline">{faq.question}</AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+                </AccordionItem>
+            ))}
+        </Accordion>
+      </div>
     </div>
   );
 }
