@@ -28,6 +28,15 @@ const sponsorshipBenefits = [
     }
 ]
 
+const sponsorLogos = [
+    { src: "https://logodix.com/logo/2038481.png", alt: "Sponsor Logo 1", hint: "logo company" },
+    { src: "https://logodix.com/logo/1993463.png", alt: "Sponsor Logo 2", hint: "logo brand" },
+    { src: "https://logodix.com/logo/1712867.png", alt: "Sponsor Logo 3", hint: "logo business" },
+    { src: "https://logodix.com/logo/1101923.png", alt: "Sponsor Logo 4", hint: "logo tech" },
+    { src: "https://logodix.com/logo/647339.png", alt: "Sponsor Logo 5", hint: "logo education" },
+]
+
+
 export default function SponsorsPage() {
   return (
     <div className="bg-secondary/50">
@@ -64,12 +73,20 @@ export default function SponsorsPage() {
                         We are proud to partner with leading organizations from academia and industry.
                     </p>
                 </div>
-                <div className="mx-auto grid max-w-5xl grid-cols-2 items-center justify-items-center gap-y-12 gap-x-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                    <Image src="https://logodix.com/logo/2038481.png" width={150} height={60} alt="Sponsor Logo 1" data-ai-hint="logo company" className="opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
-                    <Image src="https://logodix.com/logo/1993463.png" width={150} height={60} alt="Sponsor Logo 2" data-ai-hint="logo brand" className="opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
-                    <Image src="https://logodix.com/logo/1712867.png" width={150} height={60} alt="Sponsor Logo 3" data-ai-hint="logo business" className="opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
-                    <Image src="https://logodix.com/logo/1101923.png" width={150} height={60} alt="Sponsor Logo 4" data-ai-hint="logo tech" className="opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
-                    <Image src="https://logodix.com/logo/647339.png" width={150} height={60} alt="Sponsor Logo 5" data-ai-hint="logo education" className="opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
+                <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]">
+                    <div className="flex w-max animate-[scroll-x_30s_linear_infinite]">
+                        {[...sponsorLogos, ...sponsorLogos].map((logo, index) => (
+                             <Image 
+                                key={index}
+                                src={logo.src} 
+                                width={150} 
+                                height={60} 
+                                alt={logo.alt} 
+                                data-ai-hint={logo.hint}
+                                className="mx-8 h-16 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" 
+                            />
+                        ))}
+                    </div>
                 </div>
             </section>
             
