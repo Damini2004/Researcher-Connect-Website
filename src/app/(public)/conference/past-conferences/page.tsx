@@ -73,9 +73,6 @@ export default function PastConferencesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {pastConferences.map((conference) => (
             <Card key={conference.id} className="flex flex-col w-full max-w-sm">
-              <div className="relative h-[200px] w-full">
-                <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover rounded-t-lg" data-ai-hint="conference event"/>
-              </div>
               <CardHeader>
                 <CardTitle>{conference.title}</CardTitle>
                 <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-1">
