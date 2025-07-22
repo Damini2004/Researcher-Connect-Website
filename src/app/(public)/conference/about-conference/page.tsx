@@ -1,7 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
-import Image from "next/image";
 
 const corePrinciples = [
     "Fostering Collaboration: We create environments that encourage networking and interdisciplinary collaboration among academics, researchers, and industry professionals.",
@@ -21,35 +20,24 @@ export default function AboutConferencePage() {
       </div>
       
       <Card className="max-w-4xl mx-auto shadow-lg">
-          <div className="grid md:grid-cols-2">
-              <div className="p-8">
-                <CardHeader className="p-0">
-                    <CardTitle>Our Mission</CardTitle>
-                    <CardDescription className="pt-2">
-                        At IFERP, our mission is to provide a premier platform for researchers, academics, and industry professionals to present and discuss the most recent innovations, trends, and concerns in various fields of engineering and technology.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="p-0 mt-6">
-                    <h3 className="font-semibold mb-4">Core Principles</h3>
-                    <ul className="space-y-4">
-                        {corePrinciples.map((principle, index) => (
-                            <li key={index} className="flex items-start">
-                                <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-1 flex-shrink-0" />
-                                <span className="text-muted-foreground text-sm">{principle}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-              </div>
-               <div className="relative min-h-[300px] md:min-h-0">
-                    <Image
-                        src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=600&h=500&auto=format&fit=crop"
-                        alt="Professional conference"
-                        data-ai-hint="conference collaboration"
-                        fill
-                        className="object-cover md:rounded-r-lg"
-                    />
-               </div>
+          <div className="p-8">
+            <CardHeader className="p-0">
+                <CardTitle>Our Mission</CardTitle>
+                <CardDescription className="pt-2">
+                    At IFERP, our mission is to provide a premier platform for researchers, academics, and industry professionals to present and discuss the most recent innovations, trends, and concerns in various fields of engineering and technology.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0 mt-6">
+                <h3 className="font-semibold mb-4">Core Principles</h3>
+                <ul className="space-y-4">
+                    {corePrinciples.map((principle, index) => (
+                        <li key={index} className="flex items-start">
+                            <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                            <span className="text-muted-foreground text-sm">{principle}</span>
+                        </li>
+                    ))}
+                </ul>
+            </CardContent>
           </div>
       </Card>
     </div>
