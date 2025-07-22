@@ -31,23 +31,13 @@ export default function WorkshopsPage() {
   return (
     <div className="bg-secondary/50">
       <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-                 <Image 
-                    src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=600&h=800&auto=format&fit=crop"
-                    alt="Workshop"
-                    data-ai-hint="workshop collaboration"
-                    fill
-                    className="object-cover"
-                 />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-            </div>
-          <div className="space-y-6">
+        <div className="grid lg:grid-cols-1 gap-12 items-center">
+          <div className="space-y-6 text-center">
             <div className="bg-primary/10 text-primary inline-block rounded-full px-4 py-1 font-semibold text-sm">
                 Skill Development
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Workshops & Short Courses</h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 Stay at the forefront of your field with our expert-led workshops and short courses. Designed for researchers, academics, and industry professionals, our programs provide practical skills and in-depth knowledge to accelerate your career.
             </p>
           </div>
