@@ -21,14 +21,14 @@ export default function AboutConferencePage() {
       
       <Card className="max-w-4xl mx-auto shadow-lg">
           <div className="p-8">
-            <CardHeader className="p-0">
+            <CardHeader className="p-0 text-center">
                 <CardTitle>Our Mission</CardTitle>
                 <CardDescription className="pt-2">
                     At IFERP, our mission is to provide a premier platform for researchers, academics, and industry professionals to present and discuss the most recent innovations, trends, and concerns in various fields of engineering and technology.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="p-0 mt-6">
-                <h3 className="font-semibold mb-4">Core Principles</h3>
+            <CardContent className="p-0 mt-8">
+                <h3 className="font-semibold mb-4 text-center">Core Principles</h3>
                 <ul className="space-y-4">
                     {corePrinciples.map((principle, index) => (
                         <li key={index} className="flex items-start">
