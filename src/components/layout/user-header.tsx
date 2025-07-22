@@ -16,6 +16,28 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+// Custom Icons for Conference Menu
+const UpcomingConferencesIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M12 18h.01"/><path d="M16 14h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/></svg>
+);
+const ScientificGalleryIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 14h18"/><path d="m14 10-2.5 2.5a1.5 1.5 0 0 1-2.12 0L8 11"/></svg>
+);
+const PastWebinarsIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+);
+const UpcomingWebinarsIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+);
+const PastConferencesIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+);
+const ConferenceVideosIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+);
+
 
 const publicationSubMenu = [
     { href: "/publications/overview", label: "Overview", icon: FileText },
@@ -24,7 +46,7 @@ const publicationSubMenu = [
     { href: "/publications/conference-proceedings", label: "Conference Proceedings", icon: Presentation },
     { href: "/publications/response-to-reviewers", label: "Response To Reviewers", icon: MessageSquare },
     { href: "/publications/peer-review", label: "Pre-Submission Peer Review", icon: Users },
-    { href: "/publications/digital-library", label: "Journal Listing", icon: Library },
+    { href: "/publications/journal-listing", label: "Journal Listing", icon: Library },
 ]
 
 const iprServicesSubMenu = [
@@ -35,9 +57,32 @@ const iprServicesSubMenu = [
     { href: "/ipr-services/global-ip", label: "Global IP", icon: Globe },
 ]
 
+const conferenceSubMenuLinks = [
+    { href: "#", label: "About IFERP Conference" },
+    { href: "#", label: "Plan a Scientific Conference" },
+    { href: "#", label: "Sponsors & Exhibitors" },
+    { href: "#", label: "Awards & Recognition" },
+    { href: "#", label: "Workshops & Courses" },
+    { href: "#", label: "Conference FAQ" },
+]
+
+const conferenceSubMenuItems = [
+    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "bg-red-700" },
+    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "bg-blue-900" },
+    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "bg-red-700" },
+    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "bg-blue-900" },
+    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "bg-red-700" },
+    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "bg-blue-900" },
+]
+
 const mainNavLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { 
+    href: "/conference", 
+    label: "Conference",
+    isMegaMenu: true,
+  },
   { 
     href: "/publications", 
     label: "Publications",
@@ -69,7 +114,53 @@ export default function UserHeader() {
     return null; 
   }
 
-  const NavLink = ({ link }: { link: { href: string, label: string, children?: any[] } }) => {
+  const ConferenceMegaMenu = () => (
+    <PopoverContent className="w-screen max-w-4xl p-0" sideOffset={15}>
+        <div className="grid grid-cols-12 rounded-lg overflow-hidden shadow-lg">
+            <div className="col-span-4 bg-white p-6">
+                <nav className="flex flex-col gap-1">
+                    {conferenceSubMenuLinks.map(link => (
+                        <Link key={link.label} href={link.href} className="block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 font-medium">
+                            {link.label}
+                        </Link>
+                    ))}
+                </nav>
+            </div>
+            <div className="col-span-8 p-6 bg-gray-50">
+                <div className="grid grid-cols-3 gap-4">
+                    {conferenceSubMenuItems.map(item => (
+                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 rounded-lg text-white transition-transform hover:-translate-y-1", item.color)}>
+                            <item.icon className="h-10 w-10 mb-2" />
+                            <span className="text-sm font-semibold">{item.label}</span>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </PopoverContent>
+  );
+
+  const NavLink = ({ link }: { link: { href: string, label: string, children?: any[], isMegaMenu?: boolean } }) => {
+    const isConference = link.label === "Conference";
+
+    if (isConference) {
+      return (
+        <Popover>
+            <PopoverTrigger asChild>
+                <button
+                className={cn(
+                    "px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1 text-sm font-medium",
+                    pathname.startsWith(link.href) ? "text-primary bg-primary/10" : "text-foreground/70"
+                )}
+                >
+                {link.label}
+                </button>
+            </PopoverTrigger>
+            <ConferenceMegaMenu />
+        </Popover>
+      )
+    }
+
     if (link.children) {
       return (
         <DropdownMenu>
@@ -77,7 +168,7 @@ export default function UserHeader() {
             <button
               className={cn(
                 "px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1 text-sm font-medium",
-                pathname.startsWith(link.href) ? "text-primary" : "text-foreground/70"
+                pathname.startsWith(link.href) ? "text-primary bg-primary/10" : "text-foreground/70"
               )}
             >
               {link.label}
@@ -108,7 +199,7 @@ export default function UserHeader() {
         href={link.href}
         className={cn(
           "px-3 py-2 rounded-md transition-colors hover:text-primary text-sm font-medium",
-          pathname === link.href ? "text-primary" : "text-foreground/70"
+          pathname === link.href ? "text-primary bg-primary/10" : "text-foreground/70"
         )}
       >
         {link.label}
