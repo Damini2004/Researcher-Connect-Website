@@ -19,8 +19,10 @@ export default function UpcomingConferencesPage() {
       setIsLoading(true);
       try {
         const allConferences = await getConferences();
+        
+        // Get today's date at midnight in the local timezone
         const now = new Date();
-        now.setUTCHours(0, 0, 0, 0);
+        now.setHours(0, 0, 0, 0);
 
         const upcoming = allConferences.filter(conf => {
             return conf.dateObject >= now;

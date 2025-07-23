@@ -72,9 +72,9 @@ export async function getConferences(): Promise<Conference[]> {
             const data = doc.data();
             const dateString = data.date;
 
-            // Correctly parse the date string as UTC to avoid timezone issues.
-            // "July 28, 2024" becomes "2024-07-28T00:00:00.000Z"
-            const dateObject = new Date(dateString + ' UTC');
+            // This creates a Date object in the local timezone of the server.
+            // Example: "July 28, 2024" becomes a Date object representing the start of that day.
+            const dateObject = new Date(dateString);
             
             if (isNaN(dateObject.getTime())) {
                 console.warn(`Invalid date string encountered: "${dateString}" for document ID: ${doc.id}`);
