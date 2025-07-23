@@ -20,15 +20,16 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
         
-        // Get today's date at midnight in the local timezone
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
+        // Get today's date at midnight UTC for a reliable comparison.
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0);
 
         const past = allConferences.filter(conf => {
-            return conf.dateObject < now;
+            // Ensure dateObject is a valid Date before comparing
+            return conf.dateObject && conf.dateObject.getTime() < today.getTime();
         });
 
-        setPastConferences(past);
+        setPastConferences(past.sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime()));
       } catch (error) {
         toast({
           title: "Error",
