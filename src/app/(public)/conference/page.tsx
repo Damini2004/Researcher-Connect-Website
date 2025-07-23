@@ -19,13 +19,12 @@ export default function ConferencePage() {
       try {
         const allConferences = await getConferences();
         
-        // Get today's date at midnight in the local timezone
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0);
 
         // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
-          .filter(conf => conf.dateObject >= now)
+          .filter(conf => conf.dateObject.getTime() >= today.getTime())
           .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
         
         if (upcoming.length > 0) {

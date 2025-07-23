@@ -20,15 +20,14 @@ export default function UpcomingConferencesPage() {
       try {
         const allConferences = await getConferences();
         
-        // Get today's date at midnight in the local timezone
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0);
 
         const upcoming = allConferences.filter(conf => {
-            return conf.dateObject >= now;
+            return conf.dateObject.getTime() >= today.getTime();
         });
 
-        setUpcomingConferences(upcoming);
+        setUpcomingConferences(upcoming.sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime()));
       } catch (error) {
         toast({
           title: "Error",
