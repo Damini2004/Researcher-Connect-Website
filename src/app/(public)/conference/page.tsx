@@ -20,7 +20,7 @@ export default function ConferencePage() {
         const allConferences = await getConferences();
         
         const today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
+        today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC
 
         // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
