@@ -21,10 +21,11 @@ export default function UpcomingConferencesPage() {
         const allConferences = await getConferences();
         
         const today = new Date();
-        today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC
+        today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC for comparison
 
         const upcoming = allConferences.filter(conf => {
-            return conf.dateObject.getTime() >= today.getTime();
+            // Check if dateObject is valid before comparison
+            return conf.dateObject && conf.dateObject.getTime() >= today.getTime();
         });
 
         setUpcomingConferences(upcoming.sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime()));

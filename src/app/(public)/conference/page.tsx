@@ -24,7 +24,7 @@ export default function ConferencePage() {
 
         // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
-          .filter(conf => conf.dateObject.getTime() >= today.getTime())
+          .filter(conf => conf.dateObject && conf.dateObject.getTime() >= today.getTime())
           .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
         
         if (upcoming.length > 0) {

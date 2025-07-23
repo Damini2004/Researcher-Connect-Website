@@ -71,30 +71,41 @@ export async function getConferences(): Promise<Conference[]> {
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
             const dateString = data.date;
-            
-            // Create a date object in UTC to avoid timezone issues.
-            // Appending ' UTC' ensures the string is parsed as UTC.
-            const dateObject = new Date(`${dateString} 00:00:00 UTC`);
 
-            if (isNaN(dateObject.getTime())) {
-                 console.warn(`Invalid date string encountered: "${dateString}" for document ID: ${doc.id}`);
+            // Robust Date Parsing
+            let dateObject: Date;
+            if (dateString && typeof dateString === 'string') {
+                // Create a date object from the string, assuming it's in a format like "Month Day, Year"
+                // Appending ' UTC' ensures it's parsed as a UTC date to avoid timezone shifts.
+                const parsedDate = new Date(`${dateString} 00:00:00 UTC`);
+                if (!isNaN(parsedDate.getTime())) {
+                    dateObject = parsedDate;
+                } else {
+                    console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
+                    dateObject = new Date(); // Fallback to current date if parsing fails
+                    dateObject.setUTCHours(0, 0, 0, 0);
+                }
+            } else {
+                console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
+                dateObject = new Date(); // Fallback if date field is missing or not a string
+                dateObject.setUTCHours(0, 0, 0, 0);
             }
 
             conferences.push({
                 id: doc.id,
                 title: data.title,
                 description: data.description,
-                date: dateString,
+                date: dateString || 'Date not specified',
                 dateObject: dateObject,
                 location: data.location,
                 imageSrc: data.imageSrc,
-                createdAt: data.createdAt.toDate().toISOString(),
+                createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
             });
         });
         return conferences;
     } catch (error) {
         console.error("Error fetching conferences from service: ", error);
-        throw error;
+        throw error; // Re-throw to be caught by the calling component
     }
 }
 

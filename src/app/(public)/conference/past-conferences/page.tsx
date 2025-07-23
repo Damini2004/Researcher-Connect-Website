@@ -24,6 +24,7 @@ export default function PastConferencesPage() {
         today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC
 
         const past = allConferences.filter(conf => {
+            // Ensure dateObject is valid before comparing
             return conf.dateObject && conf.dateObject.getTime() < today.getTime();
         });
 
