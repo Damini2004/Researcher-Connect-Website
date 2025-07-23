@@ -1,3 +1,4 @@
+
 // src/services/conferenceService.ts
 'use server';
 
@@ -71,10 +72,12 @@ export async function getConferences(): Promise<Conference[]> {
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
             const dateString = data.date;
-
+            
+            // Correctly parse the date string (e.g., "July 31, 2024") into a Date object
             const dateObject = new Date(dateString);
+
             if (!isNaN(dateObject.getTime())) {
-                dateObject.setUTCHours(0, 0, 0, 0);
+                dateObject.setUTCHours(0, 0, 0, 0); // Normalize to start of day UTC
             } else {
                  console.warn(`Invalid date string encountered: "${dateString}" for document ID: ${doc.id}`);
             }
