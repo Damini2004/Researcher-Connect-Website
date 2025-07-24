@@ -16,7 +16,7 @@ export function getCurrentDateInIndia(): Date {
   
   // Format the current date into year, month, and day parts according to the Indian timezone.
   const formatter = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Kolkata',
+    timeZone: 'Asia/Kolkata', // Use Indian Standard Time
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

@@ -1,16 +1,16 @@
-
 // src/services/conferenceService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { z } from 'zod';
+import { format } from 'date-fns';
 
 export interface Conference {
     id: string;
     title: string;
     description: string;
-    date: string; // The original string date
+    date: string; // The original string date in YYYY-MM-DD format
     dateObject: Date; // A reliable UTC Date object for comparisons
     location: string;
     imageSrc: string;
@@ -20,7 +20,7 @@ export interface Conference {
 const conferenceSchema = z.object({
     title: z.string().min(10, "Title must be at least 10 characters."),
     description: z.string().min(20, "Description must be at least 20 characters."),
-    date: z.string(),
+    date: z.string(), // Will be in YYYY-MM-DD format
     location: z.string().min(3, "Location is required."),
     imageSrc: z.string().url("Must be a valid URL (Base64 data URI).").or(z.string().startsWith("data:image")),
 });
@@ -28,7 +28,7 @@ const conferenceSchema = z.object({
 interface AddConferenceData {
     title: string;
     description: string;
-    date: string;
+    date: string; // This will now be YYYY-MM-DD
     location: string;
     imageSrc: string;
 }
@@ -71,24 +71,23 @@ export async function getConferences(): Promise<Conference[]> {
         const conferences: Conference[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
-            const dateString = data.date;
+            const dateString = data.date; // Should be YYYY-MM-DD
 
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // **CRITICAL FIX**: Parse the date string and create a UTC date.
-                // Appending ' UTC' forces the parser to treat the date as UTC,
-                // avoiding timezone shifts and ensuring a correct midnight UTC timestamp.
-                const parsedDate = new Date(dateString + ' UTC');
-                if (!isNaN(parsedDate.getTime())) {
-                    dateObject = parsedDate;
+                // Robustly parse YYYY-MM-DD into a UTC date object.
+                const parts = dateString.split('-').map(part => parseInt(part, 10));
+                if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+                    // parts[1] - 1 because month is 0-indexed in JavaScript Dates
+                    dateObject = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
                 } else {
-                    console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
-                    dateObject = new Date(); 
+                    console.warn(`Invalid date format: "${dateString}". Using current date as fallback.`);
+                    dateObject = new Date();
                     dateObject.setUTCHours(0, 0, 0, 0);
                 }
             } else {
-                console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
-                dateObject = new Date(); 
+                console.warn(`Missing or invalid date field. Using current date as fallback.`);
+                dateObject = new Date();
                 dateObject.setUTCHours(0, 0, 0, 0);
             }
 
@@ -96,7 +95,7 @@ export async function getConferences(): Promise<Conference[]> {
                 id: doc.id,
                 title: data.title,
                 description: data.description,
-                date: data.date,
+                date: format(dateObject, "PPP"), // Format for display
                 dateObject: dateObject,
                 location: data.location,
                 imageSrc: data.imageSrc,
@@ -106,7 +105,7 @@ export async function getConferences(): Promise<Conference[]> {
         return conferences;
     } catch (error) {
         console.error("Error fetching conferences from service: ", error);
-        throw error; // Re-throw to be caught by the calling component
+        throw error;
     }
 }
 

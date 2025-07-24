@@ -95,7 +95,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     const result = await addConference({
         title: values.title,
         description: values.description,
-        date: format(values.date, "PPP"),
+        date: format(values.date, "yyyy-MM-dd"), // Save in YYYY-MM-DD format
         location: values.location,
         imageSrc: imageSrc,
     });
