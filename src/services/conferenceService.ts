@@ -11,7 +11,7 @@ export interface Conference {
     title: string;
     description: string;
     date: string; // The original string date
-    dateObject: Date; // A reliable UTC Date object for comparisons
+    dateObject: Date; // A reliable Date object for comparisons
     location: string;
     imageSrc: string;
     createdAt: string;
@@ -75,21 +75,21 @@ export async function getConferences(): Promise<Conference[]> {
 
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // Parse the date string. This will interpret it based on the server's locale but that's okay.
-                const parsedDate = new Date(dateString); 
+                // Create a date object from the string. This represents midnight in the server's local timezone.
+                // Then, set the time to the beginning of the day (midnight) to ensure a clean date-only comparison.
+                const parsedDate = new Date(dateString);
                 if (!isNaN(parsedDate.getTime())) {
-                    // Create a new UTC date object using the year, month, and day from the parsed date.
-                    // This standardizes the date to midnight UTC, removing timezone and time-of-day ambiguity.
-                    dateObject = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
+                    parsedDate.setHours(0, 0, 0, 0);
+                    dateObject = parsedDate;
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
                     dateObject = new Date(); 
-                    dateObject.setUTCHours(0, 0, 0, 0);
+                    dateObject.setHours(0, 0, 0, 0);
                 }
             } else {
                 console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
                 dateObject = new Date(); 
-                dateObject.setUTCHours(0, 0, 0, 0);
+                dateObject.setHours(0, 0, 0, 0);
             }
 
             conferences.push({
