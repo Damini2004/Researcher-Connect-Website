@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, BookOpen, ChevronDown, FileText, Book, Presentation, MessageSquare, ThumbsUp, Library, Users, Award, DraftingCompass, TrendingUp, Globe, ArrowRight, User } from "lucide-react";
 import { Logo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -17,7 +17,6 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import Image from "next/image";
 
 // Custom Icons for Conference Menu
 const UpcomingConferencesIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -280,6 +279,9 @@ export default function UserHeader() {
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className="pr-0">
+                <SheetHeader className="text-left">
+                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                </SheetHeader>
                 <Link
                 href="/"
                 className="flex items-center space-x-2 mb-6"
@@ -346,10 +348,3 @@ export default function UserHeader() {
     </header>
   );
 }
-
-    
-
-    
-
-
-
