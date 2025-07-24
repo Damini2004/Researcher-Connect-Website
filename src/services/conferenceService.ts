@@ -76,21 +76,21 @@ export async function getConferences(): Promise<Conference[]> {
             // Robust Date Parsing
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // Appending ' 00:00:00 UTC' ensures it's parsed as a UTC date at midnight, avoiding timezone shifts.
-                const parsedDate = new Date(dateString); // Use standard parser
+                // Directly parse the date string. JS Date constructor handles formats like "July 26, 2024".
+                // This creates a date object representing midnight in the server's local timezone.
+                const parsedDate = new Date(dateString); 
                 if (!isNaN(parsedDate.getTime())) {
-                    // Set to midnight UTC to standardize
-                    dateObject = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
+                    dateObject = parsedDate;
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
                     dateObject = new Date(); 
-                    dateObject.setUTCHours(0, 0, 0, 0);
                 }
             } else {
                 console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
                 dateObject = new Date(); 
-                dateObject.setUTCHours(0, 0, 0, 0);
             }
+             // Ensure the time is set to midnight to only compare dates.
+            dateObject.setHours(0, 0, 0, 0);
 
             conferences.push({
                 id: doc.id,

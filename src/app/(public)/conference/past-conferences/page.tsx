@@ -25,6 +25,7 @@ export default function PastConferencesPage() {
 
         const past = allConferences.filter(conf => {
             // Ensure dateObject is valid before comparing
+            // A conference is "past" if its date is strictly before today's date.
             return conf.dateObject && conf.dateObject.getTime() < todayInIndia.getTime();
         });
 

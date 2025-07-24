@@ -25,6 +25,7 @@ export default function UpcomingConferencesPage() {
 
         const upcoming = allConferences.filter(conf => {
             // Check if dateObject is valid before comparison
+            // A conference is "upcoming" if its date is today or in the future.
             return conf.dateObject && conf.dateObject.getTime() >= todayInIndia.getTime();
         });
 
