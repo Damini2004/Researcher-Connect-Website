@@ -75,10 +75,12 @@ export async function getConferences(): Promise<Conference[]> {
 
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                const parsedDate = new Date(dateString);
+                // **CRITICAL FIX**: Parse the date string and create a UTC date.
+                // Appending ' UTC' forces the parser to treat the date as UTC,
+                // avoiding timezone shifts and ensuring a correct midnight UTC timestamp.
+                const parsedDate = new Date(dateString + ' UTC');
                 if (!isNaN(parsedDate.getTime())) {
-                    // **CRITICAL FIX**: Create a UTC date to remove timezone ambiguity.
-                    dateObject = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
+                    dateObject = parsedDate;
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
                     dateObject = new Date(); 
