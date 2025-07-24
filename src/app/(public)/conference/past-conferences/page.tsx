@@ -1,7 +1,14 @@
 
 "use client";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, History } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,28 +23,32 @@ export default function PastConferencesPage() {
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
+  // Set the stable UTC-start-of-day date in India after hydration
   useEffect(() => {
-    // This effect runs only once on the client after hydration
-    // to prevent server-client mismatch for the current date.
     setCurrentDate(getCurrentDateInIndia());
   }, []);
 
+  // Fetch past conferences based on UTC-normalized comparison
   useEffect(() => {
-    // This effect fetches conferences once we have a stable currentDate.
     if (!currentDate) return;
 
     const fetchAndFilterConferences = async () => {
       setIsLoading(true);
       try {
         const allConferences = await getConferences();
-        
-        // A conference is in the past if its date is strictly before today's date.
-        // Both dates are UTC midnight, so this is a reliable comparison.
-        const past = allConferences.filter(conf => {
-            return conf.dateObject && conf.dateObject.getTime() < currentDate.getTime();
-        });
 
-        setPastConferences(past.sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime()));
+        const past = allConferences.filter(
+          (conf) =>
+            conf.dateObject &&
+            conf.dateObject.getTime() < currentDate.getTime()
+        );
+
+        // Sort in descending order (most recent past first)
+        setPastConferences(
+          past.sort(
+            (a, b) => b.dateObject.getTime() - a.dateObject.getTime()
+          )
+        );
       } catch (error) {
         toast({
           title: "Error",
@@ -48,40 +59,52 @@ export default function PastConferencesPage() {
         setIsLoading(false);
       }
     };
+
     fetchAndFilterConferences();
-  }, [toast, currentDate]);
+  }, [currentDate, toast]);
 
   return (
     <div className="container py-12 md:py-24">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Past Conferences</h1>
-        <p className="mt-4 text-lg text-muted-foreground">Explore our archive of past conferences.</p>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          Past Conferences
+        </h1>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Explore our archive of past conferences.
+        </p>
         {currentDate && (
           <p className="mt-2 text-sm text-muted-foreground">
-            (Showing events before {currentDate.toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata', year: 'numeric', month: 'long', day: 'numeric' })})
+            (Showing events before{" "}
+            {currentDate.toLocaleDateString("en-IN", {
+              timeZone: "Asia/Kolkata",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+            )
           </p>
         )}
       </div>
 
       {isLoading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(3)].map((_, i) => (
-                <Card key={i}>
-                    <CardHeader>
-                        <Skeleton className="h-6 w-3/4 mb-2" />
-                        <div className="space-y-2">
-                           <Skeleton className="h-4 w-1/2" />
-                           <Skeleton className="h-4 w-1/3" />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                       <Skeleton className="h-4 w-full" />
-                    </CardContent>
-                    <CardFooter>
-                        <Skeleton className="h-10 w-32" />
-                    </CardFooter>
-                </Card>
-            ))}
+          {[...Array(3)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Skeleton className="h-6 w-3/4 mb-2" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-4 w-1/3" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-4 w-full" />
+              </CardContent>
+              <CardFooter>
+                <Skeleton className="h-10 w-32" />
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       ) : pastConferences.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
@@ -90,23 +113,25 @@ export default function PastConferencesPage() {
               <CardHeader>
                 <CardTitle>{conference.title}</CardTitle>
                 <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-1">
-                    <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4"/>
-                        <span>{conference.date}</span>
-                    </div>
-                     <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4"/>
-                        <span>{conference.location}</span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <span>{conference.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>{conference.location}</span>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-muted-foreground line-clamp-3">{conference.description}</p>
+                <p className="text-muted-foreground line-clamp-3">
+                  {conference.description}
+                </p>
               </CardContent>
               <CardFooter>
                 <Button variant="outline">
-                    <History className="mr-2 h-4 w-4" />
-                    View Archive
+                  <History className="mr-2 h-4 w-4" />
+                  View Archive
                 </Button>
               </CardFooter>
             </Card>
@@ -114,7 +139,9 @@ export default function PastConferencesPage() {
         </div>
       ) : (
         <div className="text-center py-16">
-            <p className="text-muted-foreground">No past conferences found in the archive yet.</p>
+          <p className="text-muted-foreground">
+            No past conferences found in the archive yet.
+          </p>
         </div>
       )}
     </div>
