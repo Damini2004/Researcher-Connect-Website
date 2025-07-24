@@ -27,6 +27,7 @@ export default function ConferencePage() {
       try {
         const allConferences = await getConferences();
 
+        // **CRITICAL FIX**: Use UTC-normalized dates for reliable filtering.
         // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
           .filter(conf => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime())
@@ -41,6 +42,7 @@ export default function ConferencePage() {
         }
 
       } catch (error) {
+        console.error("Error fetching conference data:", error);
         toast({
           title: "Error",
           description: "Could not load conference data. Please try again later.",

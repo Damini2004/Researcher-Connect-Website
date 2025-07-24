@@ -17,7 +17,6 @@ export default function UpcomingConferencesPage() {
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    // This effect runs only once on the client after hydration
     setCurrentDate(getCurrentDateInIndia());
   }, []);
 
@@ -29,14 +28,15 @@ export default function UpcomingConferencesPage() {
       try {
         const allConferences = await getConferences();
         
+        // **CRITICAL FIX**: Compare UTC-normalized dates for reliable filtering.
         // A conference is "upcoming" if its date is today or in the future.
-        // Both dates are UTC midnight, so this is a reliable comparison.
         const upcoming = allConferences.filter(conf => {
             return conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime();
         });
 
         setUpcomingConferences(upcoming.sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime()));
       } catch (error) {
+        console.error("Error fetching conferences:", error);
         toast({
           title: "Error",
           description: "Could not fetch conferences.",

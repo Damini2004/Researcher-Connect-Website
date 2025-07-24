@@ -11,7 +11,7 @@ export interface Conference {
     title: string;
     description: string;
     date: string; // The original string date
-    dateObject: Date; // A reliable Date object for comparisons
+    dateObject: Date; // A reliable UTC Date object for comparisons
     location: string;
     imageSrc: string;
     createdAt: string;
@@ -75,21 +75,19 @@ export async function getConferences(): Promise<Conference[]> {
 
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // Create a date object from the string. This represents midnight in the server's local timezone.
-                // Then, set the time to the beginning of the day (midnight) to ensure a clean date-only comparison.
                 const parsedDate = new Date(dateString);
                 if (!isNaN(parsedDate.getTime())) {
-                    parsedDate.setHours(0, 0, 0, 0);
-                    dateObject = parsedDate;
+                    // **CRITICAL FIX**: Create a UTC date to remove timezone ambiguity.
+                    dateObject = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
                     dateObject = new Date(); 
-                    dateObject.setHours(0, 0, 0, 0);
+                    dateObject.setUTCHours(0, 0, 0, 0);
                 }
             } else {
                 console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
                 dateObject = new Date(); 
-                dateObject.setHours(0, 0, 0, 0);
+                dateObject.setUTCHours(0, 0, 0, 0);
             }
 
             conferences.push({

@@ -23,12 +23,10 @@ export default function PastConferencesPage() {
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
-  // Set the stable UTC-start-of-day date in India after hydration
   useEffect(() => {
     setCurrentDate(getCurrentDateInIndia());
   }, []);
 
-  // Fetch past conferences based on UTC-normalized comparison
   useEffect(() => {
     if (!currentDate) return;
 
@@ -37,19 +35,21 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
 
+        // **CRITICAL FIX**: Compare UTC-normalized dates for reliable filtering.
+        // A conference is "past" if its date is strictly before the start of today.
         const past = allConferences.filter(
           (conf) =>
             conf.dateObject &&
             conf.dateObject.getTime() < currentDate.getTime()
         );
 
-        // Sort in descending order (most recent past first)
         setPastConferences(
           past.sort(
             (a, b) => b.dateObject.getTime() - a.dateObject.getTime()
           )
         );
       } catch (error) {
+        console.error("Error fetching conferences:", error);
         toast({
           title: "Error",
           description: "Could not fetch conferences.",
@@ -76,7 +76,7 @@ export default function PastConferencesPage() {
           <p className="mt-2 text-sm text-muted-foreground">
             (Showing events before{" "}
             {currentDate.toLocaleDateString("en-IN", {
-              timeZone: "Asia/Kolkata",
+              timeZone: "UTC", // Displaying the comparison date in UTC for clarity
               year: "numeric",
               month: "long",
               day: "numeric",
