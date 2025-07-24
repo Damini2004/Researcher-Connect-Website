@@ -12,7 +12,23 @@ export function cn(...inputs: ClassValue[]) {
  * @returns A Date object representing the start of the current day in UTC.
  */
 export function getCurrentDateInIndia(): Date {
-  // Hardcoding the date to July 24, 2025, as per user's request to fix logic.
-  const todayInIndiaAsUTC = new Date(Date.UTC(2025, 6, 24)); // Month is 0-indexed, so 6 is July.
+  const now = new Date();
+  
+  // Format the current date into year, month, and day parts according to the Indian timezone.
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  const parts = formatter.formatToParts(now);
+  const year = parseInt(parts.find(p => p.type === 'year')!.value, 10);
+  const month = parseInt(parts.find(p => p.type === 'month')!.value, 10) - 1; // month is 0-indexed
+  const day = parseInt(parts.find(p => p.type === 'day')!.value, 10);
+
+  // Create a new Date object in UTC at the beginning of the day in India.
+  const todayInIndiaAsUTC = new Date(Date.UTC(year, month, day));
+  
   return todayInIndiaAsUTC;
 }
