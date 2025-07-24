@@ -72,18 +72,6 @@ export default function PastConferencesPage() {
         <p className="mt-4 text-lg text-muted-foreground">
           Explore our archive of past conferences.
         </p>
-        {currentDate && (
-          <p className="mt-2 text-sm text-muted-foreground">
-            (Showing events before{" "}
-            {currentDate.toLocaleDateString("en-IN", {
-              timeZone: "UTC", // Displaying the comparison date in UTC for clarity
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-            )
-          </p>
-        )}
       </div>
 
       {isLoading ? (
