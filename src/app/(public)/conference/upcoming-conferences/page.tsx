@@ -9,6 +9,7 @@ import { getConferences, Conference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
+import Image from "next/image";
 
 export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
@@ -28,7 +29,6 @@ export default function UpcomingConferencesPage() {
       try {
         const allConferences = await getConferences();
         
-        // **CRITICAL FIX**: Compare UTC-normalized dates for reliable filtering.
         // A conference is "upcoming" if its date is today or in the future.
         const upcoming = allConferences.filter(conf => {
             return conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime();
@@ -63,6 +63,7 @@ export default function UpcomingConferencesPage() {
              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[...Array(3)].map((_, i) => (
                     <Card key={i} className="flex flex-col">
+                        <Skeleton className="h-[200px] w-full" />
                         <CardHeader>
                            <Skeleton className="h-6 w-3/4 mb-2" />
                            <div className="flex flex-col sm:flex-row gap-4 pt-2">
@@ -83,7 +84,10 @@ export default function UpcomingConferencesPage() {
         ) : upcomingConferences.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {upcomingConferences.map((conference) => (
-                <Card key={conference.id} className="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                <Card key={conference.id} className="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
+                    <div className="relative h-[200px] w-full">
+                        <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
+                    </div>
                     <CardHeader>
                     <CardTitle>{conference.title}</CardTitle>
                     <div className="flex flex-col sm:flex-row gap-4 pt-2 text-sm text-muted-foreground">

@@ -16,6 +16,7 @@ import { getConferences, Conference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
+import Image from "next/image";
 
 export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
@@ -35,7 +36,6 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
 
-        // **CRITICAL FIX**: Compare UTC-normalized dates for reliable filtering.
         // A conference is "past" if its date is strictly before the start of today.
         const past = allConferences.filter(
           (conf) =>
@@ -89,7 +89,8 @@ export default function PastConferencesPage() {
       {isLoading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(3)].map((_, i) => (
-            <Card key={i}>
+            <Card key={i} className="overflow-hidden">
+              <Skeleton className="h-[200px] w-full" />
               <CardHeader>
                 <Skeleton className="h-6 w-3/4 mb-2" />
                 <div className="space-y-2">
@@ -109,7 +110,10 @@ export default function PastConferencesPage() {
       ) : pastConferences.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {pastConferences.map((conference) => (
-            <Card key={conference.id} className="flex flex-col w-full max-w-sm">
+            <Card key={conference.id} className="flex flex-col w-full max-w-sm overflow-hidden">
+              <div className="relative h-[200px] w-full">
+                <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
+              </div>
               <CardHeader>
                 <CardTitle>{conference.title}</CardTitle>
                 <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-1">
