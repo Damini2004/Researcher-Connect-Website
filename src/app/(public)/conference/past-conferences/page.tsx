@@ -17,18 +17,22 @@ export default function PastConferencesPage() {
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
+    // This effect runs only once on the client after hydration
+    // to prevent server-client mismatch for the current date.
+    setCurrentDate(getCurrentDateInIndia());
+  }, []);
+
+  useEffect(() => {
+    // This effect fetches conferences once we have a stable currentDate.
+    if (!currentDate) return;
+
     const fetchAndFilterConferences = async () => {
       setIsLoading(true);
       try {
         const allConferences = await getConferences();
         
-        const todayInIndia = getCurrentDateInIndia();
-        setCurrentDate(todayInIndia);
-
         const past = allConferences.filter(conf => {
-            // Ensure dateObject is valid before comparing
-            // A conference is "past" if its date is strictly before today's date.
-            return conf.dateObject && conf.dateObject.getTime() < todayInIndia.getTime();
+            return conf.dateObject && conf.dateObject.getTime() < currentDate.getTime();
         });
 
         setPastConferences(past.sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime()));
@@ -43,7 +47,7 @@ export default function PastConferencesPage() {
       }
     };
     fetchAndFilterConferences();
-  }, [toast]);
+  }, [toast, currentDate]);
 
   return (
     <div className="container py-12 md:py-24">
