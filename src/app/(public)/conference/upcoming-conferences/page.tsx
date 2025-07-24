@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getConferences, Conference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentDateInIndia } from "@/lib/utils";
 
 export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
@@ -20,12 +21,11 @@ export default function UpcomingConferencesPage() {
       try {
         const allConferences = await getConferences();
         
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC for comparison
+        const todayInIndia = getCurrentDateInIndia();
 
         const upcoming = allConferences.filter(conf => {
             // Check if dateObject is valid before comparison
-            return conf.dateObject && conf.dateObject.getTime() >= today.getTime();
+            return conf.dateObject && conf.dateObject.getTime() >= todayInIndia.getTime();
         });
 
         setUpcomingConferences(upcoming.sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime()));

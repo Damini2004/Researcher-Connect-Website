@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getConferences, Conference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentDateInIndia } from "@/lib/utils";
 
 export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
@@ -20,12 +21,11 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
         
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC
+        const todayInIndia = getCurrentDateInIndia();
 
         const past = allConferences.filter(conf => {
             // Ensure dateObject is valid before comparing
-            return conf.dateObject && conf.dateObject.getTime() < today.getTime();
+            return conf.dateObject && conf.dateObject.getTime() < todayInIndia.getTime();
         });
 
         setPastConferences(past.sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime()));

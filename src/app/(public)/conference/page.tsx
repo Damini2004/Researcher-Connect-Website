@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { getConferences, Conference } from "@/services/conferenceService";
+import { getCurrentDateInIndia } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 export default function ConferencePage() {
@@ -19,12 +20,11 @@ export default function ConferencePage() {
       try {
         const allConferences = await getConferences();
         
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0); // Get start of today in UTC
+        const todayInIndia = getCurrentDateInIndia();
 
         // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
-          .filter(conf => conf.dateObject && conf.dateObject.getTime() >= today.getTime())
+          .filter(conf => conf.dateObject && conf.dateObject.getTime() >= todayInIndia.getTime())
           .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
         
         if (upcoming.length > 0) {
