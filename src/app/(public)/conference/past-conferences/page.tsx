@@ -14,6 +14,7 @@ export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
     const fetchAndFilterConferences = async () => {
@@ -22,6 +23,7 @@ export default function PastConferencesPage() {
         const allConferences = await getConferences();
         
         const todayInIndia = getCurrentDateInIndia();
+        setCurrentDate(todayInIndia);
 
         const past = allConferences.filter(conf => {
             // Ensure dateObject is valid before comparing
@@ -48,6 +50,11 @@ export default function PastConferencesPage() {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Past Conferences</h1>
         <p className="mt-4 text-lg text-muted-foreground">Explore our archive of past conferences.</p>
+        {currentDate && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            (Showing events before {currentDate.toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata', year: 'numeric', month: 'long', day: 'numeric' })})
+          </p>
+        )}
       </div>
 
       {isLoading ? (
