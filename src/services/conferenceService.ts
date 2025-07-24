@@ -1,3 +1,4 @@
+
 // src/services/conferenceService.ts
 'use server';
 
@@ -75,19 +76,18 @@ export async function getConferences(): Promise<Conference[]> {
             // Robust Date Parsing
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // Create a date object from the string, assuming it's in a format like "Month Day, Year"
-                // Appending ' UTC' ensures it's parsed as a UTC date to avoid timezone shifts.
+                // Appending ' 00:00:00 UTC' ensures it's parsed as a UTC date at midnight, avoiding timezone shifts.
                 const parsedDate = new Date(`${dateString} 00:00:00 UTC`);
                 if (!isNaN(parsedDate.getTime())) {
                     dateObject = parsedDate;
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
-                    dateObject = new Date(); // Fallback to current date if parsing fails
+                    dateObject = new Date(); 
                     dateObject.setUTCHours(0, 0, 0, 0);
                 }
             } else {
                 console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
-                dateObject = new Date(); // Fallback if date field is missing or not a string
+                dateObject = new Date(); 
                 dateObject.setUTCHours(0, 0, 0, 0);
             }
 
