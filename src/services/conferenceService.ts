@@ -11,7 +11,7 @@ export interface Conference {
     title: string;
     description: string;
     date: string; // The original string date
-    dateObject: Date; // A reliable Date object for comparisons
+    dateObject: Date; // A reliable UTC Date object for comparisons
     location: string;
     imageSrc: string;
     createdAt: string;
@@ -73,24 +73,24 @@ export async function getConferences(): Promise<Conference[]> {
             const data = doc.data();
             const dateString = data.date;
 
-            // Robust Date Parsing
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // Directly parse the date string. JS Date constructor handles formats like "July 26, 2024".
-                // This creates a date object representing midnight in the server's local timezone.
+                // Parse the date string. This will interpret it based on the server's locale but that's okay.
                 const parsedDate = new Date(dateString); 
                 if (!isNaN(parsedDate.getTime())) {
-                    dateObject = parsedDate;
+                    // Create a new UTC date object using the year, month, and day from the parsed date.
+                    // This standardizes the date to midnight UTC, removing timezone and time-of-day ambiguity.
+                    dateObject = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
                     dateObject = new Date(); 
+                    dateObject.setUTCHours(0, 0, 0, 0);
                 }
             } else {
                 console.warn(`Missing or invalid date field for doc ID: ${doc.id}. Using current date as fallback.`);
                 dateObject = new Date(); 
+                dateObject.setUTCHours(0, 0, 0, 0);
             }
-             // Ensure the time is set to midnight to only compare dates.
-            dateObject.setHours(0, 0, 0, 0);
 
             conferences.push({
                 id: doc.id,

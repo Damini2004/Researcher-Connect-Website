@@ -14,19 +14,25 @@ export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
+    // This effect runs only once on the client after hydration
+    setCurrentDate(getCurrentDateInIndia());
+  }, []);
+
+  useEffect(() => {
+    if (!currentDate) return;
+
     const fetchAndFilterConferences = async () => {
       setIsLoading(true);
       try {
         const allConferences = await getConferences();
         
-        const todayInIndia = getCurrentDateInIndia();
-
+        // A conference is "upcoming" if its date is today or in the future.
+        // Both dates are UTC midnight, so this is a reliable comparison.
         const upcoming = allConferences.filter(conf => {
-            // Check if dateObject is valid before comparison
-            // A conference is "upcoming" if its date is today or in the future.
-            return conf.dateObject && conf.dateObject.getTime() >= todayInIndia.getTime();
+            return conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime();
         });
 
         setUpcomingConferences(upcoming.sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime()));
@@ -41,7 +47,7 @@ export default function UpcomingConferencesPage() {
       }
     };
     fetchAndFilterConferences();
-  }, [toast]);
+  }, [toast, currentDate]);
 
   return (
     <div className="bg-secondary/50">

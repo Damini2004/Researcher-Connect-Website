@@ -6,24 +6,24 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Gets the current date set to the beginning of the day (midnight) in the India Standard Time (IST) timezone.
- * This is crucial for comparing conference dates against a consistent "today" that reflects the user's region.
- * @returns A Date object representing the start of the current day in India.
+ * Gets the current date set to the beginning of the day (midnight) in the India Standard Time (IST) timezone,
+ * and returns it as a UTC date object. This provides a stable, timezone-agnostic reference for date comparisons.
+ * @returns A Date object representing the start of the current day in India, adjusted to UTC midnight.
  */
 export function getCurrentDateInIndia(): Date {
   // Get the current date and time
   const now = new Date();
   
-  // Format the date into a string that represents the date in India.
-  // The 'en-CA' locale gives a YYYY-MM-DD format, which is reliable for the Date constructor.
+  // Format the date into a string that represents the date in India (e.g., "2024-07-26").
+  // The 'en-CA' locale provides a reliable YYYY-MM-DD format.
   const indiaDateString = now.toLocaleDateString('en-CA', {
     timeZone: 'Asia/Kolkata',
   });
 
-  // Create a new Date object from the date string.
-  // This will be parsed as midnight UTC on that date, creating a standardized reference point.
-  // e.g., "2024-07-31" becomes a Date object for 2024-07-31T00:00:00.000Z
-  const todayInIndia = new Date(indiaDateString);
+  // Create a new Date object from this string.
+  // new Date('2024-07-26') creates a date for 2024-07-26 at 00:00:00 UTC.
+  // This is the key to ensuring all comparisons are done in a consistent UTC context.
+  const todayInIndiaAsUTC = new Date(indiaDateString);
   
-  return todayInIndia;
+  return todayInIndiaAsUTC;
 }

@@ -13,18 +13,23 @@ export default function ConferencePage() {
   const [conference, setConference] = useState<Conference | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
+    setCurrentDate(getCurrentDateInIndia());
+  }, []);
+
+  useEffect(() => {
+    if (!currentDate) return;
+    
     const fetchConferenceData = async () => {
       setIsLoading(true);
       try {
         const allConferences = await getConferences();
-        
-        const todayInIndia = getCurrentDateInIndia();
 
         // Find the next upcoming conference, sorted by date
         const upcoming = allConferences
-          .filter(conf => conf.dateObject && conf.dateObject.getTime() >= todayInIndia.getTime())
+          .filter(conf => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime())
           .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
         
         if (upcoming.length > 0) {
@@ -46,7 +51,7 @@ export default function ConferencePage() {
       }
     };
     fetchConferenceData();
-  }, [toast]);
+  }, [toast, currentDate]);
 
   if (isLoading) {
     return (

@@ -31,6 +31,8 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
         
+        // A conference is in the past if its date is strictly before today's date.
+        // Both dates are UTC midnight, so this is a reliable comparison.
         const past = allConferences.filter(conf => {
             return conf.dateObject && conf.dateObject.getTime() < currentDate.getTime();
         });
