@@ -77,9 +77,10 @@ export async function getConferences(): Promise<Conference[]> {
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
                 // Appending ' 00:00:00 UTC' ensures it's parsed as a UTC date at midnight, avoiding timezone shifts.
-                const parsedDate = new Date(`${dateString} 00:00:00 UTC`);
+                const parsedDate = new Date(dateString); // Use standard parser
                 if (!isNaN(parsedDate.getTime())) {
-                    dateObject = parsedDate;
+                    // Set to midnight UTC to standardize
+                    dateObject = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
                 } else {
                     console.warn(`Invalid date string: "${dateString}" for doc ID: ${doc.id}. Using current date as fallback.`);
                     dateObject = new Date(); 
@@ -95,7 +96,7 @@ export async function getConferences(): Promise<Conference[]> {
                 id: doc.id,
                 title: data.title,
                 description: data.description,
-                date: dateString || 'Date not specified',
+                date: data.date,
                 dateObject: dateObject,
                 location: data.location,
                 imageSrc: data.imageSrc,
