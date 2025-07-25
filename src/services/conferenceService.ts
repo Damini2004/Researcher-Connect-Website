@@ -14,11 +14,10 @@ export async function addConference(data: AddConferenceData & { bannerImage: str
         return { success: false, message: validationResult.error.errors[0].message };
     }
 
-    // Prepare data for saving. We pass the Date objects directly to Firestore.
     const dataToSave = {
         ...validationResult.data,
         bannerImage: data.bannerImage,
-        createdAt: new Date(),
+        createdAt: new Date(), // Add createdAt timestamp here
     };
 
     await addDoc(collection(db, 'conferences'), dataToSave);
