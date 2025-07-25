@@ -177,7 +177,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>End Date</FormLabel>
                           <Popover>
-                            <FormControl>
+                             <FormControl>
                                 <PopoverTrigger asChild>
                                     <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
                                         {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
@@ -343,7 +343,19 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         </FormItem>
                     )}
                 />
-                 <FormField control={form.control} name="bannerImage" render={() => ( <FormItem> <FormLabel>Banner Image</FormLabel> <FormControl> <Input type="file" accept="image/*" {...fileRef} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                 <FormField 
+                    control={form.control}
+                    name="bannerImage" 
+                    render={() => ( 
+                        <FormItem> 
+                            <FormLabel>Banner Image</FormLabel> 
+                            <FormControl> 
+                                <Input type="file" accept="image/*" {...fileRef} /> 
+                            </FormControl> 
+                            <FormMessage /> 
+                        </FormItem> 
+                    )}
+                />
             </div>
         )}
 
