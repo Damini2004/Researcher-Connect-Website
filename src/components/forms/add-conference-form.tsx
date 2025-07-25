@@ -154,14 +154,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>Start Date</FormLabel>
                           <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
+                            <FormControl>
+                                <PopoverTrigger asChild>
+                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                            </FormControl>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -177,14 +177,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>End Date</FormLabel>
                           <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
+                            <FormControl>
+                                <PopoverTrigger asChild>
+                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                            </FormControl>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -200,14 +200,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>Submission Deadline</FormLabel>
                           <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
+                            <FormControl>
+                                <PopoverTrigger asChild>
+                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                            </FormControl>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -222,15 +222,15 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Registration Deadline</FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
+                           <Popover>
+                            <FormControl>
+                                <PopoverTrigger asChild>
+                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                            </FormControl>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -245,7 +245,42 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         
         {currentStep === 4 && (
             <div className="space-y-6 pt-4">
-                 <FormField control={form.control} name="locationType" render={({ field }) => ( <FormItem className="space-y-3"> <FormLabel>Location Type</FormLabel> <FormControl> <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1"> <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="Offline" /></FormControl><FormLabel className="font-normal">Offline</FormLabel></FormItem> <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="Online" /></FormControl><FormLabel className="font-normal">Online</FormLabel></FormItem> <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="Hybrid" /></FormControl><FormLabel className="font-normal">Hybrid</FormLabel></FormItem> </RadioGroup> </FormControl> <FormMessage /> </FormItem> )}/>
+                 <FormField
+                  control={form.control}
+                  name="locationType"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>Location Type</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-1"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Offline" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Offline</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Online" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Online</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Hybrid" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Hybrid</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 {(locationType === 'Offline' || locationType === 'Hybrid') && ( <FormField control={form.control} name="venueAddress" render={({ field }) => ( <FormItem> <FormLabel>Venue Address</FormLabel> <FormControl><Textarea placeholder="123 Main St, Anytown, USA" {...field} /></FormControl> <FormMessage /> </FormItem> )}/> )}
                 {(locationType === 'Online' || locationType === 'Hybrid') && ( <FormField control={form.control} name="onlinePlatform" render={({ field }) => ( <FormItem> <FormLabel>Online Platform Details</FormLabel> <FormControl><Input placeholder="e.g., Zoom, Google Meet Link" {...field} /></FormControl> <FormMessage /> </FormItem> )}/> )}
                  <FormField control={form.control} name="expectedAttendees" render={({ field }) => ( <FormItem> <FormLabel>Expected Attendees</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
@@ -254,37 +289,60 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         
         {currentStep === 5 && (
             <div className="space-y-6 pt-4">
-                 <FormField control={form.control} name="callForPapers" render={({ field }) => ( 
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> 
-                        <div className="space-y-0.5"> 
-                            <FormLabel className="text-base">Call for Papers</FormLabel> 
-                            <FormDescription>Enable paper submissions for this conference.</FormDescription> 
-                        </div> 
-                        <FormControl>
-                            <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl> 
-                    </FormItem> 
-                )}/>
-                 <FormField control={form.control} name="enableAbstractSubmission" render={({ field }) => ( 
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> 
-                        <div className="space-y-0.5"> 
-                            <FormLabel>Enable Abstract Submission</FormLabel> 
-                        </div> 
-                        <FormControl>
-                            <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl> 
-                    </FormItem> 
-                )}/>
-                 <FormField control={form.control} name="enableFullPaperSubmission" render={({ field }) => ( 
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> 
-                        <div className="space-y-0.5"> 
-                            <FormLabel>Enable Full Paper Submission</FormLabel> 
-                        </div> 
-                        <FormControl>
-                            <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl> 
-                    </FormItem> 
-                )}/>
+                 <FormField
+                    control={form.control}
+                    name="callForPapers"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel className="text-base">Call for Papers</FormLabel>
+                                <FormDescription>
+                                    Enable paper submissions for this conference.
+                                </FormDescription>
+                            </div>
+                            <FormControl>
+                                <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="enableAbstractSubmission"
+                    render={({ field }) => (
+                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel>Enable Abstract Submission</FormLabel>
+                            </div>
+                            <FormControl>
+                                <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="enableFullPaperSubmission"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel>Enable Full Paper Submission</FormLabel>
+                            </div>
+                            <FormControl>
+                                <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
                  <FormField control={form.control} name="bannerImage" render={() => ( <FormItem> <FormLabel>Banner Image</FormLabel> <FormControl> <Input type="file" accept="image/*" {...fileRef} /> </FormControl> <FormMessage /> </FormItem> )}/>
             </div>
         )}
