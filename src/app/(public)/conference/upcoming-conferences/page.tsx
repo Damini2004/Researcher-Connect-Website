@@ -62,9 +62,9 @@ export default function UpcomingConferencesPage() {
         </div>
         
         {isLoading ? (
-             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
                 {[...Array(3)].map((_, i) => (
-                    <Card key={i} className="flex flex-col">
+                    <Card key={i} className="flex flex-col w-full max-w-sm">
                         <Skeleton className="h-[200px] w-full" />
                         <CardHeader>
                            <Skeleton className="h-6 w-3/4 mb-2" />
@@ -84,9 +84,9 @@ export default function UpcomingConferencesPage() {
                 ))}
              </div>
         ) : upcomingConferences.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
                 {upcomingConferences.map((conference) => (
-                <Card key={conference.id} className="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
+                <Card key={conference.id} className="flex flex-col w-full max-w-sm transform transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
                     <div className="relative h-[200px] w-full">
                         <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
                     </div>
