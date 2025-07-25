@@ -15,11 +15,7 @@ export async function addConference(data: AddConferenceData & { bannerImage: str
 
     const dataToSave = {
         ...validationResult.data,
-        startDate: format(data.startDate, "yyyy-MM-dd"),
-        endDate: format(data.endDate, "yyyy-MM-dd"),
-        submissionDeadline: format(data.submissionDeadline, "yyyy-MM-dd"),
-        registrationDeadline: format(data.registrationDeadline, "yyyy-MM-dd"),
-        bannerImage: data.bannerImage, // Ensure the base64 string is saved
+        bannerImage: data.bannerImage,
         createdAt: new Date(),
     };
 
@@ -43,10 +39,8 @@ export async function getConferences(): Promise<Conference[]> {
         const conferences: Conference[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
-            const dateString = data.startDate; 
-
-            const parts = dateString.split('-').map((part: string) => parseInt(part, 10));
-            const dateObject = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+            // Firestore timestamps need to be converted to Date objects
+            const dateObject = data.startDate.toDate();
 
             let location = "Online";
             if (data.locationType === "Offline") {
