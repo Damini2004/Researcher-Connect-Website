@@ -5,7 +5,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getConferences, Conference } from "@/services/conferenceService";
+import { getConferences } from "@/services/conferenceService";
+import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";

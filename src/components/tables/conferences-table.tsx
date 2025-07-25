@@ -29,10 +29,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search, MoreHorizontal, Trash2 } from "lucide-react";
-import { deleteConference, Conference } from "@/services/conferenceService";
+import { deleteConference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import type { Conference } from "@/lib/types";
 
 interface ConferencesTableProps {
   conferences: Conference[];
@@ -129,7 +130,7 @@ export default function ConferencesTable({ conferences, isLoading, onConferenceD
                       />
                     </TableCell>
                     <TableCell className="font-medium">{conference.title}</TableCell>
-                    <TableCell>{conference.startDate === conference.endDate ? conference.startDate : `${conference.startDate} - ${conference.endDate}`}</TableCell>
+                    <TableCell>{conference.date}</TableCell>
                     <TableCell>{conference.location}</TableCell>
                     <TableCell>
                       <DropdownMenu>

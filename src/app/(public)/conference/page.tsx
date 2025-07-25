@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { getConferences, Conference } from "@/services/conferenceService";
+import { getConferences } from "@/services/conferenceService";
+import type { Conference } from "@/lib/types";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
