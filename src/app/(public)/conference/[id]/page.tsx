@@ -17,12 +17,17 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
   const [conference, setConference] = useState<Conference | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const conferenceId = params.id;
 
   useEffect(() => {
     const fetchConference = async () => {
+      if (!conferenceId) {
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
       try {
-        const result = await getConferenceById(params.id);
+        const result = await getConferenceById(conferenceId);
         if (result.success && result.conference) {
           setConference(result.conference);
         } else {
@@ -43,10 +48,8 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
       }
     };
 
-    if (params.id) {
-      fetchConference();
-    }
-  }, [params.id, toast]);
+    fetchConference();
+  }, [conferenceId, toast]);
 
   if (isLoading) {
     return (
