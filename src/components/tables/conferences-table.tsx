@@ -129,7 +129,7 @@ export default function ConferencesTable({ conferences, isLoading, onConferenceD
                       />
                     </TableCell>
                     <TableCell className="font-medium">{conference.title}</TableCell>
-                    <TableCell>{conference.date}</TableCell>
+                    <TableCell>{conference.startDate === conference.endDate ? conference.startDate : `${conference.startDate} - ${conference.endDate}`}</TableCell>
                     <TableCell>{conference.location}</TableCell>
                     <TableCell>
                       <DropdownMenu>

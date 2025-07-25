@@ -6,56 +6,90 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, delet
 import { z } from 'zod';
 import { format } from 'date-fns';
 
+// Zod schema for the new detailed conference form
+export const conferenceSchema = z.object({
+  // Basic Details
+  title: z.string().min(10, "Title must be at least 10 characters."),
+  description: z.string().min(20, "Short description must be at least 20 characters."),
+  fullDescription: z.string().min(50, "Full description must be at least 50 characters."),
+  conferenceType: z.enum(["National", "International", "Workshop", "Seminar"]),
+  organizerName: z.string().min(3, "Organizer name is required."),
+  organizerEmail: z.string().email("A valid organizer email is required."),
+  organizerPhone: z.string().min(10, "A valid phone number is required."),
+
+  // Schedule and Location
+  startDate: z.date(),
+  endDate: z.date(),
+  submissionDeadline: z.date(),
+  registrationDeadline: z.date(),
+  locationType: z.enum(["Online", "Offline", "Hybrid"]),
+  venueAddress: z.string().optional(),
+  onlinePlatform: z.string().optional(),
+
+  // Participation Details
+  expectedAttendees: z.coerce.number().min(1, "Expected attendees must be at least 1."),
+  audienceType: z.string().min(3, "Audience type is required."),
+  callForPapers: z.boolean().default(false),
+  
+  // Media
+  bannerImage: z.any(),
+
+  // Configuration
+  enableAbstractSubmission: z.boolean().default(false),
+  enableFullPaperSubmission: z.boolean().default(false),
+  
+}).refine(data => {
+    if (data.locationType === 'Offline' || data.locationType === 'Hybrid') {
+        return !!data.venueAddress && data.venueAddress.length > 5;
+    }
+    return true;
+}, {
+    message: "Venue address is required for Offline or Hybrid events.",
+    path: ["venueAddress"],
+}).refine(data => {
+    if (data.locationType === 'Online' || data.locationType === 'Hybrid') {
+        return !!data.onlinePlatform && data.onlinePlatform.length > 2;
+    }
+    return true;
+}, {
+    message: "Online platform details are required for Online or Hybrid events.",
+    path: ["onlinePlatform"],
+});
+
+
 export interface Conference {
     id: string;
     title: string;
     description: string;
-    date: string; // The original string date in YYYY-MM-DD format
-    dateObject: Date; // A reliable UTC Date object for comparisons
-    location: string;
+    startDate: string;
+    endDate: string;
+    startDateObject: Date;
+    location: string; // Simplified for table view
     imageSrc: string;
     createdAt: string;
 }
 
-const conferenceSchema = z.object({
-    title: z.string().min(10, "Title must be at least 10 characters."),
-    description: z.string().min(20, "Description must be at least 20 characters."),
-    date: z.string(), // Will be in YYYY-MM-DD format
-    location: z.string().min(3, "Location is required."),
-    imageSrc: z.string().url("Must be a valid URL (Base64 data URI).").or(z.string().startsWith("data:image")),
-});
 
-interface AddConferenceData {
-    title: string;
-    description: string;
-    date: string; // This will now be YYYY-MM-DD
-    location: string;
-    imageSrc: string;
-}
+// This will be the type for data coming from the form before processing
+export type AddConferenceData = z.infer<typeof conferenceSchema>;
 
-export async function addConference(data: AddConferenceData): Promise<{ success: boolean; message: string; newConference?: Partial<Conference> }> {
+export async function addConference(data: AddConferenceData & { bannerImage: string }): Promise<{ success: boolean; message: string; }> {
   try {
-    const validationResult = conferenceSchema.safeParse(data);
-    
-    if (!validationResult.success) {
-      return { success: false, message: validationResult.error.errors[0].message };
-    }
+    // We expect bannerImage to be a base64 string already
+    const dataToSave = {
+        ...data,
+        startDate: format(data.startDate, "yyyy-MM-dd"),
+        endDate: format(data.endDate, "yyyy-MM-dd"),
+        submissionDeadline: format(data.submissionDeadline, "yyyy-MM-dd"),
+        registrationDeadline: format(data.registrationDeadline, "yyyy-MM-dd"),
+        createdAt: new Date(),
+    };
 
-    const docRef = await addDoc(collection(db, 'conferences'), {
-      ...validationResult.data,
-      createdAt: new Date(),
-    });
+    await addDoc(collection(db, 'conferences'), dataToSave);
     
-    const newConferenceData = {
-        id: docRef.id,
-        ...validationResult.data,
-        createdAt: new Date().toISOString()
-    }
-
     return { 
         success: true, 
         message: 'Conference added successfully!',
-        newConference: newConferenceData
     };
   } catch (error) {
     console.error("Error adding conference:", error);
@@ -71,34 +105,33 @@ export async function getConferences(): Promise<Conference[]> {
         const conferences: Conference[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
-            const dateString = data.date; // Should be YYYY-MM-DD
+            const dateString = data.startDate; 
 
             let dateObject: Date;
             if (dateString && typeof dateString === 'string') {
-                // Robustly parse YYYY-MM-DD into a UTC date object.
                 const parts = dateString.split('-').map(part => parseInt(part, 10));
-                if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
-                    // parts[1] - 1 because month is 0-indexed in JavaScript Dates
-                    dateObject = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
-                } else {
-                    console.warn(`Invalid date format: "${dateString}". Using current date as fallback.`);
-                    dateObject = new Date();
-                    dateObject.setUTCHours(0, 0, 0, 0);
-                }
+                dateObject = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
             } else {
-                console.warn(`Missing or invalid date field. Using current date as fallback.`);
                 dateObject = new Date();
                 dateObject.setUTCHours(0, 0, 0, 0);
+            }
+
+            let location = "Online";
+            if (data.locationType === "Offline") {
+                location = data.venueAddress;
+            } else if (data.locationType === "Hybrid") {
+                location = `${data.venueAddress} / Online`;
             }
 
             conferences.push({
                 id: doc.id,
                 title: data.title,
                 description: data.description,
-                date: format(dateObject, "PPP"), // Format for display
-                dateObject: dateObject,
-                location: data.location,
-                imageSrc: data.imageSrc,
+                startDate: format(dateObject, "PPP"),
+                endDate: data.endDate ? format(new Date(data.endDate), "PPP") : format(dateObject, "PPP"),
+                startDateObject: dateObject,
+                location: location,
+                imageSrc: data.bannerImage, // updated from imageSrc
                 createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
             });
         });
