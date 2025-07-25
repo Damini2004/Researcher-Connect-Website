@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
@@ -106,8 +107,10 @@ export default function UpcomingConferencesPage() {
                     <p className="text-muted-foreground line-clamp-3">{conference.description}</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full">
-                        Register Now <ArrowRight className="ml-2 h-4 w-4" />
+                    <Button className="w-full" asChild>
+                      <Link href={`/conference/${conference.id}`}>
+                        View More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
                     </Button>
                     </CardFooter>
                 </Card>
