@@ -175,18 +175,18 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         )}
 
         <div className="flex justify-between pt-4">
-            {currentStep > 1 && (
+            {currentStep > 1 ? (
                 <Button type="button" variant="outline" onClick={handleBack}>
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
-            )}
+            ) : <div />}
              {currentStep < TOTAL_STEPS && (
-                <Button type="button" onClick={handleNext} className={cn(currentStep === 1 && "ml-auto")}>
+                <Button type="button" onClick={handleNext}>
                     Next <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             )}
             {currentStep === TOTAL_STEPS && (
-                 <Button type="submit" size="lg" className="ml-auto" disabled={isSubmitting}>
+                 <Button type="submit" size="lg" disabled={isSubmitting}>
                     {isSubmitting ? "Saving..." : "Save Conference"}
                 </Button>
             )}
