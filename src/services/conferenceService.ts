@@ -8,24 +8,16 @@ import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib
 
 export async function addConference(data: AddConferenceData & { bannerImage: string }): Promise<{ success: boolean; message: string; }> {
   try {
-    // The Zod schema now expects dates, so we need to convert them before validation
-    const dataWithDateObjects = {
-        ...data,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
-        submissionDeadline: new Date(data.submissionDeadline),
-        registrationDeadline: new Date(data.registrationDeadline),
-    };
-
-    const validationResult = conferenceSchema.safeParse(dataWithDateObjects);
+    const validationResult = conferenceSchema.safeParse(data);
     if (!validationResult.success) {
         console.error("Zod validation failed:", validationResult.error.errors);
         return { success: false, message: validationResult.error.errors[0].message };
     }
 
+    // Prepare data for saving. We pass the Date objects directly to Firestore.
     const dataToSave = {
         ...validationResult.data,
-        bannerImage: data.bannerImage, // Keep the original base64 string
+        bannerImage: data.bannerImage,
         createdAt: new Date(),
     };
 
