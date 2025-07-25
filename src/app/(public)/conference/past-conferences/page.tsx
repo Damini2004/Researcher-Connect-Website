@@ -74,7 +74,7 @@ export default function PastConferencesPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(3)].map((_, i) => (
             <Card key={i} className="flex flex-col w-full max-w-sm overflow-hidden">
               <Skeleton className="h-[200px] w-full" />
@@ -96,9 +96,9 @@ export default function PastConferencesPage() {
           ))}
         </div>
       ) : pastConferences.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {pastConferences.map((conference) => (
-            <Card key={conference.id} className="flex flex-col w-full max-w-sm overflow-hidden">
+            <Card key={conference.id} className="flex flex-col w-full max-w-sm overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative h-[200px] w-full">
                 <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
               </div>
