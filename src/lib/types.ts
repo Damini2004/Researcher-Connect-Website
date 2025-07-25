@@ -54,12 +54,37 @@ export const conferenceSchema = z.object({
 
 export interface Conference {
     id: string;
+    // Basic Details
     title: string;
     description: string;
-    date: string;
-    dateObject: Date;
+    fullDescription: string;
+    conferenceType: string;
+    organizerName: string;
+    organizerEmail: string;
+    organizerPhone: string;
+
+    // Schedule and Location
+    date: string; // Formatted date range for display
+    startDate: string;
+    endDate: string;
+    submissionDeadline: string;
+    registrationDeadline: string;
+    dateObject: Date; // For sorting and filtering
+    locationType: string;
     location: string;
+    
+    // Participation Details
+    audienceType: string;
+    callForPapers: boolean;
+
+    // Media
     imageSrc: string;
+
+    // Configuration
+    enableAbstractSubmission: boolean;
+    enableFullPaperSubmission: boolean;
+    
+    // Metadata
     createdAt: string;
 }
 

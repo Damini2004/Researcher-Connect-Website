@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, History } from "lucide-react";
+import { Calendar, MapPin, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getConferences } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
@@ -76,7 +77,7 @@ export default function PastConferencesPage() {
       {isLoading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(3)].map((_, i) => (
-            <Card key={i} className="flex flex-col w-full max-w-sm overflow-hidden">
+            <Card key={i} className="flex flex-col w-full overflow-hidden">
               <Skeleton className="h-[200px] w-full" />
               <CardHeader>
                 <Skeleton className="h-6 w-3/4 mb-2" />
@@ -98,7 +99,7 @@ export default function PastConferencesPage() {
       ) : pastConferences.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {pastConferences.map((conference) => (
-            <Card key={conference.id} className="flex flex-col w-full max-w-sm overflow-hidden hover:shadow-lg transition-shadow">
+            <Card key={conference.id} className="flex flex-col w-full overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative h-[200px] w-full">
                 <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
               </div>
@@ -122,9 +123,10 @@ export default function PastConferencesPage() {
                   </p>
                 </CardContent>
                 <CardFooter className="p-0 pt-6">
-                  <Button variant="outline">
-                    <History className="mr-2 h-4 w-4" />
-                    View Archive
+                  <Button asChild>
+                    <Link href={`/conference/${conference.id}`}>
+                      Read More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                   </Button>
                 </CardFooter>
               </div>
