@@ -121,7 +121,7 @@ export default function ConferencesTable({ conferences, isLoading, onConferenceD
                   <TableRow key={conference.id}>
                     <TableCell>
                       <Image
-                        src={conference.imageSrc}
+                        src={conference.imageSrc || "https://placehold.co/100x64.png"}
                         alt={conference.title}
                         width={100}
                         height={64}
