@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp } from 'firebase/firestore';
 import { format } from 'date-fns';
 import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib/types';
 
@@ -17,7 +17,7 @@ export async function addConference(data: AddConferenceData & { bannerImage: str
     const dataToSave = {
         ...validationResult.data,
         bannerImage: data.bannerImage,
-        createdAt: new Date(), // Add createdAt timestamp here
+        createdAt: serverTimestamp(), // Use Firestore server timestamp
     };
 
     await addDoc(collection(db, 'conferences'), dataToSave);
@@ -40,8 +40,17 @@ export async function getConferences(): Promise<Conference[]> {
         const conferences: Conference[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
-            // Firestore timestamps need to be converted to Date objects
-            const dateObject = data.startDate.toDate();
+            
+            // Handle both Timestamp and Date objects safely
+            const getJSDate = (field: any): Date => {
+                if (field && typeof field.toDate === 'function') {
+                    return field.toDate();
+                }
+                return field instanceof Date ? field : new Date();
+            };
+
+            const dateObject = getJSDate(data.startDate);
+            const createdAtDate = getJSDate(data.createdAt);
 
             let location = "Online";
             if (data.locationType === "Offline") {
@@ -58,7 +67,7 @@ export async function getConferences(): Promise<Conference[]> {
                 dateObject: dateObject,
                 location: location,
                 imageSrc: data.bannerImage,
-                createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
+                createdAt: createdAtDate.toISOString(),
             });
         });
         return conferences;
