@@ -4,7 +4,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -37,7 +36,6 @@ export default function PastConferencesPage() {
       try {
         const allConferences = await getConferences();
 
-        // A conference is "past" if its date is strictly before the start of today.
         const past = allConferences.filter(
           (conf) =>
             conf.dateObject &&
@@ -76,9 +74,9 @@ export default function PastConferencesPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {[...Array(3)].map((_, i) => (
-            <Card key={i} className="overflow-hidden">
+            <Card key={i} className="flex flex-col w-full max-w-sm overflow-hidden">
               <Skeleton className="h-[200px] w-full" />
               <CardHeader>
                 <Skeleton className="h-6 w-3/4 mb-2" />
@@ -89,6 +87,7 @@ export default function PastConferencesPage() {
               </CardHeader>
               <CardContent>
                 <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full mt-2" />
               </CardContent>
               <CardFooter>
                 <Skeleton className="h-10 w-32" />
@@ -103,30 +102,32 @@ export default function PastConferencesPage() {
               <div className="relative h-[200px] w-full">
                 <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
               </div>
-              <CardHeader>
-                <CardTitle>{conference.title}</CardTitle>
-                <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-1">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <span>{conference.date}</span>
+              <div className="flex flex-col flex-grow p-6">
+                <CardHeader className="p-0">
+                  <CardTitle>{conference.title}</CardTitle>
+                  <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>{conference.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      <span>{conference.location}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    <span>{conference.location}</span>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-muted-foreground line-clamp-3">
-                  {conference.description}
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline">
-                  <History className="mr-2 h-4 w-4" />
-                  View Archive
-                </Button>
-              </CardFooter>
+                </CardHeader>
+                <CardContent className="p-0 pt-4 flex-grow">
+                  <p className="text-muted-foreground line-clamp-3">
+                    {conference.description}
+                  </p>
+                </CardContent>
+                <CardFooter className="p-0 pt-6">
+                  <Button variant="outline">
+                    <History className="mr-2 h-4 w-4" />
+                    View Archive
+                  </Button>
+                </CardFooter>
+              </div>
             </Card>
           ))}
         </div>
