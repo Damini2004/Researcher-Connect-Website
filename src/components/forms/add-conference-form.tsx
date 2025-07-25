@@ -116,7 +116,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   }
   
   const handleNext = () => {
-    // We can add validation logic here per step if needed in the future
     setCurrentStep(prev => Math.min(prev + 1, TOTAL_STEPS));
   }
   const handleBack = () => {
@@ -155,14 +154,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>Start Date</FormLabel>
                           <Popover>
-                            <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -178,14 +177,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>End Date</FormLabel>
                           <Popover>
-                             <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -201,14 +200,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>Submission Deadline</FormLabel>
                           <Popover>
-                             <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -224,14 +223,14 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormItem>
                           <FormLabel>Registration Deadline</FormLabel>
                           <Popover>
-                            <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
+                                    {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                               <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
                             </PopoverContent>
@@ -255,9 +254,37 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         
         {currentStep === 5 && (
             <div className="space-y-6 pt-4">
-                 <FormField control={form.control} name="callForPapers" render={({ field }) => ( <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> <div className="space-y-0.5"> <FormLabel className="text-base">Call for Papers</FormLabel> <FormDescription>Enable paper submissions for this conference.</FormDescription> </div> <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl> </FormItem> )}/>
-                 <FormField control={form.control} name="enableAbstractSubmission" render={({ field }) => ( <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> <div className="space-y-0.5"> <FormLabel>Enable Abstract Submission</FormLabel> </div> <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl> </FormItem> )}/>
-                 <FormField control={form.control} name="enableFullPaperSubmission" render={({ field }) => ( <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> <div className="space-y-0.5"> <FormLabel>Enable Full Paper Submission</FormLabel> </div> <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl> </FormItem> )}/>
+                 <FormField control={form.control} name="callForPapers" render={({ field }) => ( 
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> 
+                        <div className="space-y-0.5"> 
+                            <FormLabel className="text-base">Call for Papers</FormLabel> 
+                            <FormDescription>Enable paper submissions for this conference.</FormDescription> 
+                        </div> 
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl> 
+                    </FormItem> 
+                )}/>
+                 <FormField control={form.control} name="enableAbstractSubmission" render={({ field }) => ( 
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> 
+                        <div className="space-y-0.5"> 
+                            <FormLabel>Enable Abstract Submission</FormLabel> 
+                        </div> 
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl> 
+                    </FormItem> 
+                )}/>
+                 <FormField control={form.control} name="enableFullPaperSubmission" render={({ field }) => ( 
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"> 
+                        <div className="space-y-0.5"> 
+                            <FormLabel>Enable Full Paper Submission</FormLabel> 
+                        </div> 
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl> 
+                    </FormItem> 
+                )}/>
                  <FormField control={form.control} name="bannerImage" render={() => ( <FormItem> <FormLabel>Banner Image</FormLabel> <FormControl> <Input type="file" accept="image/*" {...fileRef} /> </FormControl> <FormMessage /> </FormItem> )}/>
             </div>
         )}
