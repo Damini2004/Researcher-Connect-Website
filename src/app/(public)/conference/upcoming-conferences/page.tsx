@@ -231,7 +231,7 @@ export default function UpcomingConferencesPage() {
                                 <Image src={conf.imageSrc || "https://placehold.co/80x80.png"} alt={`${conf.title} logo`} width={80} height={80} className="rounded-md object-contain" data-ai-hint="logo"/>
                                 <div className="flex-1 text-center md:text-left">
                                     <h3 className="font-semibold">{conf.title}</h3>
-                                    <p className="text-sm text-muted-foreground">{conf.description}</p>
+                                    <p className="text-sm text-muted-foreground line-clamp-2">{conf.description}</p>
                                     <p className="text-sm text-primary font-medium flex items-center justify-center md:justify-start gap-2 mt-1"><Calendar className="h-4 w-4"/>{conf.date}</p>
                                 </div>
                                 <div className="text-center">
