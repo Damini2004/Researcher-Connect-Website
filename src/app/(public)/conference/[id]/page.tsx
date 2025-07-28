@@ -17,12 +17,14 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
-export default function ConferenceDetailPage({ params }: { params: { id: string } }) {
+export default function ConferenceDetailPage() {
   const [conference, setConference] = useState<Conference | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const conferenceId = params.id;
+  const params = useParams();
+  const conferenceId = params.id as string;
 
   useEffect(() => {
     const fetchConference = async () => {
