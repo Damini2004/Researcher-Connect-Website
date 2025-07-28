@@ -133,7 +133,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                 <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">{conference.tagline || conference.description}</p>
             </header>
 
-            <div className="relative w-full h-[300px] md:h-[450px] mb-12">
+            <div className="relative w-full h-[300px] md:h-[450px] mb-12 max-w-7xl mx-auto">
                 <Image 
                     src={conference.imageSrc} 
                     alt={conference.title} 
@@ -143,7 +143,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                 />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
                 <main className="lg:col-span-2 space-y-8">
                     <Card><CardHeader><CardTitle>About the Conference</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.aboutConference)}</CardContent></Card>
                     <Card><CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader><CardContent>{renderListFromString(conference.keynoteSpeakers)}</CardContent></Card>
@@ -203,7 +203,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                         <CardContent className="space-y-4">
                             <div className="flex items-start gap-3"><Calendar className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
                             <Separator />
-                            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Venue</p><p className="text-sm text-muted-foreground">{conference.venueName}<br />{conference.venueAddress}</p></div></div>
+                            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Venue</p><p className="text-sm text-muted-foreground">{conference.venueName}<br />{conference.location}</p></div></div>
                              {conference.keywords && <>
                                 <Separator />
                                 <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map(k => k.trim() && <Badge key={k} variant="secondary">{k.trim()}</Badge>)}</div></div>
