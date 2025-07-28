@@ -210,7 +210,49 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                     <FormField control={form.control} name="venueName" render={({ field }) => ( <FormItem> <FormLabel>Venue Name</FormLabel> <FormControl><Input placeholder="e.g., Grand Convention Center" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     <FormField control={form.control} name="venueAddress" render={({ field }) => ( <FormItem> <FormLabel>Venue Address</FormLabel> <FormControl><Input placeholder="123 Innovation Drive, Tech City" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 </div>
-                <FormField control={form.control} name="modeOfConference" render={({ field }) => ( <FormItem> <FormLabel>Mode of Conference</FormLabel> <div className="flex items-center space-x-4 pt-2"> {conferenceModes.map((item) => ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...(field.value || []), item.id]) : field.onChange( (field.value || [])?.filter( (value) => value !== item.id ) ) }} /> </FormControl> <FormLabel className="font-normal"> {item.label} </FormLabel> </FormItem> ))} </div> <FormMessage /> </FormItem> )} />
+                <FormField
+                  control={form.control}
+                  name="modeOfConference"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Mode of Conference</FormLabel>
+                      <div className="flex items-center space-x-4 pt-2">
+                        {conferenceModes.map((item) => (
+                          <FormField
+                            key={item.id}
+                            control={form.control}
+                            name="modeOfConference"
+                            render={({ field }) => (
+                              <FormItem
+                                key={item.id}
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(item.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([...field.value, item.id])
+                                        : field.onChange(
+                                            field.value?.filter(
+                                              (value) => value !== item.id
+                                            )
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  {item.label}
+                                </FormLabel>
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
             </div>
         )}
 
@@ -243,36 +285,45 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 <FormField
                   control={form.control}
                   name="paperCategories"
-                  render={({ field }) => (
+                  render={() => (
                     <FormItem>
                       <FormLabel>Paper Categories</FormLabel>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                         {paperCategories.map((item) => (
-                          <FormItem
+                          <FormField
                             key={item.id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(item.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([
-                                        ...(field.value || []),
-                                        item.id,
-                                      ])
-                                    : field.onChange(
-                                        (field.value || [])?.filter(
-                                          (value) => value !== item.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {item.label}
-                            </FormLabel>
-                          </FormItem>
+                            control={form.control}
+                            name="paperCategories"
+                            render={({ field }) => {
+                              return (
+                                <FormItem
+                                  key={item.id}
+                                  className="flex flex-row items-start space-x-3 space-y-0"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(item.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...(field.value || []),
+                                              item.id,
+                                            ])
+                                          : field.onChange(
+                                              (field.value || [])?.filter(
+                                                (value) => value !== item.id
+                                              )
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {item.label}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
                         ))}
                       </div>
                       <FormMessage />
