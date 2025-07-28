@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
-  SidebarTrigger
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/icons";
@@ -29,9 +29,6 @@ export default function SubAdminSidebar() {
 
   return (
     <Sidebar>
-       <SheetHeader>
-        <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
-      </SheetHeader>
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <Logo />
@@ -40,6 +37,9 @@ export default function SubAdminSidebar() {
         <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent>
+        <SheetHeader>
+          <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
+        </SheetHeader>
         <SidebarMenu>
           {menuItems.map((item) => {
             const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);

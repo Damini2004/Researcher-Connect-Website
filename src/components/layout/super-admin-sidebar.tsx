@@ -36,9 +36,6 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
 
   return (
     <Sidebar>
-       <SheetHeader>
-        <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
-      </SheetHeader>
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <Logo />
@@ -47,6 +44,9 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
         <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent>
+        <SheetHeader>
+          <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
+        </SheetHeader>
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.href}>
