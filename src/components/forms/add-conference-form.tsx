@@ -28,7 +28,7 @@ import { Checkbox } from "../ui/checkbox";
 import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Progress } from "../ui/progress";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "../ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "../ui/carousel";
 
 interface AddConferenceFormProps {
     onConferenceAdded: () => void;
@@ -233,7 +233,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
         <Carousel setApi={setApi} orientation="vertical" className="w-full">
             <CarouselContent className="h-[450px]">
-                <CarouselItem>
+                <CarouselItem className="overflow-y-auto pb-6">
                     <div className="p-1 space-y-6">
                         <h3 className="text-lg font-medium">Basic Details</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -294,7 +294,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         />
                     </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="overflow-y-auto pb-6">
                     <div className="p-1 space-y-6">
                         <h3 className="text-lg font-medium">Content & People</h3>
                         <FormField control={form.control} name="aboutConference" render={({ field }) => ( <FormItem> <FormLabel>About Conference</FormLabel> <FormControl><Textarea className="min-h-32" placeholder="Provide a detailed description of the conference..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -308,7 +308,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormField control={form.control} name="editorialBoard" render={({ field }) => ( <FormItem> <FormLabel>Editorial Board Members / Track Chairs (Optional)</FormLabel> <FormControl><Textarea placeholder="List members..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="overflow-y-auto pb-6">
                     <div className="p-1 space-y-6">
                         <h3 className="text-lg font-medium">Submission Details</h3>
                         <FormField control={form.control} name="tracks" render={({ field }) => ( <FormItem> <FormLabel>List of Tracks / Themes (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., AI in Healthcare, NLP Advances..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -365,7 +365,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         <FormField control={form.control} name="peerReviewMethod" render={({ field }) => ( <FormItem> <FormLabel>Peer Review Method (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., Single-Blind, Double-Blind, Open..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="overflow-y-auto pb-6">
                     <div className="p-1 space-y-6">
                         <h3 className="text-lg font-medium">Final Details</h3>
                         <FormField control={form.control} name="registrationFees" render={({ field }) => ( <FormItem> <FormLabel>Registration & Fees (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the fee structure..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
