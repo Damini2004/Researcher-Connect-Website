@@ -26,6 +26,7 @@ import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
+import ConferenceCountdown from "@/components/ui/conference-countdown";
 
 export default function UpcomingConferencesPage() {
   const [upcomingConference, setUpcomingConference] = useState<Conference | null>(null);
@@ -102,23 +103,24 @@ export default function UpcomingConferencesPage() {
   return (
     <div>
       {/* --- Hero Section --- */}
-      <section className="relative h-[350px] w-full bg-slate-800 text-white">
+      <section className="relative h-[450px] md:h-[500px] w-full bg-slate-800 text-white">
         <Image
-          src={upcomingConference.imageSrc || "https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?q=80&w=1600&h=400&auto=format&fit=crop"}
+          src={upcomingConference.imageSrc || "https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?q=80&w=1600&h=500&auto=format&fit=crop"}
           alt={upcomingConference.title}
           data-ai-hint="academic conference"
           fill
           className="object-cover opacity-30"
         />
         <div className="relative z-10 container h-full flex flex-col justify-end pb-12">
-            <div className="flex items-center gap-6">
+            <div className="flex flex-col md:flex-row items-start gap-6">
                 <Image src="https://logodix.com/logo/796417.png" alt="ICLTL Logo" width={120} height={120} data-ai-hint="logo brand" className="bg-white/90 p-2 rounded-lg shadow-lg"/>
-                <div>
+                <div className="flex-1">
                     <h1 className="text-4xl font-extrabold tracking-tight">{upcomingConference.title} ({upcomingConference.shortTitle})</h1>
-                    <div className="flex items-center gap-4 mt-2 text-white/90">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2 text-white/90">
                         <div className="flex items-center gap-2"><Calendar className="h-4 w-4"/><span>{upcomingConference.date}</span></div>
                         <div className="flex items-center gap-2"><MapPin className="h-4 w-4"/><span>{upcomingConference.location}</span></div>
                     </div>
+                    <ConferenceCountdown targetDate={upcomingConference.startDate} />
                 </div>
             </div>
             <div className="absolute bottom-12 right-12 flex items-center gap-4">
