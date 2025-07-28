@@ -11,7 +11,6 @@ import {
   SidebarFooter,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/icons";
 import { FileText, CheckSquare, MessageSquare, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
@@ -37,9 +36,6 @@ export default function SubAdminSidebar() {
         <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent>
-        <SheetHeader>
-          <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
-        </SheetHeader>
         <SidebarMenu>
           {menuItems.map((item) => {
             const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
