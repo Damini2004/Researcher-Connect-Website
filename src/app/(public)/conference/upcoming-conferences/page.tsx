@@ -71,6 +71,15 @@ export default function UpcomingConferencesPage() {
     };
     fetchAndFilterConferences();
   }, [toast, currentDate]);
+  
+  const renderListFromString = (text?: string) => {
+    if (!text) return <p className="text-muted-foreground">Not available.</p>;
+    return (
+      <ul className="list-disc list-inside text-muted-foreground space-y-1">
+        {text.split('\n').map((item, index) => item.trim() && <li key={index}>{item.trim()}</li>)}
+      </ul>
+    );
+  };
 
 
   if (isLoading) {
@@ -160,6 +169,25 @@ export default function UpcomingConferencesPage() {
                 </ul>
               </CardContent>
             </Card>
+
+            {upcomingConference.keynoteSpeakers && (
+              <Card>
+                <CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader>
+                <CardContent>
+                  {renderListFromString(upcomingConference.keynoteSpeakers)}
+                </CardContent>
+              </Card>
+            )}
+
+            {upcomingConference.tracks && (
+              <Card>
+                <CardHeader><CardTitle>Conference Tracks</CardTitle></CardHeader>
+                <CardContent>
+                  {renderListFromString(upcomingConference.tracks)}
+                </CardContent>
+              </Card>
+            )}
+
           </div>
 
           {/* --- Right Column: Sidebar --- */}
