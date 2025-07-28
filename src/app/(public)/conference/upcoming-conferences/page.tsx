@@ -112,7 +112,7 @@ export default function UpcomingConferencesPage() {
   return (
     <div className="bg-secondary/30">
       {/* --- Hero Section --- */}
-      <section className="relative w-full h-[500px] bg-gray-800 text-white flex items-center justify-center">
+      <section className="relative w-full h-[500px] bg-gray-800 text-white">
         <Image
           src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=500&auto=format&fit=crop"
           alt="Conference background"
@@ -122,23 +122,25 @@ export default function UpcomingConferencesPage() {
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-between py-8">
             {/* Breadcrumbs */}
-            <div className="flex items-center text-sm text-white/80">
-                <Link href="/" className="hover:text-white">Home</Link>
-                <ChevronRight className="h-4 w-4 mx-1" />
-                <span className="font-semibold text-white">Upcoming International Conference</span>
+            <div>
+              <div className="flex items-center text-sm text-white/80">
+                  <Link href="/" className="hover:text-white">Home</Link>
+                  <ChevronRight className="h-4 w-4 mx-1" />
+                  <span className="font-semibold text-white">Upcoming International Conference</span>
+              </div>
             </div>
 
             {/* Main Content */}
             <div className="flex-grow flex items-center">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center w-full">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center w-full">
                     {/* Left: Logo */}
-                    <div className="flex justify-center md:justify-start">
+                    <div className="md:col-span-4 flex justify-center md:justify-start">
                         <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
                             <Image src={upcomingConference.imageSrc} alt={`${upcomingConference.shortTitle} logo`} width={200} height={200} data-ai-hint="logo brand" className="w-40 h-40 object-contain"/>
                         </div>
                     </div>
                     {/* Right: Details */}
-                    <div className="md:col-span-2 text-center md:text-left space-y-4">
+                    <div className="md:col-span-8 text-center md:text-left space-y-4">
                         <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight text-amber-400">{upcomingConference.title}</h1>
                         <div className="inline-flex items-center gap-4 bg-white/90 text-black px-4 py-2 rounded-full font-semibold text-sm">
                             <div className="flex items-center gap-2">

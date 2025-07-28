@@ -93,13 +93,11 @@ const mainNavLinks = [
     label: "IPR Services",
     children: iprServicesSubMenu
   },
+  { href: "/internship", label: "Internship" },
+  { href: "/research-support", label: "Research Support" },
   { href: "/contact-us", label: "Contact Us" },
 ];
 
-const topNavLinks = [
-    { href: "/internship", label: "Internship" },
-    { href: "/research-support", label: "Research Support" },
-]
 
 export default function UserHeader() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -208,33 +206,7 @@ export default function UserHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
-        {/* Top Bar */}
-        <div className="bg-red-600 text-white">
-            <div className="container mx-auto flex h-10 items-center justify-between px-4">
-                <nav className="hidden md:flex items-center space-x-6 text-base">
-                    {topNavLinks.map(link => (
-                        <Link key={link.href} href={link.href} className="hover:text-yellow-300 transition-colors">
-                            {link.label}
-                        </Link>
-                    ))}
-                </nav>
-                <div className="flex items-center gap-4">
-                    <Link href="/conference">
-                        <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full text-xs h-8 px-4">
-                            Conference
-                            <ArrowRight className="ml-1 h-3 w-3" />
-                        </Button>
-                    </Link>
-                    <Link href="/login">
-                         <Button size="sm" variant="ghost" className="text-white hover:text-yellow-300 hover:bg-white/10 rounded-full text-xs h-8 px-4">
-                            Login
-                        </Button>
-                    </Link>
-                </div>
-            </div>
-        </div>
-
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm shadow-sm">
         {/* Main Header */}
         <div className="container mx-auto flex h-20 items-center px-4">
             <div className="flex items-center">
@@ -326,21 +298,6 @@ export default function UserHeader() {
                         </Link>
                     )
                 )}
-                 <div className="border-t pt-4 mt-4 px-4 space-y-2">
-                     {topNavLinks.map(link => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setMenuOpen(false)}
-                            className={cn(
-                                "px-4 py-2 rounded-md text-base transition-colors hover:text-primary",
-                                pathname === link.href ? "bg-accent text-primary font-semibold" : "text-foreground/80"
-                            )}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                 </div>
                 </div>
             </SheetContent>
             </Sheet>
