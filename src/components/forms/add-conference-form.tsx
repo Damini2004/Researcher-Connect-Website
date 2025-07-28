@@ -192,7 +192,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     setIsSubmitting(false);
   }
 
-  const handleNext = async () => {
+  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent form submission
     let fieldsToValidate: (keyof AddConferenceData)[] = [];
     if (currentStep === 1) {
         fieldsToValidate = ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'venueAddress', 'modeOfConference'];
