@@ -17,7 +17,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { format } from "date-fns";
 import {
   Calendar,
   MapPin,
@@ -205,19 +204,19 @@ export default function UpcomingConferencesPage() {
                 <div className="flex justify-between items-center p-2 border rounded-md">
                   <span>Abstract Submission Deadline</span>
                   <span className="font-semibold">
-                    {format(new Date(upcomingConference.submissionEndDate), "PPP")}
+                    {upcomingConference.submissionEndDate}
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-2 border rounded-md">
                   <span>Full Paper Submission Deadline</span>
                   <span className="font-semibold">
-                    {format(new Date(upcomingConference.submissionEndDate), "PPP")}
+                    {upcomingConference.submissionEndDate}
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-2 border rounded-md">
                   <span>Registration Deadline</span>
                   <span className="font-semibold">
-                    {format(new Date(upcomingConference.endDate), "PPP")}
+                    {upcomingConference.endDate}
                   </span>
                 </div>
               </CardContent>
@@ -242,3 +241,5 @@ export default function UpcomingConferencesPage() {
     </div>
   );
 }
+
+    
