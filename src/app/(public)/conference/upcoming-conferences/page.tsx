@@ -6,7 +6,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +25,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
+import { format } from "date-fns";
 
 export default function UpcomingConferencesPage() {
   const [upcomingConference, setUpcomingConference] = useState<Conference | null>(null);
