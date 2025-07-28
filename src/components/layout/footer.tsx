@@ -13,7 +13,7 @@ const quickLinks = [
     { href: "#", label: "Pay now" },
     { href: "#", label: "Our Policies" },
     { href: "/about", label: "Blog" },
-    { href: "/contact-us", label: "Contact Us" },
+    { href: "/internship", label: "Internship" },
 ]
 
 const exploreLinks = [
@@ -23,7 +23,7 @@ const exploreLinks = [
     { href: "#", label: "Membership" },
     { href: "#", label: "Community" },
     { href: "#", label: "Scholarship" },
-    { href: "/internship", label: "Internship" },
+    { href: "/contact-us", label: "Contact Us" },
 ]
 
 const socialLinks = [
