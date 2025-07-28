@@ -139,7 +139,11 @@ export default function UpcomingConferencesPage() {
               <CardHeader><CardTitle>About Conference</CardTitle></CardHeader>
               <CardContent>
                 <p className="text-muted-foreground whitespace-pre-wrap">{upcomingConference.aboutConference}</p>
-                <Button variant="link" className="p-0 h-auto mt-2">View More <ChevronRight className="h-4 w-4 ml-1"/></Button>
+                 <Button asChild variant="link" className="p-0 h-auto mt-2">
+                  <Link href={`/conference/${upcomingConference.id}`}>
+                    View More <ChevronRight className="h-4 w-4 ml-1"/>
+                  </Link>
+                </Button>
               </CardContent>
             </Card>
 
@@ -162,9 +166,9 @@ export default function UpcomingConferencesPage() {
             <Card>
                 <CardHeader><CardTitle>Important Dates</CardTitle></CardHeader>
                 <CardContent className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Abstract Submission Deadline</span><span className="font-semibold">{upcomingConference.submissionDeadline}</span></div>
-                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Full Paper Submission Deadline</span><span className="font-semibold">{upcomingConference.submissionDeadline}</span></div>
-                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Registration Deadline</span><span className="font-semibold">{upcomingConference.registrationDeadline}</span></div>
+                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Abstract Submission Deadline</span><span className="font-semibold">{format(new Date(upcomingConference.submissionEndDate), "PPP")}</span></div>
+                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Full Paper Submission Deadline</span><span className="font-semibold">{format(new Date(upcomingConference.submissionEndDate), "PPP")}</span></div>
+                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Registration Deadline</span><span className="font-semibold">{format(new Date(upcomingConference.endDate), "PPP")}</span></div>
                 </CardContent>
             </Card>
              <Card>
@@ -195,5 +199,4 @@ export default function UpcomingConferencesPage() {
       </div>
     </div>
   );
-
-  
+}
