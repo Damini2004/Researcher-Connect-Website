@@ -90,7 +90,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
   const renderListFromString = (text?: string) => {
     if (!text) return <p className="text-muted-foreground">Not available.</p>;
     return (
-      <ul className="list-disc list-inside text-muted-foreground space-y-1">
+      <ul className="list-disc list-inside text-muted-foreground space-y-1 break-words">
         {text.split('\n').map((item, index) => item.trim() && <li key={index}>{item.trim()}</li>)}
       </ul>
     );
@@ -99,7 +99,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
   const renderParagraphs = (text?: string) => {
     if (!text) return <p className="text-muted-foreground">Not available.</p>;
     return (
-        <div className="text-muted-foreground whitespace-pre-wrap space-y-2">
+        <div className="text-muted-foreground whitespace-pre-wrap space-y-2 break-words">
             {text.split('\n').map((para, index) => para.trim() && <p key={index}>{para.trim()}</p>)}
         </div>
     );
