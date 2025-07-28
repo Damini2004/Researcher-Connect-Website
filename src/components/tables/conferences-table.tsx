@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Search, MoreHorizontal, Trash2 } from "lucide-react";
+import { Search, MoreHorizontal, Trash2, Edit } from "lucide-react";
 import { deleteConference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
@@ -38,10 +38,11 @@ import type { Conference } from "@/lib/types";
 interface ConferencesTableProps {
   conferences: Conference[];
   isLoading: boolean;
+  onEdit: (conference: Conference) => void;
   onConferenceDeleted: () => void;
 }
 
-export default function ConferencesTable({ conferences, isLoading, onConferenceDeleted }: ConferencesTableProps) {
+export default function ConferencesTable({ conferences, isLoading, onEdit, onConferenceDeleted }: ConferencesTableProps) {
   const { toast } = useToast();
   const [filter, setFilter] = React.useState("");
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
@@ -145,6 +146,10 @@ export default function ConferencesTable({ conferences, isLoading, onConferenceD
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                           <DropdownMenuItem onSelect={() => onEdit(conference)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
                           <DropdownMenuItem 
                             className="text-destructive"
                             onSelect={() => handleDeleteClick(conference)}

@@ -16,9 +16,12 @@ import ConferencesTable from "@/components/tables/conferences-table";
 import { useState, useEffect, useCallback } from "react";
 import { getConferences, Conference } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
+import EditConferenceForm from "@/components/forms/edit-conference-form";
 
 export default function ManageConferencesPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedConference, setSelectedConference] = useState<Conference | null>(null);
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -52,6 +55,16 @@ export default function ManageConferencesPage() {
     fetchConferences(); // Re-fetch the data
   };
 
+  const handleConferenceUpdated = () => {
+    setIsEditDialogOpen(false);
+    setSelectedConference(null);
+    toast({
+      title: "Conference Updated!",
+      description: "The conference details have been saved.",
+    });
+    fetchConferences();
+  };
+
   const handleConferenceDeleted = () => {
     toast({
       title: "Conference Deleted",
@@ -59,6 +72,12 @@ export default function ManageConferencesPage() {
     });
     fetchConferences(); // Re-fetch the data
   }
+
+  const handleEditClick = (conference: Conference) => {
+    setSelectedConference(conference);
+    setIsEditDialogOpen(true);
+  };
+
 
   return (
     <div className="space-y-6">
@@ -89,9 +108,26 @@ export default function ManageConferencesPage() {
       <ConferencesTable 
         conferences={conferences}
         isLoading={isLoading}
+        onEdit={handleEditClick}
         onConferenceDeleted={handleConferenceDeleted}
       />
       
+       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[625px]">
+          <DialogHeader>
+            <DialogTitle>Edit Conference</DialogTitle>
+            <DialogDescription>
+              Update the details for the conference below.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedConference && (
+            <EditConferenceForm
+              conference={selectedConference}
+              onConferenceUpdated={handleConferenceUpdated}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

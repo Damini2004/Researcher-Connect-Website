@@ -1,8 +1,9 @@
+
 // src/services/conferenceService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, getDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, getDoc, updateDoc } from 'firebase/firestore';
 import { format } from 'date-fns';
 import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib/types';
 import { z } from 'zod';
@@ -62,6 +63,12 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         if (field && typeof field.toDate === 'function') {
             return field.toDate();
         }
+        if (typeof field === 'string' || typeof field === 'number') {
+            const date = new Date(field);
+            if (!isNaN(date.getTime())) {
+                return date;
+            }
+        }
         return field instanceof Date ? field : fallback;
     };
     
@@ -83,8 +90,8 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         shortTitle: data.shortTitle || "N/A",
         tagline: data.tagline,
         date: dateRange,
-        startDate: formatDate(startDate),
-        endDate: formatDate(endDate),
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
         venueName: data.venueName,
         venueAddress: data.venueAddress,
         modeOfConference: data.modeOfConference || [],
@@ -100,8 +107,8 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         keywords: data.keywords,
         submissionInstructions: data.submissionInstructions,
         paperTemplateUrl: data.paperTemplateUrl,
-        submissionStartDate: formatDate(getJSDate(data.submissionStartDate)),
-        submissionEndDate: formatDate(getJSDate(data.submissionEndDate)),
+        submissionStartDate: getJSDate(data.submissionStartDate).toISOString(),
+        submissionEndDate: getJSDate(data.submissionEndDate).toISOString(),
         paperCategories: data.paperCategories || [],
         peerReviewMethod: data.peerReviewMethod,
         registrationFees: data.registrationFees,
@@ -128,7 +135,6 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         enableFullPaperSubmission: data.enableFullPaperSubmission || false,
     };
 }
-
 
 export async function getConferences(): Promise<Conference[]> {
     try {
@@ -163,6 +169,30 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
         return { success: false, message: `Failed to fetch conference: ${message}` };
     }
 }
+
+export async function updateConference(id: string, data: Partial<AddConferenceData>): Promise<{ success: boolean; message: string }> {
+    try {
+        const validationResult = conferenceSchema.partial().safeParse(data);
+        if (!validationResult.success) {
+            console.error("Zod validation failed on update:", validationResult.error.errors);
+            const firstError = validationResult.error.errors[0];
+            return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
+        }
+
+        const conferenceRef = doc(db, 'conferences', id);
+        await updateDoc(conferenceRef, {
+            ...validationResult.data,
+            updatedAt: new Date(),
+        });
+
+        return { success: true, message: 'Conference updated successfully!' };
+    } catch (error) {
+        console.error("Error updating conference:", error);
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to update conference: ${message}` };
+    }
+}
+
 
 export async function deleteConference(id: string): Promise<{ success: boolean; message: string }> {
     try {

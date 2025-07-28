@@ -21,7 +21,7 @@ export const conferenceSchema = z.object({
   // --- About & Contact ---
   aboutConference: z.string().min(50, "About section must be at least 50 characters."),
   conferenceWebsite: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
-  conferenceLogo: z.any(),
+  conferenceLogo: z.any().optional(), // Optional on edit
   conferenceEmail: z.string().email("Please enter a valid contact email."),
 
   // --- People & Organization ---
@@ -34,7 +34,7 @@ export const conferenceSchema = z.object({
   tracks: z.string().optional(),
   keywords: z.string().optional(),
   submissionInstructions: z.string().optional(),
-  paperTemplate: z.any().optional(),
+  paperTemplate: z.any().optional(), // Optional on edit
   submissionStartDate: z.date({ required_error: "Submission start date is required." }),
   submissionEndDate: z.date({ required_error: "Submission end date is required." }),
   paperCategories: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -58,8 +58,8 @@ export interface Conference {
   shortTitle: string;
   tagline?: string;
   date: string; // Formatted date range for display
-  startDate: string;
-  endDate: string;
+  startDate: string; // ISO String
+  endDate: string; // ISO String
   venueName: string;
   venueAddress: string;
   modeOfConference: string[];
@@ -75,8 +75,8 @@ export interface Conference {
   keywords?: string;
   submissionInstructions?: string;
   paperTemplateUrl?: string;
-  submissionStartDate: string;
-  submissionEndDate: string;
+  submissionStartDate: string; // ISO String
+  submissionEndDate: string; // ISO String
   paperCategories: string[];
   peerReviewMethod?: string;
   registrationFees?: string;
