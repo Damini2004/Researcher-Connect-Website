@@ -38,6 +38,12 @@ const ConferenceVideosIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
 );
 
+const topNavLinks = [
+    { href: "/internship", label: "Internship" },
+    { href: "/research-support", label: "Research Support" },
+    { href: "/conference", label: "Conference" },
+    { href: "/login", label: "Login" },
+];
 
 const publicationSubMenu = [
     { href: "/publications/overview", label: "Overview", icon: FileText },
@@ -93,8 +99,6 @@ const mainNavLinks = [
     label: "IPR Services",
     children: iprServicesSubMenu
   },
-  { href: "/internship", label: "Internship" },
-  { href: "/research-support", label: "Research Support" },
   { href: "/contact-us", label: "Contact Us" },
 ];
 
@@ -207,101 +211,118 @@ export default function UserHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm shadow-sm">
-        {/* Main Header */}
-        <div className="container mx-auto flex h-20 items-center px-4">
-            <div className="flex items-center">
-                 <Link href="/" className="mr-6 flex items-center space-x-2">
-                    <Logo className="h-12 w-12" />
-                    <span className="hidden font-bold sm:inline-block text-xl">
-                    JournalEdge
-                    </span>
-                </Link>
-            </div>
-            
-            <div className="flex flex-1 items-center justify-end">
-                <nav className="hidden md:flex items-center space-x-1">
-                    {mainNavLinks.map((link) => <NavLink key={link.href} link={link} />)}
-                </nav>
-                
-                <div className="hidden md:flex items-center ml-6">
-                    <Link href="/submit-journal">
-                        <Button>
-                            <BookOpen className="mr-2 h-4 w-4" />
-                            Submit Journal
-                        </Button>
-                    </Link>
-                    <Button variant="ghost" size="icon" className="ml-4 rounded-full" asChild>
-                        <Link href="/login">
-                            <User className="h-6 w-6 text-foreground/60" />
-                            <span className="sr-only">Login</span>
-                        </Link>
-                    </Button>
-                </div>
-            </div>
-
-
-            <Sheet open={isMenuOpen} onOpenChange={setMenuOpen}>
-            <SheetTrigger asChild>
-                <Button
-                variant="ghost"
-                className="ml-4 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-                >
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle Menu</span>
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="pr-0">
-                <SheetHeader className="text-left">
-                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                </SheetHeader>
-                <Link
-                href="/"
-                className="flex items-center space-x-2 mb-6"
-                onClick={() => setMenuOpen(false)}
-                >
-                <Logo className="h-6 w-6" />
-                <span className="font-bold">JournalEdge</span>
-                </Link>
-                <div className="flex flex-col space-y-3">
-                {mainNavLinks.map((link) => 
-                    link.children ? (
-                        <div key={link.href} className="px-4">
-                            <span className="font-semibold text-foreground/80">{link.label}</span>
-                            <div className="flex flex-col space-y-2 mt-2 ml-2">
-                                {link.children.map((child) => (
-                                    <Link
-                                        key={child.href}
-                                        href={child.href}
-                                        onClick={() => setMenuOpen(false)}
-                                        className={cn(
-                                            "px-4 py-2 rounded-md text-base transition-colors hover:text-primary flex items-center gap-2",
-                                            pathname === child.href ? "bg-accent text-primary font-semibold" : "text-foreground/80"
-                                        )}
-                                    >
-                                        <child.icon className="h-4 w-4" />
-                                        {child.label}
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-                    ) : (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setMenuOpen(false)}
-                            className={cn(
-                                "px-4 py-2 rounded-md text-base transition-colors hover:text-primary",
-                                pathname === link.href ? "bg-accent text-primary font-semibold" : "text-foreground/80"
-                            )}
-                        >
-                            {link.label}
-                        </Link>
-                    )
-                )}
-                </div>
-            </SheetContent>
-            </Sheet>
+      {/* Top Bar */}
+      <div className="bg-primary text-primary-foreground">
+        <div className="container mx-auto flex h-10 items-center justify-end px-4">
+          <div className="flex items-center space-x-6 text-sm font-medium">
+            {topNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-white/80"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
+      </div>
+      {/* Main Header */}
+      <div className="container mx-auto flex h-20 items-center px-4">
+        <div className="flex items-center">
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Logo className="h-12 w-12" />
+            <span className="hidden font-bold sm:inline-block text-xl">
+              JournalEdge
+            </span>
+          </Link>
+        </div>
+
+        <div className="flex flex-1 items-center justify-end">
+          <nav className="hidden md:flex items-center space-x-1">
+            {mainNavLinks.map((link) => (
+              <NavLink key={link.href} link={link} />
+            ))}
+          </nav>
+
+          <div className="hidden md:flex items-center ml-6">
+            <Link href="/submit-journal">
+              <Button>
+                <BookOpen className="mr-2 h-4 w-4" />
+                Submit Journal
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <Sheet open={isMenuOpen} onOpenChange={setMenuOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              className="ml-4 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+            >
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Toggle Menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="pr-0">
+            <SheetHeader className="text-left">
+              <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+            </SheetHeader>
+            <Link
+              href="/"
+              className="flex items-center space-x-2 mb-6"
+              onClick={() => setMenuOpen(false)}
+            >
+              <Logo className="h-6 w-6" />
+              <span className="font-bold">JournalEdge</span>
+            </Link>
+            <div className="flex flex-col space-y-3">
+              {[...mainNavLinks, ...topNavLinks].map((link) =>
+                link.children ? (
+                  <div key={link.href} className="px-4">
+                    <span className="font-semibold text-foreground/80">
+                      {link.label}
+                    </span>
+                    <div className="flex flex-col space-y-2 mt-2 ml-2">
+                      {link.children.map((child: any) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={cn(
+                            "px-4 py-2 rounded-md text-base transition-colors hover:text-primary flex items-center gap-2",
+                            pathname === child.href
+                              ? "bg-accent text-primary font-semibold"
+                              : "text-foreground/80"
+                          )}
+                        >
+                          <child.icon className="h-4 w-4" />
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={cn(
+                      "px-4 py-2 rounded-md text-base transition-colors hover:text-primary",
+                      pathname === link.href
+                        ? "bg-accent text-primary font-semibold"
+                        : "text-foreground/80"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 }
