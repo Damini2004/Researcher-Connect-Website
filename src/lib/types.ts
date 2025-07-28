@@ -1,4 +1,3 @@
-
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -21,7 +20,7 @@ export const conferenceSchema = z.object({
   // --- About & Contact ---
   aboutConference: z.string().min(50, "About section must be at least 50 characters."),
   conferenceWebsite: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
-  conferenceLogo: z.any().refine((files) => files?.length > 0, "A logo/banner is required."),
+  conferenceLogo: z.any(),
   conferenceEmail: z.string().email("Please enter a valid contact email."),
 
   // --- People & Organization ---
