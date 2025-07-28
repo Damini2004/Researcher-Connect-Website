@@ -65,13 +65,23 @@ export default function UpcomingConferencesPage() {
     fetchAndFilterConferences();
   }, [fetchAndFilterConferences]);
 
-  const renderParagraphs = (text: string | undefined) => {
+  const renderParagraphs = (text: string | undefined, truncate = false) => {
     if (!text) return null;
+    let content = text;
+    if (truncate && text.length > 400) {
+        content = text.substring(0, 400) + "...";
+    }
+
     return (
       <div className="text-muted-foreground space-y-2">
-        {text
-          .split("\n")
-          .map((para, index) => para.trim() && <p key={index}>{para.trim()}</p>)}
+        <p>
+            {content}
+            {truncate && text.length > 400 && upcomingConference && (
+                <Link href={`/conference/${upcomingConference.id}`} className="text-primary font-semibold hover:underline ml-1">
+                    View More...
+                </Link>
+            )}
+        </p>
       </div>
     );
   };
@@ -172,14 +182,11 @@ export default function UpcomingConferencesPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>About the Conference</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {renderParagraphs(upcomingConference.aboutConference)}
-              </CardContent>
-            </Card>
+            <section>
+              <h2 className="text-2xl font-bold text-foreground mb-3">About Conference</h2>
+              <hr className="border-dotted border-border mb-4" />
+              {renderParagraphs(upcomingConference.aboutConference, true)}
+            </section>
             <Card>
                 <CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader>
                 <CardContent>
