@@ -12,6 +12,7 @@ import {
   SidebarTrigger,
   SidebarMenuBadge
 } from "@/components/ui/sidebar";
+import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/icons";
 import { Users, BookCopy, LogOut, HelpCircle, Briefcase, CalendarDays, Presentation } from "lucide-react";
 import Link from "next/link";
@@ -35,6 +36,9 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
 
   return (
     <Sidebar>
+       <SheetHeader>
+        <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
+      </SheetHeader>
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <Logo />

@@ -11,6 +11,7 @@ import {
   SidebarFooter,
   SidebarTrigger
 } from "@/components/ui/sidebar";
+import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/icons";
 import { FileText, CheckSquare, MessageSquare, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
@@ -28,6 +29,9 @@ export default function SubAdminSidebar() {
 
   return (
     <Sidebar>
+       <SheetHeader>
+        <SheetTitle className="sr-only">Sidebar Navigation</SheetTitle>
+      </SheetHeader>
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <Logo />
