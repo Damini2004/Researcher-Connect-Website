@@ -4,20 +4,23 @@
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Calendar,
   MapPin,
-  Download,
-  FileText,
-  Ticket,
+  ArrowRight,
   ChevronRight,
-  CheckCircle,
+  ChevronLeft,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useEffect, useState, useCallback } from "react";
 import { getConferences } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
@@ -25,12 +28,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { format } from "date-fns";
-import ConferenceCountdown from "@/components/ui/conference-countdown";
 
 export default function UpcomingConferencesPage() {
-  const [upcomingConference, setUpcomingConference] = useState<Conference | null>(null);
-  const [otherConferences, setOtherConferences] = useState<Conference[]>([]);
+  const [allConferences, setAllConferences] = useState<Conference[]>([]);
+  const [filteredConferences, setFilteredConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
@@ -39,202 +42,160 @@ export default function UpcomingConferencesPage() {
     setCurrentDate(getCurrentDateInIndia());
   }, []);
 
+  const fetchAndFilterConferences = useCallback(async (date: Date) => {
+    setIsLoading(true);
+    try {
+      const data = await getConferences();
+      const upcoming = data
+        .filter(
+          (conf) =>
+            conf.dateObject && conf.dateObject.getTime() >= date.getTime()
+        )
+        .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
+      
+      setAllConferences(upcoming);
+      setFilteredConferences(upcoming);
+
+    } catch (error) {
+      console.error("Error fetching conferences:", error);
+      toast({
+        title: "Error",
+        description: "Could not fetch conferences.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast]);
+
   useEffect(() => {
-    if (!currentDate) return;
+    if (currentDate) {
+      fetchAndFilterConferences(currentDate);
+    }
+  }, [currentDate, fetchAndFilterConferences]);
 
-    const fetchAndFilterConferences = async () => {
-      setIsLoading(true);
-      try {
-        const data = await getConferences();
-        const upcoming = data
-          .filter(
-            (conf) =>
-              conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
-          )
-          .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
-        
-        if (upcoming.length > 0) {
-          setUpcomingConference(upcoming[0]);
-          setOtherConferences(upcoming.slice(1, 4)); // Get next 3 for the list
-        }
-
-      } catch (error) {
-        console.error("Error fetching conferences:", error);
-        toast({
-          title: "Error",
-          description: "Could not fetch conferences.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchAndFilterConferences();
-  }, [toast, currentDate]);
-  
-  const renderListFromString = (text?: string) => {
-    if (!text) return <p className="text-muted-foreground">Not available.</p>;
-    return (
-      <ul className="list-disc list-inside text-muted-foreground space-y-1">
-        {text.split('\n').map((item, index) => item.trim() && <li key={index}>{item.trim()}</li>)}
-      </ul>
-    );
-  };
-
-  const renderParagraphs = (text?: string) => {
-    if (!text) return <p className="text-muted-foreground">Not available.</p>;
-    return (
-        <div className="text-muted-foreground whitespace-pre-wrap space-y-2">
-            {text.split('\n').map((para, index) => para.trim() && <p key={index}>{para.trim()}</p>)}
+  const ConferenceListItem = ({ conference }: { conference: Conference }) => (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4">
+        <Image src="https://logodix.com/logo/796417.png" alt={`${conference.shortTitle} logo`} width={100} height={100} data-ai-hint="logo brand" className="w-20 h-20 object-contain"/>
+        <div className="flex-1 text-center md:text-left">
+          <Link href={`/conference/${conference.id}`} className="font-semibold text-lg hover:text-primary transition-colors">{conference.title}</Link>
+          <p className="text-sm text-muted-foreground flex items-center justify-center md:justify-start gap-2 mt-1">
+            <Calendar className="h-4 w-4"/>
+            <span>{format(new Date(conference.startDate), "dd MMM")} - {format(new Date(conference.endDate), "dd MMM yyyy")}</span>
+          </p>
         </div>
-    );
-  };
-
-
-  if (isLoading) {
-    return (
-        <div className="container py-12 md:py-24 space-y-8">
-            <Skeleton className="h-[250px] w-full" />
-            <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-6">
-                    <Skeleton className="h-48 w-full" />
-                    <Skeleton className="h-32 w-full" />
-                </div>
-                <div className="space-y-6">
-                    <Skeleton className="h-40 w-full" />
-                    <Skeleton className="h-40 w-full" />
-                </div>
-            </div>
+        <div className="flex flex-col items-center md:items-end text-center md:text-right">
+            <p className="font-medium flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-primary"/>
+                {conference.location}
+            </p>
+            <Button variant="link" asChild className="p-0 h-auto">
+                <Link href={`/conference/${conference.id}`}>
+                    View Details <ChevronRight className="h-4 w-4 ml-1"/>
+                </Link>
+            </Button>
         </div>
-    );
-  }
-
-  if (!upcomingConference) {
-    return (
-      <div className="container py-12 md:py-24 text-center">
-        <h1 className="text-3xl font-bold">No Upcoming Conferences</h1>
-        <p className="mt-4 text-muted-foreground">Please check back later for future events.</p>
-      </div>
-    );
-  }
+      </CardContent>
+    </Card>
+  );
 
   return (
-    <div>
-      {/* --- Hero Section --- */}
-      <section className="relative h-[450px] md:h-[500px] w-full bg-slate-800 text-white">
-        <Image
-          src={upcomingConference.imageSrc || "https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?q=80&w=1600&h=500&auto=format&fit=crop"}
-          alt={upcomingConference.title}
-          data-ai-hint="academic conference"
-          fill
-          className="object-cover opacity-30"
-        />
-        <div className="relative z-10 container h-full flex flex-col justify-end pb-12">
-            <div className="flex flex-col md:flex-row items-start gap-6">
-                <Image src="https://logodix.com/logo/796417.png" alt="ICLTL Logo" width={120} height={120} data-ai-hint="logo brand" className="bg-white/90 p-2 rounded-lg shadow-lg"/>
+    <div className="bg-secondary/30">
+        {/* --- Carousel Hero --- */}
+        <section className="relative w-full h-[350px] bg-gray-800 text-white overflow-hidden">
+             <Image
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=350&auto=format&fit=crop"
+                alt="Conference background"
+                fill
+                className="object-cover opacity-30"
+                data-ai-hint="conference audience"
+            />
+            <div className="relative z-10 container h-full flex flex-col justify-center">
+                <h1 className="text-4xl font-extrabold tracking-tight text-center mb-8">Upcoming International Conference 2025</h1>
+                {isLoading ? (
+                    <div className="flex justify-center items-center h-48"><Skeleton className="w-3/4 h-3/4"/></div>
+                ) : (
+                    <Carousel
+                        opts={{
+                            align: "start",
+                            loop: true,
+                        }}
+                        className="w-full max-w-6xl mx-auto"
+                    >
+                        <CarouselContent>
+                            {allConferences.slice(0, 5).map((conf) => (
+                                <CarouselItem key={conf.id} className="md:basis-1/2 lg:basis-1/3">
+                                    <div className="p-1">
+                                    <Card className="bg-background/90 text-foreground">
+                                        <CardContent className="flex flex-col items-center text-center p-6 space-y-3">
+                                            <Image src="https://logodix.com/logo/796417.png" data-ai-hint="logo brand" alt="logo" width={60} height={60}/>
+                                            <p className="font-semibold h-20 line-clamp-3">{conf.title}</p>
+                                            <div className="text-sm text-muted-foreground space-y-1">
+                                                <p className="flex items-center gap-2"><Calendar className="h-4 w-4"/> {conf.date}</p>
+                                                <p className="flex items-center gap-2"><MapPin className="h-4 w-4"/> {conf.location}</p>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-[-50px]" />
+                        <CarouselNext className="right-[-50px]" />
+                    </Carousel>
+                )}
+            </div>
+        </section>
+
+        {/* --- Main Content --- */}
+        <div className="container py-12 md:py-16 space-y-12">
+            
+            {/* --- CPD Section --- */}
+            <section className="bg-background p-8 rounded-lg shadow-md flex flex-col md:flex-row items-center gap-8">
+                <Image src="https://logodix.com/logo/1101923.png" alt="CPD Standards Office" width={120} height={120} data-ai-hint="logo tech" className="object-contain"/>
                 <div className="flex-1">
-                    <h1 className="text-4xl font-extrabold tracking-tight">{upcomingConference.title} ({upcomingConference.shortTitle})</h1>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2 text-white/90">
-                        <div className="flex items-center gap-2"><Calendar className="h-4 w-4"/><span>{upcomingConference.date}</span></div>
-                        <div className="flex items-center gap-2"><MapPin className="h-4 w-4"/><span>{upcomingConference.location}</span></div>
-                    </div>
-                    <ConferenceCountdown targetDate={upcomingConference.startDate} />
+                    <h2 className="text-2xl font-bold">CPD Accredited IFERP Conferences listed in CPD directory</h2>
+                    <p className="text-muted-foreground mt-2">CPD PROVIDER: 41182 | 2024-2026</p>
                 </div>
-            </div>
-            <div className="absolute bottom-12 right-12 flex items-center gap-4">
-                <Button variant="secondary"><FileText className="mr-2"/>Abstract Submission</Button>
-                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-black"><Download className="mr-2"/>Download Brochure</Button>
-                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-black"><Ticket className="mr-2"/>Registration</Button>
-            </div>
-        </div>
-      </section>
-
-      {/* --- Main Content --- */}
-      <div className="container py-12 md:py-16">
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* --- Left Column: Conference Details --- */}
-          <div className="lg:col-span-2 space-y-8">
-            <Card>
-              <CardHeader><CardTitle>About Conference</CardTitle></CardHeader>
-              <CardContent>
-                {renderParagraphs(upcomingConference.aboutConference)}
-                 <Button asChild variant="link" className="p-0 h-auto mt-2">
-                  <Link href={`/conference/${upcomingConference.id}`}>
-                    View More <ChevronRight className="h-4 w-4 ml-1"/>
-                  </Link>
+                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                    Get CPD Directory - Listed IFERP Conferences
                 </Button>
-              </CardContent>
-            </Card>
+            </section>
 
-            <Card>
-              <CardHeader><CardTitle>Conference Benefits</CardTitle></CardHeader>
-              <CardContent>
-                <ul className="space-y-3 text-muted-foreground">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" /><span>Certificates will be provided to all the participants.</span></li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" /><span>Opportunity to connect with professionals across the globe.</span></li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" /><span>Great way of networking and knowledge upskilling.</span></li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" /><span>Research assistance will be provided in all fields.</span></li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" /><span>Learning from industry experts.</span></li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {upcomingConference.keynoteSpeakers && (
-              <Card>
-                <CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader>
-                <CardContent>
-                  {renderListFromString(upcomingConference.keynoteSpeakers)}
-                </CardContent>
-              </Card>
-            )}
-
-            {upcomingConference.tracks && (
-              <Card>
-                <CardHeader><CardTitle>Conference Tracks</CardTitle></CardHeader>
-                <CardContent>
-                  {renderListFromString(upcomingConference.tracks)}
-                </CardContent>
-              </Card>
-            )}
-
-          </div>
-
-          {/* --- Right Column: Sidebar --- */}
-          <aside className="space-y-8">
-            <Card>
-                <CardHeader><CardTitle>Important Dates</CardTitle></CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Abstract Submission Deadline</span><span className="font-semibold">{format(new Date(upcomingConference.submissionEndDate), "PPP")}</span></div>
-                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Full Paper Submission Deadline</span><span className="font-semibold">{format(new Date(upcomingConference.submissionEndDate), "PPP")}</span></div>
-                    <div className="flex justify-between items-center p-2 border rounded-md"><span>Registration Deadline</span><span className="font-semibold">{format(new Date(upcomingConference.endDate), "PPP")}</span></div>
-                </CardContent>
-            </Card>
-             <Card>
-                <CardHeader><CardTitle>Indexed By</CardTitle></CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                    <div className="border p-2 rounded-md flex justify-center items-center"><Image src="https://logodix.com/logo/2038481.png" alt="DOAJ" width={100} height={40} data-ai-hint="logo company" className="object-contain"/></div>
-                    <div className="border p-2 rounded-md flex justify-center items-center"><Image src="https://logodix.com/logo/1993463.png" alt="Scopus" width={100} height={40} data-ai-hint="logo brand" className="object-contain"/></div>
-                    <div className="border p-2 rounded-md flex justify-center items-center"><Image src="https://logodix.com/logo/1712867.png" alt="EBSCO" width={100} height={40} data-ai-hint="logo business" className="object-contain"/></div>
-                    <div className="border p-2 rounded-md flex justify-center items-center"><Image src="https://logodix.com/logo/1101923.png" alt="Crossref" width={100} height={40} data-ai-hint="logo tech" className="object-contain"/></div>
-                </CardContent>
-            </Card>
-
-            {otherConferences.length > 0 && (
-                 <Card>
-                    <CardHeader><CardTitle>Other Upcoming Conferences</CardTitle></CardHeader>
-                    <CardContent className="space-y-2">
-                        {otherConferences.map(conf => (
-                            <div key={conf.id} className="p-2 border rounded-md">
-                                <Link href={`/conference/${conf.id}`} className="font-semibold text-sm hover:text-primary">{conf.title}</Link>
-                                <p className="text-xs text-muted-foreground mt-1">{conf.date} | {conf.location}</p>
-                            </div>
-                        ))}
-                    </CardContent>
+            {/* --- List & Filter Section --- */}
+            <section>
+                 <div className="mb-8">
+                    <h2 className="text-2xl font-bold">List of Upcoming Scopus International Conference 2025-2026</h2>
+                    <p className="text-muted-foreground mt-2">
+                        Engineering and technology are exceptionally dynamic sectors. They are constantly evolving and expanding. Experts, professionals, and academics in the field have to try and keep up with all the latest developments. Every upcoming scopus conference in 2025 - 2026 will provide professionals from various engineering disciplines with knowledge of cutting-edge tools, technology, and skills in their respective sub-disciplines.
+                    </p>
+                </div>
+                
+                <Card className="p-4 mb-8 border-primary/50 border-2">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                        <p className="font-semibold md:col-span-1">Find International Conference</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:col-span-3">
+                            <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI & ML</SelectItem></SelectContent></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger><SelectContent><SelectItem value="usa">USA</SelectItem></SelectContent></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
+                        </div>
+                    </div>
                 </Card>
-            )}
-          </aside>
+
+                {isLoading ? (
+                    <div className="space-y-4">
+                        {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-24 w-full" />)}
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        {filteredConferences.map(conf => <ConferenceListItem key={conf.id} conference={conf}/>)}
+                    </div>
+                )}
+            </section>
         </div>
-      </div>
     </div>
   );
 }
+
+    
