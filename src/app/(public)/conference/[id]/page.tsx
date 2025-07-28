@@ -203,7 +203,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                         <CardContent className="space-y-4">
                             <div className="flex items-start gap-3"><Calendar className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
                             <Separator />
-                            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">{conference.venueName}</p><p className="text-sm text-muted-foreground">{conference.location}</p></div></div>
+                            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Venue</p><p className="text-sm text-muted-foreground">{conference.venueName}<br />{conference.location}</p></div></div>
                              {conference.keywords && <>
                                 <Separator />
                                 <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map(k => k.trim() && <Badge key={k} variant="secondary">{k.trim()}</Badge>)}</div></div>
