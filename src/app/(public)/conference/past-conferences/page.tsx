@@ -101,7 +101,7 @@ export default function PastConferencesPage() {
           {pastConferences.map((conference) => (
             <Card key={conference.id} className="flex flex-col w-full overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative h-[200px] w-full">
-                <Image src={conference.imageSrc} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
+                <Image src={conference.imageSrc || "https://placehold.co/400x200.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
               </div>
               <div className="flex flex-col flex-grow p-6">
                 <CardHeader className="p-0">
