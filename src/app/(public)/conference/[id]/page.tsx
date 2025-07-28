@@ -1,7 +1,8 @@
+
 // src/app/(public)/conference/[id]/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { getConferenceById } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
@@ -19,7 +20,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
   const [conference, setConference] = useState<Conference | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const conferenceId = params.id;
+  const conferenceId = use(params).id;
 
   useEffect(() => {
     const fetchConference = async () => {
