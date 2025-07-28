@@ -21,46 +21,65 @@ import { addConference } from "@/services/conferenceService";
 import { conferenceSchema, type AddConferenceData } from '@/lib/types';
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon, ArrowLeft, ArrowRight } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "../ui/calendar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Switch } from "../ui/switch";
 import { format } from "date-fns";
+import { Checkbox } from "../ui/checkbox";
+import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 
 interface AddConferenceFormProps {
     onConferenceAdded: () => void;
 }
 
-const TOTAL_STEPS = 5;
+const conferenceModes = [
+  { id: "physical", label: "Physical" },
+  { id: "virtual", label: "Virtual" },
+  { id: "hybrid", label: "Hybrid" },
+] as const;
+
+const paperCategories = [
+    { id: "full_paper", label: "Full Paper" },
+    { id: "abstract", label: "Abstract" },
+    { id: "poster", label: "Poster" },
+    { id: "case_study", label: "Case Study" },
+] as const;
+
 
 export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [currentStep, setCurrentStep] = React.useState(1);
+  const [subAdmins, setSubAdmins] = React.useState<SubAdmin[]>([]);
+  const [openCombobox, setOpenCombobox] = React.useState(false);
 
   const form = useForm<AddConferenceData>({
     resolver: zodResolver(conferenceSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      fullDescription: "",
-      organizerName: "",
-      organizerEmail: "",
-      organizerPhone: "",
-      locationType: "Offline",
-      venueAddress: "",
-      onlinePlatform: "",
-      expectedAttendees: 100,
-      audienceType: "Academics, Professionals",
-      callForPapers: true,
-      enableAbstractSubmission: true,
-      enableFullPaperSubmission: false,
+      modeOfConference: [],
+      paperCategories: [],
+      editorChoice: "none",
     },
   });
 
-  const locationType = form.watch("locationType");
-  const fileRef = form.register("bannerImage");
+  React.useEffect(() => {
+    async function fetchAdmins() {
+        try {
+            const admins = await getSubAdmins();
+            setSubAdmins(admins.filter(admin => admin.status === 'approved'));
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Could not fetch sub-admins for editor selection.",
+                variant: "destructive",
+            });
+        }
+    }
+    fetchAdmins();
+  }, [toast]);
+
+
+  const logoFileRef = form.register("conferenceLogo");
+  const templateFileRef = form.register("paperTemplate");
 
   const convertFileToBase64 = (file: File): Promise<string> => {
       return new Promise((resolve, reject) => {
@@ -73,34 +92,53 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
   async function onSubmit(values: AddConferenceData) {
     setIsSubmitting(true);
-
-    let bannerImageSrc = "";
-    if (values.bannerImage && values.bannerImage.length > 0) {
+    
+    let logoBase64 = "";
+    if (values.conferenceLogo && values.conferenceLogo.length > 0) {
+        // Validate size
+        if(values.conferenceLogo[0].size > 500 * 1024) {
+             toast({ title: "Error", description: "Logo/Banner size cannot exceed 500 KB.", variant: "destructive" });
+             setIsSubmitting(false);
+             return;
+        }
         try {
-            bannerImageSrc = await convertFileToBase64(values.bannerImage[0]);
+            logoBase64 = await convertFileToBase64(values.conferenceLogo[0]);
         } catch (error) {
-            toast({
-                title: "Error",
-                description: "Failed to read image file.",
-                variant: "destructive",
-            });
+            toast({ title: "Error", description: "Failed to read logo file.", variant: "destructive" });
             setIsSubmitting(false);
             return;
         }
     } else {
-       toast({
-        title: "Error",
-        description: "Banner image is required.",
-        variant: "destructive",
-      });
-      setIsSubmitting(false);
-      return;
+        toast({ title: "Error", description: "Conference Logo / Banner is required.", variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+    }
+    
+    // Handle optional paper template upload
+    let templateBase64;
+    if (values.paperTemplate && values.paperTemplate.length > 0) {
+         if(values.paperTemplate[0].size > 4 * 1024 * 1024) {
+             toast({ title: "Error", description: "Paper template size cannot exceed 4 MB.", variant: "destructive" });
+             setIsSubmitting(false);
+             return;
+        }
+        try {
+            templateBase64 = await convertFileToBase64(values.paperTemplate[0]);
+        } catch (error) {
+            toast({ title: "Error", description: "Failed to read template file.", variant: "destructive" });
+            setIsSubmitting(false);
+            return;
+        }
     }
 
-    const result = await addConference({
+    const payload = {
         ...values,
-        bannerImage: bannerImageSrc,
-    });
+        conferenceLogo: logoBase64,
+        paperTemplateUrl: templateBase64,
+        editorChoice: values.editorChoice === "none" ? undefined : values.editorChoice,
+    };
+
+    const result = await addConference(payload);
 
     if (result.success) {
       form.reset();
@@ -114,268 +152,51 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     }
     setIsSubmitting(false);
   }
-  
-  const handleNext = () => {
-    setCurrentStep(prev => Math.min(prev + 1, TOTAL_STEPS));
-  }
-  const handleBack = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
-  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
-        {currentStep === 1 && (
-            <div className="space-y-6 pt-4">
-                 <FormField control={form.control} name="title" render={({ field }) => ( <FormItem> <FormLabel>Conference Title</FormLabel> <FormControl><Input placeholder="e.g., Annual Conference on AI Ethics" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-                 <FormField control={form.control} name="conferenceType" render={({ field }) => ( <FormItem> <FormLabel>Conference Type</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select a conference type" /></SelectTrigger></FormControl> <SelectContent> <SelectItem value="National">National</SelectItem> <SelectItem value="International">International</SelectItem> <SelectItem value="Workshop">Workshop</SelectItem> <SelectItem value="Seminar">Seminar</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
-                 <FormField control={form.control} name="description" render={({ field }) => ( <FormItem> <FormLabel>Short Description</FormLabel> <FormControl><Textarea placeholder="A brief overview of the event." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-                 <FormField control={form.control} name="fullDescription" render={({ field }) => ( <FormItem> <FormLabel>Full Description</FormLabel> <FormControl><Textarea placeholder="Detailed description of agenda, purpose, etc." className="min-h-[150px]" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-            </div>
-        )}
-
-        {currentStep === 2 && (
-             <div className="space-y-6 pt-4">
-                <FormField control={form.control} name="organizerName" render={({ field }) => ( <FormItem> <FormLabel>Organizer Name</FormLabel> <FormControl><Input placeholder="e.g., IFERP" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-                <FormField control={form.control} name="organizerEmail" render={({ field }) => ( <FormItem> <FormLabel>Organizer Email</FormLabel> <FormControl><Input placeholder="contact@iferp.org" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-                <FormField control={form.control} name="organizerPhone" render={({ field }) => ( <FormItem> <FormLabel>Organizer Phone</FormLabel> <FormControl><Input placeholder="+91-1234567890" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-                <FormField control={form.control} name="audienceType" render={({ field }) => ( <FormItem> <FormLabel>Audience Type</FormLabel> <FormControl><Input placeholder="e.g., Students, Academics, Professionals" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-             </div>
-        )}
-
-        {currentStep === 3 && (
-            <div className="space-y-6 pt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="startDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Start Date</FormLabel>
-                          <Popover>
-                            <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="endDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>End Date</FormLabel>
-                          <Popover>
-                             <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="submissionDeadline"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Submission Deadline</FormLabel>
-                          <Popover>
-                            <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="registrationDeadline"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Registration Deadline</FormLabel>
-                           <Popover>
-                            <FormControl>
-                                <PopoverTrigger asChild>
-                                    <Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}>
-                                        {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                            </FormControl>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                 </div>
-             </div>
-        )}
-        
-        {currentStep === 4 && (
-            <div className="space-y-6 pt-4">
-                 <FormField
-                  control={form.control}
-                  name="locationType"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel>Location Type</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="Offline" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Offline</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="Online" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Online</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="Hybrid" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Hybrid</FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {(locationType === 'Offline' || locationType === 'Hybrid') && ( <FormField control={form.control} name="venueAddress" render={({ field }) => ( <FormItem> <FormLabel>Venue Address</FormLabel> <FormControl><Textarea placeholder="123 Main St, Anytown, USA" {...field} /></FormControl> <FormMessage /> </FormItem> )}/> )}
-                {(locationType === 'Online' || locationType === 'Hybrid') && ( <FormField control={form.control} name="onlinePlatform" render={({ field }) => ( <FormItem> <FormLabel>Online Platform Details</FormLabel> <FormControl><Input placeholder="e.g., Zoom, Google Meet Link" {...field} /></FormControl> <FormMessage /> </FormItem> )}/> )}
-                 <FormField control={form.control} name="expectedAttendees" render={({ field }) => ( <FormItem> <FormLabel>Expected Attendees</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
-            </div>
-        )}
-        
-        {currentStep === 5 && (
-            <div className="space-y-6 pt-4">
-                 <FormField
-                    control={form.control}
-                    name="callForPapers"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                            <div className="space-y-0.5">
-                                <FormLabel className="text-base">Call for Papers</FormLabel>
-                                <FormDescription>
-                                    Enable paper submissions for this conference.
-                                </FormDescription>
-                            </div>
-                            <FormControl>
-                                <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="enableAbstractSubmission"
-                    render={({ field }) => (
-                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                            <div className="space-y-0.5">
-                                <FormLabel>Enable Abstract Submission</FormLabel>
-                            </div>
-                            <FormControl>
-                                <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="enableFullPaperSubmission"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                            <div className="space-y-0.5">
-                                <FormLabel>Enable Full Paper Submission</FormLabel>
-                            </div>
-                            <FormControl>
-                                <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                 <FormField 
-                    control={form.control}
-                    name="bannerImage" 
-                    render={() => ( 
-                        <FormItem> 
-                            <FormLabel>Banner Image</FormLabel> 
-                            <FormControl> 
-                                <Input type="file" accept="image/*" {...fileRef} /> 
-                            </FormControl> 
-                            <FormMessage /> 
-                        </FormItem> 
-                    )}
-                />
-            </div>
-        )}
-
-        <div className="flex justify-between pt-4">
-            {currentStep > 1 ? (
-                <Button type="button" variant="outline" onClick={handleBack}>
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back
-                </Button>
-            ) : <div />}
-             {currentStep < TOTAL_STEPS && (
-                <Button type="button" onClick={handleNext}>
-                    Next <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-            )}
-            {currentStep === TOTAL_STEPS && (
-                 <Button type="submit" size="lg" disabled={isSubmitting}>
-                    {isSubmitting ? "Saving..." : "Save Conference"}
-                </Button>
-            )}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField control={form.control} name="title" render={({ field }) => ( <FormItem> <FormLabel>Conference Title</FormLabel> <FormControl><Input placeholder="e.g., International Conference on Machine Learning" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+            <FormField control={form.control} name="shortTitle" render={({ field }) => ( <FormItem> <FormLabel>Short Title / Acronym</FormLabel> <FormControl><Input placeholder="e.g., ICML2025" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
         </div>
+        <FormField control={form.control} name="tagline" render={({ field }) => ( <FormItem> <FormLabel>Conference Theme / Tagline</FormLabel> <FormControl><Input placeholder="e.g., Shaping the Future of Intelligence" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField control={form.control} name="startDate" render={({ field }) => ( <FormItem> <FormLabel>Start Date</FormLabel> <Popover> <FormControl><PopoverTrigger asChild><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></PopoverTrigger></FormControl> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )}/>
+            <FormField control={form.control} name="endDate" render={({ field }) => ( <FormItem> <FormLabel>End Date</FormLabel> <Popover> <FormControl><PopoverTrigger asChild><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></PopoverTrigger></FormControl> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )}/>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField control={form.control} name="venueName" render={({ field }) => ( <FormItem> <FormLabel>Venue Name</FormLabel> <FormControl><Input placeholder="e.g., Grand Convention Center" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+            <FormField control={form.control} name="venueAddress" render={({ field }) => ( <FormItem> <FormLabel>Venue Address</FormLabel> <FormControl><Input placeholder="123 Innovation Drive, Tech City" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        </div>
+        <FormField control={form.control} name="modeOfConference" render={() => ( <FormItem> <FormLabel>Mode of Conference</FormLabel> <div className="flex items-center space-x-4"> {conferenceModes.map((item) => ( <FormField key={item.id} control={form.control} name="modeOfConference" render={({ field }) => { return ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...field.value, item.id]) : field.onChange(field.value?.filter((value) => value !== item.id)) }} /> </FormControl> <FormLabel className="font-normal">{item.label}</FormLabel> </FormItem> ); }} /> ))} </div> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="aboutConference" render={({ field }) => ( <FormItem> <FormLabel>About Conference</FormLabel> <FormControl><Textarea className="min-h-32" placeholder="Provide a detailed description of the conference..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField control={form.control} name="conferenceWebsite" render={({ field }) => ( <FormItem> <FormLabel>Conference Website URL</FormLabel> <FormControl><Input placeholder="https://example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+            <FormField control={form.control} name="conferenceEmail" render={({ field }) => ( <FormItem> <FormLabel>Conference Email / Contact</FormLabel> <FormControl><Input placeholder="contact@example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        </div>
+        <FormField control={form.control} name="conferenceLogo" render={() => ( <FormItem> <FormLabel>Conference Logo / Banner</FormLabel> <FormControl><Input type="file" accept="image/*" {...logoFileRef} /></FormControl> <FormDescription>Max file size: 500 KB</FormDescription> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="organizingCommittee" render={({ field }) => ( <FormItem> <FormLabel>Organizing Committee / Team</FormLabel> <FormControl><Textarea placeholder="List members..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="keynoteSpeakers" render={({ field }) => ( <FormItem> <FormLabel>Guest / Keynote Speakers</FormLabel> <FormControl><Textarea placeholder="List speakers..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="editorialBoard" render={({ field }) => ( <FormItem> <FormLabel>Editorial Board Members / Track Chairs</FormLabel> <FormControl><Textarea placeholder="List members..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="teamBios" render={({ field }) => ( <FormItem> <FormLabel>Team Bios / Photos (Optional)</FormLabel> <FormControl><Textarea placeholder="Add bios..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="tracks" render={({ field }) => ( <FormItem> <FormLabel>List of Tracks / Themes</FormLabel> <FormControl><Textarea placeholder="e.g., AI in Healthcare, NLP Advances..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="keywords" render={({ field }) => ( <FormItem> <FormLabel>Keywords or SDG Tags</FormLabel> <FormControl><Input placeholder="AI, Machine Learning, SDG 9, ..." {...field} /></FormControl> <FormDescription>Comma-separated values.</FormDescription> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="submissionInstructions" render={({ field }) => ( <FormItem> <FormLabel>Submission Instructions</FormLabel> <FormControl><Textarea placeholder="Detail the submission guidelines..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="paperTemplate" render={() => ( <FormItem> <FormLabel>Paper Template Upload (DOC/PDF)</FormLabel> <FormControl><Input type="file" accept=".doc,.docx,.pdf" {...templateFileRef} /></FormControl> <FormDescription>Max file size: 4 MB</FormDescription> <FormMessage /> </FormItem> )}/>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             <FormField control={form.control} name="submissionStartDate" render={({ field }) => ( <FormItem> <FormLabel>Submission Start Date</FormLabel> <Popover> <FormControl><PopoverTrigger asChild><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></PopoverTrigger></FormControl> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )}/>
+             <FormField control={form.control} name="submissionEndDate" render={({ field }) => ( <FormItem> <FormLabel>Submission End Date</FormLabel> <Popover> <FormControl><PopoverTrigger asChild><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></PopoverTrigger></FormControl> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )}/>
+        </div>
+        <FormField control={form.control} name="paperCategories" render={() => ( <FormItem> <FormLabel>Paper Categories</FormLabel> <div className="flex flex-wrap items-center gap-x-4 gap-y-2"> {paperCategories.map((item) => ( <FormField key={item.id} control={form.control} name="paperCategories" render={({ field }) => { return ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...field.value, item.id]) : field.onChange(field.value?.filter((value) => value !== item.id)) }} /> </FormControl> <FormLabel className="font-normal">{item.label}</FormLabel> </FormItem> ); }} /> ))} </div> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="peerReviewMethod" render={({ field }) => ( <FormItem> <FormLabel>Peer Review Method</FormLabel> <FormControl><Textarea placeholder="e.g., Single-Blind, Double-Blind, Open..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="registrationFees" render={({ field }) => ( <FormItem> <FormLabel>Registration & Fees</FormLabel> <FormControl><Textarea placeholder="Detail the fee structure..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="accommodationDetails" render={({ field }) => ( <FormItem> <FormLabel>Accommodation Details</FormLabel> <FormControl><Textarea placeholder="List nearby hotels or arrangements..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="faqs" render={({ field }) => ( <FormItem> <FormLabel>FAQs</FormLabel> <FormControl><Textarea placeholder="Provide answers to frequently asked questions..." {...field} /></FormControl> <FormMessage /> </FormItem> )}/>
+        <FormField control={form.control} name="editorChoice" render={({ field }) => ( <FormItem className="flex flex-col"> <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel> <Popover open={openCombobox} onOpenChange={setOpenCombobox}> <PopoverTrigger asChild> <FormControl> <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")} > {field.value && field.value !== "none" ? subAdmins.find((admin) => admin.id === field.value)?.name : "Select Sub-Admin"} <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> </Button> </FormControl> </PopoverTrigger> <PopoverContent className="w-[--radix-popover-trigger-width] p-0"> <Command> <CommandInput placeholder="Search sub-admins..." /> <CommandList> <CommandEmpty>No sub-admin found.</CommandEmpty> <CommandGroup> <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }}> None </CommandItem> {subAdmins.map((admin) => ( <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} > <Check className={cn( "mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )} /> {admin.name} </CommandItem> ))} </CommandGroup> </CommandList> </Command> </Command> </PopoverContent> </Popover> <FormMessage /> </FormItem> )}/>
+        <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Saving Conference..." : "Add Conference"}
+        </Button>
       </form>
     </Form>
   );

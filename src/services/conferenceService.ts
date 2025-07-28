@@ -6,19 +6,40 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, delet
 import { format } from 'date-fns';
 import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib/types';
 
-export async function addConference(data: AddConferenceData & { bannerImage: string }): Promise<{ success: boolean; message: string; }> {
+interface AddConferencePayload extends AddConferenceData {
+    conferenceLogo: string;
+    paperTemplateUrl?: string;
+}
+
+export async function addConference(data: AddConferencePayload): Promise<{ success: boolean; message: string; }> {
   try {
-    const validationResult = conferenceSchema.safeParse(data);
+    // We don't validate file objects here, just the string URLs
+    const schemaForService = conferenceSchema.extend({
+        conferenceLogo: z.string(),
+        paperTemplate: z.string().optional(),
+    });
+    
+    // Create a temporary object for validation, excluding raw file objects
+    const validatableData = { ...data, paperTemplate: data.paperTemplateUrl };
+    
+    const validationResult = schemaForService.safeParse(validatableData);
     if (!validationResult.success) {
         console.error("Zod validation failed:", validationResult.error.errors);
-        return { success: false, message: validationResult.error.errors[0].message };
+        const firstError = validationResult.error.errors[0];
+        return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
     }
 
+    // Use the validated data, but ensure we use the correct file URLs
     const dataToSave = {
         ...validationResult.data,
-        bannerImage: data.bannerImage,
-        createdAt: serverTimestamp(), // Use Firestore server timestamp
+        conferenceLogo: data.conferenceLogo, // The base64 string
+        paperTemplateUrl: data.paperTemplateUrl, // The URL for the template
+        createdAt: serverTimestamp(),
     };
+    
+    // Remove the temporary 'paperTemplate' field from the object to be saved
+    delete (dataToSave as any).paperTemplate;
+
 
     await addDoc(collection(db, 'conferences'), dataToSave);
     
@@ -36,51 +57,74 @@ export async function addConference(data: AddConferenceData & { bannerImage: str
 const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
     const data = docSnap.data();
 
-    const getJSDate = (field: any): Date => {
+    const getJSDate = (field: any, fallback = new Date()): Date => {
         if (field && typeof field.toDate === 'function') {
             return field.toDate();
         }
-        return field instanceof Date ? field : new Date();
+        return field instanceof Date ? field : fallback;
     };
+    
+    const formatDate = (date: Date) => format(date, "PPP");
 
     const startDate = getJSDate(data.startDate);
     const endDate = getJSDate(data.endDate);
 
-    let dateRange = format(startDate, "PPP");
+    let dateRange = formatDate(startDate);
     if (startDate.getTime() !== endDate.getTime()) {
         dateRange = `${format(startDate, "MMM d")} - ${format(endDate, "d, yyyy")}`;
     }
 
-    let location = "Online";
-    if (data.locationType === "Offline") {
-        location = data.venueAddress;
-    } else if (data.locationType === "Hybrid") {
-        location = `${data.venueAddress} / Online`;
-    }
-    
+    const location = data.venueAddress || "Online";
+
     return {
         id: docSnap.id,
-        title: data.title,
-        description: data.description,
-        fullDescription: data.fullDescription,
-        conferenceType: data.conferenceType,
-        organizerName: data.organizerName,
-        organizerEmail: data.organizerEmail,
-        organizerPhone: data.organizerPhone,
+        title: data.title || "N/A",
+        shortTitle: data.shortTitle || "N/A",
+        tagline: data.tagline,
         date: dateRange,
-        startDate: format(startDate, "PPP"),
-        endDate: format(endDate, "PPP"),
-        submissionDeadline: format(getJSDate(data.submissionDeadline), "PPP"),
-        registrationDeadline: format(getJSDate(data.registrationDeadline), "PPP"),
-        dateObject: startDate,
-        locationType: data.locationType,
-        location: location,
-        audienceType: data.audienceType,
-        callForPapers: data.callForPapers,
-        enableAbstractSubmission: data.enableAbstractSubmission,
-        enableFullPaperSubmission: data.enableFullPaperSubmission,
-        imageSrc: data.bannerImage,
+        startDate: formatDate(startDate),
+        endDate: formatDate(endDate),
+        venueName: data.venueName,
+        venueAddress: data.venueAddress,
+        modeOfConference: data.modeOfConference || [],
+        aboutConference: data.aboutConference,
+        conferenceWebsite: data.conferenceWebsite,
+        imageSrc: data.conferenceLogo,
+        conferenceEmail: data.conferenceEmail,
+        organizingCommittee: data.organizingCommittee,
+        keynoteSpeakers: data.keynoteSpeakers,
+        editorialBoard: data.editorialBoard,
+        teamBios: data.teamBios,
+        tracks: data.tracks,
+        keywords: data.keywords,
+        submissionInstructions: data.submissionInstructions,
+        paperTemplateUrl: data.paperTemplateUrl,
+        submissionStartDate: formatDate(getJSDate(data.submissionStartDate)),
+        submissionEndDate: formatDate(getJSDate(data.submissionEndDate)),
+        paperCategories: data.paperCategories || [],
+        peerReviewMethod: data.peerReviewMethod,
+        registrationFees: data.registrationFees,
+        accommodationDetails: data.accommodationDetails,
+        faqs: data.faqs,
+        editorChoice: data.editorChoice,
         createdAt: getJSDate(data.createdAt).toISOString(),
+        dateObject: startDate,
+        location,
+        
+        // --- Fallback fields for old data structure ---
+        description: data.description || "",
+        fullDescription: data.fullDescription || "",
+        conferenceType: data.conferenceType || "",
+        organizerName: data.organizerName || "",
+        organizerEmail: data.organizerEmail || "",
+        organizerPhone: data.organizerPhone || "",
+        submissionDeadline: data.submissionDeadline ? formatDate(getJSDate(data.submissionDeadline)) : "N/A",
+        registrationDeadline: data.registrationDeadline ? formatDate(getJSDate(data.registrationDeadline)) : "N/A",
+        locationType: data.locationType || "Offline",
+        audienceType: data.audienceType || "",
+        callForPapers: data.callForPapers || false,
+        enableAbstractSubmission: data.enableAbstractSubmission || false,
+        enableFullPaperSubmission: data.enableFullPaperSubmission || false,
     };
 }
 

@@ -76,9 +76,14 @@ export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminRes
   }
 }
 
-export async function getSubAdmins(): Promise<SubAdmin[]> {
+export async function getSubAdmins(options: { approvedOnly?: boolean } = {}): Promise<SubAdmin[]> {
     try {
-        const q = query(collection(db, "subAdmins"), orderBy("joinDate", "desc"));
+        let constraints = [orderBy("joinDate", "desc")];
+        if(options.approvedOnly) {
+            constraints.push(where("status", "==", "approved"));
+        }
+
+        const q = query(collection(db, "subAdmins"), ...constraints);
         const querySnapshot = await getDocs(q);
         const subAdmins: SubAdmin[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
@@ -105,6 +110,7 @@ export async function getSubAdmins(): Promise<SubAdmin[]> {
         return [];
     }
 }
+
 
 export async function getSubAdminByEmail(email: string): Promise<{ success: boolean; message: string; subAdmin?: SubAdmin }> {
   try {
