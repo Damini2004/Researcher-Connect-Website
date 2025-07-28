@@ -58,6 +58,25 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   const form = useForm<AddConferenceData>({
     resolver: zodResolver(conferenceSchema),
     defaultValues: {
+      title: "",
+      shortTitle: "",
+      tagline: "",
+      venueName: "",
+      venueAddress: "",
+      aboutConference: "",
+      conferenceWebsite: "",
+      conferenceEmail: "",
+      organizingCommittee: "",
+      keynoteSpeakers: "",
+      editorialBoard: "",
+      teamBios: "",
+      tracks: "",
+      keywords: "",
+      submissionInstructions: "",
+      peerReviewMethod: "",
+      registrationFees: "",
+      accommodationDetails: "",
+      faqs: "",
       modeOfConference: [],
       paperCategories: [],
       editorChoice: "none",
@@ -232,9 +251,9 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                     checked={field.value?.includes(item.id)}
                                     onCheckedChange={(checked) => {
                                       return checked
-                                        ? field.onChange([...field.value, item.id])
+                                        ? field.onChange([...(field.value || []), item.id])
                                         : field.onChange(
-                                            field.value?.filter(
+                                            (field.value || [])?.filter(
                                               (value) => value !== item.id
                                             )
                                           );
