@@ -5,6 +5,7 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, getDoc } from 'firebase/firestore';
 import { format } from 'date-fns';
 import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib/types';
+import { z } from 'zod';
 
 interface AddConferencePayload extends AddConferenceData {
     conferenceLogo: string;
@@ -34,7 +35,7 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
         ...validationResult.data,
         conferenceLogo: data.conferenceLogo, // The base64 string
         paperTemplateUrl: data.paperTemplateUrl, // The URL for the template
-        createdAt: serverTimestamp(),
+        createdAt: new Date(),
     };
     
     // Remove the temporary 'paperTemplate' field from the object to be saved
