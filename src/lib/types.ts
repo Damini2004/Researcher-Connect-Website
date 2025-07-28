@@ -1,4 +1,3 @@
-
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -8,7 +7,7 @@ export const conferenceSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters long."),
   shortTitle: z.string().min(3, "Short title/acronym is required."),
   tagline: z.string().optional(),
-  
+
   // --- Schedule & Location ---
   startDate: z.date({ required_error: "Start date is required." }),
   endDate: z.date({ required_error: "End date is required." }),
@@ -38,7 +37,7 @@ export const conferenceSchema = z.object({
   submissionStartDate: z.date({ required_error: "Submission start date is required." }),
   submissionEndDate: z.date({ required_error: "Submission end date is required." }),
   paperCategories: z.array(z.string()).refine((value) => value.some((item) => item), {
-      message: "You have to select at least one paper category.",
+    message: "You have to select at least one paper category.",
   }),
   peerReviewMethod: z.string().optional(),
 
@@ -46,60 +45,60 @@ export const conferenceSchema = z.object({
   registrationFees: z.string().optional(),
   accommodationDetails: z.string().optional(),
   faqs: z.string().optional(),
-  
+
   // --- Admin ---
   editorChoice: z.string().optional()
 });
 
 
 export interface Conference {
-    id: string;
-    title: string;
-    shortTitle: string;
-    tagline?: string;
-    date: string; // Formatted date range for display
-    startDate: string;
-    endDate: string;
-    venueName: string;
-    venueAddress: string;
-    modeOfConference: string[];
-    aboutConference: string;
-    conferenceWebsite?: string;
-    imageSrc: string; // Changed from conferenceLogo for consistency
-    conferenceEmail: string;
-    organizingCommittee?: string;
-    keynoteSpeakers?: string;
-    editorialBoard?: string;
-    teamBios?: string;
-    tracks?: string;
-    keywords?: string;
-    submissionInstructions?: string;
-    paperTemplateUrl?: string;
-    submissionStartDate: string;
-    submissionEndDate: string;
-    paperCategories: string[];
-    peerReviewMethod?: string;
-    registrationFees?: string;
-    accommodationDetails?: string;
-    faqs?: string;
-    editorChoice?: string;
-    createdAt: string;
-    dateObject: Date; // For sorting
-    location: string; // For display
-    // Deprecated fields, kept for compatibility with old data if needed
-    description: string;
-    fullDescription: string;
-    conferenceType: string;
-    organizerName: string;
-    organizerEmail: string;
-    organizerPhone: string;
-    submissionDeadline: string;
-    registrationDeadline: string;
-    locationType: string;
-    audienceType: string;
-    callForPapers: boolean;
-    enableAbstractSubmission: boolean;
-    enableFullPaperSubmission: boolean;
+  id: string;
+  title: string;
+  shortTitle: string;
+  tagline?: string;
+  date: string; // Formatted date range for display
+  startDate: string;
+  endDate: string;
+  venueName: string;
+  venueAddress: string;
+  modeOfConference: string[];
+  aboutConference: string;
+  conferenceWebsite?: string;
+  imageSrc: string; // Changed from conferenceLogo for consistency
+  conferenceEmail: string;
+  organizingCommittee?: string;
+  keynoteSpeakers?: string;
+  editorialBoard?: string;
+  teamBios?: string;
+  tracks?: string;
+  keywords?: string;
+  submissionInstructions?: string;
+  paperTemplateUrl?: string;
+  submissionStartDate: string;
+  submissionEndDate: string;
+  paperCategories: string[];
+  peerReviewMethod?: string;
+  registrationFees?: string;
+  accommodationDetails?: string;
+  faqs?: string;
+  editorChoice?: string;
+  createdAt: string;
+  dateObject: Date; // For sorting
+  location: string; // For display
+  // Deprecated fields, kept for compatibility with old data if needed
+  description: string;
+  fullDescription: string;
+  conferenceType: string;
+  organizerName: string;
+  organizerEmail: string;
+  organizerPhone: string;
+  submissionDeadline: string;
+  registrationDeadline: string;
+  locationType: string;
+  audienceType: string;
+  callForPapers: boolean;
+  enableAbstractSubmission: boolean;
+  enableFullPaperSubmission: boolean;
 }
 
 // This will be the type for data coming from the form before processing
