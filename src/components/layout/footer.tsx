@@ -13,12 +13,13 @@ const quickLinks = [
     { href: "#", label: "Pay now" },
     { href: "#", label: "Our Policies" },
     { href: "/about", label: "Blog" },
+    { href: "/contact-us", label: "Contact Us" },
 ]
 
 const exploreLinks = [
     { href: "#", label: "Labtech Studio" },
     { href: "/about", label: "Careers" },
-    { href: "/research-support", label: "Research Funding" },
+    { href: "/research-support", label: "Research Support" },
     { href: "#", label: "Membership" },
     { href: "#", label: "Community" },
     { href: "#", label: "Scholarship" },
