@@ -1,3 +1,4 @@
+
 // src/app/(public)/conference/[id]/page.tsx
 
 "use client";
@@ -8,10 +9,14 @@ import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { Calendar, MapPin, Users, FileText, CheckCircle } from "lucide-react";
+import { Calendar, MapPin, Users, Mail, Globe, Mic, FileText, CheckCircle, HelpCircle, Building, Ticket, BookUser, Link as LinkIcon, Download } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { format } from "date-fns";
 
 export default function ConferenceDetailPage({ params }: { params: { id: string } }) {
   const [conference, setConference] = useState<Conference | null>(null);
@@ -84,13 +89,50 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
     );
   }
 
+  const renderListFromString = (text?: string) => {
+    if (!text) return <p className="text-muted-foreground">Not available.</p>;
+    return (
+      <ul className="list-disc list-inside text-muted-foreground space-y-1">
+        {text.split('\n').map((item, index) => item.trim() && <li key={index}>{item.trim()}</li>)}
+      </ul>
+    );
+  };
+
+  const renderParagraphs = (text?: string) => {
+    if (!text) return <p className="text-muted-foreground">Not available.</p>;
+    return (
+        <div className="text-muted-foreground whitespace-pre-wrap space-y-2">
+            {text.split('\n').map((para, index) => para.trim() && <p key={index}>{para.trim()}</p>)}
+        </div>
+    );
+  };
+  
+  const getPaperCategoryLabel = (id: string) => {
+    const map: { [key: string]: string } = {
+        "full_paper": "Full Paper",
+        "abstract": "Abstract",
+        "poster": "Poster",
+        "case_study": "Case Study",
+    };
+    return map[id] || id;
+  }
+
+  const today = new Date();
+  const submissionEndDate = new Date(conference.submissionEndDate);
+  const isCallForPapersOpen = submissionEndDate >= today;
+
+
   return (
     <div className="bg-secondary/50">
         <div className="container py-12 md:py-24">
             <header className="mb-8">
-                <Badge variant="secondary" className="mb-2">{conference.conferenceType}</Badge>
-                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">{conference.title}</h1>
-                <p className="mt-4 text-lg text-muted-foreground">{conference.description}</p>
+                <div className="flex flex-wrap gap-2 mb-2">
+                    {conference.modeOfConference.map(mode => (
+                        <Badge key={mode} variant="secondary" className="capitalize">{mode}</Badge>
+                    ))}
+                </div>
+                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">{conference.title} ({conference.shortTitle})</h1>
+                <p className="mt-4 text-lg text-muted-foreground">{conference.tagline || conference.description}</p>
             </header>
 
             <div className="relative w-full h-[400px] mb-12">
@@ -105,87 +147,79 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <main className="md:col-span-2 space-y-8">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>About the Conference</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-muted-foreground whitespace-pre-wrap">{conference.fullDescription}</p>
-                        </CardContent>
-                    </Card>
+                    <Card><CardHeader><CardTitle>About the Conference</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.aboutConference)}</CardContent></Card>
+                    <Card><CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader><CardContent>{renderListFromString(conference.keynoteSpeakers)}</CardContent></Card>
+                    <Card><CardHeader><CardTitle>Organizing Committee</CardTitle></CardHeader><CardContent>{renderListFromString(conference.organizingCommittee)}</CardContent></Card>
+                    <Card><CardHeader><CardTitle>Conference Tracks</CardTitle></CardHeader><CardContent>{renderListFromString(conference.tracks)}</CardContent></Card>
+                    
                      <Card>
-                        <CardHeader>
-                            <CardTitle>Submission Guidelines</CardTitle>
-                        </CardHeader>
+                        <CardHeader><CardTitle>Submission Guidelines</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                           {conference.callForPapers ? (
-                                <div className="flex items-start gap-3">
+                           {isCallForPapersOpen ? (
+                                <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
                                     <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
                                     <div>
                                         <h4 className="font-semibold">Call for Papers is Open</h4>
-                                        <p className="text-sm text-muted-foreground">Submission Deadline: {conference.submissionDeadline}</p>
+                                        <p className="text-sm text-muted-foreground">Submission Deadline: {format(new Date(conference.submissionEndDate), "PPP")}</p>
                                     </div>
                                 </div>
                            ) : (
                                <p className="text-muted-foreground">The call for papers for this conference has closed.</p>
                            )}
-                           <div className="flex items-center gap-3">
-                                <FileText className="h-5 w-5 text-primary flex-shrink-0"/>
-                                <p className="text-sm text-muted-foreground">
-                                    {conference.enableAbstractSubmission ? "Abstract submissions are accepted." : "Abstract submissions are not accepted."}
-                                </p>
-                           </div>
-                           <div className="flex items-center gap-3">
-                                <FileText className="h-5 w-5 text-primary flex-shrink-0"/>
-                                <p className="text-sm text-muted-foreground">
-                                    {conference.enableFullPaperSubmission ? "Full paper submissions are accepted." : "Full paper submissions are not accepted."}
-                                </p>
+                           <div className="text-sm text-muted-foreground space-y-3">
+                                <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
+                                <div><strong>Accepted Categories:</strong> <div className="flex flex-wrap gap-2 mt-1">{conference.paperCategories.map(cat => <Badge key={cat} variant="outline">{getPaperCategoryLabel(cat)}</Badge>)}</div></div>
+                                {conference.peerReviewMethod && <p><strong>Review Method:</strong> {conference.peerReviewMethod}</p>}
+                                {conference.submissionInstructions && <div><strong>Instructions:</strong>{renderParagraphs(conference.submissionInstructions)}</div>}
+                                {conference.paperTemplateUrl && <Button asChild variant="link" className="p-0 h-auto"><a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download className="mr-2 h-4 w-4"/>Download Paper Template</a></Button>}
                            </div>
                         </CardContent>
                     </Card>
+                    
+                    {conference.registrationFees && <Card><CardHeader><CardTitle>Registration & Fees</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.registrationFees)}</CardContent></Card>}
+                    {conference.accommodationDetails && <Card><CardHeader><CardTitle>Accommodation</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.accommodationDetails)}</CardContent></Card>}
 
+                    {conference.faqs && (
+                        <Card>
+                            <CardHeader><CardTitle>Frequently Asked Questions</CardTitle></CardHeader>
+                            <CardContent>
+                                <Accordion type="single" collapsible className="w-full">
+                                    {conference.faqs.split('\n').filter(faq => faq.includes('?')).map((faq, index) => {
+                                        const [question, ...answerParts] = faq.split('?');
+                                        const answer = answerParts.join('?').trim();
+                                        return (
+                                            <AccordionItem key={index} value={`item-${index}`}>
+                                                <AccordionTrigger>{question}?</AccordionTrigger>
+                                                <AccordionContent>{answer}</AccordionContent>
+                                            </AccordionItem>
+                                        );
+                                    })}
+                                </Accordion>
+                            </CardContent>
+                        </Card>
+                    )}
                 </main>
                 <aside className="space-y-6">
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Event Details</CardTitle>
-                        </CardHeader>
+                        <CardHeader><CardTitle>Event Details</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="flex items-center gap-3">
-                                <Calendar className="h-5 w-5 text-primary" />
-                                <div>
-                                    <p className="font-semibold">Date</p>
-                                    <p className="text-sm text-muted-foreground">{conference.date}</p>
-                                </div>
-                            </div>
+                            <div className="flex items-center gap-3"><Calendar className="h-5 w-5 text-primary" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
                             <Separator />
-                             <div className="flex items-center gap-3">
-                                <MapPin className="h-5 w-5 text-primary" />
-                                <div>
-                                    <p className="font-semibold">{conference.locationType}</p>
-                                    <p className="text-sm text-muted-foreground">{conference.location}</p>
-                                </div>
-                            </div>
-                            <Separator />
-                             <div className="flex items-center gap-3">
-                                <Users className="h-5 w-5 text-primary" />
-                                <div>
-                                    <p className="font-semibold">Audience</p>
-                                    <p className="text-sm text-muted-foreground">{conference.audienceType}</p>
-                                </div>
-                            </div>
+                            <div className="flex items-center gap-3"><MapPin className="h-5 w-5 text-primary" /><div><p className="font-semibold">{conference.venueName}</p><p className="text-sm text-muted-foreground">{conference.location}</p></div></div>
+                             {conference.keywords && <>
+                                <Separator />
+                                <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map(k => k.trim() && <Badge key={k} variant="secondary">{k.trim()}</Badge>)}</div></div>
+                            </>}
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Organizer</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                             <p className="font-semibold">{conference.organizerName}</p>
-                             <p className="text-sm text-muted-foreground">Email: {conference.organizerEmail}</p>
-                             <p className="text-sm text-muted-foreground">Phone: {conference.organizerPhone}</p>
+                        <CardHeader><CardTitle>Contact & Links</CardTitle></CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex items-center gap-3"><Mail className="h-5 w-5 text-primary" /><div><p className="font-semibold">Email</p><p className="text-sm text-muted-foreground break-all">{conference.conferenceEmail}</p></div></div>
+                            {conference.conferenceWebsite && <><Separator /><div className="flex items-center gap-3"><Globe className="h-5 w-5 text-primary" /><div><p className="font-semibold">Website</p><a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{conference.conferenceWebsite}</a></div></div></>}
                         </CardContent>
                     </Card>
+                    {conference.editorialBoard && <Card><CardHeader><CardTitle>Editorial Board</CardTitle></CardHeader><CardContent>{renderListFromString(conference.editorialBoard)}</CardContent></Card>}
                 </aside>
             </div>
         </div>
