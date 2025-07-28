@@ -179,8 +179,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                     key={item.id}
                     control={form.control}
                     name="modeOfConference"
-                    render={({ field }) => {
-                      return (
+                    render={({ field }) => (
                         <FormItem
                           key={item.id}
                           className="flex flex-row items-start space-x-3 space-y-0"
@@ -190,9 +189,9 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                               checked={field.value?.includes(item.id)}
                               onCheckedChange={(checked) => {
                                 return checked
-                                  ? field.onChange([...field.value, item.id])
+                                  ? field.onChange([...(field.value || []), item.id])
                                   : field.onChange(
-                                      field.value?.filter(
+                                      (field.value || [])?.filter(
                                         (value) => value !== item.id
                                       )
                                     )
@@ -204,7 +203,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                           </FormLabel>
                         </FormItem>
                       )
-                    }}
+                    }
                   />
                 ))}
               </div>
@@ -242,8 +241,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                     key={item.id}
                     control={form.control}
                     name="paperCategories"
-                    render={({ field }) => {
-                      return (
+                    render={({ field }) => (
                         <FormItem
                           key={item.id}
                           className="flex flex-row items-start space-x-3 space-y-0"
@@ -253,9 +251,9 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                               checked={field.value?.includes(item.id)}
                               onCheckedChange={(checked) => {
                                 return checked
-                                  ? field.onChange([...field.value, item.id])
+                                  ? field.onChange([...(field.value || []), item.id])
                                   : field.onChange(
-                                      field.value?.filter(
+                                      (field.value || [])?.filter(
                                         (value) => value !== item.id
                                       )
                                     )
@@ -267,7 +265,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                           </FormLabel>
                         </FormItem>
                       )
-                    }}
+                    }
                   />
                 ))}
               </div>
@@ -279,7 +277,73 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         <FormField control={form.control} name="registrationFees" render={({ field }) => ( <FormItem> <FormLabel>Registration & Fees</FormLabel> <FormControl><Textarea placeholder="Detail the fee structure..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField control={form.control} name="accommodationDetails" render={({ field }) => ( <FormItem> <FormLabel>Accommodation Details</FormLabel> <FormControl><Textarea placeholder="List nearby hotels or arrangements..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField control={form.control} name="faqs" render={({ field }) => ( <FormItem> <FormLabel>FAQs</FormLabel> <FormControl><Textarea placeholder="Provide answers to frequently asked questions..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField control={form.control} name="editorChoice" render={({ field }) => ( <FormItem className="flex flex-col"> <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel> <Popover open={openCombobox} onOpenChange={setOpenCombobox}> <PopoverTrigger asChild> <FormControl> <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")} > {field.value && field.value !== "none" ? subAdmins.find((admin) => admin.id === field.value)?.name : "Select Sub-Admin"} <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> </Button> </FormControl> </PopoverTrigger> <PopoverContent className="w-[--radix-popover-trigger-width] p-0"> <Command> <CommandInput placeholder="Search sub-admins..." /> <CommandList> <CommandEmpty>No sub-admin found.</CommandEmpty> <CommandGroup> <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }}> None </CommandItem> {subAdmins.map((admin) => ( <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} > <Check className={cn( "mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )} /> {admin.name} </CommandItem> ))} </CommandGroup> </CommandList> </Command> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
+        <FormField
+          control={form.control}
+          name="editorChoice"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel>
+              <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !field.value && "text-muted-foreground"
+                    )}
+                    aria-expanded={openCombobox}
+                  >
+                    {field.value && field.value !== "none"
+                      ? subAdmins.find((admin) => admin.id === field.value)?.name
+                      : "Select Sub-Admin"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search sub-admins..." />
+                    <CommandList>
+                      <CommandEmpty>No sub-admin found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value={"none"}
+                          onSelect={() => {
+                            form.setValue("editorChoice", "none");
+                            setOpenCombobox(false);
+                          }}
+                        >
+                          None
+                        </CommandItem>
+                        {subAdmins.map((admin) => (
+                          <CommandItem
+                            value={admin.name}
+                            key={admin.id}
+                            onSelect={() => {
+                              form.setValue("editorChoice", admin.id);
+                              setOpenCombobox(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                admin.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {admin.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Saving Conference..." : "Add Conference"}
         </Button>
