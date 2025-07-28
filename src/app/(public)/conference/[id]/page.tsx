@@ -1,6 +1,4 @@
-
 // src/app/(public)/conference/[id]/page.tsx
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,13 +7,12 @@ import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { Calendar, MapPin, Users, Mail, Globe, Mic, FileText, CheckCircle, HelpCircle, Building, Ticket, BookUser, Link as LinkIcon, Download } from "lucide-react";
+import { Calendar, MapPin, Download, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { format } from "date-fns";
 
 export default function ConferenceDetailPage({ params }: { params: { id: string } }) {
@@ -125,17 +122,17 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
   return (
     <div className="bg-secondary/50">
         <div className="container py-12 md:py-24">
-            <header className="mb-8">
-                <div className="flex flex-wrap gap-2 mb-2">
+            <header className="mb-8 md:mb-12 text-center">
+                <div className="flex flex-wrap gap-2 mb-4 justify-center">
                     {conference.modeOfConference.map(mode => (
-                        <Badge key={mode} variant="secondary" className="capitalize">{mode}</Badge>
+                        <Badge key={mode} variant="secondary" className="capitalize text-sm py-1 px-3">{mode}</Badge>
                     ))}
                 </div>
                 <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">{conference.title} ({conference.shortTitle})</h1>
-                <p className="mt-4 text-lg text-muted-foreground">{conference.tagline || conference.description}</p>
+                <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">{conference.tagline || conference.description}</p>
             </header>
 
-            <div className="relative w-full h-[400px] mb-12">
+            <div className="relative w-full h-[300px] md:h-[450px] mb-12">
                 <Image 
                     src={conference.imageSrc} 
                     alt={conference.title} 
@@ -145,8 +142,8 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <main className="md:col-span-2 space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                <main className="lg:col-span-2 space-y-8">
                     <Card><CardHeader><CardTitle>About the Conference</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.aboutConference)}</CardContent></Card>
                     <Card><CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader><CardContent>{renderListFromString(conference.keynoteSpeakers)}</CardContent></Card>
                     <Card><CardHeader><CardTitle>Organizing Committee</CardTitle></CardHeader><CardContent>{renderListFromString(conference.organizingCommittee)}</CardContent></Card>
@@ -170,7 +167,7 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                                 <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
                                 <div><strong>Accepted Categories:</strong> <div className="flex flex-wrap gap-2 mt-1">{conference.paperCategories.map(cat => <Badge key={cat} variant="outline">{getPaperCategoryLabel(cat)}</Badge>)}</div></div>
                                 {conference.peerReviewMethod && <p><strong>Review Method:</strong> {conference.peerReviewMethod}</p>}
-                                {conference.submissionInstructions && <div><strong>Instructions:</strong>{renderParagraphs(conference.submissionInstructions)}</div>}
+                                {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderParagraphs(conference.submissionInstructions)}</div>}
                                 {conference.paperTemplateUrl && <Button asChild variant="link" className="p-0 h-auto"><a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download className="mr-2 h-4 w-4"/>Download Paper Template</a></Button>}
                            </div>
                         </CardContent>
@@ -199,13 +196,13 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                         </Card>
                     )}
                 </main>
-                <aside className="space-y-6">
+                <aside className="space-y-6 sticky top-24 self-start">
                     <Card>
                         <CardHeader><CardTitle>Event Details</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="flex items-center gap-3"><Calendar className="h-5 w-5 text-primary" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
+                            <div className="flex items-start gap-3"><Calendar className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
                             <Separator />
-                            <div className="flex items-center gap-3"><MapPin className="h-5 w-5 text-primary" /><div><p className="font-semibold">{conference.venueName}</p><p className="text-sm text-muted-foreground">{conference.location}</p></div></div>
+                            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">{conference.venueName}</p><p className="text-sm text-muted-foreground">{conference.location}</p></div></div>
                              {conference.keywords && <>
                                 <Separator />
                                 <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map(k => k.trim() && <Badge key={k} variant="secondary">{k.trim()}</Badge>)}</div></div>
@@ -215,8 +212,8 @@ export default function ConferenceDetailPage({ params }: { params: { id: string 
                     <Card>
                         <CardHeader><CardTitle>Contact & Links</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="flex items-center gap-3"><Mail className="h-5 w-5 text-primary" /><div><p className="font-semibold">Email</p><p className="text-sm text-muted-foreground break-all">{conference.conferenceEmail}</p></div></div>
-                            {conference.conferenceWebsite && <><Separator /><div className="flex items-center gap-3"><Globe className="h-5 w-5 text-primary" /><div><p className="font-semibold">Website</p><a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{conference.conferenceWebsite}</a></div></div></>}
+                           {conference.conferenceEmail && <><p className="font-semibold">Email</p><p className="text-sm text-muted-foreground break-all">{conference.conferenceEmail}</p></>}
+                           {conference.conferenceWebsite && <><Separator /><p className="font-semibold">Website</p><a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{conference.conferenceWebsite}</a></>}
                         </CardContent>
                     </Card>
                     {conference.editorialBoard && <Card><CardHeader><CardTitle>Editorial Board</CardTitle></CardHeader><CardContent>{renderListFromString(conference.editorialBoard)}</CardContent></Card>}
