@@ -48,7 +48,7 @@ export const conferenceSchema = z.object({
   faqs: z.string().optional(),
   
   // --- Admin ---
-  editorChoice: z.string().optional(),
+  editorChoice: z.string().optional()
 });
 
 
