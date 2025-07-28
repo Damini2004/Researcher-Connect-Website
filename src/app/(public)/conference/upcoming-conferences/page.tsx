@@ -81,6 +81,15 @@ export default function UpcomingConferencesPage() {
     );
   };
 
+  const renderParagraphs = (text?: string) => {
+    if (!text) return <p className="text-muted-foreground">Not available.</p>;
+    return (
+        <div className="text-muted-foreground whitespace-pre-wrap space-y-2">
+            {text.split('\n').map((para, index) => para.trim() && <p key={index}>{para.trim()}</p>)}
+        </div>
+    );
+  };
+
 
   if (isLoading) {
     return (
@@ -148,7 +157,7 @@ export default function UpcomingConferencesPage() {
             <Card>
               <CardHeader><CardTitle>About Conference</CardTitle></CardHeader>
               <CardContent>
-                <p className="text-muted-foreground whitespace-pre-wrap">{upcomingConference.aboutConference}</p>
+                {renderParagraphs(upcomingConference.aboutConference)}
                  <Button asChild variant="link" className="p-0 h-auto mt-2">
                   <Link href={`/conference/${upcomingConference.id}`}>
                     View More <ChevronRight className="h-4 w-4 ml-1"/>
