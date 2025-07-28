@@ -31,9 +31,9 @@ const calculateTimeLeft = (targetDate: string) => {
 };
 
 const CountdownUnit = ({ value, label }: { value: number; label: string }) => (
-    <div className="flex flex-col items-center">
-        <span className="text-3xl md:text-4xl font-bold">{String(value).padStart(2, '0')}</span>
-        <span className="text-xs uppercase tracking-wider text-white/70">{label}</span>
+    <div className="flex flex-col items-center bg-white text-primary rounded-md p-2 w-16 h-16 justify-center shadow-lg">
+        <span className="text-2xl font-bold">{String(value).padStart(2, '0')}</span>
+        <span className="text-xs uppercase tracking-wider font-medium text-primary/80">{label}</span>
     </div>
 );
 
@@ -42,38 +42,27 @@ export default function ConferenceCountdown({ targetDate }: CountdownProps) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This ensures the component only renders and runs its logic on the client-side,
-    // preventing hydration mismatches between server and client renders.
     setIsClient(true);
-
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft(targetDate));
     }, 1000);
-
-    // Clear the interval when the component unmounts
     return () => clearInterval(timer);
   }, [targetDate]);
 
   if (!isClient) {
-    // Render nothing or a placeholder on the server
     return null;
   }
   
   if (timeLeft.isOver) {
-    return <div className="mt-4 font-semibold text-lg bg-green-500/20 text-green-300 px-4 py-2 rounded-md inline-block">The conference has started!</div>;
+    return <div className="font-semibold text-lg bg-green-500/20 text-green-300 px-4 py-2 rounded-md inline-block">The conference has started!</div>;
   }
 
   return (
-    <div className="mt-6">
-        <div className="flex items-center gap-4 md:gap-8 bg-black/30 backdrop-blur-sm p-4 rounded-lg w-fit">
-            <CountdownUnit value={timeLeft.days} label="Days" />
-            <span className="text-3xl font-bold text-white/50">:</span>
-            <CountdownUnit value={timeLeft.hours} label="Hours" />
-            <span className="text-3xl font-bold text-white/50">:</span>
-            <CountdownUnit value={timeLeft.minutes} label="Minutes" />
-            <span className="text-3xl font-bold text-white/50">:</span>
-            <CountdownUnit value={timeLeft.seconds} label="Seconds" />
-        </div>
+    <div className="flex items-center gap-2">
+        <CountdownUnit value={timeLeft.days} label="Days" />
+        <CountdownUnit value={timeLeft.hours} label="Hours" />
+        <CountdownUnit value={timeLeft.minutes} label="Minutes" />
+        <CountdownUnit value={timeLeft.seconds} label="Seconds" />
     </div>
   );
 }
