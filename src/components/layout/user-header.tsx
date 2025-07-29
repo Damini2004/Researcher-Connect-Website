@@ -39,7 +39,6 @@ const ConferenceVideosIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const topNavLinks = [
-    { href: "/internship", label: "Internship" },
     { href: "/research-support", label: "Research Support" },
     { href: "/login", label: "Login" },
 ];
@@ -98,7 +97,7 @@ const mainNavLinks = [
     label: "IPR Services",
     children: iprServicesSubMenu
   },
-  { href: "/contact-us", label: "Contact Us" },
+  { href: "/internship", label: "Internship" },
 ];
 
 
