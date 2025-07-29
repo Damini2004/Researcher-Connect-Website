@@ -41,7 +41,6 @@ const ConferenceVideosIcon = (props: React.SVGProps<SVGSVGElement>) => (
 const topNavLinks = [
     { href: "/internship", label: "Internship" },
     { href: "/research-support", label: "Research Support" },
-    { href: "/conference", label: "Conference" },
     { href: "/login", label: "Login" },
 ];
 
