@@ -14,7 +14,7 @@ const quickLinks = [
 ]
 
 const exploreLinks = [
-    { href: "#", label: "Labtech Studio" },
+    { href: "#", label: "Pure Research Insights" },
     { href: "/about", label: "Careers" },
     { href: "/research-support", label: "Research Support" },
     { href: "/contact-us", label: "Contact Us" },
@@ -112,7 +112,7 @@ const Footer = () => {
 
                 <div className="border-t border-gray-700 mt-10 pt-6">
                     <p className="text-center text-sm font-semibold uppercase tracking-wider relative">
-                        A Venture of JournalEdge Innovation Educational Research and Welfare Foundation.
+                        A Venture of Pure Research Insights Innovation Educational Research and Welfare Foundation.
                         <span className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 h-0.5 w-20 bg-[#D32F2F]"></span>
                     </p>
 
