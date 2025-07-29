@@ -9,41 +9,39 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
       height={props.height || 32}
       {...props}
     >
+      <defs>
+        <style>
+          {
+            ".pure-red { fill: #D32F2F; } .pure-blue { fill: #003366; } .pure-text-red { fill: #D32F2F; font-family: Poppins, sans-serif; font-weight: bold; font-size: 48px; text-anchor: middle; } .pure-text-blue { fill: #003366; font-family: Poppins, sans-serif; font-weight: 500; font-size: 24px; text-anchor: middle; letter-spacing: 0.025em; }"
+          }
+        </style>
+      </defs>
+
       {/* Icon */}
-      <g>
-        {/* Blue shapes */}
-        <g fill="#003366">
-          <path d="M116.6 34.2 L70.7 57.1 L93.6 103 L116.6 79.9 Z" />
-          <path d="M139.4 153 L185.3 129.9 L162.4 84.1 L139.4 107.1 Z" />
-        </g>
-        {/* Red shapes */}
-        <g fill="#D32F2F">
-          <path d="M139.4 34.2 L185.3 57.1 L162.4 103 L139.4 79.9 Z" />
-          <path d="M116.6 153 L70.7 129.9 L93.6 84.1 L116.6 107.1 Z" />
-        </g>
+      <g transform="translate(128, 78) rotate(20) scale(0.9)">
+        <path
+          className="pure-blue"
+          d="M-52.6,-5.5 L-9.9,-54.2 L-4.4,-44.7 L-47.1,3.9 Z"
+        />
+        <path
+          className="pure-red"
+          d="M-4.4,-44.7 L47.1,-3.9 L52.6,5.5 L9.9,54.2 Z"
+        />
+        <path
+          className="pure-red"
+          d="M-47.1,3.9 L4.4,44.7 L9.9,54.2 L-52.6,5.5 Z"
+        />
+        <path
+          className="pure-blue"
+          d="M4.4,44.7 L47.1,-3.9 L52.6,5.5 L9.9,54.2 L4.4,44.7 Z"
+        />
       </g>
 
       {/* Text */}
-      <text
-        x="128"
-        y="190"
-        fontFamily="Poppins, sans-serif"
-        fontSize="48"
-        fontWeight="bold"
-        fill="#D32F2F"
-        textAnchor="middle"
-      >
+      <text x="128" y="190" className="pure-text-red">
         PURE
       </text>
-      <text
-        x="128"
-        y="225"
-        fontFamily="Poppins, sans-serif"
-        fontSize="24"
-        fontWeight="500"
-        fill="#003366"
-        textAnchor="middle"
-      >
+      <text x="128" y="225" className="pure-text-blue">
         RESEARCH INSIGHTS
       </text>
     </svg>
