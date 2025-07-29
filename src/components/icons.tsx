@@ -9,10 +9,43 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
       height={props.height || 32}
       {...props}
     >
-      <g fill="hsl(var(--primary))">
-        <path d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88Z" />
-        <path d="M176 80H80a8 8 0 0 0-8 8v80a8 8 0 0 0 8 8h96a8 8 0 0 0 8-8v-24a8 8 0 0 0-16 0v16H88V96h80v16a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8Z" />
+      {/* Icon */}
+      <g>
+        {/* Blue shapes */}
+        <g fill="#003366">
+          <path d="M116.6 34.2 L70.7 57.1 L93.6 103 L116.6 79.9 Z" />
+          <path d="M139.4 153 L185.3 129.9 L162.4 84.1 L139.4 107.1 Z" />
+        </g>
+        {/* Red shapes */}
+        <g fill="#D32F2F">
+          <path d="M139.4 34.2 L185.3 57.1 L162.4 103 L139.4 79.9 Z" />
+          <path d="M116.6 153 L70.7 129.9 L93.6 84.1 L116.6 107.1 Z" />
+        </g>
       </g>
+
+      {/* Text */}
+      <text
+        x="128"
+        y="190"
+        fontFamily="Poppins, sans-serif"
+        fontSize="48"
+        fontWeight="bold"
+        fill="#D32F2F"
+        textAnchor="middle"
+      >
+        PURE
+      </text>
+      <text
+        x="128"
+        y="225"
+        fontFamily="Poppins, sans-serif"
+        fontSize="24"
+        fontWeight="500"
+        fill="#003366"
+        textAnchor="middle"
+      >
+        RESEARCH INSIGHTS
+      </text>
     </svg>
   );
 }
