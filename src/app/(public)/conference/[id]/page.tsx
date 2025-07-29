@@ -165,9 +165,15 @@ export default function ConferenceDetailPage() {
                             </div>
                         </div>
                          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 pt-2">
-                            <Button variant="outline" className="bg-white/90 text-black hover:bg-white"><FileText /> Abstract Submission</Button>
-                            <Button variant="outline" className="bg-white/90 text-black hover:bg-white"><Download /> Download Brochure</Button>
-                            <Button variant="outline" className="bg-white/90 text-black hover:bg-white"><Award /> Registration</Button>
+                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!isCallForPapersOpen}>
+                              <Link href="/submit-journal"><FileText /> Abstract Submission</Link>
+                            </Button>
+                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!conference.paperTemplateUrl}>
+                                <a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download /> Download Brochure</a>
+                            </Button>
+                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!conference.conferenceWebsite}>
+                                <a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer"><Award /> Registration</a>
+                            </Button>
                         </div>
                     </div>
                 </div>
