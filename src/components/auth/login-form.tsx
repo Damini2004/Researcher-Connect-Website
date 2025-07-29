@@ -55,7 +55,7 @@ export default function LoginForm() {
     if (values.role === 'super-admin') {
       // This is a mock login for super-admin. 
       // In a real app, you'd have a separate verification.
-      if (values.email === 'superadmin@journaledge.com' && values.password === 'password') {
+      if (values.email === 'superadmin@pureresearchinsights.com' && values.password === 'password') {
           toast({
             title: "Login Successful",
             description: "Redirecting to super-admin dashboard...",
@@ -103,7 +103,7 @@ export default function LoginForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="admin@journaledge.com" {...field} />
+                    <Input type="email" placeholder="admin@pureresearchinsights.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

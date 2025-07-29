@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'JournalEdge',
+  title: 'Pure Research Insights',
   description: 'The leading platform for academic journal submissions and management.',
 };
 

@@ -16,7 +16,7 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl xl:text-7xl">
                     <span className="block">Streamline Your Research</span>
-                    <span className="block text-primary">with JournalEdge</span>
+                    <span className="block text-primary">with Pure Research Insights</span>
                   </h1>
                   <p className="max-w-xl text-lg text-muted-foreground md:text-xl">
                     The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
@@ -58,7 +58,7 @@ export default function HomePage() {
                 <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium">Key Features</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Accelerate Your Publication Journey</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  JournalEdge provides a comprehensive suite of tools to support researchers, editors, and publishers.
+                  Pure Research Insights provides a comprehensive suite of tools to support researchers, editors, and publishers.
                 </p>
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function HomePage() {
                 <div className="inline-block rounded-lg bg-background px-3 py-1 text-sm font-medium">Highlights</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Visuals from the Forefront of Research</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Explore stunning imagery and visualizations from papers published through JournalEdge.
+                  Explore stunning imagery and visualizations from papers published through Pure Research Insights.
                 </p>
               </div>
             </div>

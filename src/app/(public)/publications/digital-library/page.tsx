@@ -40,7 +40,7 @@ export default function DigitalLibraryPage() {
     <div className="container py-12 md:py-24 px-4 md:px-6">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Journal Listing</h1>
-        <p className="mt-4 text-lg text-muted-foreground">Browse through our extensive collection of journals published with JournalEdge.</p>
+        <p className="mt-4 text-lg text-muted-foreground">Browse through our extensive collection of journals published with Pure Research Insights.</p>
         <div className="relative mt-6 max-w-lg mx-auto">
           <Input 
             placeholder="Search by title, or description..." 

@@ -231,7 +231,7 @@ export default function UserHeader() {
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-12 w-12" />
             <span className="hidden font-bold sm:inline-block text-xl">
-              JournalEdge
+              Pure Research Insights
             </span>
           </Link>
         </div>
@@ -273,7 +273,7 @@ export default function UserHeader() {
               onClick={() => setMenuOpen(false)}
             >
               <Logo className="h-6 w-6" />
-              <span className="font-bold">JournalEdge</span>
+              <span className="font-bold">Pure Research Insights</span>
             </Link>
             <div className="flex flex-col space-y-3">
               {[...mainNavLinks, ...topNavLinks].map((link) =>

@@ -38,7 +38,7 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <Logo />
-            <span className="text-lg font-semibold">JournalEdge</span>
+            <span className="text-lg font-semibold">Pure Research Insights</span>
         </div>
         <SidebarTrigger />
       </SidebarHeader>

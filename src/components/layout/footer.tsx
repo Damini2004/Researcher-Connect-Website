@@ -52,7 +52,7 @@ const Footer = () => {
                             </p>
                             <p className="flex items-start gap-2">
                                 <Mail className="h-4 w-4 mt-0.5 text-[#D32F2F] flex-shrink-0" />
-                                <Link href="mailto:support@journaledge.com" className="hover:text-[#D32F2F]">support@journaledge.com</Link>
+                                <Link href="mailto:support@pureresearchinsights.com" className="hover:text-[#D32F2F]">support@pureresearchinsights.com</Link>
                             </p>
                         </div>
                     </div>
