@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Logo } from "@/components/icons";
 import { Input } from "@/components/ui/input";
@@ -6,11 +7,7 @@ import { Mail, MapPin, Phone, Send, Linkedin, Twitter, Youtube, Facebook, Instag
 import Image from "next/image";
 
 const quickLinks = [
-    { href: "#", label: "Become a partner" },
-    { href: "#", label: "Refer & Earn" },
     { href: "#", label: "Talk to an Expert" },
-    { href: "#", label: "Sitemap" },
-    { href: "#", label: "Pay now" },
     { href: "#", label: "Our Policies" },
     { href: "/about", label: "Blog" },
     { href: "/internship", label: "Internship" },
@@ -20,9 +17,6 @@ const exploreLinks = [
     { href: "#", label: "Labtech Studio" },
     { href: "/about", label: "Careers" },
     { href: "/research-support", label: "Research Support" },
-    { href: "#", label: "Membership" },
-    { href: "#", label: "Community" },
-    { href: "#", label: "Scholarship" },
     { href: "/contact-us", label: "Contact Us" },
 ]
 
