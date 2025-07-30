@@ -249,7 +249,7 @@ export default function ConferenceDetailPage() {
                         <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0" /><div><p className="font-semibold">Venue</p><p className="text-sm text-muted-foreground">{conference.venueName}<br />{conference.location}</p></div></div>
                          {conference.keywords && <>
                             <Separator />
-                            <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map(k => k.trim() && <Badge key={k} variant="secondary">{k.trim()}</Badge>)}</div></div>
+                            <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map((k, index) => k.trim() && <Badge key={`${k.trim()}-${index}`} variant="secondary">{k.trim()}</Badge>)}</div></div>
                         </>}
                     </CardContent>
                 </Card>
