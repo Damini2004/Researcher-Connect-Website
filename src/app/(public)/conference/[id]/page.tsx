@@ -8,7 +8,7 @@ import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { Calendar, MapPin, Download, CheckCircle, ChevronRight, FileText, Award } from "lucide-react";
+import { Calendar, MapPin, Download, CheckCircle, ChevronRight, FileText, Award, Info, Users, Mic, BookOpen, FileQuestion, Banknote, Hotel } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -123,6 +123,20 @@ export default function ConferenceDetailPage() {
   const submissionEndDate = new Date(conference.submissionEndDate);
   const isCallForPapersOpen = submissionEndDate >= today;
 
+  const EyecatchyCard = ({ icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
+    <Card className="hover:shadow-lg transition-shadow duration-300">
+        <CardHeader>
+            <CardTitle className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-md">
+                   <icon className="h-5 w-5 text-primary" />
+                </div>
+                {title}
+            </CardTitle>
+        </CardHeader>
+        <CardContent>{children}</CardContent>
+    </Card>
+  );
+
 
   return (
     <div className="bg-secondary/30">
@@ -188,14 +202,21 @@ export default function ConferenceDetailPage() {
       <div className="container py-12 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-8">
-                <Card><CardHeader><CardTitle>About the Conference</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.aboutConference)}</CardContent></Card>
-                <Card><CardHeader><CardTitle>Keynote Speakers</CardTitle></CardHeader><CardContent>{renderListFromString(conference.keynoteSpeakers)}</CardContent></Card>
-                <Card><CardHeader><CardTitle>Organizing Committee</CardTitle></CardHeader><CardContent>{renderListFromString(conference.organizingCommittee)}</CardContent></Card>
-                <Card><CardHeader><CardTitle>Conference Tracks</CardTitle></CardHeader><CardContent>{renderListFromString(conference.tracks)}</CardContent></Card>
+                <EyecatchyCard icon={Info} title="About the Conference">
+                    {renderParagraphs(conference.aboutConference)}
+                </EyecatchyCard>
+                <EyecatchyCard icon={Mic} title="Keynote Speakers">
+                    {renderListFromString(conference.keynoteSpeakers)}
+                </EyecatchyCard>
+                <EyecatchyCard icon={Users} title="Organizing Committee">
+                    {renderListFromString(conference.organizingCommittee)}
+                </EyecatchyCard>
+                 <EyecatchyCard icon={BookOpen} title="Conference Tracks">
+                    {renderListFromString(conference.tracks)}
+                </EyecatchyCard>
                 
-                 <Card>
-                    <CardHeader><CardTitle>Submission Guidelines</CardTitle></CardHeader>
-                    <CardContent className="space-y-4">
+                 <EyecatchyCard icon={FileText} title="Submission Guidelines">
+                    <div className="space-y-4">
                        {isCallForPapersOpen ? (
                             <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
                                 <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
@@ -214,30 +235,27 @@ export default function ConferenceDetailPage() {
                             {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderParagraphs(conference.submissionInstructions)}</div>}
                             {conference.paperTemplateUrl && <Button asChild variant="link" className="p-0 h-auto"><a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download className="mr-2 h-4 w-4"/>Download Paper Template</a></Button>}
                        </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </EyecatchyCard>
                 
-                {conference.registrationFees && <Card><CardHeader><CardTitle>Registration & Fees</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.registrationFees)}</CardContent></Card>}
-                {conference.accommodationDetails && <Card><CardHeader><CardTitle>Accommodation</CardTitle></CardHeader><CardContent>{renderParagraphs(conference.accommodationDetails)}</CardContent></Card>}
+                {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration & Fees">{renderParagraphs(conference.registrationFees)}</EyecatchyCard>}
+                {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderParagraphs(conference.accommodationDetails)}</EyecatchyCard>}
 
                 {conference.faqs && (
-                    <Card>
-                        <CardHeader><CardTitle>Frequently Asked Questions</CardTitle></CardHeader>
-                        <CardContent>
-                            <Accordion type="single" collapsible className="w-full">
-                                {conference.faqs.split('\n').filter(faq => faq.includes('?')).map((faq, index) => {
-                                    const [question, ...answerParts] = faq.split('?');
-                                    const answer = answerParts.join('?').trim();
-                                    return (
-                                        <AccordionItem key={index} value={`item-${index}`}>
-                                            <AccordionTrigger>{question}?</AccordionTrigger>
-                                            <AccordionContent>{answer}</AccordionContent>
-                                        </AccordionItem>
-                                    );
-                                })}
-                            </Accordion>
-                        </CardContent>
-                    </Card>
+                    <EyecatchyCard icon={FileQuestion} title="Frequently Asked Questions">
+                        <Accordion type="single" collapsible className="w-full">
+                            {conference.faqs.split('\n').filter(faq => faq.includes('?')).map((faq, index) => {
+                                const [question, ...answerParts] = faq.split('?');
+                                const answer = answerParts.join('?').trim();
+                                return (
+                                    <AccordionItem key={index} value={`item-${index}`}>
+                                        <AccordionTrigger>{question}?</AccordionTrigger>
+                                        <AccordionContent>{answer}</AccordionContent>
+                                    </AccordionItem>
+                                );
+                            })}
+                        </Accordion>
+                    </EyecatchyCard>
                 )}
             </main>
             <aside className="space-y-6 sticky top-24 self-start">
