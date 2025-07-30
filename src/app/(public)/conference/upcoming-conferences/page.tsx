@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { useEffect, useState, useCallback } from "react";
 import { getConferences } from "@/services/conferenceService";
@@ -93,7 +95,7 @@ export default function UpcomingConferencesPage() {
                             <CarouselItem key={isLoading ? index : conference.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
                                 <div className="p-1">
                                     {isLoading ? (
-                                        <Card className="bg-white text-black p-6 space-y-4 h-[210px]">
+                                        <Card className="bg-white text-black p-6 space-y-4 h-[180px]">
                                             <Skeleton className="w-24 h-12 mx-auto" />
                                             <Skeleton className="h-5 w-full" />
                                             <Skeleton className="h-5 w-3/4" />
@@ -164,10 +166,10 @@ export default function UpcomingConferencesPage() {
                              <Card key={i} className="p-4"><Skeleton className="h-24 w-full" /></Card>
                          ))
                     ) : upcomingConferences.length > 0 ? (
-                        upcomingConferences.map(conference => (
-                            <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <div className="grid grid-cols-12">
-                                    <div className="col-span-12 md:col-span-8 p-4">
+                        <>
+                            {upcomingConferences.map(conference => (
+                                <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                    <div className="p-4">
                                         <div className="flex flex-col md:flex-row items-center gap-4">
                                             <Image src={conference.imageSrc} alt={conference.shortTitle} width={80} height={80} className="w-20 h-20 object-contain" data-ai-hint="logo brand"/>
                                             <div className="text-center md:text-left flex-1 space-y-1">
@@ -177,18 +179,20 @@ export default function UpcomingConferencesPage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-span-12 md:col-span-4 bg-muted/50 p-4 flex flex-col items-center justify-center text-center gap-2">
-                                       <h5 className="font-semibold text-sm mb-2">Indexed By</h5>
-                                       <div className="grid grid-cols-2 gap-2">
-                                            <Image src="https://logodix.com/logo/2038481.png" width={100} height={40} alt="DOAJ" data-ai-hint="logo brand" className="object-contain" />
-                                            <Image src="https://logodix.com/logo/1993463.png" width={100} height={40} alt="Scopus" data-ai-hint="logo company" className="object-contain" />
-                                            <Image src="https://logodix.com/logo/1712867.png" width={100} height={40} alt="EBSCO" data-ai-hint="logo tech" className="object-contain" />
-                                            <Image src="https://logodix.com/logo/1101923.png" width={100} height={40} alt="Crossref" data-ai-hint="logo business" className="object-contain" />
-                                       </div>
-                                    </div>
-                                </div>
+                                </Card>
+                            ))}
+                             <Card className="mt-8">
+                                <CardHeader>
+                                    <CardTitle className="text-center text-lg">Indexed By</CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+                                    <Image src="https://logodix.com/logo/2038481.png" width={120} height={50} alt="DOAJ" data-ai-hint="logo brand" className="object-contain" />
+                                    <Image src="https://logodix.com/logo/1993463.png" width={120} height={50} alt="Scopus" data-ai-hint="logo company" className="object-contain" />
+                                    <Image src="https://logodix.com/logo/1712867.png" width={120} height={50} alt="EBSCO" data-ai-hint="logo tech" className="object-contain" />
+                                    <Image src="https://logodix.com/logo/1101923.png" width={120} height={50} alt="Crossref" data-ai-hint="logo business" className="object-contain" />
+                                </CardContent>
                             </Card>
-                        ))
+                        </>
                     ) : (
                          <div className="text-center py-16">
                             <p className="text-muted-foreground">
