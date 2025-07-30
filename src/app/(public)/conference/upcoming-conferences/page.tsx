@@ -103,8 +103,8 @@ export default function UpcomingConferencesPage() {
                                     ) : (
                                         <Card className="bg-white text-black p-6 flex flex-col items-center text-center shadow-lg h-[240px]">
                                            <Image src={conference.imageSrc || "https://placehold.co/100x50.png"} alt={conference.shortTitle} width={100} height={50} className="h-12 object-contain mb-4" data-ai-hint="logo brand"/>
-                                           <h3 className="font-bold text-sm mb-3 h-16 line-clamp-3 flex-grow">{conference.title}</h3>
-                                           <div className="text-xs text-muted-foreground space-y-2 mt-auto">
+                                           <h3 className="font-bold text-sm mb-3 h-16 line-clamp-3">{conference.title}</h3>
+                                           <div className="text-xs text-muted-foreground space-y-2 ">
                                                 <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4" /> {conference.date}</p>
                                                 <p className="flex items-center justify-center gap-2"><MapPin className="h-4 w-4" /> {conference.location}</p>
                                            </div>
@@ -202,3 +202,5 @@ export default function UpcomingConferencesPage() {
     </div>
   );
 }
+
+    
