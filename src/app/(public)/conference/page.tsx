@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, ArrowRight, ArrowLeft, Search as SearchIcon, Heart } from "lucide-react";
+import { Calendar, MapPin, ArrowRight, Search as SearchIcon, Info } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -113,8 +113,8 @@ export default function ConferencesPage() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary" />
-                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary" />
+                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none" />
+                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none" />
                 </Carousel>
             </div>
         </section>
@@ -143,9 +143,9 @@ export default function ConferencesPage() {
                     <span className="text-primary font-semibold">&raquo;</span> Engineering and technology are exceptionally dynamic sectors. They are constantly evolving and expanding. Experts, professionals, and academics in the field have to try and keep up with all the latest developments. Every upcoming scopus conference in 2025 - 2026 will provide professionals from various engineering disciplines with knowledge of cutting-edge tools, technology, and skills in their main respective sub-disciplines. They are also a great opportunity for professionals to connect with peers around the world
                  </p>
 
-                <div className="max-w-5xl mx-auto border-t-4 border-primary shadow-lg rounded-b-lg mb-12 relative">
+                <div className="max-w-5xl mx-auto border-t-4 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
                     <div className="absolute -top-1 right-0 w-0 h-0 border-t-[50px] border-t-transparent border-r-[50px] border-r-primary rotate-180"></div>
-                     <div className="p-6 bg-background rounded-b-lg">
+                     <div className="p-6">
                         <h3 className="font-bold text-center mb-4 text-primary">Find International Conference</h3>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
@@ -165,16 +165,27 @@ export default function ConferencesPage() {
                         upcomingConferences.map(conference => (
                             <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div className="grid grid-cols-12">
-                                    <div className="col-span-12 md:col-span-8 p-4 flex flex-col md:flex-row items-center gap-4">
-                                        <Image src={conference.imageSrc} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain" data-ai-hint="logo brand"/>
-                                        <div className="text-center md:text-left">
-                                            <h4 className="font-bold text-base">{conference.title}</h4>
-                                            <p className="text-sm text-primary font-semibold mt-1 flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
+                                    <div className="col-span-12 md:col-span-8 p-4">
+                                        <div className="flex flex-col md:flex-row items-center gap-4">
+                                            <Image src={conference.imageSrc} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain" data-ai-hint="logo brand"/>
+                                            <div className="text-center md:text-left">
+                                                <h4 className="font-bold text-base">{conference.title}</h4>
+                                                <p className="text-sm text-primary font-semibold mt-1 flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
+                                            </div>
+                                        </div>
+                                         <div className="mt-4 flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 text-sm">
+                                            <p className="font-bold flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
+                                            <Button variant="link" asChild className="text-primary"><Link href={`/conference/${conference.id}`}><Info className="mr-2 h-4 w-4"/>View Details</Link></Button>
                                         </div>
                                     </div>
                                     <div className="col-span-12 md:col-span-4 bg-muted/50 p-4 flex flex-col items-center justify-center text-center gap-2">
-                                       <p className="font-bold text-sm flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
-                                        <Button variant="link" asChild className="text-primary"><Link href={`/conference/${conference.id}`}>View Details <ArrowRight className="ml-2 h-4 w-4"/></Link></Button>
+                                       <h5 className="font-semibold text-sm mb-2">Indexed By</h5>
+                                       <div className="grid grid-cols-2 gap-2">
+                                            <Image src="https://logodix.com/logo/2038481.png" width={100} height={40} alt="DOAJ" data-ai-hint="logo brand" className="object-contain" />
+                                            <Image src="https://logodix.com/logo/1993463.png" width={100} height={40} alt="Scopus" data-ai-hint="logo company" className="object-contain" />
+                                            <Image src="https://logodix.com/logo/1712867.png" width={100} height={40} alt="EBSCO" data-ai-hint="logo tech" className="object-contain" />
+                                            <Image src="https://logodix.com/logo/1101923.png" width={100} height={40} alt="Crossref" data-ai-hint="logo business" className="object-contain" />
+                                       </div>
                                     </div>
                                 </div>
                             </Card>
@@ -193,3 +204,4 @@ export default function ConferencesPage() {
   );
 }
 
+    
