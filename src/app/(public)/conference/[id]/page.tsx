@@ -149,12 +149,15 @@ export default function ConferenceDetailPage() {
     return (
       <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5"/>Important Dates</CardTitle></CardHeader>
-          <CardContent className="space-y-3">
-              {dates.map(d => (
-                <div key={d.label} className="text-sm">
-                  <p className="font-semibold">{d.label}</p>
-                  <p className="text-muted-foreground">{format(new Date(d.value!), "PPP")}</p>
-                </div>
+          <CardContent className="space-y-3 text-sm">
+              {dates.map((d, index) => (
+                <React.Fragment key={d.label}>
+                    <div className="flex justify-between items-center gap-2">
+                      <p className="font-semibold">{d.label}</p>
+                      <p className="text-muted-foreground text-right whitespace-nowrap">{format(new Date(d.value!), "do MMMM yyyy")}</p>
+                    </div>
+                    {index < dates.length - 1 && <Separator />}
+                </React.Fragment>
               ))}
           </CardContent>
       </Card>
