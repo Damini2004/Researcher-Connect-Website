@@ -169,13 +169,13 @@ export default function ConferencesPage() {
                                 <div className="grid grid-cols-12">
                                     <div className="col-span-12 md:col-span-8 p-4">
                                         <div className="flex flex-col md:flex-row items-center gap-4">
-                                            <Image src={conference.imageSrc} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain" data-ai-hint="logo brand"/>
+                                            <Image src={conference.imageSrc} alt={conference.shortTitle} width={80} height={80} className="w-20 h-20 object-contain" data-ai-hint="logo brand"/>
                                             <div className="text-center md:text-left">
-                                                <h4 className="font-bold text-base">{conference.title}</h4>
+                                                <h4 className="font-bold text-base hover:text-primary"><Link href={`/conference/${conference.id}`}>{conference.title}</Link></h4>
                                                 <p className="text-sm text-primary font-semibold mt-1 flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
                                             </div>
                                         </div>
-                                        <Separator className="my-4" />
+                                        <Separator className="my-3" />
                                          <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 text-sm">
                                             <p className="font-bold flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
                                         </div>
