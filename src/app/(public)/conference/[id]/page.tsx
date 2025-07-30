@@ -123,12 +123,12 @@ export default function ConferenceDetailPage() {
   const submissionEndDate = new Date(conference.submissionEndDate);
   const isCallForPapersOpen = submissionEndDate >= today;
 
-  const EyecatchyCard = ({ icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
+  const EyecatchyCard = ({ icon: Icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
     <Card className="hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
             <CardTitle className="flex items-center gap-3">
                 <div className="p-2 bg-primary/10 rounded-md">
-                   <icon className="h-5 w-5 text-primary" />
+                   <Icon className="h-5 w-5 text-primary" />
                 </div>
                 {title}
             </CardTitle>
