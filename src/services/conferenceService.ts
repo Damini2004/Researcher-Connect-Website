@@ -59,7 +59,8 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
 const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
     const data = docSnap.data();
 
-    const getJSDate = (field: any, fallback = new Date()): Date => {
+    const getJSDate = (field: any): Date | undefined => {
+        if (!field) return undefined;
         if (field && typeof field.toDate === 'function') {
             return field.toDate();
         }
@@ -69,15 +70,15 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
                 return date;
             }
         }
-        return field instanceof Date ? field : fallback;
+        return field instanceof Date ? field : undefined;
     };
     
-    const formatDate = (date: Date) => format(date, "PPP");
+    const formatDate = (date: Date | undefined) => date ? format(date, "PPP") : undefined;
 
-    const startDate = getJSDate(data.startDate);
-    const endDate = getJSDate(data.endDate);
+    const startDate = getJSDate(data.startDate) || new Date();
+    const endDate = getJSDate(data.endDate) || new Date();
 
-    let dateRange = formatDate(startDate);
+    let dateRange = format(startDate, "PPP");
     if (startDate.getTime() !== endDate.getTime()) {
         dateRange = `${format(startDate, "MMM d")} - ${format(endDate, "d, yyyy")}`;
     }
@@ -107,28 +108,29 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         keywords: data.keywords,
         submissionInstructions: data.submissionInstructions,
         paperTemplateUrl: data.paperTemplateUrl,
-        submissionStartDate: getJSDate(data.submissionStartDate).toISOString(),
-        submissionEndDate: getJSDate(data.submissionEndDate).toISOString(),
+        submissionStartDate: (getJSDate(data.submissionStartDate) || new Date()).toISOString(),
+        submissionEndDate: (getJSDate(data.submissionEndDate) || new Date()).toISOString(),
+        fullPaperSubmissionDeadline: getJSDate(data.fullPaperSubmissionDeadline)?.toISOString(),
+        registrationDeadline: getJSDate(data.registrationDeadline)?.toISOString(),
         paperCategories: data.paperCategories || [],
         peerReviewMethod: data.peerReviewMethod,
         registrationFees: data.registrationFees,
         accommodationDetails: data.accommodationDetails,
         faqs: data.faqs,
         editorChoice: data.editorChoice,
-        createdAt: getJSDate(data.createdAt).toISOString(),
+        createdAt: (getJSDate(data.createdAt) || new Date()).toISOString(),
         dateObject: startDate,
         location,
         
         // --- Fallback fields for old data structure ---
         venueAddress: data.venueAddress || "",
-        description: data.description || "",
+        description: data.description || data.aboutConference || "",
         fullDescription: data.fullDescription || "",
         conferenceType: data.conferenceType || "",
         organizerName: data.organizerName || "",
         organizerEmail: data.organizerEmail || "",
         organizerPhone: data.organizerPhone || "",
-        submissionDeadline: data.submissionDeadline ? formatDate(getJSDate(data.submissionDeadline)) : "N/A",
-        registrationDeadline: data.registrationDeadline ? formatDate(getJSDate(data.registrationDeadline)) : "N/A",
+        submissionDeadline: formatDate(getJSDate(data.submissionDeadline)) || "N/A",
         locationType: data.locationType || "Offline",
         audienceType: data.audienceType || "",
         callForPapers: data.callForPapers || false,

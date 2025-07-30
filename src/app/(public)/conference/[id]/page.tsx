@@ -8,7 +8,7 @@ import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { Calendar, MapPin, Download, CheckCircle, ChevronRight, FileText, Award, Info, Users, Mic, BookOpen, FileQuestion, Banknote, Hotel } from "lucide-react";
+import { Calendar, MapPin, Download, CheckCircle, ChevronRight, FileText, Award, Info, Users, Mic, BookOpen, FileQuestion, Banknote, Hotel, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -136,6 +136,30 @@ export default function ConferenceDetailPage() {
         <CardContent>{children}</CardContent>
     </Card>
   );
+
+  const ImportantDates = () => {
+    const dates = [
+      { label: "Abstract Submission Deadline", value: conference.submissionEndDate },
+      { label: "Full Paper Submission Deadline", value: conference.fullPaperSubmissionDeadline },
+      { label: "Registration Deadline", value: conference.registrationDeadline },
+    ].filter(d => d.value);
+
+    if (dates.length === 0) return null;
+
+    return (
+      <Card>
+          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5"/>Important Dates</CardTitle></CardHeader>
+          <CardContent className="space-y-3">
+              {dates.map(d => (
+                <div key={d.label} className="text-sm">
+                  <p className="font-semibold">{d.label}</p>
+                  <p className="text-muted-foreground">{format(new Date(d.value!), "PPP")}</p>
+                </div>
+              ))}
+          </CardContent>
+      </Card>
+    );
+  }
 
 
   return (
@@ -271,6 +295,7 @@ export default function ConferenceDetailPage() {
                         </>}
                     </CardContent>
                 </Card>
+                <ImportantDates />
                 <Card>
                     <CardHeader><CardTitle>Contact & Links</CardTitle></CardHeader>
                     <CardContent className="space-y-4">

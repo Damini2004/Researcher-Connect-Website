@@ -36,7 +36,9 @@ export const conferenceSchema = z.object({
   submissionInstructions: z.string().optional(),
   paperTemplate: z.any().optional(), // Optional on edit
   submissionStartDate: z.date({ required_error: "Submission start date is required." }),
-  submissionEndDate: z.date({ required_error: "Submission end date is required." }),
+  submissionEndDate: z.date({ required_error: "Abstract submission deadline is required." }),
+  fullPaperSubmissionDeadline: z.date().optional(),
+  registrationDeadline: z.date().optional(),
   paperCategories: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one paper category.",
   }),
@@ -76,7 +78,9 @@ export interface Conference {
   submissionInstructions?: string;
   paperTemplateUrl?: string;
   submissionStartDate: string; // ISO String
-  submissionEndDate: string; // ISO String
+  submissionEndDate: string; // ISO String for Abstract deadline
+  fullPaperSubmissionDeadline?: string; // ISO String
+  registrationDeadline?: string; // ISO String
   paperCategories: string[];
   peerReviewMethod?: string;
   registrationFees?: string;
@@ -94,8 +98,7 @@ export interface Conference {
   organizerName: string;
   organizerEmail: string;
   organizerPhone: string;
-  submissionDeadline: string;
-  registrationDeadline: string;
+  submissionDeadline: string; // This name is now ambiguous, prefer submissionEndDate
   locationType: string;
   audienceType: string;
   callForPapers: boolean;
