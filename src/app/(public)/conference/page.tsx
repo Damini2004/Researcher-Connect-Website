@@ -23,6 +23,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 
 export default function ConferencesPage() {
@@ -174,9 +175,9 @@ export default function ConferencesPage() {
                                                 <p className="text-sm text-primary font-semibold mt-1 flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
                                             </div>
                                         </div>
-                                         <div className="mt-4 flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 text-sm">
+                                        <Separator className="my-4" />
+                                         <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 text-sm">
                                             <p className="font-bold flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
-                                            <Button variant="link" asChild className="text-primary"><Link href={`/conference/${conference.id}`}><Info className="mr-2 h-4 w-4"/>View Details</Link></Button>
                                         </div>
                                     </div>
                                     <div className="col-span-12 md:col-span-4 bg-muted/50 p-4 flex flex-col items-center justify-center text-center gap-2">
