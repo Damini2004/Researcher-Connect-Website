@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, ArrowRight, Search as SearchIcon, Info } from "lucide-react";
+import { Calendar, MapPin, Search as SearchIcon, Info } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -92,7 +92,7 @@ export default function ConferencesPage() {
                             <CarouselItem key={isLoading ? index : conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                                 <div className="p-1">
                                     {isLoading ? (
-                                        <Card className="bg-white/90 text-black p-6 space-y-4">
+                                        <Card className="bg-white text-black p-6 space-y-4 h-[240px]">
                                             <Skeleton className="w-24 h-12 mx-auto" />
                                             <Skeleton className="h-5 w-full" />
                                             <Skeleton className="h-5 w-3/4" />
@@ -100,10 +100,10 @@ export default function ConferencesPage() {
                                             <Skeleton className="h-4 w-2/3" />
                                         </Card>
                                     ) : (
-                                        <Card className="bg-white/90 text-black p-6 flex flex-col items-center text-center shadow-lg transform transition-transform hover:scale-105">
+                                        <Card className="bg-white text-black p-6 flex flex-col items-center text-center shadow-lg h-[240px]">
                                            <Image src={conference.imageSrc || "https://placehold.co/100x50.png"} alt={conference.shortTitle} width={100} height={50} className="h-12 object-contain mb-4" data-ai-hint="logo brand"/>
-                                           <h3 className="font-bold text-sm mb-3 h-16 line-clamp-3">{conference.title}</h3>
-                                           <div className="text-xs text-muted-foreground space-y-2">
+                                           <h3 className="font-bold text-sm mb-3 h-16 line-clamp-3 flex-grow">{conference.title}</h3>
+                                           <div className="text-xs text-muted-foreground space-y-2 mt-auto">
                                                 <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4" /> {conference.date}</p>
                                                 <p className="flex items-center justify-center gap-2"><MapPin className="h-4 w-4" /> {conference.location}</p>
                                            </div>
@@ -113,8 +113,8 @@ export default function ConferencesPage() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none" />
-                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none" />
+                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none rounded-full" />
+                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none rounded-full" />
                 </Carousel>
             </div>
         </section>
@@ -143,15 +143,16 @@ export default function ConferencesPage() {
                     <span className="text-primary font-semibold">&raquo;</span> Engineering and technology are exceptionally dynamic sectors. They are constantly evolving and expanding. Experts, professionals, and academics in the field have to try and keep up with all the latest developments. Every upcoming scopus conference in 2025 - 2026 will provide professionals from various engineering disciplines with knowledge of cutting-edge tools, technology, and skills in their main respective sub-disciplines. They are also a great opportunity for professionals to connect with peers around the world
                  </p>
 
-                <div className="max-w-5xl mx-auto border-t-4 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
-                    <div className="absolute -top-1 right-0 w-0 h-0 border-t-[50px] border-t-transparent border-r-[50px] border-r-primary rotate-180"></div>
-                     <div className="p-6">
-                        <h3 className="font-bold text-center mb-4 text-primary">Find International Conference</h3>
+                <div className="max-w-5xl mx-auto border-t-2 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
+                    <div className="absolute -top-[2px] left-0 w-0 h-0 border-b-[30px] border-b-transparent border-l-[30px] border-l-primary"></div>
+                    <div className="absolute -top-[2px] right-0 w-0 h-0 border-b-[30px] border-b-transparent border-r-[30px] border-r-primary"></div>
+                     <div className="p-6 pt-10">
+                        <h3 className="font-bold text-center mb-4">Find International Conference</h3>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
                             <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger><SelectContent><SelectItem value="usa">USA</SelectItem></SelectContent></Select>
                             <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
-                            <Button className="w-full"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
+                            <Button className="w-full bg-red-600 hover:bg-red-700"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
                         </div>
                      </div>
                 </div>
@@ -203,5 +204,3 @@ export default function ConferencesPage() {
     </div>
   );
 }
-
-    
