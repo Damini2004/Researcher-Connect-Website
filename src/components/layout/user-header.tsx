@@ -229,7 +229,7 @@ export default function UserHeader() {
       <div className="container mx-auto flex h-20 items-center px-4">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Logo className="h-12 w-12" />
+            <Logo className="h-16 w-16" />
             <span className="hidden font-bold sm:inline-block text-xl">
               Pure Research Insights
             </span>

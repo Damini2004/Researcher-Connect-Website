@@ -37,7 +37,7 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-            <Logo />
+            <Logo className="h-10 w-10" />
             <span className="text-lg font-semibold">Pure Research Insights</span>
         </div>
         <SidebarTrigger />

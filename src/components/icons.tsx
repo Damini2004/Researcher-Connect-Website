@@ -13,6 +13,7 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
         width={256} // Original width of the image for aspect ratio
         height={256} // Original height of the image for aspect ratio
         className="h-full w-full object-contain"
+        priority // Eagerly load the logo as it's important for LCP
       />
     </div>
   );
