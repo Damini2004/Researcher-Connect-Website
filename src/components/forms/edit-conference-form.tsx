@@ -29,6 +29,8 @@ import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Progress } from "../ui/progress";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "../ui/carousel";
+import { countries } from "@/lib/countries";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface EditConferenceFormProps {
     conference: Conference;
@@ -74,7 +76,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
       startDate: parseDate(conference.startDate),
       endDate: parseDate(conference.endDate),
       venueName: conference.venueName || "",
-      venueAddress: conference.venueAddress || "",
+      country: conference.country || "",
       modeOfConference: conference.modeOfConference || [],
       aboutConference: conference.aboutConference || "",
       conferenceWebsite: conference.conferenceWebsite || "",
@@ -196,7 +198,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
     e.preventDefault(); // Prevent form submission
     let fieldsToValidate: (keyof AddConferenceData)[] = [];
     if (currentStep === 1) {
-        fieldsToValidate = ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'venueAddress', 'modeOfConference'];
+        fieldsToValidate = ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'country', 'modeOfConference'];
     } else if (currentStep === 2) {
         fieldsToValidate = ['aboutConference', 'conferenceEmail'];
     } else if (currentStep === 3) {
@@ -248,7 +250,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField control={form.control} name="venueName" render={({ field }) => ( <FormItem> <FormLabel>Venue Name</FormLabel> <FormControl><Input placeholder="e.g., Grand Convention Center" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                            <FormField control={form.control} name="venueAddress" render={({ field }) => ( <FormItem> <FormLabel>Venue Address</FormLabel> <FormControl><Input placeholder="123 Innovation Drive, Tech City" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField control={form.control} name="country" render={({ field }) => ( <FormItem> <FormLabel>Country</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a country" /></SelectTrigger></FormControl><SelectContent><Command><CommandInput placeholder="Search country..." /><CommandList><CommandEmpty>No country found.</CommandEmpty><CommandGroup>{countries.map(c => <SelectItem key={c.code} value={c.name}>{c.name}</SelectItem>)}</CommandGroup></CommandList></Command></SelectContent></Select> <FormMessage /> </FormItem> )} />
                         </div>
                         <FormField
                             control={form.control}

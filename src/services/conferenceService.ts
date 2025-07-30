@@ -82,7 +82,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         dateRange = `${format(startDate, "MMM d")} - ${format(endDate, "d, yyyy")}`;
     }
 
-    const location = data.venueAddress || "Online";
+    const location = data.country || data.venueAddress || "Online";
 
     return {
         id: docSnap.id,
@@ -93,7 +93,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         venueName: data.venueName,
-        venueAddress: data.venueAddress,
+        country: data.country,
         modeOfConference: data.modeOfConference || [],
         aboutConference: data.aboutConference,
         conferenceWebsite: data.conferenceWebsite,
@@ -120,6 +120,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         location,
         
         // --- Fallback fields for old data structure ---
+        venueAddress: data.venueAddress || "",
         description: data.description || "",
         fullDescription: data.fullDescription || "",
         conferenceType: data.conferenceType || "",

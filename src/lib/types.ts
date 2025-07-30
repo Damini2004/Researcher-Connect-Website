@@ -13,7 +13,7 @@ export const conferenceSchema = z.object({
   startDate: z.date({ required_error: "Start date is required." }),
   endDate: z.date({ required_error: "End date is required." }),
   venueName: z.string().min(3, "Venue name is required."),
-  venueAddress: z.string().min(10, "Venue address is required."),
+  country: z.string().min(2, "Country is required."),
   modeOfConference: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one conference mode.",
   }),
@@ -49,7 +49,7 @@ export const conferenceSchema = z.object({
 
   // --- Admin ---
   editorChoice: z.string().optional()
-});
+}).omit({ venueAddress: true });
 
 
 export interface Conference {
@@ -61,7 +61,7 @@ export interface Conference {
   startDate: string; // ISO String
   endDate: string; // ISO String
   venueName: string;
-  venueAddress: string;
+  country: string;
   modeOfConference: string[];
   aboutConference: string;
   conferenceWebsite?: string;
@@ -89,6 +89,7 @@ export interface Conference {
   // Deprecated fields, kept for compatibility with old data if needed
   description: string;
   fullDescription: string;
+  venueAddress: string;
   conferenceType: string;
   organizerName: string;
   organizerEmail: string;
