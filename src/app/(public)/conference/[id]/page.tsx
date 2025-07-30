@@ -9,7 +9,7 @@ import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { Calendar, MapPin, Download, CheckCircle, ChevronRight, FileText, Award, Info, Users, Mic, BookOpen, FileQuestion, Banknote, Hotel, Clock } from "lucide-react";
+import { Calendar, MapPin, Download, CheckCircle, ChevronRight, FileText, Award, Info, Users, Mic, BookOpen, FileQuestion, Banknote, Hotel, Clock, ListTree, Presentation } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -251,13 +251,13 @@ export default function ConferenceDetailPage() {
                 </EyecatchyCard>
 
                 <div className="grid md:grid-cols-1 gap-8">
-                    <InfoCard icon={Mic} title="Keynote Speakers">
+                    <InfoCard icon={Presentation} title="Keynote Speakers">
                         {renderListFromString(conference.keynoteSpeakers)}
                     </InfoCard>
                     <InfoCard icon={Users} title="Organizing Committee">
                         {renderListFromString(conference.organizingCommittee)}
                     </InfoCard>
-                    <InfoCard icon={BookOpen} title="Conference Tracks">
+                    <InfoCard icon={ListTree} title="Conference Tracks">
                         {renderListFromString(conference.tracks)}
                     </InfoCard>
                 </div>
