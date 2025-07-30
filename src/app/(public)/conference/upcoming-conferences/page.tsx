@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -89,10 +90,10 @@ export default function UpcomingConferencesPage() {
                 >
                     <CarouselContent className="-ml-4">
                         {(isLoading ? Array(4).fill({}) : upcomingConferences.slice(0, 4)).map((conference, index) => (
-                            <CarouselItem key={isLoading ? index : conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                            <CarouselItem key={isLoading ? index : conference.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
                                 <div className="p-1">
                                     {isLoading ? (
-                                        <Card className="bg-white text-black p-6 space-y-4 h-[180px]">
+                                        <Card className="bg-white text-black p-6 space-y-4 h-[210px]">
                                             <Skeleton className="w-24 h-12 mx-auto" />
                                             <Skeleton className="h-5 w-full" />
                                             <Skeleton className="h-5 w-3/4" />
@@ -100,10 +101,10 @@ export default function UpcomingConferencesPage() {
                                             <Skeleton className="h-4 w-2/3" />
                                         </Card>
                                     ) : (
-                                        <Card className="bg-white text-black p-6 flex flex-col items-center text-center shadow-lg h-[240px]">
+                                        <Card className="bg-white text-black p-6 flex flex-col items-center text-center shadow-lg h-[210px]">
                                            <Image src={conference.imageSrc || "https://placehold.co/100x50.png"} alt={conference.shortTitle} width={100} height={50} className="h-12 object-contain mb-4" data-ai-hint="logo brand"/>
-                                           <h3 className="font-bold text-sm mb-3 line-clamp-3">{conference.title}</h3>
-                                           <div className="text-xs text-muted-foreground space-y-2 ">
+                                           <h3 className="font-bold text-sm mb-3 h-16 line-clamp-3 flex-grow">{conference.title}</h3>
+                                           <div className="text-xs text-muted-foreground space-y-2 mt-auto">
                                                 <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4" /> {conference.date}</p>
                                                 <p className="flex items-center justify-center gap-2"><MapPin className="h-4 w-4" /> {conference.location}</p>
                                            </div>
