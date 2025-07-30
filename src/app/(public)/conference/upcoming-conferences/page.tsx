@@ -170,14 +170,11 @@ export default function UpcomingConferencesPage() {
                                     <div className="col-span-12 md:col-span-8 p-4">
                                         <div className="flex flex-col md:flex-row items-center gap-4">
                                             <Image src={conference.imageSrc} alt={conference.shortTitle} width={80} height={80} className="w-20 h-20 object-contain" data-ai-hint="logo brand"/>
-                                            <div className="text-center md:text-left">
+                                            <div className="text-center md:text-left flex-1 space-y-1">
                                                 <h4 className="font-bold text-base hover:text-primary"><Link href={`/conference/${conference.id}`}>{conference.title}</Link></h4>
-                                                <p className="text-sm text-primary font-semibold mt-1 flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
+                                                <p className="text-sm text-primary font-semibold flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
+                                                <p className="text-sm font-bold flex items-center justify-center md:justify-start gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
                                             </div>
-                                        </div>
-                                        <Separator className="my-3" />
-                                         <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 text-sm">
-                                            <p className="font-bold flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
                                         </div>
                                     </div>
                                     <div className="col-span-12 md:col-span-4 bg-muted/50 p-4 flex flex-col items-center justify-center text-center gap-2">
