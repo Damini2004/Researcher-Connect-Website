@@ -5,20 +5,26 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { useEffect, useState, useCallback } from "react";
 import { getConferences } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Search as SearchIcon, Info } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
-import { Logo } from "@/components/icons";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+
 
 export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
@@ -60,138 +66,142 @@ export default function UpcomingConferencesPage() {
   }, [fetchAndFilterConferences]);
 
   return (
-    <div className="bg-secondary/50">
-      <section className="relative w-full py-16 bg-primary/10 text-center px-4 overflow-hidden">
-          <Image
-              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=400&auto=format&fit=crop"
-              alt="Upcoming Conferences Banner"
-              data-ai-hint="conference audience"
-              fill
-              className="object-cover opacity-10"
-          />
-          <div className="relative z-10 container mx-auto">
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-                  Upcoming Conferences
-              </h1>
-              <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                  Explore our upcoming conferences and events. Join leading experts to discuss the latest innovations.
-              </p>
-
-               {isLoading ? (
-                  <div className="flex items-center justify-center py-24">
-                      <Logo className="h-32 w-32" />
-                  </div>
-              ) : upcomingConferences.length > 0 ? (
-                 <Carousel
+    <div className="bg-secondary/30">
+        {/* Carousel Section */}
+        <section className="relative w-full py-12 md:py-20 bg-gray-800 text-white overflow-hidden">
+             <Image
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1800&auto=format&fit=crop"
+                alt="Conference background"
+                fill
+                className="object-cover opacity-20"
+                data-ai-hint="conference audience"
+            />
+            <div className="relative container mx-auto px-4">
+                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center">
+                    Upcoming International <span className="text-amber-400">Conference 2025</span>
+                </h1>
+                
+                <Carousel
                     opts={{
-                      align: "start",
-                      loop: true,
+                        align: "start",
+                        loop: true,
                     }}
-                    className="w-full max-w-6xl mx-auto mt-12"
-                  >
+                    className="w-full max-w-6xl mx-auto mt-8"
+                >
                     <CarouselContent className="-ml-4">
-                      {upcomingConferences.map((conference) => (
-                        <CarouselItem key={conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                          <div className="p-1">
-                            <Card className="flex flex-col w-full h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl text-left bg-background">
-                              <div className="relative h-52 w-full">
-                                  <Image src={conference.imageSrc || "https://placehold.co/400x250.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
-                              </div>
-                              <div className="flex flex-col flex-grow p-6">
-                                  <CardHeader className="p-0">
-                                  <CardTitle>{conference.title}</CardTitle>
-                                  <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
-                                      <div className="flex items-center gap-2">
-                                      <Calendar className="h-4 w-4" />
-                                      <span>{conference.date}</span>
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                      <MapPin className="h-4 w-4" />
-                                      <span>{conference.location}</span>
-                                      </div>
-                                  </div>
-                                  </CardHeader>
-                                  <CardContent className="p-0 pt-4 flex-grow">
-                                  <p className="text-muted-foreground line-clamp-3">
-                                      {conference.description}
-                                  </p>
-                                  </CardContent>
-                                  <CardFooter className="p-0 pt-6">
-                                  <Button asChild>
-                                      <Link href={`/conference/${conference.id}`}>
-                                      View Details <ArrowRight className="ml-2 h-4 w-4" />
-                                      </Link>
-                                  </Button>
-                                  </CardFooter>
-                              </div>
-                            </Card>
-                          </div>
-                        </CarouselItem>
-                      ))}
+                        {(isLoading ? Array(4).fill({}) : upcomingConferences.slice(0, 4)).map((conference, index) => (
+                            <CarouselItem key={isLoading ? index : conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                                <div className="p-1">
+                                    {isLoading ? (
+                                        <Card className="bg-white text-black p-6 space-y-4 h-[240px]">
+                                            <Skeleton className="w-24 h-12 mx-auto" />
+                                            <Skeleton className="h-5 w-full" />
+                                            <Skeleton className="h-5 w-3/4" />
+                                            <Skeleton className="h-4 w-1/2" />
+                                            <Skeleton className="h-4 w-2/3" />
+                                        </Card>
+                                    ) : (
+                                        <Card className="bg-white text-black p-6 flex flex-col items-center text-center shadow-lg h-[240px]">
+                                           <Image src={conference.imageSrc || "https://placehold.co/100x50.png"} alt={conference.shortTitle} width={100} height={50} className="h-12 object-contain mb-4" data-ai-hint="logo brand"/>
+                                           <h3 className="font-bold text-sm mb-3 h-16 line-clamp-3 flex-grow">{conference.title}</h3>
+                                           <div className="text-xs text-muted-foreground space-y-2 mt-auto">
+                                                <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4" /> {conference.date}</p>
+                                                <p className="flex items-center justify-center gap-2"><MapPin className="h-4 w-4" /> {conference.location}</p>
+                                           </div>
+                                        </Card>
+                                    )}
+                                </div>
+                            </CarouselItem>
+                        ))}
                     </CarouselContent>
-                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black border-primary/20 shadow-lg" />
-                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black border-primary/20 shadow-lg" />
-                  </Carousel>
-              ) : (
-                  <div className="text-center py-16">
-                  <p className="text-muted-foreground">
-                      No upcoming conferences found. Please check back later.
-                  </p>
-                  </div>
-              )}
-          </div>
-      </section>
-
-      <section className="container mx-auto py-16 md:py-24">
-         {isLoading ? (
-            <div className="flex items-center justify-center py-24">
-                <Logo className="h-32 w-32" />
+                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none rounded-full" />
+                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white border-none rounded-full" />
+                </Carousel>
             </div>
-         ) : upcomingConferences.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingConferences.map((conference) => (
-                <Card key={conference.id} className="flex flex-col w-full overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative h-[200px] w-full">
-                    <Image src={conference.imageSrc || "https://placehold.co/400x200.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
-                </div>
-                <div className="flex flex-col flex-grow p-6">
-                    <CardHeader className="p-0">
-                    <CardTitle>{conference.title}</CardTitle>
-                    <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
-                        <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>{conference.date}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
-                        <span>{conference.location}</span>
+        </section>
+
+        <div className="container mx-auto px-4 py-12 md:py-16 space-y-16">
+            {/* CPD Section */}
+            <section>
+                <h2 className="text-2xl font-bold text-center mb-6">CPD Accredited IFERP Conferences listed in CPD directory</h2>
+                <div className="max-w-4xl mx-auto bg-background p-6 rounded-lg shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex items-center gap-4">
+                        <Image src="https://logodix.com/logo/796417.png" width={100} height={100} alt="CPD Standards Office" data-ai-hint="logo brand"/>
+                        <div>
+                            <h3 className="font-bold">The CPD Standards Office</h3>
+                            <p className="text-sm text-muted-foreground">CPD PROVIDER: 41182<br/>2024-2026</p>
+                            <Link href="#" className="text-sm text-primary hover:underline">www.cpdstandards.com</Link>
                         </div>
                     </div>
-                    </CardHeader>
-                    <CardContent className="p-0 pt-4 flex-grow">
-                    <p className="text-muted-foreground line-clamp-3">
-                        {conference.description}
-                    </p>
-                    </CardContent>
-                    <CardFooter className="p-0 pt-6">
-                    <Button asChild>
-                        <Link href={`/conference/${conference.id}`}>
-                        Read More <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                    </Button>
-                    </CardFooter>
+                    <Button size="lg" className="bg-red-600 hover:bg-red-700">Get CPD Directory - Listed IFERP Conferences</Button>
                 </div>
-                </Card>
-            ))}
-            </div>
-         ) : (
-            <div className="text-center py-16">
-                <p className="text-muted-foreground">
-                    No upcoming conferences found. Please check back later.
-                </p>
-            </div>
-         )}
-      </section>
+            </section>
+
+            {/* Scopus Section */}
+            <section>
+                 <h2 className="text-2xl font-bold text-center mb-4">List of Upcoming Scopus International Conference 2025-2026</h2>
+                 <p className="text-sm text-muted-foreground max-w-4xl mx-auto mb-8">
+                    <span className="text-primary font-semibold">&raquo;</span> Engineering and technology are exceptionally dynamic sectors. They are constantly evolving and expanding. Experts, professionals, and academics in the field have to try and keep up with all the latest developments. Every upcoming scopus conference in 2025 - 2026 will provide professionals from various engineering disciplines with knowledge of cutting-edge tools, technology, and skills in their main respective sub-disciplines. They are also a great opportunity for professionals to connect with peers around the world
+                 </p>
+
+                <div className="max-w-5xl mx-auto border-t-2 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
+                    <div className="absolute -top-[2px] left-0 w-0 h-0 border-b-[30px] border-b-transparent border-l-[30px] border-l-primary"></div>
+                    <div className="absolute -top-[2px] right-0 w-0 h-0 border-b-[30px] border-b-transparent border-r-[30px] border-r-primary"></div>
+                     <div className="p-6 pt-10">
+                        <h3 className="font-bold text-center mb-4">Find International Conference</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger><SelectContent><SelectItem value="usa">USA</SelectItem></SelectContent></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
+                            <Button className="w-full bg-red-600 hover:bg-red-700"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
+                        </div>
+                     </div>
+                </div>
+
+                <div className="space-y-6 max-w-5xl mx-auto">
+                    {isLoading ? (
+                         [...Array(3)].map((_, i) => (
+                             <Card key={i} className="p-4"><Skeleton className="h-24 w-full" /></Card>
+                         ))
+                    ) : upcomingConferences.length > 0 ? (
+                        upcomingConferences.map(conference => (
+                            <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div className="grid grid-cols-12">
+                                    <div className="col-span-12 md:col-span-8 p-4">
+                                        <div className="flex flex-col md:flex-row items-center gap-4">
+                                            <Image src={conference.imageSrc} alt={conference.shortTitle} width={80} height={80} className="w-20 h-20 object-contain" data-ai-hint="logo brand"/>
+                                            <div className="text-center md:text-left">
+                                                <h4 className="font-bold text-base hover:text-primary"><Link href={`/conference/${conference.id}`}>{conference.title}</Link></h4>
+                                                <p className="text-sm text-primary font-semibold mt-1 flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
+                                            </div>
+                                        </div>
+                                        <Separator className="my-3" />
+                                         <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 text-sm">
+                                            <p className="font-bold flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {conference.location}</p>
+                                        </div>
+                                    </div>
+                                    <div className="col-span-12 md:col-span-4 bg-muted/50 p-4 flex flex-col items-center justify-center text-center gap-2">
+                                       <h5 className="font-semibold text-sm mb-2">Indexed By</h5>
+                                       <div className="grid grid-cols-2 gap-2">
+                                            <Image src="https://logodix.com/logo/2038481.png" width={100} height={40} alt="DOAJ" data-ai-hint="logo brand" className="object-contain" />
+                                            <Image src="https://logodix.com/logo/1993463.png" width={100} height={40} alt="Scopus" data-ai-hint="logo company" className="object-contain" />
+                                            <Image src="https://logodix.com/logo/1712867.png" width={100} height={40} alt="EBSCO" data-ai-hint="logo tech" className="object-contain" />
+                                            <Image src="https://logodix.com/logo/1101923.png" width={100} height={40} alt="Crossref" data-ai-hint="logo business" className="object-contain" />
+                                       </div>
+                                    </div>
+                                </div>
+                            </Card>
+                        ))
+                    ) : (
+                         <div className="text-center py-16">
+                            <p className="text-muted-foreground">
+                                No upcoming conferences found. Please check back later.
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </section>
+        </div>
     </div>
   );
 }
