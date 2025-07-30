@@ -141,6 +141,57 @@ export default function UpcomingConferencesPage() {
               )}
           </div>
       </section>
+
+      <section className="container mx-auto py-16 md:py-24">
+         {isLoading ? (
+            <div className="flex items-center justify-center py-24">
+                <Logo className="h-32 w-32" />
+            </div>
+         ) : upcomingConferences.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {upcomingConferences.map((conference) => (
+                <Card key={conference.id} className="flex flex-col w-full overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="relative h-[200px] w-full">
+                    <Image src={conference.imageSrc || "https://placehold.co/400x200.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
+                </div>
+                <div className="flex flex-col flex-grow p-6">
+                    <CardHeader className="p-0">
+                    <CardTitle>{conference.title}</CardTitle>
+                    <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
+                        <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>{conference.date}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        <span>{conference.location}</span>
+                        </div>
+                    </div>
+                    </CardHeader>
+                    <CardContent className="p-0 pt-4 flex-grow">
+                    <p className="text-muted-foreground line-clamp-3">
+                        {conference.description}
+                    </p>
+                    </CardContent>
+                    <CardFooter className="p-0 pt-6">
+                    <Button asChild>
+                        <Link href={`/conference/${conference.id}`}>
+                        Read More <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                    </CardFooter>
+                </div>
+                </Card>
+            ))}
+            </div>
+         ) : (
+            <div className="text-center py-16">
+                <p className="text-muted-foreground">
+                    No upcoming conferences found. Please check back later.
+                </p>
+            </div>
+         )}
+      </section>
     </div>
   );
 }
