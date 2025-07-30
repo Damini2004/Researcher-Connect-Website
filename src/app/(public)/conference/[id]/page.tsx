@@ -139,10 +139,10 @@ export default function ConferenceDetailPage() {
   );
   
   const InfoCard = ({ icon: Icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
-    <Card className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col p-6">
+    <Card className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col p-6 group">
         <div className="flex justify-between items-start mb-4">
             <h3 className="font-semibold text-lg uppercase tracking-wide text-gray-700">{title}</h3>
-            <Icon className="h-8 w-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500" />
+            <Icon className="h-8 w-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
         </div>
         <div className="text-gray-600 text-sm flex-grow">
             {children}
