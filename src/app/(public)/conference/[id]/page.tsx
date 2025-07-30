@@ -2,6 +2,7 @@
 // src/app/(public)/conference/[id]/page.tsx
 "use client";
 
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { getConferenceById } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
