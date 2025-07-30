@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -93,7 +92,7 @@ export default function UpcomingConferencesPage() {
                             <CarouselItem key={isLoading ? index : conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                                 <div className="p-1">
                                     {isLoading ? (
-                                        <Card className="bg-white text-black p-6 space-y-4 h-[140px]">
+                                        <Card className="bg-white text-black p-6 space-y-4 h-[180px]">
                                             <Skeleton className="w-24 h-12 mx-auto" />
                                             <Skeleton className="h-5 w-full" />
                                             <Skeleton className="h-5 w-3/4" />
