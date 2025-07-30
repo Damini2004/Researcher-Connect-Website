@@ -7,9 +7,9 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getWebinars, Webinar } from "@/services/webinarService";
 import { useToast } from "@/hooks/use-toast";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
+import { Logo } from "@/components/icons";
 
 export default function UpcomingWebinarsPage() {
   const [upcomingWebinars, setUpcomingWebinars] = useState<Webinar[]>([]);
@@ -56,23 +56,8 @@ export default function UpcomingWebinarsPage() {
         </div>
         
         {isLoading ? (
-             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...Array(3)].map((_, i) => (
-                    <Card key={i} className="flex flex-col">
-                        <Skeleton className="h-[200px] w-full" />
-                        <CardHeader>
-                           <Skeleton className="h-6 w-3/4 mb-2" />
-                           <Skeleton className="h-5 w-1/2" />
-                        </CardHeader>
-                        <CardContent className="flex-grow space-y-2">
-                            <Skeleton className="h-4 w-full" />
-                            <Skeleton className="h-4 w-2/3" />
-                        </CardContent>
-                        <CardFooter>
-                            <Skeleton className="h-10 w-full" />
-                        </CardFooter>
-                    </Card>
-                ))}
+             <div className="flex items-center justify-center py-24">
+                <Logo className="h-32 w-32" />
              </div>
         ) : upcomingWebinars.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

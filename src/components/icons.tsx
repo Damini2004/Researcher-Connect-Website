@@ -8,12 +8,12 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
   return (
     <div className={props.className}>
       <Image
-        src="/Pure Researc.png"
+        src="/Pure Researc.gif"
         alt="Pure Research Insights Logo"
         width={256} // Original width of the image for aspect ratio
         height={256} // Original height of the image for aspect ratio
         className="h-full w-full object-contain"
-        priority // Eagerly load the logo as it's important for LCP
+        unoptimized // Necessary for animated GIFs
       />
     </div>
   );

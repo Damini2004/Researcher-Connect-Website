@@ -8,8 +8,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ContactForm from "@/components/forms/contact-form";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import { Logo } from "@/components/icons";
 
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
@@ -44,25 +44,8 @@ export default function InternshipPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[...Array(3)].map((_, i) => (
-             <Card key={i} className="flex flex-col">
-                <Skeleton className="h-[250px] w-full" />
-                <div className="flex flex-col flex-grow p-6">
-                  <div className="p-0 mb-4">
-                      <Skeleton className="h-6 w-3/4" />
-                  </div>
-                  <div className="p-0 flex-grow space-y-2">
-                     <Skeleton className="h-4 w-full" />
-                     <Skeleton className="h-4 w-full" />
-                     <Skeleton className="h-4 w-2/3" />
-                  </div>
-                  <div className="p-0 mt-6">
-                    <Skeleton className="h-10 w-32" />
-                  </div>
-                </div>
-            </Card>
-          ))}
+        <div className="flex items-center justify-center py-24">
+            <Logo className="h-32 w-32" />
         </div>
       ) : internships.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

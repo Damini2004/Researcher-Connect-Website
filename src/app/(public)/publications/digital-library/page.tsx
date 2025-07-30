@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getJournals, Journal } from "@/services/journalService";
 import { useState, useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Logo } from "@/components/icons";
 
 export default function DigitalLibraryPage() {
   const [journals, setJournals] = useState<Journal[]>([]);
@@ -53,23 +53,8 @@ export default function DigitalLibraryPage() {
       </div>
 
       {isLoading ? (
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-                <Card key={i}>
-                    <Skeleton className="w-full h-[300px]" />
-                    <CardHeader>
-                        <Skeleton className="h-6 w-3/4 mb-2" />
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-1/2" />
-                    </CardHeader>
-                    <CardContent>
-                        <Skeleton className="h-4 w-1/4" />
-                    </CardContent>
-                    <CardFooter>
-                        <Skeleton className="h-10 w-full" />
-                    </CardFooter>
-                </Card>
-            ))}
+         <div className="flex items-center justify-center py-24">
+            <Logo className="h-32 w-32" />
          </div>
       ) : (
         <>
