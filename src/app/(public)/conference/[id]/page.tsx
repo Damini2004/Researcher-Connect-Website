@@ -137,6 +137,21 @@ export default function ConferenceDetailPage() {
         <CardContent>{children}</CardContent>
     </Card>
   );
+  
+  const InfoCard = ({ icon: Icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
+    <Card className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col p-6">
+        <div className="flex justify-between items-start mb-4">
+            <h3 className="font-semibold text-lg uppercase tracking-wide text-gray-700">{title}</h3>
+            <Icon className="h-8 w-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500" />
+        </div>
+        <div className="text-gray-600 text-sm flex-grow">
+            {children}
+        </div>
+        <div className="mt-4 pt-4">
+            <div className="h-1 bg-gradient-to-r from-red-500 to-blue-500 rounded-full"></div>
+        </div>
+    </Card>
+  );
 
   const ImportantDates = () => {
     const dates = [
@@ -150,16 +165,17 @@ export default function ConferenceDetailPage() {
     return (
       <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5"/>Important Dates</CardTitle></CardHeader>
-          <CardContent className="space-y-3 text-sm">
-              {dates.map((d, index) => (
-                <React.Fragment key={d.label}>
-                    <div className="flex justify-between items-center gap-2">
-                      <p className="font-semibold">{d.label}</p>
-                      <p className="text-muted-foreground text-right whitespace-nowrap">{format(new Date(d.value!), "do MMMM yyyy")}</p>
-                    </div>
-                    {index < dates.length - 1 && <Separator />}
-                </React.Fragment>
-              ))}
+          <CardContent className="text-sm">
+              <table className="w-full">
+                  <tbody>
+                      {dates.map((d, index) => (
+                          <tr key={d.label} className={index < dates.length - 1 ? "border-b" : ""}>
+                              <td className="py-2 font-semibold">{d.label}</td>
+                              <td className="py-2 text-right text-muted-foreground whitespace-nowrap">{format(new Date(d.value!), "do MMMM yyyy")}</td>
+                          </tr>
+                      ))}
+                  </tbody>
+              </table>
           </CardContent>
       </Card>
     );
@@ -233,15 +249,18 @@ export default function ConferenceDetailPage() {
                 <EyecatchyCard icon={Info} title="About the Conference">
                     {renderParagraphs(conference.aboutConference)}
                 </EyecatchyCard>
-                <EyecatchyCard icon={Mic} title="Keynote Speakers">
-                    {renderListFromString(conference.keynoteSpeakers)}
-                </EyecatchyCard>
-                <EyecatchyCard icon={Users} title="Organizing Committee">
-                    {renderListFromString(conference.organizingCommittee)}
-                </EyecatchyCard>
-                 <EyecatchyCard icon={BookOpen} title="Conference Tracks">
-                    {renderListFromString(conference.tracks)}
-                </EyecatchyCard>
+
+                <div className="grid md:grid-cols-1 gap-8">
+                    <InfoCard icon={Mic} title="Keynote Speakers">
+                        {renderListFromString(conference.keynoteSpeakers)}
+                    </InfoCard>
+                    <InfoCard icon={Users} title="Organizing Committee">
+                        {renderListFromString(conference.organizingCommittee)}
+                    </InfoCard>
+                    <InfoCard icon={BookOpen} title="Conference Tracks">
+                        {renderListFromString(conference.tracks)}
+                    </InfoCard>
+                </div>
                 
                  <EyecatchyCard icon={FileText} title="Submission Guidelines">
                     <div className="space-y-4">
