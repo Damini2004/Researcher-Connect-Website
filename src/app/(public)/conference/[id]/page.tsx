@@ -251,13 +251,13 @@ export default function ConferenceDetailPage() {
                 </EyecatchyCard>
 
                 <div className="grid md:grid-cols-1 gap-8">
-                    <InfoCard icon={Presentation} title="Keynote Speakers">
+                    <InfoCard icon={Mic} title="Keynote Speakers">
                         {renderListFromString(conference.keynoteSpeakers)}
                     </InfoCard>
                     <InfoCard icon={Users} title="Organizing Committee">
                         {renderListFromString(conference.organizingCommittee)}
                     </InfoCard>
-                    <InfoCard icon={ListTree} title="Conference Tracks">
+                    <InfoCard icon={BookOpen} title="Conference Tracks">
                         {renderListFromString(conference.tracks)}
                     </InfoCard>
                 </div>
