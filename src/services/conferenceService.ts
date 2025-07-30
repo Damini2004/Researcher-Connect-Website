@@ -32,15 +32,19 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     }
 
     // Use the validated data, but ensure we use the correct file URLs
-    const dataToSave = {
+    const dataToSave: { [key: string]: any } = {
         ...validationResult.data,
         conferenceLogo: data.conferenceLogo, // The base64 string
-        paperTemplateUrl: data.paperTemplateUrl, // The URL for the template
         createdAt: new Date(),
     };
     
+    // Only add paperTemplateUrl if it exists
+    if (data.paperTemplateUrl) {
+        dataToSave.paperTemplateUrl = data.paperTemplateUrl;
+    }
+    
     // Remove the temporary 'paperTemplate' field from the object to be saved
-    delete (dataToSave as any).paperTemplate;
+    delete dataToSave.paperTemplate;
 
 
     await addDoc(collection(db, 'conferences'), dataToSave);
