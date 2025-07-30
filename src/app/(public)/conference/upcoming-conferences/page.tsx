@@ -61,7 +61,7 @@ export default function UpcomingConferencesPage() {
 
   return (
     <div className="bg-secondary/50">
-      <section className="relative w-full h-[400px] bg-primary/10 flex items-center justify-center text-center px-4">
+      <section className="relative w-full py-16 bg-primary/10 text-center px-4 overflow-hidden">
           <Image
               src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=400&auto=format&fit=crop"
               alt="Upcoming Conferences Banner"
@@ -69,80 +69,78 @@ export default function UpcomingConferencesPage() {
               fill
               className="object-cover opacity-10"
           />
-          <div className="relative z-10">
+          <div className="relative z-10 container mx-auto">
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                   Upcoming Conferences
               </h1>
               <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
                   Explore our upcoming conferences and events. Join leading experts to discuss the latest innovations.
               </p>
+
+               {isLoading ? (
+                  <div className="flex items-center justify-center py-24">
+                      <Logo className="h-32 w-32" />
+                  </div>
+              ) : upcomingConferences.length > 0 ? (
+                 <Carousel
+                    opts={{
+                      align: "start",
+                      loop: true,
+                    }}
+                    className="w-full max-w-6xl mx-auto mt-12"
+                  >
+                    <CarouselContent className="-ml-4">
+                      {upcomingConferences.map((conference) => (
+                        <CarouselItem key={conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                          <div className="p-1">
+                            <Card className="flex flex-col w-full h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl text-left bg-background">
+                              <div className="relative h-52 w-full">
+                                  <Image src={conference.imageSrc || "https://placehold.co/400x250.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
+                              </div>
+                              <div className="flex flex-col flex-grow p-6">
+                                  <CardHeader className="p-0">
+                                  <CardTitle>{conference.title}</CardTitle>
+                                  <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
+                                      <div className="flex items-center gap-2">
+                                      <Calendar className="h-4 w-4" />
+                                      <span>{conference.date}</span>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                      <MapPin className="h-4 w-4" />
+                                      <span>{conference.location}</span>
+                                      </div>
+                                  </div>
+                                  </CardHeader>
+                                  <CardContent className="p-0 pt-4 flex-grow">
+                                  <p className="text-muted-foreground line-clamp-3">
+                                      {conference.description}
+                                  </p>
+                                  </CardContent>
+                                  <CardFooter className="p-0 pt-6">
+                                  <Button asChild>
+                                      <Link href={`/conference/${conference.id}`}>
+                                      View Details <ArrowRight className="ml-2 h-4 w-4" />
+                                      </Link>
+                                  </Button>
+                                  </CardFooter>
+                              </div>
+                            </Card>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black border-primary/20 shadow-lg" />
+                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black border-primary/20 shadow-lg" />
+                  </Carousel>
+              ) : (
+                  <div className="text-center py-16">
+                  <p className="text-muted-foreground">
+                      No upcoming conferences found. Please check back later.
+                  </p>
+                  </div>
+              )}
           </div>
       </section>
-
-      <div className="container py-12 md:py-24">
-        {isLoading ? (
-            <div className="flex items-center justify-center py-24">
-                <Logo className="h-32 w-32" />
-            </div>
-        ) : upcomingConferences.length > 0 ? (
-           <Carousel
-              opts={{
-                align: "start",
-                loop: upcomingConferences.length > 3,
-              }}
-              className="w-full"
-            >
-              <CarouselContent className="-ml-4">
-                {upcomingConferences.map((conference) => (
-                  <CarouselItem key={conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                    <div className="p-1">
-                      <Card className="flex flex-col w-full h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-                        <div className="relative h-52 w-full">
-                            <Image src={conference.imageSrc || "https://placehold.co/400x250.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
-                        </div>
-                        <div className="flex flex-col flex-grow p-6">
-                            <CardHeader className="p-0">
-                            <CardTitle>{conference.title}</CardTitle>
-                            <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
-                                <div className="flex items-center gap-2">
-                                <Calendar className="h-4 w-4" />
-                                <span>{conference.date}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                <MapPin className="h-4 w-4" />
-                                <span>{conference.location}</span>
-                                </div>
-                            </div>
-                            </CardHeader>
-                            <CardContent className="p-0 pt-4 flex-grow">
-                            <p className="text-muted-foreground line-clamp-3">
-                                {conference.description}
-                            </p>
-                            </CardContent>
-                            <CardFooter className="p-0 pt-6">
-                            <Button asChild>
-                                <Link href={`/conference/${conference.id}`}>
-                                View Details <ArrowRight className="ml-2 h-4 w-4" />
-                                </Link>
-                            </Button>
-                            </CardFooter>
-                        </div>
-                      </Card>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black border-primary/20 shadow-lg" />
-              <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black border-primary/20 shadow-lg" />
-            </Carousel>
-        ) : (
-            <div className="text-center py-16">
-            <p className="text-muted-foreground">
-                No upcoming conferences found. Please check back later.
-            </p>
-            </div>
-        )}
-        </div>
     </div>
   );
 }
