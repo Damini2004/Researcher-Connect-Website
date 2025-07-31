@@ -31,6 +31,7 @@ import { Progress } from "../ui/progress";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "../ui/carousel";
 import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import RichTextEditor from "../ui/rich-text-editor";
 
 interface AddConferenceFormProps {
     onConferenceAdded: () => void;
@@ -300,7 +301,23 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 <CarouselItem className="overflow-y-auto pb-6">
                     <div className="p-1 space-y-6">
                         <h3 className="text-lg font-medium">Content & People</h3>
-                        <FormField control={form.control} name="aboutConference" render={({ field }) => ( <FormItem> <FormLabel>About Conference</FormLabel> <FormControl><Textarea className="min-h-32" placeholder="Provide a detailed description of the conference..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                        <FormField 
+                          control={form.control} 
+                          name="aboutConference" 
+                          render={({ field }) => ( 
+                            <FormItem> 
+                              <FormLabel>About Conference</FormLabel> 
+                              <FormControl>
+                                <RichTextEditor 
+                                  value={field.value} 
+                                  onChange={field.onChange} 
+                                  placeholder="Provide a detailed description of the conference..."
+                                />
+                              </FormControl> 
+                              <FormMessage /> 
+                            </FormItem> 
+                          )} 
+                        />
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField control={form.control} name="conferenceWebsite" render={({ field }) => ( <FormItem> <FormLabel>Conference Website URL</FormLabel> <FormControl><Input placeholder="https://example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="conferenceEmail" render={({ field }) => ( <FormItem> <FormLabel>Conference Email / Contact</FormLabel> <FormControl><Input placeholder="contact@example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />

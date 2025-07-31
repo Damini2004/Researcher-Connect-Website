@@ -88,6 +88,26 @@ body {
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline;
   }
+  
+  /* CKEditor styles override */
+  .ck-editor__editable_inline {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    min-height: 150px;
+  }
+
+  .ck-editor__editable_inline:focus {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-color: hsl(var(--ring));
+    --tw-ring-offset-width: 2px;
+  }
+
+  .ck.ck-toolbar {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
 }
 
 @layer utilities {
