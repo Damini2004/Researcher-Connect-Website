@@ -71,12 +71,12 @@ const conferenceSubMenuLinks = [
 ]
 
 const conferenceSubMenuItems = [
-    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "border hover:bg-primary/10 hover:text-primary" },
-    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "border hover:bg-primary/10 hover:text-primary" },
-    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "border hover:bg-primary/10 hover:text-primary" },
-    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "border hover:bg-primary/10 hover:text-primary" },
-    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "border hover:bg-primary/10 hover:text-primary" },
-    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "border hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences", icon: UpcomingConferencesIcon, color: "hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/scientific-gallery", label: "Scientific Gallery", icon: ScientificGalleryIcon, color: "hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/past-webinars", label: "Past Webinars", icon: PastWebinarsIcon, color: "hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars", icon: UpcomingWebinarsIcon, color: "hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/past-conferences", label: "Past Conferences", icon: PastConferencesIcon, color: "hover:bg-primary/10 hover:text-primary" },
+    { href: "/conference/conference-videos", label: "Conference Videos & Galleries", icon: ConferenceVideosIcon, color: "hover:bg-primary/10 hover:text-primary" },
 ]
 
 const mainNavLinks = [
@@ -115,9 +115,10 @@ export default function UserHeader() {
   }
 
   const ConferenceMegaMenu = () => (
-    <PopoverContent className="w-screen max-w-3xl p-0 overflow-hidden shadow-2xl border bg-card" sideOffset={15}>
+    <PopoverContent className="w-screen max-w-4xl p-0 overflow-hidden shadow-2xl border bg-card" sideOffset={15}>
         <div className="grid grid-cols-12">
-            <div className="col-span-4 bg-background p-6">
+            <div className="col-span-5 bg-background/50 p-6 flex flex-col">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Explore Conferences</h3>
                 <nav className="flex flex-col space-y-1">
                     {conferenceSubMenuLinks.map(link => (
                         <Link key={link.label} href={link.href} className="block px-3 py-2 text-sm text-foreground/80 rounded-md hover:bg-accent hover:text-accent-foreground font-medium transition-colors duration-200">
@@ -126,11 +127,11 @@ export default function UserHeader() {
                     ))}
                 </nav>
             </div>
-            <div className="col-span-8 p-0 bg-secondary/50">
-                <div className="grid grid-cols-3">
+            <div className="col-span-7 p-4 bg-secondary/30">
+                <div className="grid grid-cols-2 gap-4">
                     {conferenceSubMenuItems.map(item => (
-                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 text-foreground transition-all duration-300 hover:scale-105", item.color)}>
-                            <item.icon className="h-10 w-10 mb-2 transition-transform duration-300 group-hover:rotate-6" />
+                        <Link key={item.label} href={item.href} className={cn("group flex flex-col items-center justify-center text-center p-4 text-foreground rounded-md transition-all duration-300", item.color)}>
+                            <item.icon className="h-10 w-10 mb-2 transition-transform duration-300 group-hover:rotate-6 text-primary" />
                             <span className="text-sm font-semibold">{item.label}</span>
                         </Link>
                     ))}
