@@ -1,8 +1,110 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, BookCheck, BrainCircuit, Microscope } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { ArrowRight, BookCheck, BrainCircuit, Microscope, Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { getConferences, Conference } from "@/services/conferenceService";
+import { getCurrentDateInIndia } from "@/lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+
+async function UpcomingConferences() {
+  const currentDate = getCurrentDateInIndia();
+  let upcomingConferences: Conference[] = [];
+
+  try {
+    const allConferences = await getConferences();
+    upcomingConferences = allConferences
+      .filter(conf => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime())
+      .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime())
+      .slice(0, 6); // Limit to 6 conferences for the homepage
+  } catch (error) {
+    console.error("Failed to fetch upcoming conferences for homepage:", error);
+    // Render nothing or an error message if fetching fails
+    return null;
+  }
+
+  if (upcomingConferences.length === 0) {
+    return null; // Don't render the section if there are no upcoming conferences
+  }
+
+  return (
+    <section id="upcoming-conferences" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="space-y-2">
+            <div className="inline-block rounded-lg bg-background px-3 py-1 text-sm font-medium">Events</div>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Upcoming Conferences</h2>
+            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              Join leading researchers and innovators at our upcoming events around the globe.
+            </p>
+          </div>
+        </div>
+        <div className="mx-auto max-w-6xl px-4 mt-12">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {upcomingConferences.map((conference) => (
+                  <CarouselItem key={conference.id} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="p-1 h-full">
+                       <Card className="flex flex-col w-full h-full overflow-hidden hover:shadow-lg transition-shadow">
+                        <div className="relative h-[200px] w-full">
+                            <Image src={conference.imageSrc || "https://placehold.co/400x200.png"} alt={conference.title} fill className="object-cover" data-ai-hint="conference event" />
+                        </div>
+                        <div className="flex flex-col flex-grow p-6">
+                            <CardHeader className="p-0">
+                            <CardTitle className="line-clamp-2">{conference.title}</CardTitle>
+                            <div className="flex flex-col text-sm text-muted-foreground gap-2 pt-2">
+                                <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                <span>{conference.date}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                <MapPin className="h-4 w-4" />
+                                <span>{conference.location}</span>
+                                </div>
+                            </div>
+                            </CardHeader>
+                            <CardFooter className="p-0 pt-6 mt-auto">
+                            <Button asChild className="w-full">
+                                <Link href={`/conference/${conference.id}`}>
+                                View Details <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                            </CardFooter>
+                        </div>
+                        </Card>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-8" />
+              <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-8" />
+            </Carousel>
+        </div>
+        <div className="mt-12 text-center">
+            <Button asChild>
+            <Link href="/conference/upcoming-conferences">
+                View All Conferences <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+            </Button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 
 export default function HomePage() {
   return (
@@ -99,6 +201,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        
+        <UpcomingConferences />
 
         <section id="highlights" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container px-4 md:px-6">
