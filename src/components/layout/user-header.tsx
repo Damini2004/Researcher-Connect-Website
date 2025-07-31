@@ -247,7 +247,7 @@ export default function UserHeader() {
             <Link href="/submit-journal">
               <Button>
                 <BookOpen className="mr-2 h-4 w-4" />
-                Submit Journal
+                Submit Article
               </Button>
             </Link>
           </div>
