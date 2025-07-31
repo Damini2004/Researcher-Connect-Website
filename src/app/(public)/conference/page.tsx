@@ -119,10 +119,8 @@ export default function ConferencesPage() {
                 {/* Main Content */}
                 <div className="lg:col-span-8">
                     <section>
-                        <div className="max-w-5xl mx-auto border-t-2 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
-                            <div className="absolute -top-[2px] left-0 w-0 h-0 border-b-[30px] border-b-transparent border-l-[30px] border-l-primary"></div>
-                            <div className="absolute -top-[2px] right-0 w-0 h-0 border-b-[30px] border-b-transparent border-r-[30px] border-r-primary"></div>
-                            <div className="p-6 pt-10">
+                        <div className="max-w-5xl mx-auto border-t-4 border-red-600 shadow-lg rounded-b-lg mb-12 relative bg-background">
+                            <div className="p-6">
                                 <h3 className="font-bold text-center mb-4">Find International Conference</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                     <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
