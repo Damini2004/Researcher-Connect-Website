@@ -5,11 +5,9 @@ import { Resend } from 'resend';
 import { AlertEmail } from '@/components/emails/alert-email';
 import * as React from 'react';
 
-// IMPORTANT: Hardcoding the API key as a last resort to bypass environment loading issues.
-// For production, this should be loaded from environment variables.
-const RESEND_API_KEY = "re_iagq3MPf_BdpQ57sy9PJinUhjhAy9xWCB";
-
-const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+// Using Next.js standard for environment variables.
+// The key should be in a .env.local file at the root of the project.
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 interface EmailParams {
   to: string;
@@ -22,7 +20,7 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
   const { to, subject, submissionTitle, authorName } = params;
 
   if (!resend) {
-    const errorMessage = 'Resend client is not initialized. The API key is likely missing.';
+    const errorMessage = 'Resend client is not initialized. Please ensure RESEND_API_KEY is set in your .env.local file.';
     console.error(errorMessage);
     return { success: false, message: errorMessage };
   }
@@ -36,7 +34,6 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
     });
 
     if (error) {
-      // Improved error logging to capture the structure of the error object.
       console.error('Resend API Error:', JSON.stringify(error, null, 2));
       const errorMessage = `Failed to send email: ${error.name || 'UnknownError'} - ${error.message || 'No message provided.'}`;
       return { success: false, message: errorMessage };
