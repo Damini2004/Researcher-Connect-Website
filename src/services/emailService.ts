@@ -18,8 +18,8 @@ interface EmailParams {
 export async function sendEmail(params: EmailParams): Promise<{ success: boolean; message: string }> {
   const { to, subject, submissionTitle, authorName } = params;
 
-  if (!resend || !RESEND_API_KEY) {
-    const errorMessage = 'Resend API key is not configured. Please ensure RESEND_API_KEY is set in your .env file.';
+  if (!resend) {
+    const errorMessage = 'Resend API key is not configured. Please ensure RESEND_API_KEY is set in your .env.local file.';
     console.error(errorMessage);
     return { success: false, message: errorMessage };
   }
@@ -34,6 +34,7 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
 
     if (error) {
       console.error('Resend error:', error);
+      // Use name and message from the error object for a more descriptive message
       const errorMessage = `Failed to send email: ${error.name} - ${error.message}`;
       return { success: false, message: errorMessage };
     }
