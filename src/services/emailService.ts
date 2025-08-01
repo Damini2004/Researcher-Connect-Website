@@ -4,9 +4,9 @@
 import { Resend } from 'resend';
 import { AlertEmail } from '@/components/emails/alert-email';
 import * as React from 'react';
+import { RESEND_API_KEY } from '@/lib/config';
 
-const resendApiKey = process.env.RESEND_API_KEY;
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
 interface EmailParams {
   to: string;
@@ -18,22 +18,15 @@ interface EmailParams {
 export async function sendEmail(params: EmailParams): Promise<{ success: boolean; message: string }> {
   const { to, subject, submissionTitle, authorName } = params;
 
-  if (!resend || !resendApiKey) {
-    const errorMessage = 'Resend API key is not configured. Please ensure it is set in your .env file.';
+  if (!resend || !RESEND_API_KEY) {
+    const errorMessage = 'Resend API key is not configured. Please ensure RESEND_API_KEY is set in your .env file.';
     console.error(errorMessage);
     return { success: false, message: errorMessage };
   }
-  
-  if (resendApiKey === 're_12345678_abcdefghijklmnopqrstuvwxyz') {
-    const errorMessage = 'Using placeholder Resend API key. Please add your actual key to the .env file.';
-    console.error(errorMessage);
-    return { success: false, message: errorMessage };
-  }
-
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Pure Research Insights <onboarding@resend.dev>', // You must verify a domain in Resend to use your own email.
+      from: 'Pure Research Insights <onboarding@resend.dev>',
       to: [to],
       subject: subject,
       react: AlertEmail({ authorName, submissionTitle }) as React.ReactElement,
@@ -41,7 +34,6 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
 
     if (error) {
       console.error('Resend error:', error);
-      // Resend's error object has `name` and `message` properties.
       const errorMessage = `Failed to send email: ${error.name} - ${error.message}`;
       return { success: false, message: errorMessage };
     }
