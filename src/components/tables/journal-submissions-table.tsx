@@ -1,4 +1,4 @@
-
+// src/components/tables/journal-submissions-table.tsx
 "use client";
 
 import * as React from 'react';
@@ -44,7 +44,7 @@ import { getSubmissions, deleteSubmission, type Submission } from '@/services/su
 import EditSubmissionForm from '../forms/edit-submission-form';
 import { cn } from '@/lib/utils';
 import { getSubAdminByEmail } from '@/services/subAdminService';
-import { sendEmail } from '@/services/emailService';
+import AlertAuthorForm from '../forms/alert-author-form';
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -57,8 +57,11 @@ export default function JournalSubmissionsTable() {
   const { toast } = useToast();
   const [submissions, setSubmissions] = React.useState<Submission[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = React.useState(false);
+  
   const [selectedSubmission, setSelectedSubmission] = React.useState<Submission | null>(null);
 
   const fetchSubmissions = React.useCallback(async () => {
@@ -101,6 +104,11 @@ export default function JournalSubmissionsTable() {
     setSelectedSubmission(submission);
     setIsDeleteDialogOpen(true);
   };
+  
+  const handleAlertClick = (submission: Submission) => {
+    setSelectedSubmission(submission);
+    setIsAlertDialogOpen(true);
+  };
 
   const handleDeleteConfirm = async () => {
     if (!selectedSubmission) return;
@@ -118,37 +126,15 @@ export default function JournalSubmissionsTable() {
     setSelectedSubmission(null);
   }
 
-  const handleSubmissionUpdated = (updatedSubmission: Submission) => {
+  const handleSubmissionUpdated = () => {
     fetchSubmissions();
   };
-
-  const handleAlert = async (submission: Submission) => {
-    const { email, fullName, title } = submission;
-    toast({
-      title: "Sending Alert...",
-      description: `Sending email to ${fullName} about "${title}".`,
-    });
-
-    const result = await sendEmail({
-      to: email,
-      subject: `Update on your submission: ${title}`,
-      submissionTitle: title,
-      authorName: fullName,
-    });
-    
-    if (result.success) {
-      toast({
-        title: "Alert Sent Successfully!",
-        description: `An email has been sent to ${email}.`,
-      });
-    } else {
-      toast({
-        title: "Failed to Send Alert",
-        description: result.message,
-        variant: "destructive",
-      });
-    }
+  
+  const handleAlertSent = () => {
+    setIsAlertDialogOpen(false);
+    setSelectedSubmission(null);
   };
+
 
   const handleViewPdf = (base64Data: string) => {
     if (!base64Data.startsWith('data:application/pdf;base64,')) {
@@ -209,7 +195,7 @@ export default function JournalSubmissionsTable() {
                       <TableCell>{new Date(submission.submittedAt).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <Button variant="outline" size="sm" onClick={() => handleAlert(submission)}>
+                          <Button variant="outline" size="sm" onClick={() => handleAlertClick(submission)}>
                             <MailWarning className="h-4 w-4 mr-2" />
                             Alert
                           </Button>
@@ -259,6 +245,23 @@ export default function JournalSubmissionsTable() {
               onClose={() => setIsEditDialogOpen(false)}
             />
           )}
+        </DialogContent>
+      </Dialog>
+      
+      <Dialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+                <DialogTitle>Send Alert to Author</DialogTitle>
+                <DialogDescription>
+                    Compose a message to send to the author regarding their submission.
+                </DialogDescription>
+            </DialogHeader>
+            {selectedSubmission && (
+                <AlertAuthorForm 
+                    submission={selectedSubmission}
+                    onAlertSent={handleAlertSent}
+                />
+            )}
         </DialogContent>
       </Dialog>
       

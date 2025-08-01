@@ -13,19 +13,22 @@ interface EmailParams {
   subject: string;
   submissionTitle: string;
   authorName: string;
+  customMessage: string; // Added custom message parameter
 }
 
-// A simple HTML email template
-const createHtmlTemplate = (authorName: string, submissionTitle: string): string => `
+// Updated email template to include the custom message
+const createHtmlTemplate = (authorName: string, submissionTitle: string, customMessage: string): string => `
   <div style="font-family: Arial, sans-serif; line-height: 1.6;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
       <h2 style="color: #333;">Pure Research Insights</h2>
       <p>Dear ${authorName},</p>
       <p>This is an update regarding your manuscript submission, "<strong>${submissionTitle}</strong>".</p>
-      <p>Our editorial team is currently reviewing your submission. We may have some questions or require further information. Please be prepared for follow-up communication from our team.</p>
+      <div style="background-color: #f9f9f9; border-left: 4px solid #ccc; padding: 15px; margin: 15px 0;">
+        <p style="margin: 0;">${customMessage.replace(/\n/g, '<br>')}</p>
+      </div>
       <p>You can check the status of your submission by logging into your account.</p>
       <div style="text-align: center; margin: 20px 0;">
-        <a href="https://pureresearchinsights.com/login" style="background-color: #E53935; color: white; padding: 12px 20px; text-decoration: none; border-radius: 3px;">
+        <a href="https://pureresearchinsights.com/login" style="background-color: #3F51B5; color: white; padding: 12px 20px; text-decoration: none; border-radius: 3px;">
           Check Submission Status
         </a>
       </div>
@@ -37,7 +40,7 @@ const createHtmlTemplate = (authorName: string, submissionTitle: string): string
 
 
 export async function sendEmail(params: EmailParams): Promise<{ success: boolean; message: string }> {
-  const { to, subject, submissionTitle, authorName } = params;
+  const { to, subject, submissionTitle, authorName, customMessage } = params;
 
   if (!emailUser || !emailPass) {
     const errorMessage = 'Email credentials are not configured. Please ensure EMAIL_SERVER_USER and EMAIL_SERVER_PASSWORD are set in your .env.local file.';
@@ -60,7 +63,7 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
       from: `"Pure Research Insights" <${emailUser}>`,
       to: to,
       subject: subject,
-      html: createHtmlTemplate(authorName, submissionTitle),
+      html: createHtmlTemplate(authorName, submissionTitle, customMessage),
     });
 
     console.log('Message sent: %s', info.messageId);
@@ -71,7 +74,6 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
     
     let message = 'An unexpected error occurred.';
     if (error instanceof Error) {
-        // Nodemailer provides detailed error messages
         message = error.message;
     } else if (typeof error === 'object' && error !== null) {
         message = JSON.stringify(error);
