@@ -31,6 +31,33 @@ interface AlertAuthorFormProps {
   onAlertSent: () => void;
 }
 
+const defaultMessageTemplate = `I hope this message finds you in good health and high spirits.
+
+We are reaching out to faculty members, research supervisors, and postgraduate coordinators from leading institutions to offer a collaborative opportunity for publishing research articles in Scopus-indexed journals — without the complexities of identifying suitable journals or managing the publishing process alone.
+
+At Researcher Connect, we provide complete assistance for:
+
+- Publishing student research, PhD-level articles, and postgraduate project outcomes
+- Collaborative authorship on pre-reviewed articles to enable faster publication in indexed journals
+- Guided support for PhD and Postdoctoral research, including topic design, data analysis, manuscript drafting, and submission
+
+Our Key Offerings:
+✅ Scopus-Indexed Publication Support – across disciplines including AI, Engineering, Law, Management, Medicine, and Multidisciplinary domains
+✅ Faster-track options – through structured contribution to pre-reviewed article pools curated by our editorial collaborators
+✅ Consultancy for PhD/PostDoc Projects – covering every stage from research proposal to journal publication
+✅ Institutional Collaboration Models – available for departments expecting multiple submissions from students and scholars
+
+Our process ensures:
+- Ethical compliance with international publishing standards
+- Personalized guidance and editorial support
+- Zero compromise on academic rigor and institutional recognition
+- Transparent, outcome-driven approach
+
+If your department or institution is looking to increase research output or support young researchers with timely publications, we would be glad to partner with you in this endeavor.
+
+Looking forward to your response.`;
+
+
 export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthorFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -39,7 +66,7 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
     resolver: zodResolver(formSchema),
     defaultValues: {
       subject: `Update on your submission: ${submission.title}`,
-      message: "",
+      message: `Dear Professor ${submission.fullName},\n\n${defaultMessageTemplate}`,
     },
   });
 
