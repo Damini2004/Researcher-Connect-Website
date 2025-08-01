@@ -13,29 +13,47 @@ interface EmailParams {
   subject: string;
   submissionTitle: string;
   authorName: string;
-  customMessage: string; // Added custom message parameter
+  customMessage: string;
 }
 
-// Updated email template to include the custom message
 const createHtmlTemplate = (authorName: string, submissionTitle: string, customMessage: string): string => `
-  <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
-      <h2 style="color: #333;">Pure Research Insights</h2>
-      <p>Dear ${authorName},</p>
-      <p>This is an update regarding your manuscript submission, "<strong>${submissionTitle}</strong>".</p>
-      <div style="background-color: #f9f9f9; border-left: 4px solid #ccc; padding: 15px; margin: 15px 0;">
-        <p style="margin: 0;">${customMessage.replace(/\n/g, '<br>')}</p>
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; line-height: 1.6; color: #333; }
+      .container { max-width: 600px; margin: 20px auto; padding: 0; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+      .header { background-color: #D32F2F; padding: 24px; text-align: center; }
+      .header h1 { color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; }
+      .content { padding: 32px; }
+      .content p { margin: 0 0 16px; }
+      .message-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0; }
+      .footer { background-color: #f1f5f9; padding: 24px; text-align: center; color: #64748b; font-size: 12px; }
+      .footer a { color: #D32F2F; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Pure Research Insights</h1>
       </div>
-      <p>You can check the status of your submission by logging into your account.</p>
-      <div style="text-align: center; margin: 20px 0;">
-        <a href="https://pureresearchinsights.com/login" style="background-color: #3F51B5; color: white; padding: 12px 20px; text-decoration: none; border-radius: 3px;">
-          Check Submission Status
-        </a>
+      <div class="content">
+        <p>Dear ${authorName},</p>
+        <div class="message-box">
+          <p style="margin: 0;">${customMessage.replace(/\n/g, '<br>')}</p>
+        </div>
+        <p>If you have any questions, please don't hesitate to contact us.</p>
+        <p>Best regards,<br/><b>The Editorial Team</b><br/>Pure Research Insights</p>
       </div>
-      <p>Thank you for your contribution.</p>
-      <p>Best regards,<br/>The Editorial Team<br/>Pure Research Insights</p>
+      <div class="footer">
+        <p>&copy; ${new Date().getFullYear()} Pure Research Insights. All rights reserved.</p>
+        <p><a href="https://pureresearchinsights.com">Our Website</a> | <a href="https://pureresearchinsights.com/login">Login to your account</a></p>
+      </div>
     </div>
-  </div>
+  </body>
+  </html>
 `;
 
 
