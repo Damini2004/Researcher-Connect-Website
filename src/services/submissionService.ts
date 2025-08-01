@@ -12,8 +12,8 @@ const submissionSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   title: z.string().min(5, "Title must be at least 5 characters."),
-  targetId: z.string(),
-  submissionType: z.string(),
+  targetId: z.string().min(1, { message: "Please select a target from the list." }),
+  submissionType: z.string({ required_error: "Please select a submission type." }),
   content: z.string().min(100, "Content must be at least 100 characters."),
   manuscriptData: z.string(), // Base64 data can be any string
 });
@@ -93,32 +93,55 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
 
 export async function getSubmissions(options: { subAdminId?: string } = {}): Promise<Submission[]> {
     try {
-        const constraints = [orderBy("submittedAt", "desc")];
+        const submissionsRef = collection(db, "submissions");
+        let q;
+
         if (options.subAdminId) {
-            constraints.push(where("assignedSubAdminId", "==", options.subAdminId));
+            // Fetch submissions that are either assigned to this sub-admin OR are unassigned.
+            // Firestore does not support 'OR' queries on different fields. 
+            // So, we fetch both sets and merge them.
+
+            const assignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", options.subAdminId));
+            const unassignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", null));
+
+            const [assignedSnapshot, unassignedSnapshot] = await Promise.all([
+                getDocs(assignedQuery),
+                getDocs(unassignedQuery),
+            ]);
+            
+            const submissionsMap = new Map<string, QueryDocumentSnapshot<DocumentData>>();
+            assignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
+            unassignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
+
+            const submissions: Submission[] = Array.from(submissionsMap.values()).map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    ...data,
+                    submittedAt: data.submittedAt.toDate().toISOString(),
+                } as Submission;
+            });
+            
+            // Sort manually after merging
+            submissions.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+            return submissions;
+
+        } else {
+            // If no subAdminId is provided (e.g., for super-admin), fetch all submissions.
+            q = query(submissionsRef, orderBy("submittedAt", "desc"));
+            const querySnapshot = await getDocs(q);
+            const submissions: Submission[] = [];
+            querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+                const data = doc.data();
+                submissions.push({
+                    id: doc.id,
+                    ...data,
+                    submittedAt: data.submittedAt.toDate().toISOString(),
+                } as Submission);
+            });
+            return submissions;
         }
 
-        const q = query(collection(db, "submissions"), ...constraints);
-        
-        const querySnapshot = await getDocs(q);
-        const submissions: Submission[] = [];
-        querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-            const data = doc.data();
-            submissions.push({
-                id: doc.id,
-                fullName: data.fullName,
-                email: data.email,
-                title: data.title,
-                targetId: data.targetId,
-                submissionType: data.submissionType,
-                content: data.content,
-                manuscriptData: data.manuscriptData,
-                status: data.status,
-                submittedAt: data.submittedAt.toDate().toISOString(),
-                assignedSubAdminId: data.assignedSubAdminId,
-            });
-        });
-        return submissions;
     } catch (error) {
         console.error("Error fetching submissions: ", error);
         return [];
