@@ -1,3 +1,4 @@
+
 // src/services/submissionService.ts
 'use server';
 
@@ -94,12 +95,10 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
 export async function getSubmissions(options: { subAdminId?: string } = {}): Promise<Submission[]> {
     try {
         const submissionsRef = collection(db, "submissions");
-        let q;
 
         if (options.subAdminId) {
-            // Firestore does not support 'OR' queries on different fields (e.g., assignedSubAdminId == 'someId' OR assignedSubAdminId == null).
+            // Firestore does not support 'OR' queries on different fields.
             // We must perform two separate queries and merge the results.
-
             const assignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", options.subAdminId));
             const unassignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", null));
 
@@ -128,7 +127,7 @@ export async function getSubmissions(options: { subAdminId?: string } = {}): Pro
 
         } else {
             // If no subAdminId is provided (e.g., for super-admin), fetch all submissions.
-            q = query(submissionsRef, orderBy("submittedAt", "desc"));
+            const q = query(submissionsRef, orderBy("submittedAt", "desc"));
             const querySnapshot = await getDocs(q);
             const submissions: Submission[] = [];
             querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
