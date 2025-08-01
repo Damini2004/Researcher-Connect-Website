@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { updateConference } from "@/services/conferenceService";
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
@@ -144,7 +143,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
   async function onSubmit(values: AddConferenceData) {
     setIsSubmitting(true);
     
-    const payload: any = { ...values };
+    const payload: Partial<AddConferenceData> & { imageSrc?: string, paperTemplateUrl?: string } = { ...values };
 
     if (values.conferenceLogo && values.conferenceLogo.length > 0) {
         if(values.conferenceLogo[0].size > 500 * 1024) {
@@ -153,14 +152,12 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
              return;
         }
         try {
-            payload.conferenceLogo = await convertFileToBase64(values.conferenceLogo[0]);
+            payload.imageSrc = await convertFileToBase64(values.conferenceLogo[0]);
         } catch (error) {
             toast({ title: "Error", description: "Failed to read logo file.", variant: "destructive" });
             setIsSubmitting(false);
             return;
         }
-    } else {
-        delete payload.conferenceLogo; // Don't update if no new file
     }
     
     if (values.paperTemplate && values.paperTemplate.length > 0) {
@@ -176,13 +173,14 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
             setIsSubmitting(false);
             return;
         }
-    } else {
-        delete payload.paperTemplate; // Don't update if no new file
     }
 
     if (payload.editorChoice === "none") {
-        payload.editorChoice = undefined;
+        (payload as any).editorChoice = undefined;
     }
+    
+    delete (payload as any).conferenceLogo;
+    delete (payload as any).paperTemplate;
 
     const result = await updateConference(conference.id, payload);
 

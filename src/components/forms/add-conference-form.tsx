@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { addConference } from "@/services/conferenceService";
 import { conferenceSchema, type AddConferenceData } from '@/lib/types';
@@ -201,7 +200,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     if (currentStep === 1) {
         fieldsToValidate = ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'country', 'modeOfConference'];
     } else if (currentStep === 2) {
-        fieldsToValidate = ['aboutConference', 'conferenceEmail', 'conferenceLogo'];
+        fieldsToValidate = ['aboutConference', 'conferenceEmail'];
     } else if (currentStep === 3) {
         fieldsToValidate = ['submissionStartDate', 'submissionEndDate', 'paperCategories'];
     }

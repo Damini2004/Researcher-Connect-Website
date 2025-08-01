@@ -34,7 +34,7 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     // Use the validated data, but ensure we use the correct file URLs
     const dataToSave: { [key: string]: any } = {
         ...validationResult.data,
-        conferenceLogo: data.conferenceLogo, // The base64 string
+        imageSrc: data.conferenceLogo, // The base64 string
         createdAt: new Date(),
     };
     
@@ -43,8 +43,9 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
         dataToSave.paperTemplateUrl = data.paperTemplateUrl;
     }
     
-    // Remove the temporary 'paperTemplate' field from the object to be saved
+    // Remove the temporary 'paperTemplate' and 'conferenceLogo' fields from the object to be saved
     delete dataToSave.paperTemplate;
+    delete dataToSave.conferenceLogo;
 
 
     await addDoc(collection(db, 'conferences'), dataToSave);
@@ -102,7 +103,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         modeOfConference: data.modeOfConference || [],
         aboutConference: data.aboutConference,
         conferenceWebsite: data.conferenceWebsite,
-        imageSrc: data.conferenceLogo,
+        imageSrc: data.imageSrc, // Use imageSrc from now on
         conferenceEmail: data.conferenceEmail,
         organizingCommittee: data.organizingCommittee,
         keynoteSpeakers: data.keynoteSpeakers,
@@ -177,7 +178,7 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
     }
 }
 
-export async function updateConference(id: string, data: Partial<AddConferenceData>): Promise<{ success: boolean; message: string }> {
+export async function updateConference(id: string, data: Partial<AddConferenceData> & { imageSrc?: string, paperTemplateUrl?: string }): Promise<{ success: boolean; message: string }> {
     try {
         const validationResult = conferenceSchema.partial().safeParse(data);
         if (!validationResult.success) {
@@ -185,12 +186,25 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             const firstError = validationResult.error.errors[0];
             return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
         }
-
-        const conferenceRef = doc(db, 'conferences', id);
-        await updateDoc(conferenceRef, {
+        
+        const dataToSave: { [key: string]: any } = {
             ...validationResult.data,
             updatedAt: new Date(),
-        });
+        };
+
+        if (data.imageSrc) {
+            dataToSave.imageSrc = data.imageSrc;
+        }
+        if (data.paperTemplateUrl) {
+            dataToSave.paperTemplateUrl = data.paperTemplateUrl;
+        }
+
+        // Remove file objects if they exist
+        delete dataToSave.conferenceLogo;
+        delete dataToSave.paperTemplate;
+
+        const conferenceRef = doc(db, 'conferences', id);
+        await updateDoc(conferenceRef, dataToSave);
 
         return { success: true, message: 'Conference updated successfully!' };
     } catch (error) {

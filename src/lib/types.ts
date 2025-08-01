@@ -21,7 +21,7 @@ export const conferenceSchema = z.object({
   // --- About & Contact ---
   aboutConference: z.string().min(50, "About section must be at least 50 characters."),
   conferenceWebsite: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
-  conferenceLogo: z.any().optional(), // Optional on edit
+  conferenceLogo: z.any().optional(), // File uploads are optional during step validation
   conferenceEmail: z.string().email("Please enter a valid contact email."),
 
   // --- People & Organization ---
@@ -34,7 +34,7 @@ export const conferenceSchema = z.object({
   tracks: z.string().optional(),
   keywords: z.string().optional(),
   submissionInstructions: z.string().optional(),
-  paperTemplate: z.any().optional(), // Optional on edit
+  paperTemplate: z.any().optional(), // File uploads are optional during step validation
   submissionStartDate: z.date({ required_error: "Submission start date is required." }),
   submissionEndDate: z.date({ required_error: "Abstract submission deadline is required." }),
   fullPaperSubmissionDeadline: z.date().optional(),
@@ -51,7 +51,7 @@ export const conferenceSchema = z.object({
 
   // --- Admin ---
   editorChoice: z.string().optional()
-}).omit({ venueAddress: true });
+});
 
 
 export interface Conference {
