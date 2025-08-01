@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Submission } from "@/services/submissionService";
@@ -21,6 +22,7 @@ import { sendEmail } from "@/services/emailService";
 import { Send } from "lucide-react";
 
 const formSchema = z.object({
+  subject: z.string().min(10, "Subject must be at least 10 characters long."),
   message: z.string().min(20, "Message must be at least 20 characters long."),
 });
 
@@ -36,6 +38,7 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      subject: `Update on your submission: ${submission.title}`,
       message: "",
     },
   });
@@ -47,7 +50,7 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
     
     const result = await sendEmail({
       to: email,
-      subject: `Update on your submission: ${title}`,
+      subject: values.subject, // Use the subject from the form
       submissionTitle: title,
       authorName: fullName,
       customMessage: values.message,
@@ -74,6 +77,19 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="subject"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Subject</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter the email subject" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="message"
