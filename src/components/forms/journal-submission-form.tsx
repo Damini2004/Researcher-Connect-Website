@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { getJournals, type Journal } from "@/services/journalService";
+import { getConferences, type Conference } from "@/services/conferenceService";
+import { getInternships, type Internship } from "@/services/internshipService";
 import { addSubmission } from "@/services/submissionService";
 import { useRouter } from "next/navigation";
 
@@ -32,7 +34,8 @@ const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   title: z.string().min(5, "Title must be at least 5 characters."),
-  journalId: z.string({ required_error: "Please select a journal to submit to." }),
+  submissionType: z.string({ required_error: "Please select a submission type." }),
+  targetId: z.string({ required_error: "Please select a target." }),
   manuscriptFile: z
     .any()
     .refine((files) => files?.length > 0, "A manuscript file is required.")
@@ -52,31 +55,15 @@ const formSchema = z.object({
   content: z.string().min(100, "Content must be at least 100 characters."),
 });
 
+type SubmissionItem = { id: string; name: string };
+
 export default function JournalSubmissionForm() {
   const { toast } = useToast();
   const router = useRouter();
-  const [journals, setJournals] = React.useState<Journal[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [submissionType, setSubmissionType] = React.useState<string>("");
+  const [items, setItems] = React.useState<SubmissionItem[]>([]);
+  const [isItemsLoading, setIsItemsLoading] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-
-  React.useEffect(() => {
-    async function fetchJournals() {
-      try {
-        const fetchedJournals = await getJournals();
-        setJournals(fetchedJournals.filter(j => j.status === 'Active'));
-      } catch (error) {
-        console.error("Failed to fetch journals:", error);
-        toast({
-          title: "Error",
-          description: "Could not load journals. Please try again later.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchJournals();
-  }, [toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,6 +75,37 @@ export default function JournalSubmissionForm() {
     },
   });
   
+  const handleTypeChange = async (type: string) => {
+    setSubmissionType(type);
+    setItems([]);
+    form.setValue('targetId', ''); // Reset target when type changes
+    if (!type) return;
+
+    setIsItemsLoading(true);
+    try {
+      let fetchedItems: SubmissionItem[] = [];
+      if (type === 'journal') {
+        const journals = await getJournals();
+        fetchedItems = journals.filter(j => j.status === 'Active').map(j => ({ id: j.id, name: j.journalName }));
+      } else if (type === 'conference') {
+        const conferences = await getConferences();
+        fetchedItems = conferences.map(c => ({ id: c.id, name: c.title }));
+      } else if (type === 'internship') {
+        const internships = await getInternships();
+        fetchedItems = internships.map(i => ({ id: i.id, name: i.name }));
+      }
+      setItems(fetchedItems);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Could not load ${type}s. Please try again later.`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsItemsLoading(false);
+    }
+  };
+
   const fileRef = form.register("manuscriptFile");
 
   const convertFileToBase64 = (file: File): Promise<string> => {
@@ -126,14 +144,18 @@ export default function JournalSubmissionForm() {
     }
 
     const result = await addSubmission({
-      ...values,
+      fullName: values.fullName,
+      email: values.email,
+      title: values.title,
+      journalId: values.targetId, // The service expects journalId, so we map targetId to it
+      content: values.content,
       manuscriptData,
     });
 
     if (result.success) {
         toast({
             title: "Submission Successful!",
-            description: "Your journal has been submitted for review.",
+            description: "Your submission has been received for review.",
         });
         form.reset();
         router.refresh();
@@ -184,7 +206,7 @@ export default function JournalSubmissionForm() {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Manuscript Title</FormLabel>
+              <FormLabel>Manuscript Title / Application Subject</FormLabel>
               <FormControl>
                 <Input placeholder="A Study on..." {...field} />
               </FormControl>
@@ -195,20 +217,23 @@ export default function JournalSubmissionForm() {
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="journalId"
+              name="submissionType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Journal</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
+                  <FormLabel>Submission Type</FormLabel>
+                  <Select onValueChange={(value) => {
+                      field.onChange(value);
+                      handleTypeChange(value);
+                  }} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={isLoading ? "Loading journals..." : "Select a journal"} />
+                        <SelectValue placeholder="Select a type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {journals.map((journal) => (
-                        <SelectItem key={journal.id} value={journal.id}>{journal.journalName}</SelectItem>
-                      ))}
+                      <SelectItem value="journal">Journal</SelectItem>
+                      <SelectItem value="conference">Conference</SelectItem>
+                      <SelectItem value="internship">Internship</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -216,6 +241,35 @@ export default function JournalSubmissionForm() {
               )}
             />
             <FormField
+              control={form.control}
+              name="targetId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Select {submissionType ? submissionType.charAt(0).toUpperCase() + submissionType.slice(1) : 'Target'}
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isItemsLoading || !submissionType}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={
+                            isItemsLoading ? `Loading ${submissionType}s...` 
+                            : !submissionType ? 'First, select a type' 
+                            : `Select a ${submissionType}`
+                        } />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {items.map((item) => (
+                        <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        </div>
+        <FormField
               control={form.control}
               name="manuscriptFile"
               render={({ field }) => (
@@ -232,7 +286,6 @@ export default function JournalSubmissionForm() {
                 </FormItem>
               )}
             />
-        </div>
         <FormField
           control={form.control}
           name="content"
