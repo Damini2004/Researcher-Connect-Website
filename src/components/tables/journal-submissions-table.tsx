@@ -44,6 +44,7 @@ import { getSubmissions, deleteSubmission, type Submission } from '@/services/su
 import EditSubmissionForm from '../forms/edit-submission-form';
 import { cn } from '@/lib/utils';
 import { getSubAdminByEmail } from '@/services/subAdminService';
+import { sendEmail } from '@/services/emailService';
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -61,30 +62,30 @@ export default function JournalSubmissionsTable() {
   const [selectedSubmission, setSelectedSubmission] = React.useState<Submission | null>(null);
 
   const fetchSubmissions = React.useCallback(async () => {
-      setIsLoading(true);
-      try {
-          let subAdminId: string | undefined = undefined;
-          if (typeof window !== 'undefined') {
-              const email = localStorage.getItem('currentUserEmail');
-              if (email) {
-                  const result = await getSubAdminByEmail(email);
-                  if (result.success && result.subAdmin) {
-                      subAdminId = result.subAdmin.id;
-                  }
-              }
-          }
+    setIsLoading(true);
+    try {
+        let subAdminId: string | undefined = undefined;
+        if (typeof window !== 'undefined') {
+            const email = localStorage.getItem('currentUserEmail');
+            if (email) {
+                const result = await getSubAdminByEmail(email);
+                if (result.success && result.subAdmin) {
+                    subAdminId = result.subAdmin.id;
+                }
+            }
+        }
 
-          const data = await getSubmissions({ subAdminId: subAdminId });
-          setSubmissions(data);
-      } catch (error) {
-          toast({
-              title: "Error fetching submissions",
-              description: "Could not retrieve the list of submissions.",
-              variant: "destructive"
-          });
-      } finally {
-          setIsLoading(false);
-      }
+        const data = await getSubmissions({ subAdminId: subAdminId });
+        setSubmissions(data);
+    } catch (error) {
+        toast({
+            title: "Error fetching submissions",
+            description: "Could not retrieve the list of submissions.",
+            variant: "destructive"
+        });
+    } finally {
+        setIsLoading(false);
+    }
   }, [toast]);
 
   React.useEffect(() => {
@@ -118,19 +119,39 @@ export default function JournalSubmissionsTable() {
   }
 
   const handleSubmissionUpdated = (updatedSubmission: Submission) => {
-     // If the status is 'Done', it will be filtered out on the next fetch
     fetchSubmissions();
   };
 
-  const handleAlert = (authorEmail: string, title: string) => {
+  const handleAlert = async (submission: Submission) => {
+    const { email, fullName, title } = submission;
     toast({
-      title: "Alert Sent",
-      description: `An email has been sent to ${authorEmail} regarding "${title}".`,
+      title: "Sending Alert...",
+      description: `Sending email to ${fullName} about "${title}".`,
     });
+
+    const result = await sendEmail({
+      to: email,
+      subject: `Update on your submission: ${title}`,
+      submissionTitle: title,
+      authorName: fullName,
+    });
+    
+    if (result.success) {
+      toast({
+        title: "Alert Sent Successfully!",
+        description: `An email has been sent to ${email}.`,
+      });
+    } else {
+      toast({
+        title: "Failed to Send Alert",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const handleViewPdf = (base64Data: string) => {
-    if (!base64Data || !base64Data.startsWith('data:application/pdf;base64,')) {
+    if (!base64Data.startsWith('data:application/pdf;base64,')) {
         toast({ title: "Error", description: "Invalid or missing PDF data.", variant: "destructive" });
         return;
     }
@@ -188,7 +209,7 @@ export default function JournalSubmissionsTable() {
                       <TableCell>{new Date(submission.submittedAt).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <Button variant="outline" size="sm" onClick={() => handleAlert(submission.email, submission.title)}>
+                          <Button variant="outline" size="sm" onClick={() => handleAlert(submission)}>
                             <MailWarning className="h-4 w-4 mr-2" />
                             Alert
                           </Button>
