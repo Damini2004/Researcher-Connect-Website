@@ -29,6 +29,7 @@ import { getConferences, type Conference } from "@/services/conferenceService";
 import { getInternships, type Internship } from "@/services/internshipService";
 import { addSubmission } from "@/services/submissionService";
 import { useRouter } from "next/navigation";
+import { getCurrentDateInIndia } from "@/lib/utils";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -89,7 +90,9 @@ export default function JournalSubmissionForm() {
         fetchedItems = journals.filter(j => j.status === 'Active').map(j => ({ id: j.id, name: j.journalName }));
       } else if (type === 'conference') {
         const conferences = await getConferences();
-        fetchedItems = conferences.map(c => ({ id: c.id, name: c.title }));
+        const currentDate = getCurrentDateInIndia();
+        const upcomingConferences = conferences.filter(conf => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime());
+        fetchedItems = upcomingConferences.map(c => ({ id: c.id, name: c.title }));
       } else if (type === 'internship') {
         const internships = await getInternships();
         fetchedItems = internships.map(i => ({ id: i.id, name: i.name }));
