@@ -4,11 +4,9 @@
 import { Resend } from 'resend';
 import { AlertEmail } from '@/components/emails/alert-email';
 import * as React from 'react';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface EmailParams {
   to: string;
@@ -20,9 +18,10 @@ interface EmailParams {
 export async function sendEmail(params: EmailParams): Promise<{ success: boolean; message: string }> {
   const { to, subject, submissionTitle, authorName } = params;
 
-  if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 're_12345678_abcdefghijklmnopqrstuvwxyz') {
-    console.log("RESEND_API_KEY is not set or is the default key. Skipping email send.");
-    return { success: true, message: 'Email sending is skipped in dev environment without a valid key.' };
+  if (!resend || !resendApiKey || resendApiKey === 're_12345678_abcdefghijklmnopqrstuvwxyz') {
+    const errorMessage = 'Resend API key is not configured. Please add it to your .env file.';
+    console.error(errorMessage);
+    return { success: false, message: errorMessage };
   }
 
   try {
