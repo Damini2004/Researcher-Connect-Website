@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { addConference } from "@/services/conferenceService";
 import { conferenceSchema, type AddConferenceData } from '@/lib/types';
@@ -30,7 +31,9 @@ import { Progress } from "../ui/progress";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "../ui/carousel";
 import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import RichTextEditor from "../ui/rich-text-editor";
+import dynamic from 'next/dynamic';
+
+const RichTextEditor = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
 interface AddConferenceFormProps {
     onConferenceAdded: () => void;
