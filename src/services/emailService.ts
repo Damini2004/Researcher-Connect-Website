@@ -4,6 +4,9 @@
 import { Resend } from 'resend';
 import { AlertEmail } from '@/components/emails/alert-email';
 import * as React from 'react';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
