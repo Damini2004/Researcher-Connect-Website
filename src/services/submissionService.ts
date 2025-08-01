@@ -12,7 +12,7 @@ const submissionSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   title: z.string().min(5, "Title must be at least 5 characters."),
-  targetId: z.string().min(1, { message: "Please select a target from the list." }),
+  targetId: z.string().min(1, "Please select a target for your submission."),
   submissionType: z.string({ required_error: "Please select a submission type." }),
   content: z.string().min(100, "Content must be at least 100 characters."),
   manuscriptData: z.string(), // Base64 data can be any string
@@ -75,7 +75,7 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
         ...submissionData,
         targetId: targetId,
         submissionType: submissionType,
-        assignedSubAdminId: assignedSubAdminId, // Will be undefined if not a conference or no editor assigned
+        assignedSubAdminId: assignedSubAdminId || null, // Ensure field exists, even if null
         status: 'Verification Pending',
         submittedAt: new Date(),
     });
@@ -97,9 +97,8 @@ export async function getSubmissions(options: { subAdminId?: string } = {}): Pro
         let q;
 
         if (options.subAdminId) {
-            // Fetch submissions that are either assigned to this sub-admin OR are unassigned.
-            // Firestore does not support 'OR' queries on different fields. 
-            // So, we fetch both sets and merge them.
+            // Firestore does not support 'OR' queries on different fields (e.g., assignedSubAdminId == 'someId' OR assignedSubAdminId == null).
+            // We must perform two separate queries and merge the results.
 
             const assignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", options.subAdminId));
             const unassignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", null));
@@ -109,6 +108,7 @@ export async function getSubmissions(options: { subAdminId?: string } = {}): Pro
                 getDocs(unassignedQuery),
             ]);
             
+            // Use a Map to automatically handle duplicates if any were to occur.
             const submissionsMap = new Map<string, QueryDocumentSnapshot<DocumentData>>();
             assignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
             unassignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
