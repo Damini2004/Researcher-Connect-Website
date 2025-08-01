@@ -21,14 +21,13 @@ import { updateConference } from "@/services/conferenceService";
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon, Check, ChevronsUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, ArrowLeft, ArrowRight } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
 import { Checkbox } from "../ui/checkbox";
 import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Progress } from "../ui/progress";
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "../ui/carousel";
 import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import dynamic from 'next/dynamic';
@@ -67,9 +66,8 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [subAdmins, setSubAdmins] = React.useState<SubAdmin[]>([]);
   const [openCombobox, setOpenCombobox] = React.useState(false);
+  const [currentStep, setCurrentStep] = React.useState(1);
   
-  const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
 
   const form = useForm<AddConferenceData>({
     resolver: zodResolver(conferenceSchema),
@@ -104,16 +102,6 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
       editorChoice: conference.editorChoice || "none",
     },
   });
-
-  React.useEffect(() => {
-    if (!api) return;
-    setCurrent(api.selectedScrollSnap());
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-
-  const currentStep = current + 1;
 
   React.useEffect(() => {
     async function fetchAdmins() {
@@ -212,7 +200,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
 
     const isValid = await form.trigger(fieldsToValidate);
     if (isValid) {
-        api?.scrollNext();
+        setCurrentStep(step => step + 1);
     } else {
         const errors = form.formState.errors;
         const firstErrorField = fieldsToValidate.find(field => errors[field]);
@@ -228,7 +216,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
   };
 
   const handleBack = () => {
-    api?.scrollPrev();
+    setCurrentStep(step => step - 1);
   };
 
   return (
@@ -239,11 +227,11 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
             <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {totalSteps}</p>
         </div>
 
-        <Carousel setApi={setApi} orientation="vertical" className="w-full">
-            <CarouselContent className="h-[450px]">
-                <CarouselItem className="overflow-y-auto pb-6">
-                    <div className="p-1 space-y-6">
-                        <h3 className="text-lg font-medium">Basic Details</h3>
+        <div className="min-h-[450px] overflow-y-auto p-1 space-y-6">
+            {currentStep === 1 && (
+                <section>
+                    <h3 className="text-lg font-medium mb-4">Basic Details</h3>
+                    <div className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField control={form.control} name="title" render={({ field }) => ( <FormItem> <FormLabel>Conference Title</FormLabel> <FormControl><Input placeholder="e.g., International Conference on Machine Learning" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="shortTitle" render={({ field }) => ( <FormItem> <FormLabel>Short Title / Acronym</FormLabel> <FormControl><Input placeholder="e.g., ICML2025" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -257,73 +245,17 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
                             <FormField control={form.control} name="venueName" render={({ field }) => ( <FormItem> <FormLabel>Venue Name</FormLabel> <FormControl><Input placeholder="e.g., Grand Convention Center" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="country" render={({ field }) => ( <FormItem> <FormLabel>Country</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a country" /></SelectTrigger></FormControl><SelectContent><Command><CommandInput placeholder="Search country..." /><CommandList><CommandEmpty>No country found.</CommandEmpty><CommandGroup>{countries.map(c => <SelectItem key={c.code} value={c.name}>{c.name}</SelectItem>)}</CommandGroup></CommandList></Command></SelectContent></Select> <FormMessage /> </FormItem> )} />
                         </div>
-                        <FormField
-                            control={form.control}
-                            name="modeOfConference"
-                            render={() => (
-                                <FormItem>
-                                <FormLabel>Mode of Conference</FormLabel>
-                                <div className="flex items-center space-x-4 pt-2">
-                                    {conferenceModes.map((item) => (
-                                    <FormField
-                                        key={item.id}
-                                        control={form.control}
-                                        name="modeOfConference"
-                                        render={({ field }) => {
-                                        return (
-                                            <FormItem
-                                            key={item.id}
-                                            className="flex flex-row items-start space-x-3 space-y-0"
-                                            >
-                                            <FormControl>
-                                                <Checkbox
-                                                checked={field.value?.includes(item.id)}
-                                                onCheckedChange={(checked) => {
-                                                    return checked
-                                                    ? field.onChange([...field.value, item.id])
-                                                    : field.onChange(
-                                                        field.value?.filter(
-                                                        (value) => value !== item.id
-                                                        )
-                                                    )
-                                                }}
-                                                />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                {item.label}
-                                            </FormLabel>
-                                            </FormItem>
-                                        )
-                                        }}
-                                    />
-                                    ))}
-                                </div>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <FormField control={form.control} name="modeOfConference" render={() => ( <FormItem> <FormLabel>Mode of Conference</FormLabel> <div className="flex items-center space-x-4 pt-2"> {conferenceModes.map((item) => ( <FormField key={item.id} control={form.control} name="modeOfConference" render={({ field }) => { return ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...field.value, item.id]) : field.onChange( field.value?.filter( (value) => value !== item.id ) ) }} /> </FormControl> <FormLabel className="font-normal"> {item.label} </FormLabel> </FormItem> ) }} /> ))} </div> <FormMessage /> </FormItem> )} />
                     </div>
-                </CarouselItem>
-                <CarouselItem className="overflow-y-auto pb-6">
-                    <div className="p-1 space-y-6">
-                        <h3 className="text-lg font-medium">Content & People</h3>
-                        <FormField 
-                          control={form.control} 
-                          name="aboutConference" 
-                          render={({ field }) => ( 
-                            <FormItem> 
-                              <FormLabel>About Conference</FormLabel> 
-                              <FormControl>
-                                <RichTextEditor 
-                                  value={field.value} 
-                                  onChange={field.onChange} 
-                                  placeholder="Provide a detailed description of the conference..."
-                                />
-                              </FormControl> 
-                              <FormMessage /> 
-                            </FormItem> 
-                          )} 
-                        />
+                </section>
+            )}
+
+            {currentStep === 2 && (
+                <section>
+                    <h3 className="text-lg font-medium mb-4">Content & People</h3>
+                    <div className="space-y-6">
+                         <FormField control={form.control} name="aboutConference" render={({ field }) => ( <FormItem> <FormLabel>About Conference</FormLabel> <FormControl> <RichTextEditor value={field.value || ''} onChange={field.onChange} placeholder="Provide a detailed description of the conference..."/>
+                               </FormControl> <FormMessage /> </FormItem> )} />
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField control={form.control} name="conferenceWebsite" render={({ field }) => ( <FormItem> <FormLabel>Conference Website URL</FormLabel> <FormControl><Input placeholder="https://example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="conferenceEmail" render={({ field }) => ( <FormItem> <FormLabel>Conference Email / Contact</FormLabel> <FormControl><Input placeholder="contact@example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -333,10 +265,13 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
                         <FormField control={form.control} name="keynoteSpeakers" render={({ field }) => ( <FormItem> <FormLabel>Guest / Keynote Speakers (Optional)</FormLabel> <FormControl><Textarea placeholder="List speakers..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                         <FormField control={form.control} name="editorialBoard" render={({ field }) => ( <FormItem> <FormLabel>Editorial Board Members / Track Chairs (Optional)</FormLabel> <FormControl><Textarea placeholder="List members..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     </div>
-                </CarouselItem>
-                <CarouselItem className="overflow-y-auto pb-6">
-                    <div className="p-1 space-y-6">
-                        <h3 className="text-lg font-medium">Submission Details</h3>
+                </section>
+            )}
+
+            {currentStep === 3 && (
+                <section>
+                    <h3 className="text-lg font-medium mb-4">Submission Details</h3>
+                    <div className="space-y-6">
                         <FormField control={form.control} name="tracks" render={({ field }) => ( <FormItem> <FormLabel>List of Tracks / Themes (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., AI in Healthcare, NLP Advances..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                         <FormField control={form.control} name="keywords" render={({ field }) => ( <FormItem> <FormLabel>Keywords or SDG Tags (Optional)</FormLabel> <FormControl><Input placeholder="AI, Machine Learning, SDG 9, ..." {...field} /></FormControl> <FormDescription>Comma-separated values.</FormDescription> <FormMessage /> </FormItem> )} />
                         <FormField control={form.control} name="submissionInstructions" render={({ field }) => ( <FormItem> <FormLabel>Submission Instructions (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the submission guidelines..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -349,128 +284,33 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
                             <FormField control={form.control} name="fullPaperSubmissionDeadline" render={({ field }) => ( <FormItem> <FormLabel>Full Paper Deadline (Optional)</FormLabel> <Popover> <PopoverTrigger asChild><FormControl><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></FormControl></PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="registrationDeadline" render={({ field }) => ( <FormItem> <FormLabel>Registration Deadline (Optional)</FormLabel> <Popover> <PopoverTrigger asChild><FormControl><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></FormControl></PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                         </div>
-                        <FormField
-                            control={form.control}
-                            name="paperCategories"
-                            render={() => (
-                                <FormItem>
-                                <FormLabel>Paper Categories</FormLabel>
-                                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                    {paperCategories.map((item) => (
-                                    <FormField
-                                        key={item.id}
-                                        control={form.control}
-                                        name="paperCategories"
-                                        render={({ field }) => {
-                                        return (
-                                            <FormItem
-                                            key={item.id}
-                                            className="flex flex-row items-start space-x-3 space-y-0"
-                                            >
-                                            <FormControl>
-                                                <Checkbox
-                                                checked={field.value?.includes(item.id)}
-                                                onCheckedChange={(checked) => {
-                                                    return checked
-                                                    ? field.onChange([...field.value, item.id])
-                                                    : field.onChange(
-                                                        field.value?.filter(
-                                                        (value) => value !== item.id
-                                                        )
-                                                    )
-                                                }}
-                                                />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                {item.label}
-                                            </FormLabel>
-                                            </FormItem>
-                                        )
-                                        }}
-                                    />
-                                    ))}
-                                </div>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <FormField control={form.control} name="paperCategories" render={() => ( <FormItem> <FormLabel>Paper Categories</FormLabel> <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2"> {paperCategories.map((item) => ( <FormField key={item.id} control={form.control} name="paperCategories" render={({ field }) => { return ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...field.value, item.id]) : field.onChange( field.value?.filter( (value) => value !== item.id ) ) }} /> </FormControl> <FormLabel className="font-normal"> {item.label} </FormLabel> </FormItem> ) }} /> ))} </div> <FormMessage /> </FormItem> )} />
                         <FormField control={form.control} name="peerReviewMethod" render={({ field }) => ( <FormItem> <FormLabel>Peer Review Method (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., Single-Blind, Double-Blind, Open..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     </div>
-                </CarouselItem>
-                <CarouselItem className="overflow-y-auto pb-6">
-                    <div className="p-1 space-y-6">
-                        <h3 className="text-lg font-medium">Final Details</h3>
+                </section>
+            )}
+
+            {currentStep === 4 && (
+                <section>
+                    <h3 className="text-lg font-medium mb-4">Final Details</h3>
+                    <div className="space-y-6">
                         <FormField control={form.control} name="registrationFees" render={({ field }) => ( <FormItem> <FormLabel>Registration & Fees (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the fee structure..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                         <FormField control={form.control} name="accommodationDetails" render={({ field }) => ( <FormItem> <FormLabel>Accommodation Details (Optional)</FormLabel> <FormControl><Textarea placeholder="List nearby hotels or arrangements..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                         <FormField control={form.control} name="faqs" render={({ field }) => ( <FormItem> <FormLabel>FAQs (Optional)</FormLabel> <FormControl><Textarea placeholder="Provide answers to frequently asked questions..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                        <FormField
-                            control={form.control}
-                            name="editorChoice"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel>
-                                <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-                                    <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        className={cn("w-full justify-between",!field.value && "text-muted-foreground")}
-                                        {...field}
-                                    >
-                                        {field.value && field.value !== "none" ? subAdmins.find((admin) => admin.id === field.value)?.name : "Select Sub-Admin"}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                    </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                                    <Command>
-                                        <CommandInput placeholder="Search sub-admins..." />
-                                        <CommandList>
-                                        <CommandEmpty>No sub-admin found.</CommandEmpty>
-                                        <CommandGroup>
-                                            <CommandItem
-                                            value={"none"}
-                                            onSelect={() => {
-                                                form.setValue("editorChoice", "none");
-                                                setOpenCombobox(false);
-                                            }}
-                                            >
-                                            None
-                                            </CommandItem>
-                                            {subAdmins.map((admin) => (
-                                            <CommandItem
-                                                value={admin.name}
-                                                key={admin.id}
-                                                onSelect={() => {
-                                                form.setValue("editorChoice", admin.id);
-                                                setOpenCombobox(false);
-                                                }}
-                                            >
-                                                <Check className={cn("mr-2 h-4 w-4",admin.id === field.value ? "opacity-100" : "opacity-0")}/>
-                                                {admin.name}
-                                            </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                        </CommandList>
-                                    </Command>
-                                    </PopoverContent>
-                                </Popover>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <FormField control={form.control} name="editorChoice" render={({ field }) => ( <FormItem className="flex flex-col"> <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel> <Popover open={openCombobox} onOpenChange={setOpenCombobox}> <PopoverTrigger asChild> <Button variant="outline" role="combobox" className={cn("w-full justify-between",!field.value && "text-muted-foreground")} {...field} > {field.value && field.value !== "none" ? subAdmins.find((admin) => admin.id === field.value)?.name : "Select Sub-Admin"} <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> </Button> </PopoverTrigger> <PopoverContent className="w-[--radix-popover-trigger-width] p-0"> <Command> <CommandInput placeholder="Search sub-admins..." /> <CommandList> <CommandEmpty>No sub-admin found.</CommandEmpty> <CommandGroup> <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }} > None </CommandItem> {subAdmins.map((admin) => ( <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} > <Check className={cn("mr-2 h-4 w-4",admin.id === field.value ? "opacity-100" : "opacity-0")}/> {admin.name} </CommandItem> ))} </CommandGroup> </CommandList> </Command> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                     </div>
-                </CarouselItem>
-            </CarouselContent>
-        </Carousel>
+                </section>
+            )}
+        </div>
 
-        <div className="flex justify-between pt-4">
+        <div className="flex justify-between pt-4 border-t">
             <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
-                <ArrowUp className="mr-2 h-4 w-4" /> Back
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
 
             {currentStep < totalSteps ? (
                 <Button type="button" onClick={handleNext}>
-                    Next <ArrowDown className="ml-2 h-4 w-4" />
+                    Next <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             ) : (
                 <Button type="submit" size="lg" disabled={isSubmitting}>
