@@ -77,7 +77,7 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
     
     const result = await sendEmail({
       to: email,
-      subject: values.subject, // Use the subject from the form
+      subject: values.subject,
       customMessage: values.message,
     });
     
@@ -124,7 +124,7 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
               <FormControl>
                 <Textarea
                   placeholder="Enter your message regarding the submission..."
-                  className="min-h-[300px]"
+                  className="min-h-[250px]"
                   {...field}
                 />
               </FormControl>

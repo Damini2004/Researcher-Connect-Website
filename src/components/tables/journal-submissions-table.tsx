@@ -249,7 +249,7 @@ export default function JournalSubmissionsTable() {
       </Dialog>
       
       <Dialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
                 <DialogTitle>Send Alert to Author</DialogTitle>
                 <DialogDescription>
