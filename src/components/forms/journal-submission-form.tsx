@@ -36,7 +36,7 @@ const formSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
   title: z.string().min(5, "Title must be at least 5 characters."),
   submissionType: z.string({ required_error: "Please select a submission type." }),
-  targetId: z.string({ required_error: "Please select a target." }),
+  targetId: z.string().min(1, { message: "Please select a target from the list." }),
   manuscriptFile: z
     .any()
     .refine((files) => files?.length > 0, "A manuscript file is required.")
@@ -73,6 +73,8 @@ export default function JournalSubmissionForm() {
       email: "",
       title: "",
       content: "",
+      submissionType: "",
+      targetId: "",
     },
   });
   
@@ -252,7 +254,7 @@ export default function JournalSubmissionForm() {
                   <FormLabel>
                     Select {submissionType ? submissionType.charAt(0).toUpperCase() + submissionType.slice(1) : 'Target'}
                   </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isItemsLoading || !submissionType}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isItemsLoading || !submissionType} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder={
