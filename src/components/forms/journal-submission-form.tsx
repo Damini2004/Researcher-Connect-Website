@@ -150,7 +150,8 @@ export default function JournalSubmissionForm() {
       fullName: values.fullName,
       email: values.email,
       title: values.title,
-      journalId: values.targetId, // The service expects journalId, so we map targetId to it
+      targetId: values.targetId,
+      submissionType: values.submissionType,
       content: values.content,
       manuscriptData,
     });

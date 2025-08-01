@@ -1,17 +1,19 @@
-
 // src/services/submissionService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, orderBy, query, doc, updateDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, orderBy, query, doc, updateDoc, getDoc, deleteDoc, where } from 'firebase/firestore';
 import { z } from 'zod';
+import { getConferenceById } from './conferenceService';
+import { getSubAdminByEmail } from './subAdminService';
 
 // Zod schema for form data validation
 const submissionSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   title: z.string().min(5, "Title must be at least 5 characters."),
-  journalId: z.string(),
+  targetId: z.string(),
+  submissionType: z.string(),
   content: z.string().min(100, "Content must be at least 100 characters."),
   manuscriptData: z.string(), // Base64 data can be any string
 });
@@ -27,18 +29,21 @@ export interface Submission {
     fullName: string;
     email: string;
     title: string;
-    journalId: string;
+    targetId: string;
+    submissionType: string;
     content: string;
     manuscriptData: string; // Storing Base64 data
     status: "Verification Pending" | "In Progress" | "Done" | "Canceled";
     submittedAt: string; // Changed to string to be serializable
+    assignedSubAdminId?: string;
 }
 
 interface AddSubmissionData {
     fullName: string;
     email: string;
     title: string;
-    journalId: string;
+    targetId: string;
+    submissionType: string;
     content: string;
     manuscriptData: string;
 }
@@ -52,10 +57,25 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
     if (!validationResult.success) {
         return { success: false, message: validationResult.error.errors[0].message };
     }
+    
+    const { targetId, submissionType, ...submissionData } = validationResult.data;
+    
+    let assignedSubAdminId: string | undefined = undefined;
 
+    // If it's a conference submission, find the assigned editor
+    if (submissionType === 'conference') {
+        const conferenceResult = await getConferenceById(targetId);
+        if (conferenceResult.success && conferenceResult.conference?.editorChoice) {
+            assignedSubAdminId = conferenceResult.conference.editorChoice;
+        }
+    }
+    
     // Save submission data to Firestore
     await addDoc(collection(db, 'submissions'), {
-        ...validationResult.data,
+        ...submissionData,
+        targetId: targetId,
+        submissionType: submissionType,
+        assignedSubAdminId: assignedSubAdminId, // Will be undefined if not a conference or no editor assigned
         status: 'Verification Pending',
         submittedAt: new Date(),
     });
@@ -71,9 +91,15 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
 }
 
 
-export async function getSubmissions(): Promise<Submission[]> {
+export async function getSubmissions(options: { subAdminId?: string } = {}): Promise<Submission[]> {
     try {
-        const q = query(collection(db, "submissions"), orderBy("submittedAt", "desc"));
+        const constraints = [orderBy("submittedAt", "desc")];
+        if (options.subAdminId) {
+            constraints.push(where("assignedSubAdminId", "==", options.subAdminId));
+        }
+
+        const q = query(collection(db, "submissions"), ...constraints);
+        
         const querySnapshot = await getDocs(q);
         const submissions: Submission[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
@@ -83,11 +109,13 @@ export async function getSubmissions(): Promise<Submission[]> {
                 fullName: data.fullName,
                 email: data.email,
                 title: data.title,
-                journalId: data.journalId,
+                targetId: data.targetId,
+                submissionType: data.submissionType,
                 content: data.content,
                 manuscriptData: data.manuscriptData,
                 status: data.status,
                 submittedAt: data.submittedAt.toDate().toISOString(),
+                assignedSubAdminId: data.assignedSubAdminId,
             });
         });
         return submissions;

@@ -43,6 +43,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getSubmissions, deleteSubmission, type Submission } from '@/services/submissionService';
 import EditSubmissionForm from '../forms/edit-submission-form';
 import { cn } from '@/lib/utils';
+import { getSubAdminByEmail } from '@/services/subAdminService';
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -62,7 +63,18 @@ export default function JournalSubmissionsTable() {
   const fetchSubmissions = React.useCallback(async () => {
       setIsLoading(true);
       try {
-          const data = await getSubmissions();
+          let subAdminId: string | undefined = undefined;
+          if (typeof window !== 'undefined') {
+              const email = localStorage.getItem('currentUserEmail');
+              if (email) {
+                  const result = await getSubAdminByEmail(email);
+                  if (result.success && result.subAdmin) {
+                      subAdminId = result.subAdmin.id;
+                  }
+              }
+          }
+
+          const data = await getSubmissions({ subAdminId: subAdminId });
           setSubmissions(data);
       } catch (error) {
           toast({
