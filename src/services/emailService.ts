@@ -40,7 +40,6 @@ const createHtmlTemplate = (authorName: string, submissionTitle: string, customM
         <h1>Pure Research Insights</h1>
       </div>
       <div class="content">
-        <p>Dear ${authorName},</p>
         <div class="message-box">
           <p style="margin: 0;">${customMessage.replace(/\n/g, '<br>')}</p>
         </div>
