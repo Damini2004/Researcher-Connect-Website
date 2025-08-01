@@ -48,7 +48,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className }: RichTextEdi
             config={{
                 placeholder: placeholder || "Start typing...",
                 toolbar: [
-                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'outdent', 'indent', '|', 'blockQuote', 'insertTable', 'undo', 'redo'
+                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'outdent', 'indent', '|', 'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', 'undo', 'redo'
                 ]
             }}
         />
