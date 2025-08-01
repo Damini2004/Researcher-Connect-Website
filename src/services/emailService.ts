@@ -7,7 +7,8 @@ import * as React from 'react';
 
 // Using Next.js standard for environment variables.
 // The key should be in a .env.local file at the root of the project.
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface EmailParams {
   to: string;
@@ -34,8 +35,11 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
     });
 
     if (error) {
+      // Log the full error object for detailed debugging
       console.error('Resend API Error:', JSON.stringify(error, null, 2));
-      const errorMessage = `Failed to send email: ${error.name || 'UnknownError'} - ${error.message || 'No message provided.'}`;
+      
+      // Provide a more informative error message
+      const errorMessage = `Resend API Error: ${error.name} - ${error.message}. Please check your API key and verified domains in your Resend account.`;
       return { success: false, message: errorMessage };
     }
 
@@ -43,12 +47,15 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
     return { success: true, message: 'Email sent successfully!' };
   } catch (error: unknown) {
     console.error('Exception in sendEmail service:', error);
+    
     let message = 'An unexpected error occurred.';
     if (error instanceof Error) {
       message = error.message;
     } else if (typeof error === 'object' && error !== null) {
-      message = JSON.stringify(error);
+      // Attempt to get more detail from the error object
+      message = (error as any).message || JSON.stringify(error);
     }
+    
     return { success: false, message: `Failed to send email: ${message}` };
   }
 }
