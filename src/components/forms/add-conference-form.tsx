@@ -237,7 +237,37 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                             <FormField control={form.control} name="venueName" render={({ field }) => ( <FormItem> <FormLabel>Venue Name</FormLabel> <FormControl><Input placeholder="e.g., Grand Convention Center" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="country" render={({ field }) => ( <FormItem> <FormLabel>Country</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a country" /></SelectTrigger></FormControl><SelectContent>{countries.map(c => <SelectItem key={c.code} value={c.name}>{c.name}</SelectItem>)}</SelectContent></Select> <FormMessage /> </FormItem> )} />
                         </div>
-                        <FormField control={form.control} name="modeOfConference" render={() => ( <FormItem> <FormLabel>Mode of Conference</FormLabel> <div className="flex items-center space-x-4 pt-2"> {conferenceModes.map((item) => ( <FormField key={item.id} control={form.control} name="modeOfConference" render={({ field }) => ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...(field.value || []), item.id]) : field.onChange( (field.value || [])?.filter( (value) => value !== item.id ) ); }} /> </FormControl> <FormLabel className="font-normal"> {item.label} </FormLabel> </FormItem> )} /> ))} </div> <FormMessage /> </FormItem> )} />
+                        <FormField
+                          control={form.control}
+                          name="modeOfConference"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Mode of Conference</FormLabel>
+                              <div className="flex items-center space-x-4 pt-2">
+                                {conferenceModes.map((item) => (
+                                  <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(item.id)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([...(field.value || []), item.id])
+                                            : field.onChange(
+                                                (field.value || [])?.filter(
+                                                  (value) => value !== item.id
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">{item.label}</FormLabel>
+                                  </FormItem>
+                                ))}
+                              </div>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                     </div>
                 </section>
             )}
@@ -276,7 +306,37 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                             <FormField control={form.control} name="fullPaperSubmissionDeadline" render={({ field }) => ( <FormItem> <FormLabel>Full Paper Deadline (Optional)</FormLabel> <Popover> <PopoverTrigger asChild><FormControl><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></FormControl></PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="registrationDeadline" render={({ field }) => ( <FormItem> <FormLabel>Registration Deadline (Optional)</FormLabel> <Popover> <PopoverTrigger asChild><FormControl><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></FormControl></PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                         </div>
-                        <FormField control={form.control} name="paperCategories" render={() => ( <FormItem> <FormLabel>Paper Categories</FormLabel> <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2"> {paperCategories.map((item) => ( <FormField key={item.id} control={form.control} name="paperCategories" render={({ field }) => ( <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0"> <FormControl> <Checkbox checked={field.value?.includes(item.id)} onCheckedChange={(checked) => { return checked ? field.onChange([...(field.value || []), item.id]) : field.onChange( (field.value || [])?.filter( (value) => value !== item.id ) ); }} /> </FormControl> <FormLabel className="font-normal"> {item.label} </FormLabel> </FormItem> )} /> ))} </div> <FormMessage /> </FormItem> )} />
+                        <FormField
+                          control={form.control}
+                          name="paperCategories"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Paper Categories</FormLabel>
+                              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                {paperCategories.map((item) => (
+                                  <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(item.id)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([...(field.value || []), item.id])
+                                            : field.onChange(
+                                                (field.value || [])?.filter(
+                                                  (value) => value !== item.id
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">{item.label}</FormLabel>
+                                  </FormItem>
+                                ))}
+                              </div>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                         <FormField control={form.control} name="peerReviewMethod" render={({ field }) => ( <FormItem> <FormLabel>Peer Review Method (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., Single-Blind, Double-Blind, Open..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     </div>
                 </section>
