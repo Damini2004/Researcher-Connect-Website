@@ -1,4 +1,3 @@
-
 "use client";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -209,15 +208,15 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-[80vh]">
         <div className="flex-shrink-0">
             <div className="space-y-2 mb-4">
                 <Progress value={(currentStep / totalSteps) * 100} />
                 <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {totalSteps}</p>
             </div>
         </div>
-        <div className="flex-grow overflow-hidden">
-            <ScrollArea className="h-full">
+        <div className="flex-grow">
+            <ScrollArea className="h-[calc(80vh-120px)]">
                 <div className="p-4 space-y-6">
                     {currentStep === 1 && (
                         <section>
@@ -259,9 +258,9 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                                                     checked={field.value?.includes(item.id)}
                                                                     onCheckedChange={(checked) => {
                                                                     return checked
-                                                                        ? field.onChange([...field.value, item.id])
+                                                                        ? field.onChange([...(field.value || []), item.id])
                                                                         : field.onChange(
-                                                                            field.value?.filter(
+                                                                            (field.value || [])?.filter(
                                                                             (value) => value !== item.id
                                                                             )
                                                                         )
@@ -339,9 +338,9 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                                             checked={field.value?.includes(item.id)}
                                                             onCheckedChange={(checked) => {
                                                             return checked
-                                                                ? field.onChange([...field.value, item.id])
+                                                                ? field.onChange([...(field.value || []), item.id])
                                                                 : field.onChange(
-                                                                    field.value?.filter(
+                                                                    (field.value || [])?.filter(
                                                                     (value) => value !== item.id
                                                                     )
                                                                 )
@@ -430,3 +429,5 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     </Form>
   );
 }
+
+src/components/forms/add-conference-form.tsx over this file update your code with our code
