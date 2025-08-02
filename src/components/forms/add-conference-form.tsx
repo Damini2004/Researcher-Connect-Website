@@ -1,6 +1,5 @@
 
 "use client";
-
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldError } from "react-hook-form";
@@ -60,7 +59,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   const [subAdmins, setSubAdmins] = React.useState<SubAdmin[]>([]);
   const [openCombobox, setOpenCombobox] = React.useState(false);
   const [currentStep, setCurrentStep] = React.useState(1);
-  
+
   const form = useForm<AddConferenceData>({
     resolver: zodResolver(conferenceSchema),
     defaultValues: {
@@ -89,7 +88,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     },
   });
 
-
   React.useEffect(() => {
     async function fetchAdmins() {
         try {
@@ -106,7 +104,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     fetchAdmins();
   }, [toast]);
 
-
   const logoFileRef = form.register("conferenceLogo");
   const templateFileRef = form.register("paperTemplate");
 
@@ -121,7 +118,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
   async function onSubmit(values: AddConferenceData) {
     setIsSubmitting(true);
-    
+   
     let logoBase64 = "";
     if (values.conferenceLogo && values.conferenceLogo.length > 0) {
         if(values.conferenceLogo[0].size > 500 * 1024) {
@@ -141,7 +138,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         setIsSubmitting(false);
         return;
     }
-    
+   
     let templateBase64;
     if (values.paperTemplate && values.paperTemplate.length > 0) {
          if(values.paperTemplate[0].size > 4 * 1024 * 1024) {
@@ -166,7 +163,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     };
 
     const result = await addConference(payload);
-
     if (result.success) {
       form.reset();
       onConferenceAdded();
@@ -181,7 +177,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   }
 
   const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     let fieldsToValidate: (keyof AddConferenceData)[] = [];
     if (currentStep === 1) {
         fieldsToValidate = ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'country', 'modeOfConference'];
@@ -190,7 +186,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
     } else if (currentStep === 3) {
         fieldsToValidate = ['submissionStartDate', 'submissionEndDate', 'paperCategories'];
     }
-
     const isValid = await form.trigger(fieldsToValidate);
     if (isValid) {
         setCurrentStep(step => step + 1);
@@ -214,13 +209,12 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full max-h-[80vh]">
         <div className="space-y-2 mb-4">
             <Progress value={(currentStep / totalSteps) * 100} />
             <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {totalSteps}</p>
         </div>
-
-        <ScrollArea className="flex-grow">
+        <ScrollArea className="flex-grow max-h-[60vh] overflow-y-auto">
             <div className="p-4 space-y-6">
                 {currentStep === 1 && (
                     <section>
@@ -278,7 +272,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         </div>
                     </section>
                 )}
-
                 {currentStep === 2 && (
                     <section>
                         <h3 className="text-lg font-medium mb-4">Content & People</h3>
@@ -296,7 +289,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         </div>
                     </section>
                 )}
-
                 {currentStep === 3 && (
                     <section>
                         <h3 className="text-lg font-medium mb-4">Submission Details</h3>
@@ -353,7 +345,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         </div>
                     </section>
                 )}
-
                 {currentStep === 4 && (
                     <section>
                         <h3 className="text-lg font-medium mb-4">Final Details</h3>
@@ -367,12 +358,10 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 )}
             </div>
         </ScrollArea>
-
         <div className="flex justify-between pt-4 border-t mt-auto">
             <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
-
             {currentStep < totalSteps ? (
                 <Button type="button" onClick={handleNext}>
                     Next <ArrowRight className="ml-2 h-4 w-4" />
