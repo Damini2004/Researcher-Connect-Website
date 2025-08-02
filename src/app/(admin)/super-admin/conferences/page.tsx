@@ -93,14 +93,16 @@ export default function ManageConferencesPage() {
                 Add Conference
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px]">
+          <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>Add New Conference</DialogTitle>
               <DialogDescription>
                 Fill out the form below to add a new conference.
               </DialogDescription>
             </DialogHeader>
-            <AddConferenceForm onConferenceAdded={handleConferenceAdded} />
+            <div className="flex-grow overflow-hidden">
+              <AddConferenceForm onConferenceAdded={handleConferenceAdded} />
+            </div>
           </DialogContent>
         </Dialog>
       </div>
@@ -113,7 +115,7 @@ export default function ManageConferencesPage() {
       />
       
        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[625px]">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Edit Conference</DialogTitle>
             <DialogDescription>
@@ -121,10 +123,12 @@ export default function ManageConferencesPage() {
             </DialogDescription>
           </DialogHeader>
           {selectedConference && (
-            <EditConferenceForm
-              conference={selectedConference}
-              onConferenceUpdated={handleConferenceUpdated}
-            />
+            <div className="flex-grow overflow-hidden">
+              <EditConferenceForm
+                conference={selectedConference}
+                onConferenceUpdated={handleConferenceUpdated}
+              />
+            </div>
           )}
         </DialogContent>
       </Dialog>
