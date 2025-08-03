@@ -229,9 +229,6 @@ function ConferenceDetailClient() {
                             <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!conference.paperTemplateUrl}>
                                 <a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download /> Download Brochure</a>
                             </Button>
-                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!conference.conferenceWebsite}>
-                                <a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer"><Award /> Registration</a>
-                            </Button>
                         </div>
                     </div>
                 </div>
