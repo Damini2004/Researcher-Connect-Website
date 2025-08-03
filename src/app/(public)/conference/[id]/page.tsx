@@ -99,13 +99,14 @@ function ConferenceDetailClient() {
       </ul>
     );
   };
-
-  const renderParagraphs = (text?: string) => {
-    if (!text) return <p className="text-muted-foreground">Not available.</p>;
+  
+  const renderRichContent = (htmlContent?: string) => {
+    if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
     return (
-        <div className="text-muted-foreground whitespace-pre-wrap space-y-2 break-words">
-            {text.split('\n').map((para, index) => para.trim() && <p key={index}>{para.trim()}</p>)}
-        </div>
+        <div 
+          className="prose prose-sm max-w-none text-muted-foreground"
+          dangerouslySetInnerHTML={{ __html: htmlContent }} 
+        />
     );
   };
   
@@ -246,7 +247,7 @@ function ConferenceDetailClient() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-8">
                 <EyecatchyCard icon={Info} title="About the Conference">
-                    {renderParagraphs(conference.aboutConference)}
+                    {renderRichContent(conference.aboutConference)}
                 </EyecatchyCard>
 
                 <div className="grid md:grid-cols-1 gap-8">
@@ -278,14 +279,14 @@ function ConferenceDetailClient() {
                             <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
                             <div><strong>Accepted Categories:</strong> <div className="flex flex-wrap gap-2 mt-1">{conference.paperCategories.map(cat => <Badge key={cat} variant="outline">{getPaperCategoryLabel(cat)}</Badge>)}</div></div>
                             {conference.peerReviewMethod && <p><strong>Review Method:</strong> {conference.peerReviewMethod}</p>}
-                            {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderParagraphs(conference.submissionInstructions)}</div>}
+                            {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderRichContent(conference.submissionInstructions)}</div>}
                             {conference.paperTemplateUrl && <Button asChild variant="link" className="p-0 h-auto"><a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download className="mr-2 h-4 w-4"/>Download Paper Template</a></Button>}
                        </div>
                     </div>
                 </EyecatchyCard>
                 
-                {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration & Fees">{renderParagraphs(conference.registrationFees)}</EyecatchyCard>}
-                {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderParagraphs(conference.accommodationDetails)}</EyecatchyCard>}
+                {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration & Fees">{renderRichContent(conference.registrationFees)}</EyecatchyCard>}
+                {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderRichContent(conference.accommodationDetails)}</EyecatchyCard>}
 
                 {conference.faqs && (
                     <EyecatchyCard icon={FileQuestion} title="Frequently Asked Questions">
