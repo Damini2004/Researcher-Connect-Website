@@ -100,7 +100,7 @@ export default function ManageConferencesPage() {
                 Fill out the form below to add a new conference.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex-grow overflow-hidden">
+            <div className="flex-grow overflow-y-auto">
               <AddConferenceForm onConferenceAdded={handleConferenceAdded} />
             </div>
           </DialogContent>
@@ -123,7 +123,7 @@ export default function ManageConferencesPage() {
             </DialogDescription>
           </DialogHeader>
           {selectedConference && (
-            <div className="flex-grow overflow-hidden">
+            <div className="flex-grow overflow-y-auto">
               <EditConferenceForm
                 conference={selectedConference}
                 onConferenceUpdated={handleConferenceUpdated}

@@ -1,3 +1,4 @@
+
 "use client";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -215,9 +216,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {totalSteps}</p>
             </div>
         </div>
-        <div className="flex-grow overflow-hidden">
-            <ScrollArea className="h-full">
-            <div className="p-4 space-y-6">
+        <ScrollArea className="flex-grow pr-6">
+            <div className="space-y-6">
                 {currentStep === 1 && (
                     <section>
                         <h3 className="text-lg font-medium mb-4">Basic Details</h3>
@@ -408,9 +408,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                         </div>
                     </section>
                 )}
-                </div>
-            </ScrollArea>
-        </div>
+            </div>
+        </ScrollArea>
         <div className="flex-shrink-0 flex justify-between pt-4 border-t">
             <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
