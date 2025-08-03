@@ -222,7 +222,7 @@ function ConferenceDetailClient() {
                                 <span>{conference.location}</span>
                             </div>
                         </div>
-                         <div className="flex flex-wrap justify-start items-center gap-4 pt-2">
+                         <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 pt-2">
                             <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!isCallForPapersOpen}>
                               <Link href="/submit-journal"><FileText /> Abstract Submission</Link>
                             </Button>
@@ -234,7 +234,7 @@ function ConferenceDetailClient() {
                 </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end md:justify-start lg:justify-end pt-4">
                 <ConferenceCountdown targetDate={conference.startDate} />
             </div>
         </div>
