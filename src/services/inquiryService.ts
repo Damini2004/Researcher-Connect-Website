@@ -25,29 +25,35 @@ export interface Inquiry {
     status: 'New' | 'Read' | 'Archived';
     type: string; // e.g., 'General Inquiry', 'Internship Application'
     details?: string; // e.g., Internship Name
+    phone?: string;
+    city?: string;
+    university?: string;
+    degree?: string;
+    resumeData?: string;
 }
 
 const inquirySchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
+  name: z.string().min(2, "Name is required."),
   email: z.string().email("Please enter a valid email address."),
-  subject: z.string().min(5, "Subject must be at least 5 characters.").optional(),
+  subject: z.string().optional(),
   message: z.string().min(20, "Message must be at least 20 characters."),
   type: z.string().default('General Inquiry'),
   details: z.string().optional(),
+  phone: z.string().optional(),
+  city: z.string().optional(),
+  university: z.string().optional(),
+  degree: z.string().optional(),
+  resumeData: z.string().optional(),
 });
 
 export async function getPendingEnquiryCount(): Promise<number> {
     try {
-        // This is a placeholder for where real enquiries would be stored.
-        // As there is no "enquiries" collection yet, this will return 0.
-        // To test, you can manually create an 'enquiries' collection in Firestore
-        // with documents having a 'status' field set to 'Pending'.
         const q = query(collection(db, "enquiries"), where("status", "==", "Pending"));
         const querySnapshot = await getDocs(q);
         return querySnapshot.size;
     } catch (error) {
         console.error("Error fetching pending enquiry count: ", error);
-        return 0; // Return 0 on error
+        return 0;
     }
 }
 
@@ -63,7 +69,7 @@ export async function addInquiry(data: z.infer<typeof inquirySchema>): Promise<{
             dataToSave.subject = `Internship: ${dataToSave.details || 'N/A'}`;
         }
         
-        if (!dataToSave.subject) {
+        if (!dataToSave.subject && dataToSave.type !== 'Internship Application') {
             return { success: false, message: "Subject is required for this type of inquiry." };
         }
 
@@ -99,6 +105,11 @@ export async function getInquiries(): Promise<Inquiry[]> {
                 type: data.type || 'General Inquiry',
                 details: data.details,
                 date: data.date.toDate().toISOString(),
+                phone: data.phone,
+                city: data.city,
+                university: data.university,
+                degree: data.degree,
+                resumeData: data.resumeData,
             });
         });
         return inquiries;
