@@ -370,38 +370,38 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                             <FormField control={form.control} name="registrationFees" render={({ field }) => ( <FormItem> <FormLabel>Registration & Fees (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the fee structure..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="accommodationDetails" render={({ field }) => ( <FormItem> <FormLabel>Accommodation Details (Optional)</FormLabel> <FormControl><Textarea placeholder="List nearby hotels or arrangements..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="faqs" render={({ field }) => ( <FormItem> <FormLabel>FAQs (Optional)</FormLabel> <FormControl><Textarea placeholder="Provide answers to frequently asked questions..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                           <FormField control={form.control} name="editorChoice" render={({ field }) => ( 
+                            <FormField control={form.control} name="editorChoice" render={({ field }) => ( 
                                 <FormItem className="flex flex-col">
                                     <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel>
-                                    <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
+                                    <FormControl>
+                                        <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
+                                            <PopoverTrigger asChild>
                                                 <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")} >
                                                     {field.value && field.value !== "none" ? subAdmins.find( (admin) => admin.id === field.value )?.name : "Select Sub-Admin"}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                                            <Command>
-                                                <CommandInput placeholder="Search sub-admins..." />
-                                                <CommandList>
-                                                    <CommandEmpty>No sub-admin found.</CommandEmpty>
-                                                    <CommandGroup>
-                                                        <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }} >
-                                                            None
-                                                        </CommandItem>
-                                                        {subAdmins.map((admin) => (
-                                                            <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} >
-                                                                <Check className={cn("mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )}/>
-                                                                {admin.name}
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search sub-admins..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>No sub-admin found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }} >
+                                                                None
                                                             </CommandItem>
-                                                        ))}
-                                                    </CommandGroup>
-                                                </CommandList>
-                                            </Command>
-                                        </PopoverContent>
-                                    </Popover>
+                                                            {subAdmins.map((admin) => (
+                                                                <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} >
+                                                                    <Check className={cn("mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )}/>
+                                                                    {admin.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )} />
