@@ -207,7 +207,7 @@ export default function ConferenceDetailPage() {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center w-full">
                     <div className="md:col-span-4 flex justify-center md:justify-start">
                         <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
-                            <Image src={conference.imageSrc} alt={`${conference.shortTitle} logo`} width={200} height={200} data-ai-hint="logo brand" className="w-40 h-40 object-contain"/>
+                            <Image src={conference.imageSrc || 'https://placehold.co/200x200.png'} alt={`${conference.shortTitle} logo`} width={200} height={200} data-ai-hint="logo brand" className="w-40 h-40 object-contain"/>
                         </div>
                     </div>
                     <div className="md:col-span-8 text-center md:text-left space-y-4">

@@ -95,7 +95,7 @@ export default function UpcomingConferencesPage() {
                                     <div className="p-1 h-full">
                                         <Card className="flex flex-col h-full bg-white text-black text-center p-6 shadow-lg transform transition-all hover:-translate-y-2">
                                             <div className="flex-grow space-y-3">
-                                                <Image src={conference.imageSrc} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain mx-auto" data-ai-hint="logo brand"/>
+                                                <Image src={conference.imageSrc || 'https://placehold.co/100x100.png'} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain mx-auto" data-ai-hint="logo brand"/>
                                                 <h4 className="font-semibold text-sm line-clamp-3">{conference.title}</h4>
                                             </div>
                                             <div className="mt-4 pt-4 border-t border-gray-200 text-sm space-y-2 text-muted-foreground">
@@ -140,7 +140,7 @@ export default function UpcomingConferencesPage() {
                                 upcomingConferences.map(conference => (
                                     <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                         <div className="p-4 flex flex-col md:flex-row items-center gap-4">
-                                            <Image src={conference.imageSrc} alt={conference.shortTitle} width={120} height={120} className="w-28 h-28 object-contain" data-ai-hint="logo brand"/>
+                                            <Image src={conference.imageSrc || 'https://placehold.co/120x120.png'} alt={conference.shortTitle} width={120} height={120} className="w-28 h-28 object-contain" data-ai-hint="logo brand"/>
                                             <div className="text-center md:text-left flex-1 space-y-2">
                                                 <h4 className="font-bold text-base hover:text-primary"><Link href={`/conference/${conference.id}`}>{conference.title}</Link></h4>
                                                 <p className="text-sm text-primary font-semibold flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
