@@ -153,7 +153,7 @@ export async function updateSubmission(submission: Submission, data: UpdateSubmi
             return { success: false, message: validationResult.error.errors[0].message };
         }
 
-        const submissionRef = doc(db, 'submissions', id);
+        const submissionRef = doc(db, 'submissions', submission.id);
         await updateDoc(submissionRef, validationResult.data);
         
         // --- Send email if status is "Done" ---
