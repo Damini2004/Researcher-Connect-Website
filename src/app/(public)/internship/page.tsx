@@ -74,12 +74,14 @@ export default function InternshipPage() {
                             Please fill out your details below to apply. We will get back to you shortly.
                           </DialogDescription>
                         </DialogHeader>
-                        <ScrollArea className="flex-grow pr-6 -mr-6">
-                            <ContactForm 
-                               inquiryType="Internship Application"
-                               details={internship.name}
-                            />
-                        </ScrollArea>
+                        <div className="flex-grow overflow-y-auto pr-6 -mr-2">
+                            <ScrollArea className="h-full">
+                                <ContactForm 
+                                   inquiryType="Internship Application"
+                                   details={internship.name}
+                                />
+                            </ScrollArea>
+                        </div>
                       </DialogContent>
                    </Dialog>
                 </div>
