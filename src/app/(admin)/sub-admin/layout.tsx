@@ -10,14 +10,14 @@ export default function SubAdminLayout({
   return (
     <>
       <SubAdminSidebar />
-      <SidebarInset>
-        <div className="flex flex-col h-svh">
-          <AdminHeader role="sub-admin" />
+      <div className="flex flex-col w-full">
+        <AdminHeader role="sub-admin" />
+        <SidebarInset>
           <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             {children}
           </main>
-        </div>
-      </SidebarInset>
+        </SidebarInset>
+      </div>
     </>
   );
 }
