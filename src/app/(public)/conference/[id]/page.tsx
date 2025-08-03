@@ -211,7 +211,7 @@ function ConferenceDetailClient() {
                         </div>
                     </div>
                     <div className="md:col-span-8 text-center md:text-left space-y-4">
-                        <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight text-amber-400">{conference.title}</h1>
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-amber-400">{conference.title}</h1>
                         <div className="inline-flex items-center gap-4 bg-white/90 text-black px-4 py-2 rounded-full font-semibold text-sm">
                             <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4 text-primary"/>
@@ -223,10 +223,10 @@ function ConferenceDetailClient() {
                             </div>
                         </div>
                          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 pt-2">
-                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!isCallForPapersOpen}>
+                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white text-xs px-3 h-8 md:text-sm md:px-4 md:h-10" disabled={!isCallForPapersOpen}>
                               <Link href="/submit-journal"><FileText /> Abstract Submission</Link>
                             </Button>
-                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white" disabled={!conference.paperTemplateUrl}>
+                            <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white text-xs px-3 h-8 md:text-sm md:px-4 md:h-10" disabled={!conference.paperTemplateUrl}>
                                 <a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download /> Download Brochure</a>
                             </Button>
                         </div>
