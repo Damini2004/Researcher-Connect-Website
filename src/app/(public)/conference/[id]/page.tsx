@@ -137,21 +137,6 @@ function ConferenceDetailClient() {
         <CardContent>{children}</CardContent>
     </Card>
   );
-  
-  const InfoCard = ({ icon: Icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
-    <Card className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col p-6 group">
-        <div className="flex justify-between items-start mb-4">
-            <h3 className="font-semibold text-lg uppercase tracking-wide text-gray-700">{title}</h3>
-            <Icon className="h-8 w-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
-        </div>
-        <div className="text-gray-600 text-sm flex-grow">
-            {children}
-        </div>
-        <div className="mt-4 pt-4">
-            <div className="h-1 bg-gradient-to-r from-red-500 to-blue-500 rounded-full"></div>
-        </div>
-    </Card>
-  );
 
   const ImportantDates = () => {
     const dates = [
@@ -239,25 +224,36 @@ function ConferenceDetailClient() {
             </div>
         </div>
       </section>
-
+      <div className="container mx-auto px-4">
       <div className="py-12 md:py-24">
-        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-8">
                 <EyecatchyCard icon={Info} title="About the Conference">
                     {renderRichContent(conference.aboutConference)}
                 </EyecatchyCard>
 
-                <div className="grid md:grid-cols-1 gap-8">
-                    <InfoCard icon={Mic} title="Keynote Speakers">
-                        {renderListFromString(conference.keynoteSpeakers)}
-                    </InfoCard>
-                    <InfoCard icon={Users} title="Organizing Committee">
-                        {renderListFromString(conference.organizingCommittee)}
-                    </InfoCard>
-                    <InfoCard icon={BookOpen} title="Conference Tracks">
-                        {renderListFromString(conference.tracks)}
-                    </InfoCard>
-                </div>
+                <EyecatchyCard icon={Users} title="People & Topics">
+                    <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger>Keynote Speakers</AccordionTrigger>
+                            <AccordionContent>
+                                {renderListFromString(conference.keynoteSpeakers)}
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-2">
+                            <AccordionTrigger>Organizing Committee</AccordionTrigger>
+                            <AccordionContent>
+                                {renderListFromString(conference.organizingCommittee)}
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-3">
+                            <AccordionTrigger>Conference Tracks</AccordionTrigger>
+                            <AccordionContent>
+                                {renderListFromString(conference.tracks)}
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </EyecatchyCard>
                 
                  <EyecatchyCard icon={FileText} title="Submission Guidelines">
                     <div className="space-y-4">
@@ -302,6 +298,7 @@ function ConferenceDetailClient() {
                 <ImportantDates />
             </aside>
         </div>
+      </div>
       </div>
     </div>
   );
