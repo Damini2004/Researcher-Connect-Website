@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot } from 'firebase/firestore';
+import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { z } from 'zod';
 
 export interface Enquiry {
@@ -116,5 +116,33 @@ export async function getInquiries(): Promise<Inquiry[]> {
     } catch (error) {
         console.error("Error fetching inquiries: ", error);
         return [];
+    }
+}
+
+
+export async function updateInquiryStatus(id: string, status: 'Read' | 'Archived'): Promise<{ success: boolean; message: string }> {
+    try {
+        if (!id) {
+            return { success: false, message: 'Inquiry ID is required.' };
+        }
+        const inquiryRef = doc(db, 'inquiries', id);
+        await updateDoc(inquiryRef, { status });
+        return { success: true, message: 'Inquiry status updated successfully.' };
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to update status: ${message}` };
+    }
+}
+
+export async function deleteInquiry(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        if (!id) {
+            return { success: false, message: 'Inquiry ID is required.' };
+        }
+        await deleteDoc(doc(db, 'inquiries', id));
+        return { success: true, message: 'Inquiry deleted successfully.' };
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to delete inquiry: ${message}` };
     }
 }
