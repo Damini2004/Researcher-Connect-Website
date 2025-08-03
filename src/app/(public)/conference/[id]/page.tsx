@@ -243,8 +243,8 @@ function ConferenceDetailClient() {
         </div>
       </section>
 
-      <div className="container py-12 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+      <div className="py-12 md:py-24">
+        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-8">
                 <EyecatchyCard icon={Info} title="About the Conference">
                     {renderRichContent(conference.aboutConference)}
@@ -303,13 +303,6 @@ function ConferenceDetailClient() {
                     </CardContent>
                 </Card>
                 <ImportantDates />
-                <Card>
-                    <CardHeader><CardTitle>Contact & Links</CardTitle></CardHeader>
-                    <CardContent className="space-y-4">
-                       {conference.conferenceEmail && <><p className="font-semibold">Email</p><p className="text-sm text-muted-foreground break-all">{conference.conferenceEmail}</p></>}
-                       {conference.conferenceWebsite && <><Separator /><p className="font-semibold">Website</p><a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{conference.conferenceWebsite}</a></>}
-                    </CardContent>
-                </Card>
             </aside>
         </div>
       </div>
