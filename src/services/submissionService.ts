@@ -1,3 +1,4 @@
+
 // src/services/submissionService.ts
 'use server';
 
@@ -6,6 +7,7 @@ import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, order
 import { z } from 'zod';
 import { getConferenceById } from './conferenceService';
 import { sendEmail } from './emailService';
+import { getPaymentUrl } from './settingsService';
 
 // Zod schema for form data validation
 const submissionSchema = z.object({
@@ -158,16 +160,32 @@ export async function updateSubmission(submission: Submission, data: UpdateSubmi
         
         // --- Send email if status is "Done" ---
         if (validationResult.data.status === 'Done') {
-            const paymentUrl = 'https://buy.stripe.com/test_eVa3d25Pqgwhf2EaEE'; // Example payment link
-            const customMessage = `Dear ${submission.fullName},
+            const paymentUrlResult = await getPaymentUrl();
+            let paymentUrl = paymentUrlResult.success ? paymentUrlResult.url : '';
+            
+            if (!paymentUrl) {
+                console.warn("Payment URL not set. Sending approval email without payment link.");
+            }
+
+            let customMessage = `Dear ${submission.fullName},
 
 We are delighted to inform you that your paper, "${submission.title}", has been successfully approved for publication!
 
-Congratulations on this achievement. Our team was highly impressed with the quality and contribution of your research.
+Congratulations on this achievement. Our team was highly impressed with the quality and contribution of your research.`;
+
+            if (paymentUrl) {
+                customMessage += `
 
 As part of the publication process, please follow the link below to complete the payment for the publication fees.
 
-<a href="${paymentUrl}" class="button">Proceed to Payment</a>
+<a href="${paymentUrl}" class="button">Proceed to Payment</a>`;
+            } else {
+                 customMessage += `
+
+Please contact our administrative office to complete the final steps for publication.`;
+            }
+
+            customMessage += `
 
 Thank you for choosing Pure Research Insights. We look forward to featuring your work.`;
 

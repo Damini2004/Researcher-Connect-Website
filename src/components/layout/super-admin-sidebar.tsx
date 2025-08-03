@@ -13,7 +13,7 @@ import {
   SidebarMenuBadge
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { Users, BookCopy, LogOut, HelpCircle, Briefcase, CalendarDays, Presentation, FileText } from "lucide-react";
+import { Users, BookCopy, LogOut, HelpCircle, Briefcase, CalendarDays, Presentation, FileText, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -29,6 +29,7 @@ const menuItems = [
   { href: "/super-admin/conferences", label: "Conferences", icon: CalendarDays },
   { href: "/super-admin/webinars", label: "Webinars", icon: Presentation },
   { href: "/super-admin/enquiries", label: "Admin Enquiries", icon: HelpCircle, badgeId: "enquiries" },
+  { href: "/super-admin/settings", label: "Settings", icon: Settings },
 ];
 
 export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAdminSidebarProps) {
