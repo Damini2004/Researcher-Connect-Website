@@ -288,22 +288,6 @@ function ConferenceDetailClient() {
                 {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration & Fees">{renderRichContent(conference.registrationFees)}</EyecatchyCard>}
                 {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderRichContent(conference.accommodationDetails)}</EyecatchyCard>}
 
-                {conference.faqs && (
-                    <EyecatchyCard icon={FileQuestion} title="Frequently Asked Questions">
-                        <Accordion type="single" collapsible className="w-full">
-                            {conference.faqs.split('\n').filter(faq => faq.includes('?')).map((faq, index) => {
-                                const [question, ...answerParts] = faq.split('?');
-                                const answer = answerParts.join('?').trim();
-                                return (
-                                    <AccordionItem key={index} value={`item-${index}`}>
-                                        <AccordionTrigger>{question}?</AccordionTrigger>
-                                        <AccordionContent>{answer}</AccordionContent>
-                                    </AccordionItem>
-                                );
-                            })}
-                        </Accordion>
-                    </EyecatchyCard>
-                )}
             </main>
             <aside className="space-y-6 sticky top-24 self-start">
                 <Card>
