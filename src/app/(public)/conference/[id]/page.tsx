@@ -326,7 +326,6 @@ function ConferenceDetailClient() {
                        {conference.conferenceWebsite && <><Separator /><p className="font-semibold">Website</p><a href={conference.conferenceWebsite} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{conference.conferenceWebsite}</a></>}
                     </CardContent>
                 </Card>
-                {conference.editorialBoard && <Card><CardHeader><CardTitle>Editorial Board</CardTitle></CardHeader><CardContent>{renderListFromString(conference.editorialBoard)}</CardContent></Card>}
             </aside>
         </div>
       </div>
