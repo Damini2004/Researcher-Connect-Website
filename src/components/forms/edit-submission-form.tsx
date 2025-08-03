@@ -53,7 +53,7 @@ export default function EditSubmissionForm({ submission, onSubmissionUpdated, on
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
-    const result = await updateSubmission(submission.id, values);
+    const result = await updateSubmission(submission, values);
 
     if (result.success && result.updatedSubmission) {
       toast({

@@ -11,12 +11,10 @@ const emailPort = process.env.EMAIL_SERVER_PORT || 587;
 interface EmailParams {
   to: string;
   subject: string;
-  submissionTitle: string;
-  authorName: string;
   customMessage: string;
 }
 
-const createHtmlTemplate = (authorName: string, submissionTitle: string, customMessage: string): string => `
+const createHtmlTemplate = (customMessage: string): string => `
   <!DOCTYPE html>
   <html>
   <head>
@@ -30,6 +28,7 @@ const createHtmlTemplate = (authorName: string, submissionTitle: string, customM
       .content { padding: 32px; }
       .content p { margin: 0 0 16px; }
       .message-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0; }
+      .button { display: inline-block; background-color: #D32F2F; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; }
       .footer { background-color: #f1f5f9; padding: 24px; text-align: center; color: #64748b; font-size: 12px; }
       .footer a { color: #D32F2F; text-decoration: none; }
     </style>
@@ -57,7 +56,7 @@ const createHtmlTemplate = (authorName: string, submissionTitle: string, customM
 
 
 export async function sendEmail(params: EmailParams): Promise<{ success: boolean; message: string }> {
-  const { to, subject, submissionTitle, authorName, customMessage } = params;
+  const { to, subject, customMessage } = params;
 
   if (!emailUser || !emailPass) {
     const errorMessage = 'Email credentials are not configured. Please ensure EMAIL_SERVER_USER and EMAIL_SERVER_PASSWORD are set in your .env.local file.';
@@ -80,7 +79,7 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
       from: `"Pure Research Insights" <${emailUser}>`,
       to: to,
       subject: subject,
-      html: createHtmlTemplate(authorName, submissionTitle, customMessage),
+      html: createHtmlTemplate(customMessage),
     });
 
     console.log('Message sent: %s', info.messageId);

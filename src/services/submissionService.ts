@@ -1,4 +1,3 @@
-
 // src/services/submissionService.ts
 'use server';
 
@@ -6,7 +5,7 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, orderBy, query, doc, updateDoc, getDoc, deleteDoc, where } from 'firebase/firestore';
 import { z } from 'zod';
 import { getConferenceById } from './conferenceService';
-import { getSubAdminByEmail } from './subAdminService';
+import { sendEmail } from './emailService';
 
 // Zod schema for form data validation
 const submissionSchema = z.object({
@@ -147,7 +146,7 @@ export async function getSubmissions(options: { subAdminId?: string } = {}): Pro
     }
 }
 
-export async function updateSubmission(id: string, data: UpdateSubmissionData): Promise<{ success: boolean; message: string; updatedSubmission?: Submission }> {
+export async function updateSubmission(submission: Submission, data: UpdateSubmissionData): Promise<{ success: boolean; message: string; updatedSubmission?: Submission }> {
     try {
         const validationResult = updateSubmissionSchema.safeParse(data);
         if (!validationResult.success) {
@@ -156,6 +155,28 @@ export async function updateSubmission(id: string, data: UpdateSubmissionData): 
 
         const submissionRef = doc(db, 'submissions', id);
         await updateDoc(submissionRef, validationResult.data);
+        
+        // --- Send email if status is "Done" ---
+        if (validationResult.data.status === 'Done') {
+            const paymentUrl = 'https://buy.stripe.com/test_eVa3d25Pqgwhf2EaEE'; // Example payment link
+            const customMessage = `Dear ${submission.fullName},
+
+We are delighted to inform you that your paper, "${submission.title}", has been successfully approved for publication!
+
+Congratulations on this achievement. Our team was highly impressed with the quality and contribution of your research.
+
+As part of the publication process, please follow the link below to complete the payment for the publication fees.
+
+<a href="${paymentUrl}" class="button">Proceed to Payment</a>
+
+Thank you for choosing Pure Research Insights. We look forward to featuring your work.`;
+
+            await sendEmail({
+                to: submission.email,
+                subject: `Your Submission is Approved: "${submission.title}"`,
+                customMessage,
+            });
+        }
         
         const updatedDoc = await getDoc(submissionRef);
         const updatedData = updatedDoc.data();
