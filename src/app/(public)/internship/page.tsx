@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import ContactForm from "@/components/forms/contact-form";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/icons";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
@@ -34,7 +35,7 @@ export default function InternshipPage() {
     };
     
     fetchInternships();
-  }, []); 
+  }, [toast]); 
 
   return (
     <div className="container py-12 md:py-24">
@@ -48,7 +49,7 @@ export default function InternshipPage() {
             <Logo className="h-32 w-32" />
         </div>
       ) : internships.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {internships.map(internship => (
             <Card key={internship.id} className="flex flex-col">
               <div className="relative h-[250px] w-full overflow-hidden">
@@ -66,17 +67,19 @@ export default function InternshipPage() {
                       <DialogTrigger asChild>
                          <Button>Register Now</Button>
                       </DialogTrigger>
-                      <DialogContent className="sm:max-w-md">
+                      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
                         <DialogHeader>
                           <DialogTitle>Apply for: {internship.name}</DialogTitle>
                           <DialogDescription>
                             Please fill out your details below to apply. We will get back to you shortly.
                           </DialogDescription>
                         </DialogHeader>
-                        <ContactForm 
-                           inquiryType="Internship Application"
-                           details={internship.name}
-                        />
+                        <ScrollArea className="flex-grow pr-6 -mr-6">
+                            <ContactForm 
+                               inquiryType="Internship Application"
+                               details={internship.name}
+                            />
+                        </ScrollArea>
                       </DialogContent>
                    </Dialog>
                 </div>
