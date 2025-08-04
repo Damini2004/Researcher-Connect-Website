@@ -155,17 +155,19 @@ function ConferenceDetailClient() {
   const submissionEndDate = new Date(conference.submissionEndDate);
   const isCallForPapersOpen = submissionEndDate >= today;
 
-  const EyecatchyCard = ({ icon: Icon, title, children, className }: { icon: React.ElementType, title: string, children: React.ReactNode, className?: string }) => (
+  const EyecatchyCard = ({ icon: Icon, title, children, className }: { icon: React.ElementType, title?: string, children: React.ReactNode, className?: string }) => (
     <Card className={cn("hover:shadow-lg transition-shadow duration-300", className)}>
-        <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-md">
-                   <Icon className="h-5 w-5 text-primary" />
-                </div>
-                {title}
-            </CardTitle>
-        </CardHeader>
-        <CardContent>{children}</CardContent>
+        {title && (
+            <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-primary/10 rounded-md">
+                       <Icon className="h-5 w-5 text-primary" />
+                    </div>
+                    {title}
+                </CardTitle>
+            </CardHeader>
+        )}
+        <CardContent className={cn(!title && "pt-6")}>{children}</CardContent>
     </Card>
   );
 
@@ -258,7 +260,7 @@ function ConferenceDetailClient() {
       <div className="py-12 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-8">
-                <EyecatchyCard icon={Users} title="About, People &amp; Topics">
+                <EyecatchyCard icon={Users}>
                     <div className="space-y-6">
                         <div>
                             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80"/>About the Conference</h3>
