@@ -155,8 +155,8 @@ function ConferenceDetailClient() {
   const submissionEndDate = new Date(conference.submissionEndDate);
   const isCallForPapersOpen = submissionEndDate >= today;
 
-  const EyecatchyCard = ({ icon: Icon, title, children }: { icon: React.ElementType, title: string, children: React.ReactNode }) => (
-    <Card className="hover:shadow-lg transition-shadow duration-300">
+  const EyecatchyCard = ({ icon: Icon, title, children, className }: { icon: React.ElementType, title: string, children: React.ReactNode, className?: string }) => (
+    <Card className={cn("hover:shadow-lg transition-shadow duration-300", className)}>
         <CardHeader>
             <CardTitle className="flex items-center gap-3">
                 <div className="p-2 bg-primary/10 rounded-md">
@@ -240,8 +240,7 @@ function ConferenceDetailClient() {
                         </div>
                          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 pt-2">
                             <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white text-xs px-3 h-8 md:text-sm md:px-4 md:h-10" disabled={!isCallForPapersOpen}>
-                              <Link href="/submit-journal"><FileText /> Abstract Submission</Link>
-                            </Button>
+                              <Link href="/submit-journal"><FileText /> Abstract Submission</Link></Button>
                             <Button asChild variant="outline" className="bg-white/90 text-black hover:bg-white text-xs px-3 h-8 md:text-sm md:px-4 md:h-10" disabled={!conference.paperTemplateUrl}>
                                 <a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download /> Download Brochure</a>
                             </Button>
@@ -259,31 +258,34 @@ function ConferenceDetailClient() {
       <div className="py-12 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-8">
-                <EyecatchyCard icon={Info} title="About the Conference">
-                    {renderRichContent(conference.aboutConference)}
-                </EyecatchyCard>
-
-                <EyecatchyCard icon={Users} title="People & Topics">
-                    <Accordion type="single" collapsible className="w-full space-y-2">
-                        <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
-                            <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
-                            <AccordionContent>
-                                {renderPeopleAsCards(conference.keynoteSpeakers)}
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-2" className="bg-secondary/50 rounded-lg px-4 border-b-0">
-                            <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
-                            <AccordionContent>
-                                {renderPeopleAsCards(conference.organizingCommittee)}
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-3" className="bg-secondary/50 rounded-lg px-4 border-b-0">
-                            <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
-                            <AccordionContent>
-                                {renderTracksAsCards(conference.tracks)}
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
+                <EyecatchyCard icon={Users} title="About, People &amp; Topics">
+                    <div className="space-y-6">
+                        <div>
+                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80"/>About the Conference</h3>
+                            {renderRichContent(conference.aboutConference)}
+                        </div>
+                        <Separator />
+                        <Accordion type="single" collapsible className="w-full space-y-2">
+                            <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                                <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
+                                <AccordionContent>
+                                    {renderPeopleAsCards(conference.keynoteSpeakers)}
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="item-2" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                                <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
+                                <AccordionContent>
+                                    {renderPeopleAsCards(conference.organizingCommittee)}
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="item-3" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                                <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
+                                <AccordionContent>
+                                    {renderTracksAsCards(conference.tracks)}
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
                 </EyecatchyCard>
                 
                  <EyecatchyCard icon={FileText} title="Submission Guidelines">
@@ -309,7 +311,7 @@ function ConferenceDetailClient() {
                     </div>
                 </EyecatchyCard>
                 
-                {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration & Fees">{renderRichContent(conference.registrationFees)}</EyecatchyCard>}
+                {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration &amp; Fees">{renderRichContent(conference.registrationFees)}</EyecatchyCard>}
                 {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderRichContent(conference.accommodationDetails)}</EyecatchyCard>}
 
             </main>
