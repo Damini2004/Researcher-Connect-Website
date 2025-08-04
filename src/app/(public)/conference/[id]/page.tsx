@@ -1,3 +1,4 @@
+
 // src/app/(public)/conference/[id]/page.tsx
 "use client";
 
@@ -258,7 +259,7 @@ function ConferenceDetailClient() {
       </section>
       <div className="container mx-auto px-4">
       <div className="py-12 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-6">
                 <EyecatchyCard icon={Users}>
                     <div className="space-y-6">
