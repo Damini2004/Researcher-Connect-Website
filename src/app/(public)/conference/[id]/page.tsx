@@ -120,9 +120,9 @@ function ConferenceDetailClient() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {items.map((item, index) => (
-          <div key={index} className="bg-secondary/70 rounded-lg p-4 flex items-center space-x-4 transition-all duration-300 hover:shadow-md hover:scale-105">
+          <div key={index} className="bg-secondary/70 group rounded-lg p-4 flex items-center space-x-4 transition-all duration-300 hover:shadow-md hover:scale-105">
             <div className="p-2 bg-primary/10 rounded-md">
-              <ListTree className="h-5 w-5 text-primary" />
+              <ListTree className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-110" />
             </div>
             <span className="font-medium text-sm text-foreground">{item}</span>
           </div>
@@ -156,12 +156,12 @@ function ConferenceDetailClient() {
   const isCallForPapersOpen = submissionEndDate >= today;
 
   const EyecatchyCard = ({ icon: Icon, title, children, className }: { icon: React.ElementType, title?: string, children: React.ReactNode, className?: string }) => (
-    <Card className={cn("hover:shadow-lg transition-shadow duration-300", className)}>
+    <Card className={cn("hover:shadow-lg transition-shadow duration-300 group", className)}>
         {title && (
             <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 rounded-md">
-                       <Icon className="h-5 w-5 text-primary" />
+                       <Icon className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
                     </div>
                     {title}
                 </CardTitle>
@@ -181,8 +181,8 @@ function ConferenceDetailClient() {
     if (dates.length === 0) return null;
 
     return (
-      <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5"/>Important Dates</CardTitle></CardHeader>
+      <Card className="group">
+          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"/>Important Dates</CardTitle></CardHeader>
           <CardContent className="text-sm">
               <table className="w-full">
                   <tbody>
@@ -266,7 +266,7 @@ function ConferenceDetailClient() {
                             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80"/>About the Conference</h3>
                             {renderRichContent(conference.aboutConference)}
                         </div>
-                        <Separator />
+                        <Separator className="my-6 bg-primary/20" />
                         <Accordion type="single" collapsible className="w-full space-y-2">
                             <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
