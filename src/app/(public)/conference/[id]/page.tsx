@@ -287,32 +287,33 @@ function ConferenceDetailClient() {
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
-                    </div>
-                </EyecatchyCard>
-                
-                 <EyecatchyCard icon={FileText} title="Submission Guidelines">
-                    <div className="space-y-4">
-                       {isCallForPapersOpen ? (
-                            <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
-                                <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
-                                <div>
-                                    <h4 className="font-semibold">Call for Papers is Open</h4>
-                                    <p className="text-sm text-muted-foreground">Submission Deadline: {format(new Date(conference.submissionEndDate), "PPP")}</p>
-                                </div>
+                        <Separator className="my-6 bg-primary/20" />
+                        <div>
+                             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><FileText className="h-5 w-5 text-primary/80"/>Submission Guidelines</h3>
+                             <div className="space-y-4">
+                               {isCallForPapersOpen ? (
+                                    <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
+                                        <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <div>
+                                            <h4 className="font-semibold">Call for Papers is Open</h4>
+                                            <p className="text-sm text-muted-foreground">Submission Deadline: {format(new Date(conference.submissionEndDate), "PPP")}</p>
+                                        </div>
+                                    </div>
+                               ) : (
+                                   <p className="text-muted-foreground">The call for papers for this conference has closed.</p>
+                               )}
+                               <div className="text-sm text-muted-foreground space-y-3">
+                                    <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
+                                    <div><strong>Accepted Categories:</strong> <div className="flex flex-wrap gap-2 mt-1">{conference.paperCategories.map(cat => <Badge key={cat} variant="outline">{getPaperCategoryLabel(cat)}</Badge>)}</div></div>
+                                    {conference.peerReviewMethod && <p><strong>Review Method:</strong> {conference.peerReviewMethod}</p>}
+                                    {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderRichContent(conference.submissionInstructions)}</div>}
+                                    {conference.paperTemplateUrl && <Button asChild variant="link" className="p-0 h-auto"><a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download className="mr-2 h-4 w-4"/>Download Paper Template</a></Button>}
+                               </div>
                             </div>
-                       ) : (
-                           <p className="text-muted-foreground">The call for papers for this conference has closed.</p>
-                       )}
-                       <div className="text-sm text-muted-foreground space-y-3">
-                            <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
-                            <div><strong>Accepted Categories:</strong> <div className="flex flex-wrap gap-2 mt-1">{conference.paperCategories.map(cat => <Badge key={cat} variant="outline">{getPaperCategoryLabel(cat)}</Badge>)}</div></div>
-                            {conference.peerReviewMethod && <p><strong>Review Method:</strong> {conference.peerReviewMethod}</p>}
-                            {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderRichContent(conference.submissionInstructions)}</div>}
-                            {conference.paperTemplateUrl && <Button asChild variant="link" className="p-0 h-auto"><a href={conference.paperTemplateUrl} target="_blank" rel="noopener noreferrer"><Download className="mr-2 h-4 w-4"/>Download Paper Template</a></Button>}
-                       </div>
+                        </div>
                     </div>
                 </EyecatchyCard>
-                
+
                 {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration &amp; Fees">{renderRichContent(conference.registrationFees)}</EyecatchyCard>}
                 {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderRichContent(conference.accommodationDetails)}</EyecatchyCard>}
 
