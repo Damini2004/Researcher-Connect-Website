@@ -311,12 +311,26 @@ function ConferenceDetailClient() {
                                </div>
                             </div>
                         </div>
+                        {conference.registrationFees && (
+                            <>
+                                <Separator className="my-6 bg-primary/20" />
+                                <div>
+                                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Banknote className="h-5 w-5 text-primary/80"/>Registration &amp; Fees</h3>
+                                    {renderRichContent(conference.registrationFees)}
+                                </div>
+                            </>
+                        )}
+                        {conference.accommodationDetails && (
+                            <>
+                                <Separator className="my-6 bg-primary/20" />
+                                <div>
+                                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Hotel className="h-5 w-5 text-primary/80"/>Accommodation</h3>
+                                    {renderRichContent(conference.accommodationDetails)}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </EyecatchyCard>
-
-                {conference.registrationFees && <EyecatchyCard icon={Banknote} title="Registration &amp; Fees">{renderRichContent(conference.registrationFees)}</EyecatchyCard>}
-                {conference.accommodationDetails && <EyecatchyCard icon={Hotel} title="Accommodation">{renderRichContent(conference.accommodationDetails)}</EyecatchyCard>}
-
             </main>
             <aside className="space-y-6 sticky top-24 self-start">
                 <Card>
