@@ -88,10 +88,15 @@ export default {
             height: '0',
           },
         },
+        'width-pulse': {
+          '0%, 100%': { width: '10%' },
+          '50%': { width: '100%' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'width-pulse': 'width-pulse 3s ease-in-out infinite',
       },
     },
   },
