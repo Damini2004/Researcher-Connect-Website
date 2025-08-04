@@ -264,7 +264,7 @@ function ConferenceDetailClient() {
                     <div className="space-y-6">
                         <div>
                             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80"/>About the Conference</h3>
-                            <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                            <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                             {renderRichContent(conference.aboutConference)}
                         </div>
                         
@@ -291,7 +291,7 @@ function ConferenceDetailClient() {
                         
                         <div className="pt-6">
                              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><FileText className="h-5 w-5 text-primary/80"/>Submission Guidelines</h3>
-                              <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                              <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                              <div className="space-y-4 pt-4">
                                {isCallForPapersOpen ? (
                                     <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
@@ -316,7 +316,7 @@ function ConferenceDetailClient() {
                         {conference.registrationFees && (
                             <div className="pt-6">
                                 <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Banknote className="h-5 w-5 text-primary/80"/>Registration &amp; Fees</h3>
-                                <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                                <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                                 <div className="pt-4">
                                     {renderRichContent(conference.registrationFees)}
                                 </div>
@@ -325,7 +325,7 @@ function ConferenceDetailClient() {
                         {conference.accommodationDetails && (
                             <div className="pt-6">
                                 <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Hotel className="h-5 w-5 text-primary/80"/>Accommodation</h3>
-                                 <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                                 <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                                 <div className="pt-4">
                                   {renderRichContent(conference.accommodationDetails)}
                                 </div>
