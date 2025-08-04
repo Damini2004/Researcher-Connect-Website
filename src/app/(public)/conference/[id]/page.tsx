@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 function ConferenceDetailClient() {
   const [conference, setConference] = useState<Conference | null>(null);
@@ -233,21 +234,21 @@ function ConferenceDetailClient() {
                 </EyecatchyCard>
 
                 <EyecatchyCard icon={Users} title="People & Topics">
-                    <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger>Keynote Speakers</AccordionTrigger>
+                    <Accordion type="single" collapsible className="w-full space-y-2">
+                        <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                            <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                             <AccordionContent>
                                 {renderListFromString(conference.keynoteSpeakers)}
                             </AccordionContent>
                         </AccordionItem>
-                        <AccordionItem value="item-2">
-                            <AccordionTrigger>Organizing Committee</AccordionTrigger>
+                        <AccordionItem value="item-2" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                            <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
                             <AccordionContent>
                                 {renderListFromString(conference.organizingCommittee)}
                             </AccordionContent>
                         </AccordionItem>
-                        <AccordionItem value="item-3">
-                            <AccordionTrigger>Conference Tracks</AccordionTrigger>
+                        <AccordionItem value="item-3" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                            <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
                             <AccordionContent>
                                 {renderListFromString(conference.tracks)}
                             </AccordionContent>
