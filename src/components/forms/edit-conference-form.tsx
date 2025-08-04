@@ -300,8 +300,21 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
                     <section>
                         <h3 className="text-lg font-medium mb-4">Content & People</h3>
                         <div className="space-y-6">
-                            <FormField control={form.control} name="aboutConference" render={({ field }) => ( <FormItem> <FormLabel>About Conference</FormLabel> <FormControl> <RichTextEditor value={field.value || ''} onChange={field.onChange} placeholder="Provide a detailed description of the conference..."/>
-                                </FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField
+                                control={form.control}
+                                name="aboutConference"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>About Conference</FormLabel>
+                                        <RichTextEditor
+                                            value={field.value || ''}
+                                            onChange={field.onChange}
+                                            placeholder="Provide a detailed description of the conference..."
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <FormField control={form.control} name="conferenceWebsite" render={({ field }) => ( <FormItem> <FormLabel>Conference Website URL</FormLabel> <FormControl><Input placeholder="https://example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                                 <FormField control={form.control} name="conferenceEmail" render={({ field }) => ( <FormItem> <FormLabel>Conference Email / Contact</FormLabel> <FormControl><Input placeholder="contact@example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
