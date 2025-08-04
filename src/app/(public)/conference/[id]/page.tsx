@@ -19,6 +19,7 @@ import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 function ConferenceDetailClient() {
   const [conference, setConference] = useState<Conference | null>(null);
@@ -92,12 +93,41 @@ function ConferenceDetailClient() {
     );
   }
 
-  const renderListFromString = (text?: string) => {
+  const renderPeopleAsCards = (text?: string) => {
     if (!text) return <p className="text-muted-foreground">Not available.</p>;
+    const items = text.split('\n').map(item => item.trim()).filter(Boolean);
+    if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
+
     return (
-      <ul className="list-disc list-inside text-muted-foreground space-y-1 break-words">
-        {text.split('\n').map((item, index) => item.trim() && <li key={index}>{item.trim()}</li>)}
-      </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {items.map((item, index) => (
+                <div key={index} className="bg-secondary/70 rounded-lg p-3 flex items-center space-x-3 transition-all duration-300 hover:shadow-md hover:scale-105">
+                    <Avatar>
+                        <AvatarFallback>{item.charAt(0).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <span className="font-medium text-sm text-foreground">{item}</span>
+                </div>
+            ))}
+        </div>
+    );
+  };
+  
+  const renderTracksAsCards = (text?: string) => {
+    if (!text) return <p className="text-muted-foreground">Not available.</p>;
+    const items = text.split('\n').map(item => item.trim()).filter(Boolean);
+    if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {items.map((item, index) => (
+          <div key={index} className="bg-secondary/70 rounded-lg p-4 flex items-center space-x-4 transition-all duration-300 hover:shadow-md hover:scale-105">
+            <div className="p-2 bg-primary/10 rounded-md">
+              <ListTree className="h-5 w-5 text-primary" />
+            </div>
+            <span className="font-medium text-sm text-foreground">{item}</span>
+          </div>
+        ))}
+      </div>
     );
   };
   
@@ -238,19 +268,19 @@ function ConferenceDetailClient() {
                         <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                             <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                             <AccordionContent>
-                                {renderListFromString(conference.keynoteSpeakers)}
+                                {renderPeopleAsCards(conference.keynoteSpeakers)}
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-2" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                             <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
                             <AccordionContent>
-                                {renderListFromString(conference.organizingCommittee)}
+                                {renderPeopleAsCards(conference.organizingCommittee)}
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-3" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                             <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
                             <AccordionContent>
-                                {renderListFromString(conference.tracks)}
+                                {renderTracksAsCards(conference.tracks)}
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
