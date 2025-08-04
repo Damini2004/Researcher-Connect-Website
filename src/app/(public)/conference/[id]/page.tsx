@@ -258,16 +258,17 @@ function ConferenceDetailClient() {
       </section>
       <div className="container mx-auto px-4">
       <div className="py-12 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             <main className="lg:col-span-2 space-y-6">
                 <EyecatchyCard icon={Users}>
                     <div className="space-y-6">
                         <div>
                             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80"/>About the Conference</h3>
+                            <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
                             {renderRichContent(conference.aboutConference)}
                         </div>
-                        <Separator className="my-6 bg-primary/20 mx-auto animate-width-pulse" />
-                        <Accordion type="single" collapsible className="w-full space-y-2">
+                        
+                        <Accordion type="single" collapsible className="w-full space-y-2 pt-6">
                             <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                                 <AccordionContent>
@@ -287,10 +288,11 @@ function ConferenceDetailClient() {
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
-                        <Separator className="my-6 bg-primary/20 mx-auto animate-width-pulse" />
-                        <div>
+                        
+                        <div className="pt-6">
                              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><FileText className="h-5 w-5 text-primary/80"/>Submission Guidelines</h3>
-                             <div className="space-y-4">
+                              <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                             <div className="space-y-4 pt-4">
                                {isCallForPapersOpen ? (
                                     <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
                                         <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
@@ -312,22 +314,22 @@ function ConferenceDetailClient() {
                             </div>
                         </div>
                         {conference.registrationFees && (
-                            <>
-                                <Separator className="my-6 bg-primary/20 mx-auto animate-width-pulse" />
-                                <div>
-                                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Banknote className="h-5 w-5 text-primary/80"/>Registration &amp; Fees</h3>
+                            <div className="pt-6">
+                                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Banknote className="h-5 w-5 text-primary/80"/>Registration &amp; Fees</h3>
+                                <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                                <div className="pt-4">
                                     {renderRichContent(conference.registrationFees)}
                                 </div>
-                            </>
+                            </div>
                         )}
                         {conference.accommodationDetails && (
-                            <>
-                                <Separator className="my-6 bg-primary/20 mx-auto animate-width-pulse" />
-                                <div>
-                                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Hotel className="h-5 w-5 text-primary/80"/>Accommodation</h3>
-                                    {renderRichContent(conference.accommodationDetails)}
+                            <div className="pt-6">
+                                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Hotel className="h-5 w-5 text-primary/80"/>Accommodation</h3>
+                                 <Separator className="my-2 bg-primary/20 mx-auto animate-width-pulse" />
+                                <div className="pt-4">
+                                  {renderRichContent(conference.accommodationDetails)}
                                 </div>
-                            </>
+                            </div>
                         )}
                     </div>
                 </EyecatchyCard>
