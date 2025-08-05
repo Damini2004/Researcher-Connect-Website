@@ -181,8 +181,8 @@ function ConferenceDetailClient() {
     if (dates.length === 0) return null;
 
     return (
-      <Card className="group">
-          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"/>Important Dates</CardTitle></CardHeader>
+      <Card>
+          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5"/>Important Dates</CardTitle></CardHeader>
           <CardContent className="text-sm">
               <table className="w-full">
                   <tbody>
@@ -337,12 +337,12 @@ function ConferenceDetailClient() {
                 </EyecatchyCard>
             </main>
             <aside className="space-y-6 sticky top-24 self-start">
-                <Card className="group">
+                <Card>
                     <CardHeader><CardTitle>Event Details</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="flex items-start gap-3"><Calendar className="h-5 w-5 text-primary flex-shrink-0 transition-transform duration-300 group-hover:animate-dance" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
+                        <div className="flex items-start gap-3"><Calendar className="h-5 w-5 text-primary flex-shrink-0 animate-pulse" /><div><p className="font-semibold">Date</p><p className="text-sm text-muted-foreground">{conference.date}</p></div></div>
                         <Separator />
-                        <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0 transition-transform duration-300 group-hover:animate-dance" /><div><p className="font-semibold">Venue</p><p className="text-sm text-muted-foreground">{conference.venueName}<br />{conference.location}</p></div></div>
+                        <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-primary flex-shrink-0 animate-pulse" /><div><p className="font-semibold">Venue</p><p className="text-sm text-muted-foreground">{conference.venueName}<br />{conference.location}</p></div></div>
                          {conference.keywords && <>
                             <Separator />
                             <div><p className="font-semibold mb-2">Keywords</p><div className="flex flex-wrap gap-1">{conference.keywords.split(',').map((k, index) => k.trim() && <Badge key={`${k.trim()}-${index}`} variant="secondary">{k.trim()}</Badge>)}</div></div>
