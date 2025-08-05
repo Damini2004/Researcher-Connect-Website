@@ -263,7 +263,7 @@ function ConferenceDetailClient() {
                 <EyecatchyCard icon={Users}>
                     <div className="space-y-6">
                         <div>
-                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80"/>About the Conference</h3>
+                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Info className="h-5 w-5 text-primary/80 transition-transform duration-300 group-hover:rotate-6"/>About the Conference</h3>
                             <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                             {renderRichContent(conference.aboutConference)}
                         </div>
@@ -290,7 +290,7 @@ function ConferenceDetailClient() {
                         </Accordion>
                         
                         <div className="pt-6">
-                             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><FileText className="h-5 w-5 text-primary/80"/>Submission Guidelines</h3>
+                             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><FileText className="h-5 w-5 text-primary/80 transition-transform duration-300 group-hover:rotate-6"/>Submission Guidelines</h3>
                               <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                              <div className="space-y-4 pt-4">
                                {isCallForPapersOpen ? (
@@ -315,7 +315,7 @@ function ConferenceDetailClient() {
                         </div>
                         {conference.registrationFees && (
                             <div className="pt-6">
-                                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Banknote className="h-5 w-5 text-primary/80"/>Registration &amp; Fees</h3>
+                                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Banknote className="h-5 w-5 text-primary/80 transition-transform duration-300 group-hover:rotate-6"/>Registration &amp; Fees</h3>
                                 <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                                 <div className="pt-4">
                                     {renderRichContent(conference.registrationFees)}
@@ -324,7 +324,7 @@ function ConferenceDetailClient() {
                         )}
                         {conference.accommodationDetails && (
                             <div className="pt-6">
-                                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Hotel className="h-5 w-5 text-primary/80"/>Accommodation</h3>
+                                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><Hotel className="h-5 w-5 text-primary/80 transition-transform duration-300 group-hover:rotate-6"/>Accommodation</h3>
                                  <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                                 <div className="pt-4">
                                   {renderRichContent(conference.accommodationDetails)}
