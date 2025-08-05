@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { ArrowRight, BookCheck, BrainCircuit, Microscope, Calendar, MapPin } from "lucide-react";
@@ -73,10 +74,10 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:max-w-none mt-12">
-              <Card className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-transparent hover:border-primary/30">
+              <Card className="group transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-transparent hover:border-primary/30">
                 <CardHeader className="items-center text-center">
                   <div className="p-4 rounded-full bg-primary/10 w-fit">
-                    <BrainCircuit className="h-10 w-10 text-primary" />
+                    <BrainCircuit className="h-10 w-10 text-primary transition-transform duration-300 group-hover:rotate-6" />
                   </div>
                   <CardTitle className="mt-4 text-xl">AI-Powered Tagging</CardTitle>
                 </CardHeader>
@@ -84,10 +85,10 @@ export default function HomePage() {
                   <p className="text-muted-foreground">Our intelligent system automatically suggests relevant tags for your submissions, improving discoverability and matching with reviewers.</p>
                 </CardContent>
               </Card>
-              <Card className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-transparent hover:border-primary/30">
+              <Card className="group transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-transparent hover:border-primary/30">
                 <CardHeader className="items-center text-center">
                   <div className="p-4 rounded-full bg-primary/10 w-fit">
-                     <BookCheck className="h-10 w-10 text-primary" />
+                     <BookCheck className="h-10 w-10 text-primary transition-transform duration-300 group-hover:rotate-6" />
                   </div>
                   <CardTitle className="mt-4 text-xl">Efficient Submission</CardTitle>
                 </CardHeader>
@@ -95,10 +96,10 @@ export default function HomePage() {
                   <p className="text-muted-foreground">A user-friendly form and dashboard for authors to submit and track their manuscripts with ease.</p>
                 </CardContent>
               </Card>
-              <Card className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-transparent hover:border-primary/30">
+              <Card className="group transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-transparent hover:border-primary/30">
                 <CardHeader className="items-center text-center">
                   <div className="p-4 rounded-full bg-primary/10 w-fit">
-                     <Microscope className="h-10 w-10 text-primary" />
+                     <Microscope className="h-10 w-10 text-primary transition-transform duration-300 group-hover:rotate-6" />
                   </div>
                   <CardTitle className="mt-4 text-xl">Robust Admin Tools</CardTitle>
                 </CardHeader>
