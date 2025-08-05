@@ -100,7 +100,7 @@ export default function ConferencesPage() {
                                             </div>
                                             <div className="mt-4 pt-4 border-t border-gray-200 text-sm space-y-2 text-muted-foreground">
                                                 <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4 text-primary"/><span>{conference.date}</span></p>
-                                                <p className="flex items-center justify-center gap-2"><MapPin className="h-4 w-4 text-primary"/><span>{conference.location}</span></p>
+                                                <p className="flex items-center justify-center gap-2"><MapPin className="h-5 w-5 text-primary animate-pulse"/><span>{conference.location}</span></p>
                                             </div>
                                         </Card>
                                     </div>
@@ -146,7 +146,7 @@ export default function ConferencesPage() {
                                                 <p className="text-sm text-primary font-semibold flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
                                             </div>
                                             <div className="text-center md:text-right space-y-2">
-                                                 <p className="text-sm font-bold flex items-center justify-center md:justify-end gap-2 text-primary hover:underline"><MapPin className="h-4 w-4" /> {conference.location}</p>
+                                                 <p className="text-sm font-bold flex items-center justify-center md:justify-end gap-2 text-primary hover:underline"><MapPin className="h-5 w-5 animate-pulse" /> {conference.location}</p>
                                                  <Link href={`/conference/${conference.id}`} className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center md:justify-end gap-1">
                                                     <Eye className="h-4 w-4"/> View Details
                                                  </Link>
