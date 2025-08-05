@@ -101,7 +101,7 @@ function ConferenceDetailClient() {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {items.map((item, index) => (
-                <div key={index} className="bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg p-4 flex flex-col items-center space-y-3 text-center transition-all duration-300 border border-transparent">
+                <div key={index} className="bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg p-4 flex flex-col items-center space-y-3 text-center transition-all duration-300">
                     <Avatar className="h-16 w-16">
                         <AvatarFallback className="text-xl">{item.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
