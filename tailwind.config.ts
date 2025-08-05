@@ -92,11 +92,16 @@ export default {
           '0%, 100%': { width: '10%' },
           '50%': { width: '100%' },
         },
+        'dance': {
+          '0%, 100%': { transform: 'rotate(-6deg)' },
+          '50%': { transform: 'rotate(6deg)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'width-pulse': 'width-pulse 3s ease-in-out infinite',
+        'dance': 'dance 0.5s ease-in-out infinite',
       },
     },
   },
