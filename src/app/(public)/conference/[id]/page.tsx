@@ -101,11 +101,11 @@ function ConferenceDetailClient() {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {items.map((item, index) => (
-                <div key={index} className="bg-secondary/70 rounded-lg p-3 flex items-center space-x-3 transition-all duration-300 hover:shadow-md hover:scale-105">
-                    <Avatar>
-                        <AvatarFallback>{item.charAt(0).toUpperCase()}</AvatarFallback>
+                <div key={index} className="bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg p-4 flex flex-col items-center space-y-3 text-center transition-all duration-300 hover:shadow-lg hover:scale-105 hover:border-primary/20 border border-transparent">
+                    <Avatar className="h-16 w-16 border-2 border-primary/20">
+                        <AvatarFallback className="text-xl">{item.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <span className="font-medium text-sm text-foreground">{item}</span>
+                    <span className="font-semibold text-sm text-foreground">{item}</span>
                 </div>
             ))}
         </div>
