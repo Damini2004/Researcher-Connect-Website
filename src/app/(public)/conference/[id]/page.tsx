@@ -104,10 +104,11 @@ function ConferenceDetailClient() {
     const doc = parser.parseFromString(htmlContent, 'text/html');
     const items = Array.from(doc.body.children).map(element => {
         const img = element.querySelector('img');
-        const text = element.textContent?.trim() || '';
+        const figcaption = element.querySelector('figcaption');
+        const name = (figcaption ? figcaption.textContent : element.textContent)?.trim() || '';
         return {
             imgSrc: img?.src,
-            name: text,
+            name: name,
         };
     }).filter(item => item.name);
 
@@ -119,7 +120,7 @@ function ConferenceDetailClient() {
                 <div key={index} className="bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg p-4 flex flex-col items-center space-y-3 text-center transition-all duration-300">
                     <Avatar className="h-16 w-16">
                         {item.imgSrc && <AvatarImage src={item.imgSrc} alt={item.name} />}
-                        <AvatarFallback className="text-xl">{item.name.charAt(0).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback className="text-xl">{item.name ? item.name.charAt(0).toUpperCase() : '?'}</AvatarFallback>
                     </Avatar>
                     <span className="font-semibold text-sm text-foreground">{item.name}</span>
                 </div>
