@@ -11,7 +11,7 @@ const supportServices = [
 
 export default function ResearchSupportPage() {
   return (
-    <div className="container py-12 md:py-24">
+    <div className="py-12 md:py-24">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Research Support Services</h1>
         <p className="mt-4 text-lg text-muted-foreground">From manuscript preparation to post-publication, we're here to help.</p>

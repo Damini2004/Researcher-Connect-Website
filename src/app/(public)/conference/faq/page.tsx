@@ -28,7 +28,7 @@ const faqs = [
 export default function FaqPage() {
   return (
     <div className="bg-secondary/30">
-      <div className="container py-16 md:py-24">
+      <div className="py-16 md:py-24">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Frequently Asked Questions</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Find answers to common questions about our conferences.</p>

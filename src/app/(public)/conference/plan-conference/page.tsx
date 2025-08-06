@@ -15,7 +15,7 @@ const planningSteps = [
 
 export default function PlanConferencePage() {
   return (
-    <div className="container py-12 md:py-24">
+    <div className="py-12 md:py-24">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Plan a Scientific Conference</h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">Collaborate with us to organize your next scientific event. We provide end-to-end support to ensure your conference is a resounding success.</p>

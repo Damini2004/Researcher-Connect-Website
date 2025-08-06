@@ -38,7 +38,7 @@ export default function InternshipPage() {
   }, [toast]); 
 
   return (
-    <div className="container py-12 md:py-24">
+    <div className="py-12 md:py-24">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Internship Opportunities</h1>
         <p className="mt-4 text-lg text-muted-foreground">Gain hands-on experience in the world of academic publishing and research.</p>

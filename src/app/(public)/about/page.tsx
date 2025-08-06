@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function AboutPage() {
   return (
-    <div className="container py-12 md:py-24 flex justify-center">
+    <div className="py-12 md:py-24 flex justify-center">
       <div className="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
         <div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">About Pure Research Insights</h1>

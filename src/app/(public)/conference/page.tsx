@@ -117,7 +117,7 @@ export default function ConferencesPage() {
             </div>
         </section>
 
-        <div className="container mx-auto px-4 py-12 md:py-16">
+        <div className="py-12 md:py-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Main Content */}
                 <div className="lg:col-span-8">
