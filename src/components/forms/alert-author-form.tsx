@@ -66,7 +66,7 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
     resolver: zodResolver(formSchema),
     defaultValues: {
       subject: `Update on your submission: ${submission.title}`,
-      message: `Dear Professor ${submission.fullName},\n\n${defaultMessageTemplate}`,
+      message: `Dear Professor ${submission.fullName},\n\nThis email is regarding your submission (ID: ${submission.id}).\n\n${defaultMessageTemplate}`,
     },
   });
 
