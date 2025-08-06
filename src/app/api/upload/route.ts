@@ -1,7 +1,7 @@
 // src/app/api/upload/route.ts
 import { NextResponse, type NextRequest } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { storage } from '@/lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,26 +15,23 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Create a unique filename to avoid overwriting
+    // Create a unique filename to avoid overwriting in Firebase Storage
     const filename = `${Date.now()}_${file.name}`;
+    const storageRef = ref(storage, `uploads/${filename}`);
+
+    // Upload the file to Firebase Storage
+    const snapshot = await uploadBytes(storageRef, buffer, {
+      contentType: file.type,
+    });
+
+    // Get the public URL for the uploaded file
+    const downloadURL = await getDownloadURL(snapshot.ref);
     
-    // Correctly join the path to the public directory
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const fullPath = path.join(uploadDir, filename);
-
-    // Ensure the upload directory exists
-    await mkdir(uploadDir, { recursive: true });
-
-    // Write the file to the public/uploads directory
-    await writeFile(fullPath, buffer);
-
-    // Return a relative URL that the browser can resolve
-    const relativeUrl = `/uploads/${filename}`;
-    
-    return NextResponse.json({ uploaded: true, url: relativeUrl });
+    // Return the URL in the format CKEditor expects
+    return NextResponse.json({ uploaded: true, url: downloadURL });
 
   } catch (error) {
-    console.error('Upload Error:', error);
+    console.error('Firebase Upload Error:', error);
     let message = 'An unknown error occurred.';
     if (error instanceof Error) {
         message = error.message;
