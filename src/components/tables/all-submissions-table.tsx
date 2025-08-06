@@ -61,20 +61,37 @@ export default function AllSubmissionsTable() {
     return admin ? admin.name : <span className="text-muted-foreground">Unknown Admin</span>;
   }
 
-  const handleViewPdf = (base64Data: string) => {
-    if (!base64Data || !base64Data.startsWith('data:application/pdf;base64,')) {
-        toast({ title: "Error", description: "Invalid or missing PDF data.", variant: "destructive" });
+  const handleViewFile = (base64Data: string, fileName: string) => {
+    if (!base64Data || !base64Data.startsWith('data:')) {
+        toast({ title: "Error", description: "Invalid or missing file data.", variant: "destructive" });
         return;
     }
-    const byteCharacters = atob(base64Data.split(',')[1]);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    
+    const mimeType = base64Data.substring(base64Data.indexOf(':') + 1, base64Data.indexOf(';'));
+    const fileExtension = mimeType.split('/')[1];
+
+    // Sanitize filename
+    const safeFileName = fileName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+    if (mimeType === 'application/pdf') {
+        const byteCharacters = atob(base64Data.split(',')[1]);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const file = new Blob([byteArray], { type: mimeType });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+    } else {
+        // For DOCX and other files, trigger download
+        const link = document.createElement('a');
+        link.href = base64Data;
+        link.download = `${safeFileName}.${fileExtension}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
-    const byteArray = new Uint8Array(byteNumbers);
-    const file = new Blob([byteArray], { type: 'application/pdf;base64' });
-    const fileURL = URL.createObjectURL(file);
-    window.open(fileURL, '_blank');
   };
 
   return (
@@ -116,9 +133,9 @@ export default function AllSubmissionsTable() {
                   </TableCell>
                   <TableCell>{new Date(submission.submittedAt).toLocaleDateString()}</TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" onClick={() => handleViewPdf(submission.manuscriptData)}>
+                    <Button variant="outline" size="sm" onClick={() => handleViewFile(submission.manuscriptData, submission.title)}>
                       <Eye className="h-4 w-4 mr-2" />
-                      View PDF
+                      View File
                     </Button>
                   </TableCell>
                 </TableRow>
