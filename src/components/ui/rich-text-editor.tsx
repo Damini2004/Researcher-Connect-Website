@@ -13,21 +13,50 @@ interface RichTextEditorProps {
   className?: string;
 }
 
+// Custom upload adapter that converts images to Base64
+function Base64UploadAdapter(editor: any) {
+  editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            resolve({ default: reader.result });
+          };
+
+          reader.onerror = (error) => {
+            reject(error);
+          };
+
+          reader.onabort = () => {
+            reject();
+          };
+
+          loader.file.then((file: File) => {
+            reader.readAsDataURL(file);
+          });
+        });
+      },
+      abort: () => {
+        // This method is called when the upload is aborted.
+      },
+    };
+  };
+}
+
+
 const RichTextEditor = ({ value, onChange, placeholder, className }: RichTextEditorProps) => {
   const editorRef = useRef<any>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    // Cleanup function to avoid memory leaks
     return () => {
       setIsMounted(false);
     };
   }, []);
   
-  // This effect ensures that if the initialData prop changes from outside,
-  // the editor's content is updated.
   useEffect(() => {
     if (editorRef.current && editorRef.current.data.get() !== value) {
       editorRef.current.data.set(value);
@@ -36,53 +65,6 @@ const RichTextEditor = ({ value, onChange, placeholder, className }: RichTextEdi
 
   const handleReady = (editor: any) => {
     editorRef.current = editor;
-
-    // Custom upload adapter implementation
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
-      return {
-        upload: async () => {
-          setIsUploading(true);
-          try {
-            const file = await loader.read();
-            const formData = new FormData();
-            formData.append('upload', file);
-            
-            const response = await fetch('/api/upload', {
-              method: 'POST',
-              body: formData,
-            });
-
-            if (!response.ok) {
-              throw new Error(`Server responded with ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.error) {
-              throw new Error(data.error.message);
-            }
-            
-            return {
-              default: data.url
-            };
-
-          } catch (error) {
-             let message = 'Image upload failed.';
-             if (error instanceof Error) {
-                message = error.message;
-             }
-             // CKEditor's FileRepository will handle this rejection and show an error
-             return Promise.reject(message);
-          } finally {
-            setIsUploading(false);
-          }
-        },
-        abort: () => {
-          setIsUploading(false);
-          console.log('Image upload aborted.');
-        },
-      };
-    };
   };
   
   if (!isMounted) {
@@ -91,11 +73,6 @@ const RichTextEditor = ({ value, onChange, placeholder, className }: RichTextEdi
 
   return (
     <div className={cn("prose prose-sm max-w-none relative", className)}>
-        {isUploading && (
-          <div className="absolute top-2 right-2 z-10 bg-secondary text-secondary-foreground text-xs font-semibold px-2 py-1 rounded-md shadow-md">
-            Uploading image...
-          </div>
-        )}
         <CKEditor
             editor={ClassicEditor}
             data={value}
@@ -106,6 +83,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className }: RichTextEdi
             }}
             config={{
                 placeholder: placeholder || "Start typing...",
+                extraPlugins: [Base64UploadAdapter],
                 toolbar: {
                     items: [
                         'heading', '|', 
