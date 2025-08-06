@@ -23,9 +23,13 @@ export function RenderHtmlContent({ htmlContent }: RenderHtmlContentProps) {
       const doc = parser.parseFromString(htmlContent, 'text/html');
       
       const parsedItems = Array.from(doc.body.children).map(element => {
-        const img = element.querySelector('img');
-        const figcaption = element.querySelector('figcaption');
-        const name = (figcaption ? figcaption.textContent : element.textContent)?.trim() || '';
+        // More robustly find the image and caption, handling CKEditor's <figure> structure
+        const figure = element.tagName === 'FIGURE' ? element : element.querySelector('figure');
+        const img = figure ? figure.querySelector('img') : element.querySelector('img');
+        const figcaption = figure ? figure.querySelector('figcaption') : element.querySelector('figcaption');
+        
+        // Determine the name: use figcaption if available, otherwise use the element's text content.
+        let name = (figcaption ? figcaption.textContent : element.textContent)?.trim() || '';
         
         return {
           imgSrc: img?.src,
