@@ -31,8 +31,9 @@ import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
+import RichTextEditor from '../ui/rich-text-editor';
 
-const RichTextEditor = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
+const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
 interface AddConferenceFormProps {
     onConferenceAdded: () => void;
@@ -293,7 +294,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>About Conference</FormLabel>
-                                        <RichTextEditor
+                                        <RichTextEditorDynamic
                                             value={field.value}
                                             onChange={field.onChange}
                                             placeholder="Provide a detailed description of the conference..."
