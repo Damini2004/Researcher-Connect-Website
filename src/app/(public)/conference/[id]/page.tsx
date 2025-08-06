@@ -19,7 +19,7 @@ import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function ConferenceDetailClient() {
   const [conference, setConference] = useState<Conference | null>(null);
@@ -93,9 +93,24 @@ function ConferenceDetailClient() {
     );
   }
 
-  const renderPeopleAsCards = (text?: string) => {
-    if (!text) return <p className="text-muted-foreground">Not available.</p>;
-    const items = text.split('\n').map(item => item.trim()).filter(Boolean);
+  const renderPeopleAsCards = (htmlContent?: string) => {
+    if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
+
+    if (typeof window === 'undefined') {
+        return <p className="text-muted-foreground">Loading...</p>;
+    }
+    
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const items = Array.from(doc.body.children).map(element => {
+        const img = element.querySelector('img');
+        const text = element.textContent?.trim() || '';
+        return {
+            imgSrc: img?.src,
+            name: text,
+        };
+    }).filter(item => item.name);
+
     if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
 
     return (
@@ -103,9 +118,10 @@ function ConferenceDetailClient() {
             {items.map((item, index) => (
                 <div key={index} className="bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg p-4 flex flex-col items-center space-y-3 text-center transition-all duration-300">
                     <Avatar className="h-16 w-16">
-                        <AvatarFallback className="text-xl">{item.charAt(0).toUpperCase()}</AvatarFallback>
+                        {item.imgSrc && <AvatarImage src={item.imgSrc} alt={item.name} />}
+                        <AvatarFallback className="text-xl">{item.name.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <span className="font-semibold text-sm text-foreground">{item}</span>
+                    <span className="font-semibold text-sm text-foreground">{item.name}</span>
                 </div>
             ))}
         </div>
@@ -114,7 +130,15 @@ function ConferenceDetailClient() {
   
   const renderTracksAsCards = (text?: string) => {
     if (!text) return <p className="text-muted-foreground">Not available.</p>;
-    const items = text.split('\n').map(item => item.trim()).filter(Boolean);
+    
+    if (typeof window === 'undefined') {
+        return <p className="text-muted-foreground">Loading...</p>;
+    }
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const items = Array.from(doc.body.children).map(element => element.textContent?.trim()).filter(Boolean);
+
     if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
 
     return (
