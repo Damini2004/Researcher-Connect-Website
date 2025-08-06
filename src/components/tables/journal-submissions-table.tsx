@@ -36,15 +36,17 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Edit, Trash2, Eye, MailWarning } from "lucide-react";
+import { MoreHorizontal, Edit, Trash2, Eye, MailWarning, History } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { getSubmissions, deleteSubmission, type Submission } from '@/services/submissionService';
 import EditSubmissionForm from '../forms/edit-submission-form';
 import { cn } from '@/lib/utils';
 import { getSubAdminByEmail } from '@/services/subAdminService';
 import AlertAuthorForm from '../forms/alert-author-form';
+import { Separator } from '../ui/separator';
+import { ScrollArea } from '../ui/scroll-area';
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -66,6 +68,7 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = React.useState(false);
+  const [isHistoryDialogOpen, setIsHistoryDialogOpen] = React.useState(false);
   
   const [selectedSubmission, setSelectedSubmission] = React.useState<Submission | null>(null);
 
@@ -113,6 +116,11 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
   const handleAlertClick = (submission: Submission) => {
     setSelectedSubmission(submission);
     setIsAlertDialogOpen(true);
+  };
+  
+  const handleHistoryClick = (submission: Submission) => {
+    setSelectedSubmission(submission);
+    setIsHistoryDialogOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
@@ -249,6 +257,12 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
                               <DropdownMenuItem onSelect={() => handleEditClick(submission)}>
                                 <Edit className="mr-2 h-4 w-4" /> Edit
                               </DropdownMenuItem>
+                              <DropdownMenuItem 
+                                onSelect={() => handleHistoryClick(submission)} 
+                                disabled={!submission.history || submission.history.length === 0}
+                              >
+                                <History className="mr-2 h-4 w-4" /> View History
+                              </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem className="text-destructive" onSelect={() => handleDeleteClick(submission)}>
                                 <Trash2 className="mr-2 h-4 w-4" /> Delete
@@ -297,6 +311,38 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
                     onAlertSent={handleAlertSent}
                 />
             )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isHistoryDialogOpen} onOpenChange={setIsHistoryDialogOpen}>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
+            <DialogHeader>
+                <DialogTitle>Submission History for "{selectedSubmission?.title}"</DialogTitle>
+                <DialogDescription>
+                    Showing a log of previous versions for this manuscript.
+                </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="flex-grow pr-4 -mr-2">
+                <div className="space-y-6">
+                    {selectedSubmission?.history?.sort((a, b) => new Date(b.actionDate).getTime() - new Date(a.actionDate).getTime()).map((entry, index) => (
+                        <div key={index}>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-lg">Version {selectedSubmission.history!.length - index}</CardTitle>
+                                    <CardDescription>
+                                       Action: <span className="font-semibold">{entry.action}</span> on {new Date(entry.actionDate).toLocaleString()}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="text-sm space-y-2">
+                                    <p><strong>Original Title:</strong> {entry.title}</p>
+                                    <p><strong>Original Status:</strong> {entry.status}</p>
+                                    <p><strong>Originally Submitted:</strong> {new Date(entry.submittedAt).toLocaleString()}</p>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+            </ScrollArea>
         </DialogContent>
       </Dialog>
       
