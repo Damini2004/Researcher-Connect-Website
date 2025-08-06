@@ -19,7 +19,7 @@ import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { RenderHtmlContent } from "@/components/ui/render-html-content";
 
 function ConferenceDetailClient() {
   const [conference, setConference] = useState<Conference | null>(null);
@@ -92,42 +92,6 @@ function ConferenceDetailClient() {
       </div>
     );
   }
-
-  const renderPeopleAsCards = (htmlContent?: string) => {
-    if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
-
-    if (typeof window === 'undefined') {
-        return <p className="text-muted-foreground">Loading...</p>;
-    }
-    
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlContent, 'text/html');
-    const items = Array.from(doc.body.children).map(element => {
-        const img = element.querySelector('img');
-        const figcaption = element.querySelector('figcaption');
-        const name = (figcaption ? figcaption.textContent : element.textContent)?.trim() || '';
-        return {
-            imgSrc: img?.src,
-            name: name,
-        };
-    }).filter(item => item.name);
-
-    if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
-
-    return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {items.map((item, index) => (
-                <div key={index} className="bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg p-4 flex flex-col items-center space-y-3 text-center transition-all duration-300">
-                    <Avatar className="h-16 w-16">
-                        {item.imgSrc && <AvatarImage src={item.imgSrc} alt={item.name} />}
-                        <AvatarFallback className="text-xl">{item.name ? item.name.charAt(0).toUpperCase() : '?'}</AvatarFallback>
-                    </Avatar>
-                    <span className="font-semibold text-sm text-foreground">{item.name}</span>
-                </div>
-            ))}
-        </div>
-    );
-  };
   
   const renderTracksAsCards = (text?: string) => {
     if (!text) return <p className="text-muted-foreground">Not available.</p>;
@@ -299,13 +263,13 @@ function ConferenceDetailClient() {
                             <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                                 <AccordionContent>
-                                    {renderPeopleAsCards(conference.keynoteSpeakers)}
+                                    <RenderHtmlContent htmlContent={conference.keynoteSpeakers} />
                                 </AccordionContent>
                             </AccordionItem>
                             <AccordionItem value="item-2" className="bg-secondary/50 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
                                 <AccordionContent>
-                                    {renderPeopleAsCards(conference.organizingCommittee)}
+                                    <RenderHtmlContent htmlContent={conference.organizingCommittee} />
                                 </AccordionContent>
                             </AccordionItem>
                             <AccordionItem value="item-3" className="bg-secondary/50 rounded-lg px-4 border-b-0">
