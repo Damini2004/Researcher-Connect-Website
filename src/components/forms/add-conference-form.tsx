@@ -31,7 +31,6 @@ import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
-import RichTextEditor from '../ui/rich-text-editor';
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 

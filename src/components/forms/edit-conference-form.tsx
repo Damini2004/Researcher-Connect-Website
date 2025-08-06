@@ -33,7 +33,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
 
-const RichTextEditor = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
+const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
 interface EditConferenceFormProps {
     conference: Conference;
@@ -306,7 +306,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>About Conference</FormLabel>
-                                        <RichTextEditor
+                                        <RichTextEditorDynamic
                                             value={field.value || ''}
                                             onChange={field.onChange}
                                             placeholder="Provide a detailed description of the conference..."
