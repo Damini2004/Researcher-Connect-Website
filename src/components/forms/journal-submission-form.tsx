@@ -54,6 +54,7 @@ const formSchema = z.object({
       "Only PDF, DOC, or DOCX files are allowed."
     ),
   content: z.string().min(100, "Content must be at least 100 characters."),
+  resubmissionId: z.string().optional(),
 });
 
 type SubmissionItem = { id: string; name: string };
@@ -75,6 +76,7 @@ export default function JournalSubmissionForm() {
       content: "",
       submissionType: "",
       targetId: "",
+      resubmissionId: "",
     },
   });
   
@@ -156,6 +158,7 @@ export default function JournalSubmissionForm() {
       submissionType: values.submissionType,
       content: values.content,
       manuscriptData,
+      resubmissionId: values.resubmissionId,
     });
 
     if (result.success) {
@@ -304,6 +307,19 @@ export default function JournalSubmissionForm() {
                   className="min-h-[150px]"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="resubmissionId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Re-submission ID (Optional)</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter the ID if you are re-submitting a revised manuscript" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

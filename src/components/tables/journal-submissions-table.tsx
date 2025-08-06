@@ -51,9 +51,14 @@ const statusColors: { [key: string]: string } = {
   "In Progress": "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
   Canceled: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   "Verification Pending": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+  "Re-Verification Pending": "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
 };
 
-export default function JournalSubmissionsTable() {
+interface JournalSubmissionsTableProps {
+    submissionType: 'new' | 're-verification';
+}
+
+export default function JournalSubmissionsTable({ submissionType }: JournalSubmissionsTableProps) {
   const { toast } = useToast();
   const [submissions, setSubmissions] = React.useState<Submission[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -173,16 +178,22 @@ export default function JournalSubmissionsTable() {
         document.body.removeChild(link);
     }
   };
+  
+  const filteredSubmissions = submissions.filter(s => {
+      if (submissionType === 'new') {
+          return s.status === 'Verification Pending';
+      }
+      if (submissionType === 're-verification') {
+          return s.status === 'Re-Verification Pending';
+      }
+      return false;
+  });
 
-  const activeSubmissions = submissions.filter(s => s.status !== 'Done');
 
   return (
     <>
       <Card>
-        <CardHeader>
-          <CardTitle>Submissions for Verification</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <Table>
             <TableHeader>
               <TableRow>
@@ -199,12 +210,14 @@ export default function JournalSubmissionsTable() {
                   <TableRow>
                       <TableCell colSpan={6} className="text-center">Loading submissions...</TableCell>
                   </TableRow>
-              ) : activeSubmissions.length === 0 ? (
+              ) : filteredSubmissions.length === 0 ? (
                    <TableRow>
-                      <TableCell colSpan={6} className="text-center">No active submissions found.</TableCell>
+                      <TableCell colSpan={6} className="text-center h-24">
+                          No submissions found in this category.
+                      </TableCell>
                   </TableRow>
               ) : (
-                  activeSubmissions.map((submission) => (
+                  filteredSubmissions.map((submission) => (
                     <TableRow key={submission.id}>
                       <TableCell className="font-mono text-xs">{submission.id.substring(0, 6)}...</TableCell>
                       <TableCell className="font-medium max-w-xs truncate">{submission.title}</TableCell>

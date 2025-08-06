@@ -27,7 +27,7 @@ import { updateSubmission, type Submission } from "@/services/submissionService"
 
 const formSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
-  status: z.enum(["Verification Pending", "In Progress", "Done", "Canceled"], {
+  status: z.enum(["Verification Pending", "Re-Verification Pending", "In Progress", "Done", "Canceled"], {
     required_error: "Please select a status for the submission.",
   }),
 });
@@ -102,6 +102,7 @@ export default function EditSubmissionForm({ submission, onSubmissionUpdated, on
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Verification Pending">Verification Pending</SelectItem>
+                  <SelectItem value="Re-Verification Pending">Re-Verification Pending</SelectItem>
                   <SelectItem value="In Progress">In Progress</SelectItem>
                   <SelectItem value="Done">Done</SelectItem>
                   <SelectItem value="Canceled">Canceled</SelectItem>
