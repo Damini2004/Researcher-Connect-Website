@@ -1,4 +1,3 @@
-
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -108,3 +107,27 @@ export interface Conference {
 
 // This will be the type for data coming from the form before processing
 export type AddConferenceData = z.infer<typeof conferenceSchema>;
+
+export interface HistoryEntry {
+  action: string;
+  actionDate: string; // Changed from Date to string
+  status: string;
+  submittedAt: string; // Changed from Date to string
+  [key: string]: any; // Allow other properties from the original submission
+}
+
+// Interface for submission data structure in Firestore
+export interface Submission {
+    id: string;
+    fullName: string;
+    email: string;
+    title: string;
+    targetId: string;
+    submissionType: string;
+    content: string;
+    manuscriptData: string; // Storing Base64 data
+    status: "Verification Pending" | "Re-Verification Pending" | "In Progress" | "Done" | "Canceled";
+    submittedAt: string; // Changed to string to be serializable
+    assignedSubAdminId?: string;
+    history?: HistoryEntry[];
+}

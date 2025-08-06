@@ -1,4 +1,3 @@
-
 // src/services/submissionService.ts
 'use server';
 
@@ -8,6 +7,7 @@ import { z } from 'zod';
 import { getConferenceById } from './conferenceService';
 import { sendEmail } from './emailService';
 import { getPaymentUrl } from './settingsService';
+import type { Submission, HistoryEntry } from '@/lib/types';
 
 // Zod schema for form data validation
 const submissionSchema = z.object({
@@ -25,22 +25,6 @@ const updateSubmissionSchema = z.object({
     title: z.string().min(5, "Title must be at least 5 characters."),
     status: z.enum(["Verification Pending", "Re-Verification Pending", "In Progress", "Done", "Canceled"]),
 });
-
-// Interface for submission data structure in Firestore
-export interface Submission {
-    id: string;
-    fullName: string;
-    email: string;
-    title: string;
-    targetId: string;
-    submissionType: string;
-    content: string;
-    manuscriptData: string; // Storing Base64 data
-    status: "Verification Pending" | "Re-Verification Pending" | "In Progress" | "Done" | "Canceled";
-    submittedAt: string; // Changed to string to be serializable
-    assignedSubAdminId?: string;
-    history?: any[];
-}
 
 interface AddSubmissionData {
     fullName: string;
@@ -74,12 +58,12 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
         }
 
         const originalData = originalSubmissionSnap.data();
-        const historyEntry = {
+        const historyEntry: HistoryEntry = {
             ...originalData,
             status: originalData.status,
             submittedAt: originalData.submittedAt.toDate().toISOString(),
             action: 'Re-submitted',
-            actionDate: new Date(),
+            actionDate: new Date().toISOString(), // Use ISO string
         };
 
         const newSubmissionData = {
@@ -125,6 +109,33 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
   }
 }
 
+const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submission => {
+    const data = doc.data();
+    const history = (data.history || []).map((entry: any) => {
+        return {
+            ...entry,
+            // Ensure any Timestamps in history are converted
+            submittedAt: entry.submittedAt?.toDate ? entry.submittedAt.toDate().toISOString() : entry.submittedAt,
+            actionDate: entry.actionDate?.toDate ? entry.actionDate.toDate().toISOString() : entry.actionDate,
+        };
+    });
+
+    return {
+        id: doc.id,
+        fullName: data.fullName,
+        email: data.email,
+        title: data.title,
+        targetId: data.targetId,
+        submissionType: data.submissionType,
+        content: data.content,
+        manuscriptData: data.manuscriptData,
+        status: data.status,
+        submittedAt: data.submittedAt.toDate().toISOString(),
+        assignedSubAdminId: data.assignedSubAdminId,
+        history: history,
+    };
+};
+
 
 export async function getSubmissions(options: { subAdminId?: string } = {}): Promise<Submission[]> {
     try {
@@ -144,26 +155,12 @@ export async function getSubmissions(options: { subAdminId?: string } = {}): Pro
             assignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
             unassignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
 
-            submissions = Array.from(submissionsMap.values()).map(doc => {
-                const data = doc.data();
-                return {
-                    id: doc.id,
-                    ...data,
-                    submittedAt: data.submittedAt.toDate().toISOString(),
-                } as Submission;
-            });
+            submissions = Array.from(submissionsMap.values()).map(mapDocToSubmission);
 
         } else {
             const q = query(submissionsRef, orderBy("submittedAt", "desc"));
             const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-                const data = doc.data();
-                submissions.push({
-                    id: doc.id,
-                    ...data,
-                    submittedAt: data.submittedAt.toDate().toISOString(),
-                } as Submission);
-            });
+            submissions = querySnapshot.docs.map(mapDocToSubmission);
         }
         
         submissions.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
@@ -229,11 +226,24 @@ Thank you for choosing Pure Research Insights. We look forward to featuring your
             throw new Error("Could not retrieve updated submission document.");
         }
         
-        const result: Submission = {
+         const result: Submission = {
             id: updatedDoc.id,
-            ...updatedData,
+            fullName: updatedData.fullName,
+            email: updatedData.email,
+            title: updatedData.title,
+            targetId: updatedData.targetId,
+            submissionType: updatedData.submissionType,
+            content: updatedData.content,
+            manuscriptData: updatedData.manuscriptData,
+            status: updatedData.status,
             submittedAt: updatedData.submittedAt.toDate().toISOString(),
-        } as Submission;
+            assignedSubAdminId: updatedData.assignedSubAdminId,
+            history: (updatedData.history || []).map((entry: any) => ({
+                ...entry,
+                submittedAt: entry.submittedAt?.toDate ? entry.submittedAt.toDate().toISOString() : entry.submittedAt,
+                actionDate: entry.actionDate?.toDate ? entry.actionDate.toDate().toISOString() : entry.actionDate,
+            })),
+        };
 
         return { success: true, message: 'Submission updated successfully!', updatedSubmission: result };
 
