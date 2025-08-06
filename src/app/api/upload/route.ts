@@ -1,7 +1,7 @@
 // src/app/api/upload/route.ts
 import { NextResponse, type NextRequest } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import path from 'path';
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,21 +17,21 @@ export async function POST(request: NextRequest) {
 
     // Create a unique filename to avoid overwriting
     const filename = `${Date.now()}_${file.name}`;
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
-    const path = join(uploadDir, filename);
+    
+    // Correctly join the path to the public directory
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    const fullPath = path.join(uploadDir, filename);
 
     // Ensure the upload directory exists
     await mkdir(uploadDir, { recursive: true });
 
     // Write the file to the public/uploads directory
-    await writeFile(path, buffer);
+    await writeFile(fullPath, buffer);
 
-    // Get the base URL from the request headers to construct an absolute URL
-    const protocol = request.headers.get('x-forwarded-proto') || 'http';
-    const host = request.headers.get('host');
-    const absoluteUrl = `${protocol}://${host}/uploads/${filename}`;
+    // Return a relative URL that the browser can resolve
+    const relativeUrl = `/uploads/${filename}`;
     
-    return NextResponse.json({ uploaded: true, url: absoluteUrl });
+    return NextResponse.json({ uploaded: true, url: relativeUrl });
 
   } catch (error) {
     console.error('Upload Error:', error);
