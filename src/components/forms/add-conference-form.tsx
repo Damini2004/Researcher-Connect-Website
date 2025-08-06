@@ -307,8 +307,36 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                 <FormField control={form.control} name="conferenceEmail" render={({ field }) => ( <FormItem> <FormLabel>Conference Email / Contact</FormLabel> <FormControl><Input placeholder="contact@example.com" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             </div>
                             <FormField control={form.control} name="conferenceLogo" render={() => ( <FormItem> <FormLabel>Conference Logo / Banner</FormLabel> <FormControl><Input type="file" accept="image/*" {...logoFileRef} /></FormControl> <FormDescription>Max file size: 500 KB</FormDescription> <FormMessage /> </FormItem> )} />
-                            <FormField control={form.control} name="organizingCommittee" render={({ field }) => ( <FormItem> <FormLabel>Organizing Committee / Team (Optional)</FormLabel> <FormControl><Textarea placeholder="List members..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                            <FormField control={form.control} name="keynoteSpeakers" render={({ field }) => ( <FormItem> <FormLabel>Guest / Keynote Speakers (Optional)</FormLabel> <FormControl><Textarea placeholder="List speakers..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField
+                                control={form.control}
+                                name="organizingCommittee"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Organizing Committee / Team (Optional)</FormLabel>
+                                        <RichTextEditorDynamic
+                                            value={field.value || ''}
+                                            onChange={field.onChange}
+                                            placeholder="List members..."
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="keynoteSpeakers"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Guest / Keynote Speakers (Optional)</FormLabel>
+                                        <RichTextEditorDynamic
+                                            value={field.value || ''}
+                                            onChange={field.onChange}
+                                            placeholder="List speakers..."
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField control={form.control} name="editorialBoard" render={({ field }) => ( <FormItem> <FormLabel>Editorial Board Members / Track Chairs (Optional)</FormLabel> <FormControl><Textarea placeholder="List members..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                         </div>
                     </section>
@@ -317,7 +345,21 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                     <section>
                         <h3 className="text-lg font-medium mb-4">Submission Details</h3>
                         <div className="space-y-6">
-                            <FormField control={form.control} name="tracks" render={({ field }) => ( <FormItem> <FormLabel>List of Tracks / Themes (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., AI in Healthcare, NLP Advances..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField
+                                control={form.control}
+                                name="tracks"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>List of Tracks / Themes (Optional)</FormLabel>
+                                        <RichTextEditorDynamic
+                                            value={field.value || ''}
+                                            onChange={field.onChange}
+                                            placeholder="e.g., AI in Healthcare, NLP Advances..."
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField control={form.control} name="keywords" render={({ field }) => ( <FormItem> <FormLabel>Keywords or SDG Tags (Optional)</FormLabel> <FormControl><Input placeholder="AI, Machine Learning, SDG 9, ..." {...field} /></FormControl> <FormDescription>Comma-separated values.</FormDescription> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="submissionInstructions" render={({ field }) => ( <FormItem> <FormLabel>Submission Instructions (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the submission guidelines..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             <FormField control={form.control} name="paperTemplate" render={() => ( <FormItem> <FormLabel>Paper Template Upload (DOC/PDF) (Optional)</FormLabel> <FormControl><Input type="file" accept=".doc,.docx,.pdf" {...templateFileRef} /></FormControl> <FormDescription>Max file size: 4 MB</FormDescription> <FormMessage /> </FormItem> )} />
