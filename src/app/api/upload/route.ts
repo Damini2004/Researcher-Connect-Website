@@ -1,9 +1,9 @@
 // src/app/api/upload/route.ts
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
     const file: File | null = data.get('upload') as unknown as File;
@@ -26,10 +26,12 @@ export async function POST(request: Request) {
     // Write the file to the public/uploads directory
     await writeFile(path, buffer);
 
-    // Return the URL for the uploaded file
-    const url = `/uploads/${filename}`;
+    // Get the base URL from the request headers to construct an absolute URL
+    const protocol = request.headers.get('x-forwarded-proto') || 'http';
+    const host = request.headers.get('host');
+    const absoluteUrl = `${protocol}://${host}/uploads/${filename}`;
     
-    return NextResponse.json({ uploaded: true, url });
+    return NextResponse.json({ uploaded: true, url: absoluteUrl });
 
   } catch (error) {
     console.error('Upload Error:', error);

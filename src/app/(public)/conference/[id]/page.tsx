@@ -135,7 +135,7 @@ function ConferenceDetailClient() {
     if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
     return (
         <div 
-          className="prose prose-sm max-w-none text-muted-foreground"
+          className="prose prose-sm prose-img:w-full max-w-none text-muted-foreground"
           dangerouslySetInnerHTML={{ __html: htmlContent }} 
         />
     );
@@ -181,8 +181,8 @@ function ConferenceDetailClient() {
     if (dates.length === 0) return null;
 
     return (
-      <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5"/>Important Dates</CardTitle></CardHeader>
+      <Card className="group">
+          <CardHeader><CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"/>Important Dates</CardTitle></CardHeader>
           <CardContent className="text-sm">
               <table className="w-full">
                   <tbody>
