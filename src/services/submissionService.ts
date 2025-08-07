@@ -8,6 +8,8 @@ import { getConferenceById } from './conferenceService';
 import { sendEmail } from './emailService';
 import { getPaymentUrl } from './settingsService';
 import type { Submission, HistoryEntry } from '@/lib/types';
+import { Timestamp } from 'firebase/firestore';
+
 
 // Zod schema for form data validation
 const submissionSchema = z.object({
@@ -59,8 +61,6 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
 
         const originalData = originalSubmissionSnap.data();
         
-        // Create a history entry from the current state of the document
-        // Ensure all dates are serializable strings
         const historyEntry: HistoryEntry = {
             action: 'Archived before Re-submission',
             actionDate: new Date().toISOString(),
@@ -68,7 +68,6 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
             submittedAt: originalData.submittedAt.toDate().toISOString(),
             title: originalData.title,
             content: originalData.content,
-            // Only include serializable data in the history snapshot
             fullName: originalData.fullName,
             email: originalData.email,
             targetId: originalData.targetId,
@@ -77,19 +76,17 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
             assignedSubAdminId: originalData.assignedSubAdminId,
         };
 
-        // Prepare the updated data for the existing document
         const updatedSubmissionData = {
             ...submissionData, // new data from the form
             status: 'Re-Verification Pending' as const,
-            submittedAt: new Date(), // update submission date to current
+            submittedAt: new Date(),
             history: [...(originalData.history || []), historyEntry],
-            assignedSubAdminId: originalData.assignedSubAdminId, // Preserve the original admin
+            assignedSubAdminId: originalData.assignedSubAdminId,
         };
         
         await updateDoc(originalSubmissionRef, updatedSubmissionData);
 
     } else {
-        // Handle new submission logic
         let assignedSubAdminId: string | undefined = undefined;
         if (submissionData.submissionType === 'conference') {
             const conferenceResult = await getConferenceById(submissionData.targetId);
@@ -119,12 +116,21 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
 
 const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submission => {
     const data = doc.data();
+
+    // Helper to safely convert Firestore Timestamps or other date formats to ISO strings
+    const toISOString = (date: any): string => {
+        if (!date) return new Date().toISOString();
+        if (typeof date.toDate === 'function') {
+            return date.toDate().toISOString();
+        }
+        return new Date(date).toISOString();
+    };
+
     const history = (data.history || []).map((entry: any) => {
-        // Ensure all date fields from history are converted to ISO strings
         return {
             ...entry,
-            submittedAt: entry.submittedAt, // Should already be a string from our new logic
-            actionDate: entry.actionDate,   // Should already be a string
+            submittedAt: toISOString(entry.submittedAt),
+            actionDate: toISOString(entry.actionDate),
         };
     });
 
@@ -138,7 +144,7 @@ const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submissio
         content: data.content,
         manuscriptData: data.manuscriptData,
         status: data.status,
-        submittedAt: data.submittedAt.toDate().toISOString(),
+        submittedAt: toISOString(data.submittedAt),
         assignedSubAdminId: data.assignedSubAdminId,
         history: history,
     };
