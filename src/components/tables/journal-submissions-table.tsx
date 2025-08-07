@@ -36,7 +36,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Edit, Trash2, Eye, MailWarning, History } from "lucide-react";
+import { MoreHorizontal, Edit, Trash2, Eye, MailWarning, History, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -47,6 +47,8 @@ import { getSubAdminByEmail } from '@/services/subAdminService';
 import AlertAuthorForm from '../forms/alert-author-form';
 import { Separator } from '../ui/separator';
 import { ScrollArea } from '../ui/scroll-area';
+import { Input } from '../ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const statusColors: { [key: string]: string } = {
   Done: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -55,6 +57,9 @@ const statusColors: { [key: string]: string } = {
   "Verification Pending": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
   "Re-Verification Pending": "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
 };
+
+const statusOptions = ["Verification Pending", "Re-Verification Pending", "In Progress", "Canceled"];
+const submissionTypeOptions = ["journal", "conference", "internship"];
 
 interface JournalSubmissionsTableProps {
     submissionType: 'new' | 're-verification';
@@ -71,6 +76,10 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
   const [isHistoryDialogOpen, setIsHistoryDialogOpen] = React.useState(false);
   
   const [selectedSubmission, setSelectedSubmission] = React.useState<Submission | null>(null);
+
+  // Filtering states
+  const [searchFilter, setSearchFilter] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState("all");
 
   const fetchSubmissions = React.useCallback(async () => {
     setIsLoading(true);
@@ -156,14 +165,11 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
     
     const mimeType = base64Data.substring(base64Data.indexOf(':') + 1, base64Data.indexOf(';'));
     
-    // Extract a simple file extension
     let fileExtension = 'file';
     if (mimeType.includes('pdf')) fileExtension = 'pdf';
     else if (mimeType.includes('vnd.openxmlformats-officedocument.wordprocessingml.document')) fileExtension = 'docx';
     else if (mimeType.includes('msword')) fileExtension = 'doc';
 
-
-    // Sanitize filename to prevent issues
     const safeFileName = fileName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
     if (mimeType === 'application/pdf') {
@@ -177,7 +183,6 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
         const fileURL = URL.createObjectURL(file);
         window.open(fileURL, '_blank');
     } else {
-        // For DOCX and other files, trigger download
         const link = document.createElement('a');
         link.href = base64Data;
         link.download = `${safeFileName}.${fileExtension}`;
@@ -188,20 +193,55 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
   };
   
   const filteredSubmissions = submissions.filter(s => {
-      if (submissionType === 'new') {
-          return s.status === 'Verification Pending';
-      }
-      if (submissionType === 're-verification') {
-          return s.status === 'Re-Verification Pending';
-      }
-      return false;
+      // Tab-based filtering
+      const tabFilter = submissionType === 'new'
+          ? s.status === 'Verification Pending'
+          : s.status === 'Re-Verification Pending';
+
+      if (!tabFilter) return false;
+
+      // Search filter
+      const searchMatch = searchFilter === "" ||
+          s.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
+          s.fullName.toLowerCase().includes(searchFilter.toLowerCase());
+
+      // Status filter
+      const statusMatch = statusFilter === 'all' || s.status === statusFilter;
+
+      return searchMatch && statusMatch;
   });
 
 
   return (
     <>
       <Card>
-        <CardContent className="pt-6">
+         <CardHeader>
+          <div className="flex flex-col md:flex-row gap-4 justify-between">
+            <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                placeholder="Search by title or author..."
+                className="pl-8"
+                value={searchFilter}
+                onChange={(e) => setSearchFilter(e.target.value)}
+                />
+            </div>
+            <div className="flex gap-4">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full md:w-[180px]">
+                        <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        {statusOptions.filter(status => status !== "Verification Pending" && status !== "Re-Verification Pending").map(status => (
+                            <SelectItem key={status} value={status}>{status}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
@@ -221,7 +261,7 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
               ) : filteredSubmissions.length === 0 ? (
                    <TableRow>
                       <TableCell colSpan={6} className="text-center h-24">
-                          No submissions found in this category.
+                          No submissions found.
                       </TableCell>
                   </TableRow>
               ) : (
