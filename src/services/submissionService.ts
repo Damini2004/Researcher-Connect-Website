@@ -49,7 +49,7 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
     const { resubmissionId, ...submissionData } = validationResult.data;
 
     if (resubmissionId) {
-        // Handle re-submission logic
+        // Handle re-submission by UPDATING the existing document
         const originalSubmissionRef = doc(db, 'submissions', resubmissionId);
         const originalSubmissionSnap = await getDoc(originalSubmissionRef);
 
@@ -58,27 +58,28 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
         }
 
         const originalData = originalSubmissionSnap.data();
+        
+        // Create a history entry from the current state of the document
         const historyEntry: HistoryEntry = {
-            ...originalData,
+            action: 'Re-submitted',
+            actionDate: new Date().toISOString(),
             status: originalData.status,
             submittedAt: originalData.submittedAt.toDate().toISOString(),
-            action: 'Re-submitted',
-            actionDate: new Date().toISOString(), // Use ISO string
+            title: originalData.title,
+            content: originalData.content,
+            // Keep all other original data fields for a complete snapshot
+            ...originalData
         };
 
-        const newSubmissionData = {
-            ...submissionData,
+        // Prepare the updated data for the existing document
+        const updatedSubmissionData = {
+            ...submissionData, // new data from the form
             status: 'Re-Verification Pending',
-            submittedAt: new Date(),
-            assignedSubAdminId: originalData.assignedSubAdminId || null,
+            submittedAt: new Date(), // update submission date to current
             history: [...(originalData.history || []), historyEntry],
         };
-
-        const batch = writeBatch(db);
-        const newSubmissionRef = doc(collection(db, 'submissions'));
-        batch.set(newSubmissionRef, newSubmissionData);
-        batch.delete(originalSubmissionRef);
-        await batch.commit();
+        
+        await updateDoc(originalSubmissionRef, updatedSubmissionData);
 
     } else {
         // Handle new submission logic
@@ -116,7 +117,7 @@ const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submissio
             ...entry,
             // Ensure any Timestamps in history are converted
             submittedAt: entry.submittedAt?.toDate ? entry.submittedAt.toDate().toISOString() : entry.submittedAt,
-            actionDate: entry.actionDate?.toDate ? entry.actionDate.toDate().toISOString() : entry.actionDate,
+            actionDate: entry.actionDate,
         };
     });
 
@@ -241,7 +242,7 @@ Thank you for choosing Pure Research Insights. We look forward to featuring your
             history: (updatedData.history || []).map((entry: any) => ({
                 ...entry,
                 submittedAt: entry.submittedAt?.toDate ? entry.submittedAt.toDate().toISOString() : entry.submittedAt,
-                actionDate: entry.actionDate?.toDate ? entry.actionDate.toDate().toISOString() : entry.actionDate,
+                actionDate: entry.actionDate,
             })),
         };
 
