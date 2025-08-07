@@ -24,6 +24,7 @@ import { Send } from "lucide-react";
 const formSchema = z.object({
   subject: z.string().min(10, "Subject must be at least 10 characters long."),
   message: z.string().min(20, "Message must be at least 20 characters long."),
+  attachment: z.any().optional(),
 });
 
 interface AlertAuthorFormProps {
@@ -69,22 +70,53 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
       message: `Dear Professor ${submission.fullName},\n\nThis email is regarding your submission (ID: ${submission.id}).\n\n${defaultMessageTemplate}`,
     },
   });
+  
+  const fileRef = form.register("attachment");
+  
+  const convertFileToBase64 = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+      });
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
-    const { email, fullName, title } = submission;
-    
+    let attachmentData: { filename: string; content: string; } | undefined = undefined;
+
+    if (values.attachment && values.attachment.length > 0) {
+        const file: File = values.attachment[0];
+        try {
+            const base64String = await convertFileToBase64(file);
+            attachmentData = {
+                filename: file.name,
+                content: base64String,
+            };
+        } catch (error) {
+             toast({
+                title: "Error Reading File",
+                description: "Could not process the attachment. Please try again.",
+                variant: "destructive",
+            });
+            setIsSubmitting(false);
+            return;
+        }
+    }
+
     const result = await sendEmail({
-      to: email,
+      to: submission.email,
       subject: values.subject,
       customMessage: values.message,
+      attachment: attachmentData,
     });
     
     if (result.success) {
       toast({
         title: "Alert Sent Successfully!",
-        description: `An email has been sent to ${email}.`,
+        description: `An email has been sent to ${submission.email}.`,
       });
       form.reset();
       onAlertSent(); // This will close the dialog
@@ -127,6 +159,19 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
                   className="min-h-[250px]"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="attachment"
+          render={() => (
+            <FormItem>
+              <FormLabel>Attachment (Optional)</FormLabel>
+              <FormControl>
+                <Input type="file" {...fileRef} />
               </FormControl>
               <FormMessage />
             </FormItem>

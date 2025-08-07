@@ -2,6 +2,7 @@
 'use server';
 
 import nodemailer from 'nodemailer';
+import type { Attachment } from 'nodemailer/lib/mailer';
 
 const emailUser = process.env.EMAIL_SERVER_USER;
 const emailPass = process.env.EMAIL_SERVER_PASSWORD;
@@ -12,6 +13,10 @@ interface EmailParams {
   to: string;
   subject: string;
   customMessage: string;
+  attachment?: {
+    filename: string;
+    content: string; // Base64 encoded string
+  };
 }
 
 const createHtmlTemplate = (customMessage: string): string => `
@@ -56,7 +61,7 @@ const createHtmlTemplate = (customMessage: string): string => `
 
 
 export async function sendEmail(params: EmailParams): Promise<{ success: boolean; message: string }> {
-  const { to, subject, customMessage } = params;
+  const { to, subject, customMessage, attachment } = params;
 
   if (!emailUser || !emailPass) {
     const errorMessage = 'Email credentials are not configured. Please ensure EMAIL_SERVER_USER and EMAIL_SERVER_PASSWORD are set in your .env.local file.';
@@ -74,12 +79,21 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
     },
   });
 
+  const attachments: Attachment[] = [];
+  if (attachment) {
+    attachments.push({
+      filename: attachment.filename,
+      path: attachment.content, // Nodemailer can handle data URI directly
+    });
+  }
+
   try {
     const info = await transporter.sendMail({
       from: `"Pure Research Insights" <${emailUser}>`,
       to: to,
       subject: subject,
       html: createHtmlTemplate(customMessage),
+      attachments: attachments,
     });
 
     console.log('Message sent: %s', info.messageId);
