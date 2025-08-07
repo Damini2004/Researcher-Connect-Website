@@ -110,10 +110,10 @@ export type AddConferenceData = z.infer<typeof conferenceSchema>;
 
 export interface HistoryEntry {
   action: string;
-  actionDate: string; // Changed from Date to string
+  actionDate: string; 
   status: string;
-  submittedAt: string; // Changed from Date to string
-  [key: string]: any; // Allow other properties from the original submission
+  submittedAt: string;
+  [key: string]: any; 
 }
 
 // Interface for submission data structure in Firestore

@@ -60,23 +60,30 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
         const originalData = originalSubmissionSnap.data();
         
         // Create a history entry from the current state of the document
+        // Ensure all dates are serializable strings
         const historyEntry: HistoryEntry = {
-            action: 'Re-submitted',
+            action: 'Archived before Re-submission',
             actionDate: new Date().toISOString(),
             status: originalData.status,
             submittedAt: originalData.submittedAt.toDate().toISOString(),
             title: originalData.title,
             content: originalData.content,
-            // Keep all other original data fields for a complete snapshot
-            ...originalData
+            // Only include serializable data in the history snapshot
+            fullName: originalData.fullName,
+            email: originalData.email,
+            targetId: originalData.targetId,
+            submissionType: originalData.submissionType,
+            manuscriptData: originalData.manuscriptData, 
+            assignedSubAdminId: originalData.assignedSubAdminId,
         };
 
         // Prepare the updated data for the existing document
         const updatedSubmissionData = {
             ...submissionData, // new data from the form
-            status: 'Re-Verification Pending',
+            status: 'Re-Verification Pending' as const,
             submittedAt: new Date(), // update submission date to current
             history: [...(originalData.history || []), historyEntry],
+            assignedSubAdminId: originalData.assignedSubAdminId, // Preserve the original admin
         };
         
         await updateDoc(originalSubmissionRef, updatedSubmissionData);
@@ -113,11 +120,11 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
 const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submission => {
     const data = doc.data();
     const history = (data.history || []).map((entry: any) => {
+        // Ensure all date fields from history are converted to ISO strings
         return {
             ...entry,
-            // Ensure any Timestamps in history are converted
-            submittedAt: entry.submittedAt?.toDate ? entry.submittedAt.toDate().toISOString() : entry.submittedAt,
-            actionDate: entry.actionDate,
+            submittedAt: entry.submittedAt, // Should already be a string from our new logic
+            actionDate: entry.actionDate,   // Should already be a string
         };
     });
 
@@ -241,8 +248,8 @@ Thank you for choosing Pure Research Insights. We look forward to featuring your
             assignedSubAdminId: updatedData.assignedSubAdminId,
             history: (updatedData.history || []).map((entry: any) => ({
                 ...entry,
-                submittedAt: entry.submittedAt?.toDate ? entry.submittedAt.toDate().toISOString() : entry.submittedAt,
-                actionDate: entry.actionDate,
+                submittedAt: entry.submittedAt, // Should already be string
+                actionDate: entry.actionDate,   // Should already be string
             })),
         };
 
