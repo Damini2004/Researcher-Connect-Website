@@ -63,11 +63,18 @@ export default function AlertAuthorForm({ submission, onAlertSent }: AlertAuthor
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
+  const getLastName = (fullName: string) => {
+    const nameParts = fullName.trim().split(' ');
+    return nameParts.length > 1 ? nameParts[nameParts.length - 1] : fullName;
+  };
+
+  const lastName = getLastName(submission.fullName);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       subject: `Update on your submission: ${submission.title}`,
-      message: `Dear Professor ${submission.fullName},\n\nThis email is regarding your submission (ID: ${submission.id}).\n\n${defaultMessageTemplate}`,
+      message: `Dear Professor ${lastName},\n\nThis email is regarding your submission (ID: ${submission.id}).\n\n${defaultMessageTemplate}`,
     },
   });
   
