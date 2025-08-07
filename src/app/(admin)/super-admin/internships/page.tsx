@@ -10,6 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddInternshipForm from "@/components/forms/add-internship-form";
 import InternshipsTable from "@/components/tables/internships-table";
@@ -19,6 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function ManageInternshipsPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [internships, setInternships] = useState<Internship[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -45,10 +55,7 @@ export default function ManageInternshipsPage() {
   
   const handleInternshipAdded = () => {
     setIsAddDialogOpen(false);
-    toast({
-      title: "Internship Added!",
-      description: "The list has been updated with the new internship.",
-    });
+    setIsSuccessAlertOpen(true);
     fetchInternships(); // Re-fetch the data
   };
 
@@ -92,6 +99,19 @@ export default function ManageInternshipsPage() {
         onInternshipDeleted={handleInternshipDeleted}
       />
       
+      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Internship Added!</AlertDialogTitle>
+            <AlertDialogDescription>
+              The new internship has been successfully added to the list.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

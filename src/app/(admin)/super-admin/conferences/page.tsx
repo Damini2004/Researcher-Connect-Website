@@ -10,6 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddConferenceForm from "@/components/forms/add-conference-form";
 import ConferencesTable from "@/components/tables/conferences-table";
@@ -21,6 +30,7 @@ import EditConferenceForm from "@/components/forms/edit-conference-form";
 export default function ManageConferencesPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [selectedConference, setSelectedConference] = useState<Conference | null>(null);
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,10 +58,7 @@ export default function ManageConferencesPage() {
   
   const handleConferenceAdded = () => {
     setIsAddDialogOpen(false);
-    toast({
-      title: "Conference Added!",
-      description: "The list has been updated with the new conference.",
-    });
+    setIsSuccessAlertOpen(true);
     fetchConferences(); // Re-fetch the data
   };
 
@@ -132,6 +139,20 @@ export default function ManageConferencesPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Conference Added!</AlertDialogTitle>
+            <AlertDialogDescription>
+              The new conference has been successfully added to the list.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

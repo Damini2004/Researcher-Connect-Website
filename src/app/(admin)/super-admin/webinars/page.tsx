@@ -10,6 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddWebinarForm from "@/components/forms/add-webinar-form";
 import WebinarsTable from "@/components/tables/webinars-table";
@@ -19,6 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function ManageWebinarsPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [webinars, setWebinars] = useState<Webinar[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -45,10 +55,7 @@ export default function ManageWebinarsPage() {
   
   const handleWebinarAdded = () => {
     setIsAddDialogOpen(false);
-    toast({
-      title: "Webinar Added!",
-      description: "The list has been updated with the new webinar.",
-    });
+    setIsSuccessAlertOpen(true);
     fetchWebinars(); // Re-fetch the data
   };
 
@@ -92,6 +99,19 @@ export default function ManageWebinarsPage() {
         onWebinarDeleted={handleWebinarDeleted}
       />
       
+      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Webinar Added!</AlertDialogTitle>
+            <AlertDialogDescription>
+              The new webinar has been successfully added to the list.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

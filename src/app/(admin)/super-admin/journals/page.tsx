@@ -10,6 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddJournalForm from "@/components/forms/add-journal-form";
 import AllJournalsTable from "@/components/tables/all-journals-table";
@@ -17,6 +26,12 @@ import { useState } from "react";
 
 export default function ViewJournalsPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
+
+  const handleJournalAdded = () => {
+    setIsAddDialogOpen(false);
+    setIsSuccessAlertOpen(true);
+  };
   
   return (
     <div className="space-y-6">
@@ -39,13 +54,26 @@ export default function ViewJournalsPage() {
                 Fill out the form below to add a new journal to the system.
               </DialogDescription>
             </DialogHeader>
-            <AddJournalForm onJournalAdded={() => setIsAddDialogOpen(false)} />
+            <AddJournalForm onJournalAdded={handleJournalAdded} />
           </DialogContent>
         </Dialog>
       </div>
 
       <AllJournalsTable />
       
+      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Journal Added!</AlertDialogTitle>
+            <AlertDialogDescription>
+              The new journal has been successfully added to the list.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

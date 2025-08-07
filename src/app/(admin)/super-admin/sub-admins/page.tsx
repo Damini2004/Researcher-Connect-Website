@@ -11,6 +11,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddSubAdminForm from "@/components/forms/add-sub-admin-form";
 import { useEffect, useState } from "react";
@@ -21,6 +30,8 @@ import { useRouter } from "next/navigation";
 export default function ManageSubAdminsPage() {
   const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -41,10 +52,8 @@ export default function ManageSubAdminsPage() {
   };
   
   const handleAdminAdded = () => {
-    toast({
-      title: "Sub Admin Added",
-      description: "The list has been updated.",
-    });
+    setIsAddDialogOpen(false);
+    setIsSuccessAlertOpen(true);
     fetchAdmins();
   };
 
@@ -71,7 +80,7 @@ export default function ManageSubAdminsPage() {
             Approve, edit, or remove sub administrators.
           </p>
         </div>
-        <Dialog>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
@@ -96,6 +105,20 @@ export default function ManageSubAdminsPage() {
         onAdminChange={fetchAdmins}
         onAdminUpdated={handleAdminUpdated}
       />
+
+      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sub Admin Added</AlertDialogTitle>
+            <AlertDialogDescription>
+              The new sub admin has been successfully added to the list and is pending approval.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
