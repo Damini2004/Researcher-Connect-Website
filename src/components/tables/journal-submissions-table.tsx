@@ -58,7 +58,7 @@ const statusColors: { [key: string]: string } = {
   "Re-Verification Pending": "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
 };
 
-const statusOptions = ["Verification Pending", "Re-Verification Pending", "In Progress", "Canceled"];
+const statusOptions = ["In Progress", "Canceled"];
 const submissionTypeOptions = ["journal", "conference", "internship"];
 
 interface JournalSubmissionsTableProps {
@@ -233,7 +233,7 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">All Statuses</SelectItem>
-                        {statusOptions.filter(status => status !== "Verification Pending" && status !== "Re-Verification Pending").map(status => (
+                        {statusOptions.map(status => (
                             <SelectItem key={status} value={status}>{status}</SelectItem>
                         ))}
                     </SelectContent>
@@ -242,80 +242,82 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Author</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                  <TableRow>
-                      <TableCell colSpan={6} className="text-center">Loading submissions...</TableCell>
-                  </TableRow>
-              ) : filteredSubmissions.length === 0 ? (
-                   <TableRow>
-                      <TableCell colSpan={6} className="text-center h-24">
-                          No submissions found.
-                      </TableCell>
-                  </TableRow>
-              ) : (
-                  filteredSubmissions.map((submission) => (
-                    <TableRow key={submission.id}>
-                      <TableCell className="font-mono text-xs">{submission.id.substring(0, 6)}...</TableCell>
-                      <TableCell className="font-medium max-w-xs truncate">{submission.title}</TableCell>
-                      <TableCell>{submission.fullName}</TableCell>
-                      <TableCell>
-                         <Badge className={cn("whitespace-nowrap", statusColors[submission.status])}>
-                            {submission.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{new Date(submission.submittedAt).toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button variant="outline" size="sm" onClick={() => handleAlertClick(submission)}>
-                            <MailWarning className="h-4 w-4 mr-2" />
-                            Alert
-                          </Button>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button aria-haspopup="true" size="icon" variant="ghost">
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Toggle menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem onSelect={() => handleViewFile(submission.manuscriptData, submission.title)}>
-                                <Eye className="mr-2 h-4 w-4" /> View File
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onSelect={() => handleEditClick(submission)}>
-                                <Edit className="mr-2 h-4 w-4" /> Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem 
-                                onSelect={() => handleHistoryClick(submission)} 
-                                disabled={!submission.history || submission.history.length === 0}
-                              >
-                                <History className="mr-2 h-4 w-4" /> View History
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-destructive" onSelect={() => handleDeleteClick(submission)}>
-                                <Trash2 className="mr-2 h-4 w-4" /> Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Author</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                    <TableRow>
+                        <TableCell colSpan={6} className="text-center">Loading submissions...</TableCell>
                     </TableRow>
-                  ))
-              )}
-            </TableBody>
-          </Table>
+                ) : filteredSubmissions.length === 0 ? (
+                    <TableRow>
+                        <TableCell colSpan={6} className="text-center h-24">
+                            No submissions found.
+                        </TableCell>
+                    </TableRow>
+                ) : (
+                    filteredSubmissions.map((submission) => (
+                      <TableRow key={submission.id}>
+                        <TableCell className="font-mono text-xs">{submission.id.substring(0, 6)}...</TableCell>
+                        <TableCell className="font-medium max-w-xs truncate">{submission.title}</TableCell>
+                        <TableCell>{submission.fullName}</TableCell>
+                        <TableCell>
+                          <Badge className={cn("whitespace-nowrap", statusColors[submission.status])}>
+                              {submission.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{new Date(submission.submittedAt).toLocaleDateString()}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm" onClick={() => handleAlertClick(submission)}>
+                              <MailWarning className="h-4 w-4 md:mr-2" />
+                              <span className="hidden md:inline">Alert</span>
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button aria-haspopup="true" size="icon" variant="ghost">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                  <span className="sr-only">Toggle menu</span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem onSelect={() => handleViewFile(submission.manuscriptData, submission.title)}>
+                                  <Eye className="mr-2 h-4 w-4" /> View File
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onSelect={() => handleEditClick(submission)}>
+                                  <Edit className="mr-2 h-4 w-4" /> Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  onSelect={() => handleHistoryClick(submission)} 
+                                  disabled={!submission.history || submission.history.length === 0}
+                                >
+                                  <History className="mr-2 h-4 w-4" /> View History
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-destructive" onSelect={() => handleDeleteClick(submission)}>
+                                  <Trash2 className="mr-2 h-4 w-4" /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

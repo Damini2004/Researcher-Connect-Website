@@ -11,8 +11,8 @@ export default function SubAdminDashboard() {
         <h1 className="text-2xl font-bold tracking-tight">Paper Submissions</h1>
         <p className="text-muted-foreground">Verify and manage new and re-submitted manuscripts.</p>
       </div>
-      <Tabs defaultValue="verification">
-        <TabsList className="grid w-full grid-cols-2">
+      <Tabs defaultValue="verification" className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
           <TabsTrigger value="verification">Submissions for Verification</TabsTrigger>
           <TabsTrigger value="re-verification">Re-Verification</TabsTrigger>
         </TabsList>

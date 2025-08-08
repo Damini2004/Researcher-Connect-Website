@@ -25,7 +25,7 @@ export default function HomePage() {
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
               <div className="flex flex-col justify-center space-y-6">
                 <div className="space-y-4">
-                  <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl xl:text-7xl">
+                  <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl">
                     <span className="block">Streamline Your Research</span>
                     <span className="block text-primary">with Pure Research Insights</span>
                   </h1>

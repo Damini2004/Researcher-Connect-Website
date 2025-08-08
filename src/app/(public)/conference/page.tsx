@@ -118,18 +118,18 @@ export default function ConferencesPage() {
         </section>
 
         <div className="py-12 md:py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+           <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Main Content */}
                 <div className="lg:col-span-8">
                     <section>
                         <div className="max-w-5xl mx-auto border-t-4 border-red-600 shadow-lg rounded-b-lg mb-12 relative bg-background">
                             <div className="p-6">
                                 <h3 className="font-bold text-center mb-4">Find International Conference</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                     <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
                                     <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger><SelectContent><SelectItem value="usa">USA</SelectItem></SelectContent></Select>
                                     <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
-                                    <Button className="w-full bg-red-600 hover:bg-red-700"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
+                                    <Button className="w-full bg-red-600 hover:bg-red-700 sm:col-span-2 md:col-span-1"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
                                 </div>
                             </div>
                         </div>

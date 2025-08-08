@@ -6,7 +6,7 @@ import ContactForm from "@/components/forms/contact-form";
 export default function ContactUsPage() {
   return (
     <div className="bg-secondary/50">
-      <div className="py-16 md:py-24">
+      <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Get in Touch</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">We'd love to hear from you. Whether you have a question, feedback, or need support, our team is ready to help.</p>

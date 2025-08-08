@@ -101,7 +101,7 @@ export default function PublicationsOverviewPage() {
             </Card>
 
             {/* Policies Grid */}
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
                 <Card className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10">
                     <CardHeader>
                         <CardTitle className="text-2xl">Plagiarism Policy & Publication Ethics</CardTitle>

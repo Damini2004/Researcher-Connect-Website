@@ -11,7 +11,7 @@ export default function PublicLayout({
     <div className="flex min-h-screen flex-col">
       <UserHeader />
       <main className="flex-1">
-        <div className="container">{children}</div>
+        {children}
       </main>
       <Footer />
       <WhatsappFab />

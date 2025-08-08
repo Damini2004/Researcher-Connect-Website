@@ -39,7 +39,7 @@ const Footer = () => {
             <div className="container mx-auto px-4 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {/* Column 1: Info */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 md:col-span-2 lg:col-span-1">
                         <Logo className="h-24 w-24 text-[#D32F2F]" />
                         <div className="space-y-2 text-sm text-gray-400">
                             <p className="flex items-start gap-2">
