@@ -47,14 +47,16 @@ export default function ViewJournalsPage() {
                 Add Journal
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px]">
+          <DialogContent className="sm:max-w-[625px] max-h-[90vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>Add New Journal</DialogTitle>
               <DialogDescription>
                 Fill out the form below to add a new journal to the system.
               </DialogDescription>
             </DialogHeader>
-            <AddJournalForm onJournalAdded={handleJournalAdded} />
+            <div className="flex-grow overflow-y-auto pr-4 -mr-2">
+                <AddJournalForm onJournalAdded={handleJournalAdded} />
+            </div>
           </DialogContent>
         </Dialog>
       </div>
