@@ -28,11 +28,11 @@ const awardCategories = [
 export default function AwardsPage() {
   return (
     <div className="bg-secondary/50 py-16 md:py-24">
-      <div className="px-4">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Awards & Recognition</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-            IFERP is committed to celebrating excellence in research and innovation. Our awards honor the outstanding contributions of researchers and scholars who are pushing the boundaries of knowledge.
+            PRI is committed to celebrating excellence in research and innovation. Our awards honor the outstanding contributions of researchers and scholars who are pushing the boundaries of knowledge.
           </p>
         </div>
         
