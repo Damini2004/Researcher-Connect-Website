@@ -62,8 +62,8 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
   React.useEffect(() => {
     async function fetchAdmins() {
         try {
-            const admins = await getSubAdmins({ approvedOnly: true });
-            setSubAdmins(admins);
+            const admins = await getSubAdmins();
+            setSubAdmins(admins.filter(admin => admin.status === 'approved'));
         } catch (error) {
             toast({
                 title: "Error",
@@ -131,10 +131,6 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
     });
 
     if (result.success) {
-      toast({
-        title: "Journal Added Successfully!",
-        description: `The journal "${values.journalName}" has been added.`,
-      });
       form.reset();
       onJournalAdded();
       router.refresh();

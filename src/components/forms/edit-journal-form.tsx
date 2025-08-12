@@ -56,8 +56,8 @@ export default function EditJournalForm({ journal, onJournalUpdated, onClose }: 
   React.useEffect(() => {
     async function fetchAdmins() {
         try {
-            const admins = await getSubAdmins({ approvedOnly: true });
-            setSubAdmins(admins);
+            const admins = await getSubAdmins();
+            setSubAdmins(admins.filter(admin => admin.status === 'approved'));
         } catch (error) {
             toast({
                 title: "Error",
