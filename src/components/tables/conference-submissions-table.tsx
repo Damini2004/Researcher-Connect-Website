@@ -1,4 +1,4 @@
-// src/components/tables/journal-submissions-table.tsx
+// src/components/tables/conference-submissions-table.tsx
 "use client";
 
 import * as React from 'react';
@@ -38,14 +38,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Edit, Trash2, Eye, MailWarning, History, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { getSubmissions, deleteSubmission, type Submission } from '@/services/submissionService';
 import EditSubmissionForm from '../forms/edit-submission-form';
 import { cn } from '@/lib/utils';
 import { getSubAdminByEmail } from '@/services/subAdminService';
 import AlertAuthorForm from '../forms/alert-author-form';
-import { Separator } from '../ui/separator';
 import { ScrollArea } from '../ui/scroll-area';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -60,11 +59,11 @@ const statusColors: { [key: string]: string } = {
 
 const statusOptions = ["In Progress", "Canceled"];
 
-interface JournalSubmissionsTableProps {
+interface ConferenceSubmissionsTableProps {
     submissionType: 'new' | 're-verification';
 }
 
-export default function JournalSubmissionsTable({ submissionType }: JournalSubmissionsTableProps) {
+export default function ConferenceSubmissionsTable({ submissionType }: ConferenceSubmissionsTableProps) {
   const { toast } = useToast();
   const [submissions, setSubmissions] = React.useState<Submission[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -76,7 +75,6 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
   
   const [selectedSubmission, setSelectedSubmission] = React.useState<Submission | null>(null);
 
-  // Filtering states
   const [searchFilter, setSearchFilter] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState("all");
 
@@ -192,27 +190,22 @@ export default function JournalSubmissionsTable({ submissionType }: JournalSubmi
   };
   
   const filteredSubmissions = submissions.filter(s => {
-      // Filter by submission type (journal)
-      if (s.submissionType !== 'journal') return false;
+      if (s.submissionType !== 'conference') return false;
 
-      // Tab-based filtering
       const tabFilter = submissionType === 'new'
           ? s.status === 'Verification Pending'
           : s.status === 'Re-Verification Pending';
 
       if (!tabFilter) return false;
 
-      // Search filter
       const searchMatch = searchFilter === "" ||
           s.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
           s.fullName.toLowerCase().includes(searchFilter.toLowerCase());
 
-      // Status filter
       const statusMatch = statusFilter === 'all' || s.status === statusFilter;
 
       return searchMatch && statusMatch;
   });
-
 
   return (
     <>
