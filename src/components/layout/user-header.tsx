@@ -313,6 +313,7 @@ export default function UserHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0 flex flex-col">
             <SheetHeader className="text-left p-4 border-b">
+                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                  <Link
                     href="/"
                     className="flex items-center space-x-2"
