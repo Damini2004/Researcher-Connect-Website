@@ -26,6 +26,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { addJournal } from "@/services/journalService";
 import { useRouter } from "next/navigation";
+import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 
 const formSchema = z.object({
   journalName: z.string().min(5, "Journal name must be at least 5 characters."),
@@ -40,6 +45,7 @@ const formSchema = z.object({
   status: z.enum(["Active", "Inactive", "Archived"], {
     required_error: "Please select a status for the journal.",
   }),
+  editorChoice: z.string().optional(),
 });
 
 interface AddJournalFormProps {
@@ -50,6 +56,24 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
   const { toast } = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [subAdmins, setSubAdmins] = React.useState<SubAdmin[]>([]);
+  const [openCombobox, setOpenCombobox] = React.useState(false);
+
+  React.useEffect(() => {
+    async function fetchAdmins() {
+        try {
+            const admins = await getSubAdmins({ approvedOnly: true });
+            setSubAdmins(admins);
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Could not fetch sub-admins for editor selection.",
+                variant: "destructive",
+            });
+        }
+    }
+    fetchAdmins();
+  }, [toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,6 +81,7 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
       journalName: "",
       description: "",
       status: "Active",
+      editorChoice: "none",
     },
   });
 
@@ -102,6 +127,7 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
         description: values.description,
         status: values.status,
         imageSrc: imageSrc,
+        editorChoice: values.editorChoice === "none" ? undefined : values.editorChoice,
     });
 
     if (result.success) {
@@ -192,6 +218,41 @@ export default function AddJournalForm({ onJournalAdded }: AddJournalFormProps) 
               )}
             />
         </div>
+        <FormField control={form.control} name="editorChoice" render={({ field }) => ( 
+            <FormItem className="flex flex-col">
+                <FormLabel>Assign Editor (Optional)</FormLabel>
+                <FormControl>
+                    <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")} >
+                                {field.value && field.value !== "none" ? subAdmins.find( (admin) => admin.id === field.value )?.name : "Select Sub-Admin"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                            <Command>
+                                <CommandInput placeholder="Search sub-admins..." />
+                                <CommandList>
+                                    <CommandEmpty>No sub-admin found.</CommandEmpty>
+                                    <CommandGroup>
+                                        <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }} >
+                                            None
+                                        </CommandItem>
+                                        {subAdmins.map((admin) => (
+                                            <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} >
+                                                <Check className={cn("mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )}/>
+                                                {admin.name}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
+                </FormControl>
+                <FormMessage />
+            </FormItem>
+        )} />
         <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Save Journal"}
         </Button>

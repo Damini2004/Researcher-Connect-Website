@@ -12,6 +12,7 @@ export interface Journal {
     description: string;
     status: "Active" | "Inactive" | "Archived";
     imageSrc: string;
+    editorChoice?: string;
 }
 
 const journalSchema = z.object({
@@ -19,6 +20,7 @@ const journalSchema = z.object({
     description: z.string().min(20, "Description must be at least 20 characters."),
     status: z.enum(["Active", "Inactive", "Archived"]),
     imageSrc: z.string().optional(), // Optional on update if no new image is provided
+    editorChoice: z.string().optional(),
 });
 
 
@@ -27,6 +29,7 @@ interface AddJournalData {
     description: string;
     status: "Active" | "Inactive" | "Archived";
     imageSrc: string;
+    editorChoice?: string;
 }
 
 export async function addJournal(data: AddJournalData): Promise<{ success: boolean; message: string; newJournal?: Journal }> {
@@ -68,6 +71,7 @@ export async function getJournals(): Promise<Journal[]> {
                 description: data.description,
                 status: data.status,
                 imageSrc: data.imageSrc,
+                editorChoice: data.editorChoice,
             });
         });
         return journals;
@@ -99,7 +103,8 @@ export async function updateJournal(id: string, data: Partial<AddJournalData>): 
             journalName: updatedData.journalName,
             description: updatedData.description,
             status: updatedData.status,
-            imageSrc: updatedData.imageSrc
+            imageSrc: updatedData.imageSrc,
+            editorChoice: updatedData.editorChoice,
         }
 
         return { success: true, message: 'Journal updated successfully!', updatedJournal: result };

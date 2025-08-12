@@ -1,3 +1,4 @@
+
 // src/services/submissionService.ts
 'use server';
 
@@ -65,7 +66,7 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
             action: 'Archived before Re-submission',
             actionDate: new Date().toISOString(),
             status: originalData.status,
-            submittedAt: originalData.submittedAt.toDate().toISOString(),
+            submittedAt: new Date(originalData.submittedAt.toDate()).toISOString(),
             title: originalData.title,
             content: originalData.content,
             fullName: originalData.fullName,
@@ -92,6 +93,12 @@ export async function addSubmission(data: AddSubmissionData): Promise<{ success:
             const conferenceResult = await getConferenceById(submissionData.targetId);
             if (conferenceResult.success && conferenceResult.conference?.editorChoice) {
                 assignedSubAdminId = conferenceResult.conference.editorChoice;
+            }
+        } else if (submissionData.submissionType === 'journal') {
+            const journalRef = doc(db, 'journals', submissionData.targetId);
+            const journalSnap = await getDoc(journalRef);
+            if (journalSnap.exists() && journalSnap.data().editorChoice) {
+                assignedSubAdminId = journalSnap.data().editorChoice;
             }
         }
         
@@ -120,11 +127,21 @@ const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submissio
     // Helper to safely convert Firestore Timestamps or other date formats to ISO strings
     const toISOString = (date: any): string => {
         if (!date) return new Date().toISOString();
-        if (typeof date.toDate === 'function') {
+        if (typeof date.toDate === 'function') { // Handle Firestore Timestamps
             return date.toDate().toISOString();
         }
-        return new Date(date).toISOString();
+        if (date instanceof Date) { // Handle JS Dates
+             return date.toISOString();
+        }
+        // Handle strings or numbers
+        const d = new Date(date);
+        if (!isNaN(d.getTime())) {
+            return d.toISOString();
+        }
+        // Fallback for unexpected types
+        return new Date().toISOString();
     };
+
 
     const history = (data.history || []).map((entry: any) => {
         return {
@@ -154,37 +171,35 @@ const mapDocToSubmission = (doc: QueryDocumentSnapshot<DocumentData>): Submissio
 export async function getSubmissions(options: { subAdminId?: string } = {}): Promise<Submission[]> {
     try {
         const submissionsRef = collection(db, "submissions");
-        let submissions: Submission[] = [];
+        let allSubmissions: Submission[] = [];
+
+        // Fetch all submissions once to perform in-memory filtering
+        const allSnapshot = await getDocs(query(submissionsRef, orderBy("submittedAt", "desc")));
+        allSubmissions = allSnapshot.docs.map(mapDocToSubmission);
 
         if (options.subAdminId) {
-            const assignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", options.subAdminId));
-            const unassignedQuery = query(submissionsRef, where("assignedSubAdminId", "==", null));
-
-            const [assignedSnapshot, unassignedSnapshot] = await Promise.all([
-                getDocs(assignedQuery),
-                getDocs(unassignedQuery),
-            ]);
-            
-            const submissionsMap = new Map<string, QueryDocumentSnapshot<DocumentData>>();
-            assignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
-            unassignedSnapshot.forEach(doc => submissionsMap.set(doc.id, doc));
-
-            submissions = Array.from(submissionsMap.values()).map(mapDocToSubmission);
-
+            const subAdminId = options.subAdminId;
+            const relevantSubmissions = allSubmissions.filter(s => {
+                // Currently assigned to this admin
+                if (s.assignedSubAdminId === subAdminId) return true;
+                // Unassigned (new submissions)
+                if (!s.assignedSubAdminId) return true;
+                // Previously assigned to this admin (check history)
+                if (s.history && s.history.some(h => h.assignedSubAdminId === subAdminId)) return true;
+                // Return false if none of the above
+                return false;
+            });
+            return relevantSubmissions;
         } else {
-            const q = query(submissionsRef, orderBy("submittedAt", "desc"));
-            const querySnapshot = await getDocs(q);
-            submissions = querySnapshot.docs.map(mapDocToSubmission);
+            // If no subAdminId is provided, return all submissions (for super-admin)
+            return allSubmissions;
         }
-        
-        submissions.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
-        return submissions;
-
     } catch (error) {
         console.error("Error fetching submissions: ", error);
         return [];
     }
 }
+
 
 export async function updateSubmission(submission: Submission, data: UpdateSubmissionData): Promise<{ success: boolean; message: string; updatedSubmission?: Submission }> {
     try {
