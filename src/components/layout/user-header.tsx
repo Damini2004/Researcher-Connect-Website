@@ -62,7 +62,7 @@ const iprServicesSubMenu = [
 ]
 
 const conferenceSubMenuLinks = [
-    { href: "/conference/about-conference", label: "About IFERP Conference" },
+    { href: "/conference/about-conference", label: "About PRI Conference" },
     { href: "/conference/plan-conference", label: "Plan a Scientific Conference" },
     { href: "/conference/sponsors", label: "Sponsors & Exhibitors" },
     { href: "/conference/awards", label: "Awards & Recognition" },
