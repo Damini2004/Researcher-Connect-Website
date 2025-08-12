@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, BookOpen, ChevronDown, FileText, Book, Presentation, MessageSquare, ThumbsUp, Library, Users, Award, DraftingCompass, TrendingUp, Globe, ArrowRight, User } from "lucide-react";
+import { Menu, BookOpen, ChevronDown, FileText, Book, Presentation, MessageSquare, ThumbsUp, Library, Users, Award, DraftingCompass, TrendingUp, Globe, ArrowRight, User, Info, Handshake, PenTool, HelpCircle } from "lucide-react";
 import { Logo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -17,6 +17,9 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 
 // Custom Icons for Conference Menu
 const UpcomingConferencesIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -62,12 +65,12 @@ const iprServicesSubMenu = [
 ]
 
 const conferenceSubMenuLinks = [
-    { href: "/conference/about-conference", label: "About PRI Conference" },
-    { href: "/conference/plan-conference", label: "Plan a Scientific Conference" },
-    { href: "/conference/sponsors", label: "Sponsors & Exhibitors" },
-    { href: "/conference/awards", label: "Awards & Recognition" },
-    { href: "/conference/workshops", label: "Workshops & Courses" },
-    { href: "/conference/faq", label: "Conference FAQ" },
+    { href: "/conference/about-conference", label: "About PRI Conference", icon: Info },
+    { href: "/conference/plan-conference", label: "Plan a Scientific Conference", icon: BookOpen },
+    { href: "/conference/sponsors", label: "Sponsors & Exhibitors", icon: Handshake },
+    { href: "/conference/awards", label: "Awards & Recognition", icon: Award },
+    { href: "/conference/workshops", label: "Workshops & Courses", icon: PenTool },
+    { href: "/conference/faq", label: "Conference FAQ", icon: HelpCircle },
 ]
 
 const conferenceSubMenuItems = [
@@ -86,6 +89,7 @@ const mainNavLinks = [
     href: "/conference", 
     label: "Conference",
     isMegaMenu: true,
+    children: [...conferenceSubMenuLinks, ...conferenceSubMenuItems],
   },
   { 
     href: "/publications", 
@@ -177,7 +181,7 @@ export default function UserHeader() {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-64">
-            {link.children.map((childLink) => (
+            {link.children.map((childLink: { href: string, label: string, icon: React.ElementType }) => (
               <DropdownMenuItem key={childLink.href} asChild>
                 <Link
                   href={childLink.href}
@@ -207,6 +211,49 @@ export default function UserHeader() {
       </Link>
     )
   }
+  
+  const MobileNavLink = ({ link, onLinkClick }: { link: { href: string, label: string }, onLinkClick: () => void }) => (
+    <Link
+        href={link.href}
+        onClick={onLinkClick}
+        className={cn(
+            "block px-4 py-2 rounded-md text-base transition-colors hover:text-primary",
+            pathname === link.href
+            ? "bg-accent text-primary font-semibold"
+            : "text-foreground/80"
+        )}
+    >
+        {link.label}
+    </Link>
+  );
+  
+  const MobileNavAccordion = ({ link, onLinkClick }: { link: { href: string, label: string, children?: any[] }, onLinkClick: () => void }) => (
+    <AccordionItem value={link.label}>
+        <AccordionTrigger className="px-4 py-2 text-base text-foreground/80 font-normal hover:no-underline hover:text-primary">
+            {link.label}
+        </AccordionTrigger>
+        <AccordionContent className="pb-2">
+            <div className="flex flex-col space-y-1 ml-4 border-l pl-4">
+            {link.children?.map((child: any) => (
+                <Link
+                    key={child.href}
+                    href={child.href}
+                    onClick={onLinkClick}
+                    className={cn(
+                        "block py-2 rounded-md text-sm transition-colors hover:text-primary flex items-center gap-3",
+                        pathname === child.href
+                        ? "text-primary font-semibold"
+                        : "text-foreground/70"
+                    )}
+                >
+                    {child.icon && <child.icon className="h-4 w-4" />}
+                    {child.label}
+                </Link>
+            ))}
+            </div>
+        </AccordionContent>
+    </AccordionItem>
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm shadow-sm">
@@ -264,61 +311,30 @@ export default function UserHeader() {
               <span className="sr-only">Toggle Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="pr-0">
-            <SheetHeader className="text-left">
-              <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-            </SheetHeader>
-            <Link
-              href="/"
-              className="flex items-center space-x-2 mb-6"
-              onClick={() => setMenuOpen(false)}
-            >
-              <Logo className="h-6 w-6" />
-              <span className="font-bold">Pure Research Insights</span>
-            </Link>
-            <div className="flex flex-col space-y-3">
-              {[...mainNavLinks, ...topNavLinks].map((link) =>
-                link.children ? (
-                  <div key={link.href} className="px-4">
-                    <span className="font-semibold text-foreground/80">
-                      {link.label}
-                    </span>
-                    <div className="flex flex-col space-y-2 mt-2 ml-2">
-                      {link.children.map((child: any) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setMenuOpen(false)}
-                          className={cn(
-                            "px-4 py-2 rounded-md text-base transition-colors hover:text-primary flex items-center gap-2",
-                            pathname === child.href
-                              ? "bg-accent text-primary font-semibold"
-                              : "text-foreground/80"
-                          )}
-                        >
-                          <child.icon className="h-4 w-4" />
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
+          <SheetContent side="left" className="pr-0 flex flex-col">
+            <SheetHeader className="text-left p-4 border-b">
+                 <Link
+                    href="/"
+                    className="flex items-center space-x-2"
                     onClick={() => setMenuOpen(false)}
-                    className={cn(
-                      "px-4 py-2 rounded-md text-base transition-colors hover:text-primary",
-                      pathname === link.href
-                        ? "bg-accent text-primary font-semibold"
-                        : "text-foreground/80"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
-            </div>
+                    >
+                    <Logo className="h-8 w-8" />
+                    <span className="font-bold">Pure Research Insights</span>
+                </Link>
+            </SheetHeader>
+            <ScrollArea className="flex-1">
+                <div className="py-4">
+                    <Accordion type="multiple" className="w-full">
+                        {[...mainNavLinks, ...topNavLinks].map((link) =>
+                            link.children ? (
+                                <MobileNavAccordion key={link.href} link={link} onLinkClick={() => setMenuOpen(false)} />
+                            ) : (
+                                <MobileNavLink key={link.href} link={link} onLinkClick={() => setMenuOpen(false)} />
+                            )
+                        )}
+                    </Accordion>
+                </div>
+            </ScrollArea>
           </SheetContent>
         </Sheet>
       </div>
