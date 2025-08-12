@@ -12,12 +12,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { FileText, CheckSquare, MessageSquare, Settings, LogOut } from "lucide-react";
+import { FileText, CheckSquare, MessageSquare, Settings, LogOut, Book, Presentation } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const menuItems = [
-  { href: "/sub-admin", label: "Paper Submission", icon: FileText, exact: true },
+  { href: "/sub-admin/journal-submissions", label: "Journal Submissions", icon: Book },
+  { href: "/sub-admin/conference-submissions", label: "Conference Submissions", icon: Presentation },
   { href: "/sub-admin/approved", label: "Approved Papers", icon: CheckSquare },
   { href: "/sub-admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { href: "/sub-admin/settings", label: "Profile Settings", icon: Settings },
@@ -38,7 +39,7 @@ export default function SubAdminSidebar() {
       <SidebarContent>
         <SidebarMenu>
           {menuItems.map((item) => {
-            const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+            const isActive = pathname.startsWith(item.href);
             return (
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href}>
