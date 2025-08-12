@@ -215,7 +215,7 @@ export default function AllJournalsTable() {
       
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[625px]">
+        <DialogContent className="sm:max-w-[625px] max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Edit Journal</DialogTitle>
             <DialogDescription>
@@ -223,11 +223,13 @@ export default function AllJournalsTable() {
             </DialogDescription>
           </DialogHeader>
           {selectedJournal && (
-            <EditJournalForm
-              journal={selectedJournal}
-              onJournalUpdated={handleJournalUpdated}
-              onClose={() => setIsEditDialogOpen(false)}
-            />
+            <div className="flex-grow overflow-y-auto pr-4 -mr-2">
+              <EditJournalForm
+                journal={selectedJournal}
+                onJournalUpdated={handleJournalUpdated}
+                onClose={() => setIsEditDialogOpen(false)}
+              />
+            </div>
           )}
         </DialogContent>
       </Dialog>
