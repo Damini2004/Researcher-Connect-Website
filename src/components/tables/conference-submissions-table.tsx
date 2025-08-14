@@ -40,10 +40,9 @@ import { MoreHorizontal, Edit, Trash2, Eye, MailWarning, History, Search } from 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { getSubmissions, deleteSubmission, type Submission } from '@/services/submissionService';
+import { deleteSubmission, type Submission } from '@/services/submissionService';
 import EditSubmissionForm from '../forms/edit-submission-form';
 import { cn } from '@/lib/utils';
-import { getSubAdminByEmail } from '@/services/subAdminService';
 import AlertAuthorForm from '../forms/alert-author-form';
 import { ScrollArea } from '../ui/scroll-area';
 import { Input } from '../ui/input';
@@ -57,16 +56,16 @@ const statusColors: { [key: string]: string } = {
   "Re-Verification Pending": "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
 };
 
-const statusOptions = ["In Progress", "Canceled"];
+const statusOptions = ["In Progress", "Canceled", "Done"];
 
 interface ConferenceSubmissionsTableProps {
-    submissionType: 'new' | 're-verification';
+    submissions: Submission[];
+    isLoading: boolean;
+    onDataChange: () => void;
 }
 
-export default function ConferenceSubmissionsTable({ submissionType }: ConferenceSubmissionsTableProps) {
+export default function ConferenceSubmissionsTable({ submissions, isLoading, onDataChange }: ConferenceSubmissionsTableProps) {
   const { toast } = useToast();
-  const [submissions, setSubmissions] = React.useState<Submission[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
@@ -77,37 +76,6 @@ export default function ConferenceSubmissionsTable({ submissionType }: Conferenc
 
   const [searchFilter, setSearchFilter] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState("all");
-
-  const fetchSubmissions = React.useCallback(async () => {
-    setIsLoading(true);
-    try {
-        let subAdminId: string | undefined = undefined;
-        if (typeof window !== 'undefined') {
-            const email = localStorage.getItem('currentUserEmail');
-            if (email) {
-                const result = await getSubAdminByEmail(email);
-                if (result.success && result.subAdmin) {
-                    subAdminId = result.subAdmin.id;
-                }
-            }
-        }
-
-        const data = await getSubmissions({ subAdminId: subAdminId });
-        setSubmissions(data);
-    } catch (error) {
-        toast({
-            title: "Error fetching submissions",
-            description: "Could not retrieve the list of submissions.",
-            variant: "destructive"
-        });
-    } finally {
-        setIsLoading(false);
-    }
-  }, [toast]);
-
-  React.useEffect(() => {
-    fetchSubmissions();
-  }, [fetchSubmissions]);
 
   const handleEditClick = (submission: Submission) => {
     setSelectedSubmission(submission);
@@ -137,7 +105,7 @@ export default function ConferenceSubmissionsTable({ submissionType }: Conferenc
         title: "Submission Deleted",
         description: `"${selectedSubmission.title}" has been successfully deleted.`,
       });
-      fetchSubmissions();
+      onDataChange();
     } else {
        toast({ title: "Error", description: result.message, variant: "destructive" });
     }
@@ -146,7 +114,7 @@ export default function ConferenceSubmissionsTable({ submissionType }: Conferenc
   }
 
   const handleSubmissionUpdated = () => {
-    fetchSubmissions();
+    onDataChange();
   };
   
   const handleAlertSent = () => {
@@ -190,14 +158,6 @@ export default function ConferenceSubmissionsTable({ submissionType }: Conferenc
   };
   
   const filteredSubmissions = submissions.filter(s => {
-      if (s.submissionType !== 'conference') return false;
-
-      const tabFilter = submissionType === 'new'
-          ? s.status === 'Verification Pending'
-          : s.status === 'Re-Verification Pending';
-
-      if (!tabFilter) return false;
-
       const searchMatch = searchFilter === "" ||
           s.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
           s.fullName.toLowerCase().includes(searchFilter.toLowerCase());
