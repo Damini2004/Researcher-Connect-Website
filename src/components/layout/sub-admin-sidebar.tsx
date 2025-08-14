@@ -1,4 +1,4 @@
-
+// src/components/layout/sub-admin-sidebar.tsx
 "use client";
 
 import {
@@ -10,21 +10,27 @@ import {
   SidebarMenuButton,
   SidebarFooter,
   SidebarTrigger,
+  SidebarMenuBadge,
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { FileText, CheckSquare, MessageSquare, Settings, LogOut, Book, Presentation } from "lucide-react";
+import { CheckSquare, MessageSquare, Settings, LogOut, Book, Presentation } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+interface SubAdminSidebarProps {
+  journalCount?: number;
+  conferenceCount?: number;
+}
+
 const menuItems = [
-  { href: "/sub-admin/journal-submissions", label: "Journal Submissions", icon: Book },
-  { href: "/sub-admin/conference-submissions", label: "Conference Submissions", icon: Presentation },
+  { href: "/sub-admin/journal-submissions", label: "Journal Submissions", icon: Book, badgeId: "journal" },
+  { href: "/sub-admin/conference-submissions", label: "Conference Submissions", icon: Presentation, badgeId: "conference" },
   { href: "/sub-admin/approved", label: "Approved Papers", icon: CheckSquare },
   { href: "/sub-admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { href: "/sub-admin/settings", label: "Profile Settings", icon: Settings },
 ];
 
-export default function SubAdminSidebar() {
+export default function SubAdminSidebar({ journalCount = 0, conferenceCount = 0 }: SubAdminSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -49,6 +55,12 @@ export default function SubAdminSidebar() {
                     tooltip={item.label}
                   >
                     {item.label}
+                    {item.badgeId === 'journal' && journalCount > 0 && (
+                        <SidebarMenuBadge>{journalCount}</SidebarMenuBadge>
+                    )}
+                    {item.badgeId === 'conference' && conferenceCount > 0 && (
+                        <SidebarMenuBadge>{conferenceCount}</SidebarMenuBadge>
+                    )}
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>
