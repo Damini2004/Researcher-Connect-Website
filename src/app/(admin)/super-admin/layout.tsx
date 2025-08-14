@@ -1,7 +1,7 @@
 import AdminHeader from "@/components/layout/admin-header";
 import SuperAdminSidebar from "@/components/layout/super-admin-sidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
-import { getPendingEnquiryCount } from "@/services/enquiryService";
+import { getPendingEnquiryCount } from "@/services/inquiryService";
 
 export default async function SuperAdminLayout({
   children,

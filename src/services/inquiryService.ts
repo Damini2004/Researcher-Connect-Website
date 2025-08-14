@@ -3,13 +3,16 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { z } from 'zod';
+import { updateSubAdmin } from './subAdminService';
 
 export interface Enquiry {
   id: string;
+  subAdminId: string;
   subAdminName: string;
   currentEmail: string;
+  requestedName: string;
   requestedEmail: string;
   requestDate: string;
   status: 'Pending' | 'Approved' | 'Denied';

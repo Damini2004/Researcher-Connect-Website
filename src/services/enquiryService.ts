@@ -3,8 +3,9 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, DocumentData, addDoc, serverTimestamp, orderBy, QueryDocumentSnapshot } from 'firebase/firestore';
+import { collection, query, where, getDocs, DocumentData, addDoc, serverTimestamp, orderBy, QueryDocumentSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { z } from 'zod';
+import { getSubAdminById, updateSubAdmin } from './subAdminService';
 
 export interface Enquiry {
   id: string;
@@ -83,5 +84,51 @@ export async function getPendingEnquiryCount(): Promise<number> {
     } catch (error) {
         console.error("Error fetching pending enquiry count: ", error);
         return 0; // Return 0 on error
+    }
+}
+
+export async function processEnquiry(enquiryId: string, action: 'approve' | 'deny'): Promise<{ success: boolean; message: string }> {
+    try {
+        const enquiryRef = doc(db, 'enquiries', enquiryId);
+        const enquirySnap = await getDoc(enquiryRef);
+        if (!enquirySnap.exists()) {
+            return { success: false, message: "Enquiry not found." };
+        }
+        
+        const enquiryData = enquirySnap.data() as Omit<Enquiry, 'id' | 'requestDate'>;
+
+        if (action === 'approve') {
+            const adminResult = await getSubAdminById(enquiryData.subAdminId);
+            if (!adminResult.success || !adminResult.subAdmin) {
+                return { success: false, message: "Could not find the associated sub-admin to update." };
+            }
+
+            // Prepare update data for the sub-admin
+            const subAdminUpdateData = {
+                ...adminResult.subAdmin, //
+                name: enquiryData.requestedName,
+                email: enquiryData.requestedEmail,
+            };
+            delete subAdminUpdateData.id; 
+            delete subAdminUpdateData.joinDate; 
+
+            // Update the sub-admin's profile
+            const updateResult = await updateSubAdmin(enquiryData.subAdminId, subAdminUpdateData);
+            if (!updateResult.success) {
+                return { success: false, message: `Failed to update sub-admin profile: ${updateResult.message}` };
+            }
+
+            // Update the enquiry status
+            await updateDoc(enquiryRef, { status: 'Approved' });
+
+        } else { // Deny action
+            await updateDoc(enquiryRef, { status: 'Denied' });
+        }
+        
+        return { success: true, message: `Request has been successfully ${action === 'approve' ? 'approved' : 'denied'}.` };
+
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "An unexpected error occurred.";
+        return { success: false, message };
     }
 }

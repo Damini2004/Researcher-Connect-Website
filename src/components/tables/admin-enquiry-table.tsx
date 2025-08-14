@@ -11,35 +11,59 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Check, X, ArrowRight } from "lucide-react";
+import { Check, X, ArrowRight, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Enquiry, getEnquiries } from "@/services/enquiryService";
+import { Enquiry, getEnquiries, processEnquiry } from "@/services/enquiryService";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function AdminEnquiryTable() {
   const [enquiryRequests, setEnquiryRequests] = React.useState<Enquiry[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isProcessing, setIsProcessing] = React.useState<string | null>(null);
   const { toast } = useToast();
+  const router = useRouter();
+
+  const fetchEnquiries = React.useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await getEnquiries();
+      setEnquiryRequests(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not fetch enquiry requests.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast]);
 
   React.useEffect(() => {
-    const fetchEnquiries = async () => {
-      setIsLoading(true);
-      try {
-        const data = await getEnquiries();
-        setEnquiryRequests(data);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Could not fetch enquiry requests.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchEnquiries();
-  }, [toast]);
+  }, [fetchEnquiries]);
+  
+  const handleAction = async (enquiryId: string, action: 'approve' | 'deny') => {
+    setIsProcessing(enquiryId);
+    const result = await processEnquiry(enquiryId, action);
+    if (result.success) {
+      toast({
+        title: "Success",
+        description: result.message,
+      });
+      fetchEnquiries(); // Re-fetch data to update the table
+      router.refresh(); // Re-fetches layout data like sidebar count
+    } else {
+      toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
+    setIsProcessing(null);
+  }
 
 
   return (
@@ -92,11 +116,13 @@ export default function AdminEnquiryTable() {
                   <TableCell>
                      {request.status === 'Pending' && (
                         <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                                <Check className="mr-2 h-4 w-4 text-green-500"/> Approve
+                            <Button variant="outline" size="sm" onClick={() => handleAction(request.id, 'approve')} disabled={isProcessing === request.id}>
+                                {isProcessing === request.id ? <RefreshCw className="mr-2 h-4 w-4 animate-spin"/> : <Check className="mr-2 h-4 w-4 text-green-500"/>} 
+                                Approve
                             </Button>
-                            <Button variant="outline" size="sm">
-                                <X className="mr-2 h-4 w-4 text-red-500"/> Deny
+                            <Button variant="outline" size="sm" onClick={() => handleAction(request.id, 'deny')} disabled={isProcessing === request.id}>
+                                {isProcessing === request.id ? <RefreshCw className="mr-2 h-4 w-4 animate-spin"/> : <X className="mr-2 h-4 w-4 text-red-500"/>} 
+                                Deny
                             </Button>
                         </div>
                     )}

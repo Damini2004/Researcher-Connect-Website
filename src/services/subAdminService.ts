@@ -137,6 +137,7 @@ export async function getSubAdminByEmail(email: string): Promise<{ success: bool
       address: data.address,
       status: data.status,
       joinDate: joinDate,
+      password: data.password,
     };
     
     return { success: true, message: 'Sub-admin found.', subAdmin };
@@ -146,6 +147,39 @@ export async function getSubAdminByEmail(email: string): Promise<{ success: bool
     return { success: false, message: `Failed to fetch sub-admin: ${errorMessage}` };
   }
 }
+
+export async function getSubAdminById(id: string): Promise<{ success: boolean; message: string; subAdmin?: SubAdmin }> {
+  try {
+    const docRef = doc(db, 'subAdmins', id);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return { success: false, message: 'Sub-admin not found.' };
+    }
+
+    const data = docSnap.data();
+    const joinDate = data.joinDate ? new Date(data.joinDate).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+    }) : 'N/A';
+
+    const subAdmin: SubAdmin = {
+      id: docSnap.id,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      status: data.status,
+      joinDate: joinDate,
+      password: data.password,
+    };
+    
+    return { success: true, message: 'Sub-admin found.', subAdmin };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { success: false, message: `Failed to fetch sub-admin: ${errorMessage}` };
+  }
+}
+
 
 
 export async function verifySubAdminCredentials(email: string, password_provided: string): Promise<{ success: boolean; message: string }> {
@@ -193,9 +227,9 @@ export async function updateSubAdminStatus(id: string, status: 'approved' | 'den
   }
 }
 
-export async function updateSubAdmin(id: string, data: UpdateSubAdminData): Promise<UpdateSubAdminResult> {
+export async function updateSubAdmin(id: string, data: Partial<UpdateSubAdminData>): Promise<UpdateSubAdminResult> {
   try {
-    const validationResult = updateSubAdminSchema.safeParse(data);
+    const validationResult = updateSubAdminSchema.partial().safeParse(data);
     if (!validationResult.success) {
       return { success: false, message: validationResult.error.errors[0].message };
     }
@@ -207,9 +241,8 @@ export async function updateSubAdmin(id: string, data: UpdateSubAdminData): Prom
       return { success: false, message: "Sub-admin not found." };
     }
     
-    // Check if the email is being changed and if the new email already exists for another user
     const currentEmail = docSnap.data().email;
-    if (data.email !== currentEmail) {
+    if (data.email && data.email !== currentEmail) {
         const q = query(collection(db, 'subAdmins'), where('email', '==', data.email), limit(1));
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
