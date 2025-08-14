@@ -46,6 +46,7 @@ export default function SubAdminSidebar() {
                   <SidebarMenuButton
                     isActive={isActive}
                     icon={<item.icon />}
+                    tooltip={item.label}
                   >
                     {item.label}
                   </SidebarMenuButton>
@@ -57,7 +58,7 @@ export default function SubAdminSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <Link href="/">
-          <SidebarMenuButton icon={<LogOut />}>Logout</SidebarMenuButton>
+          <SidebarMenuButton icon={<LogOut />} tooltip="Logout">Logout</SidebarMenuButton>
         </Link>
       </SidebarFooter>
     </Sidebar>
