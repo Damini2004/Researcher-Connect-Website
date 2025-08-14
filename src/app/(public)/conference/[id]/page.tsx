@@ -109,9 +109,9 @@ function ConferenceDetailClient() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {items.map((item, index) => (
-          <div key={index} className="bg-secondary/70 group rounded-lg p-4 flex items-center space-x-4 transition-all duration-300 hover:shadow-md hover:scale-105">
-            <div className="p-2 bg-primary/10 rounded-md">
-              <ListTree className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-110" />
+          <div key={index} className="bg-gradient-to-br from-primary/10 to-secondary/50 group rounded-lg p-4 flex items-center space-x-4 transition-all duration-300 hover:shadow-md hover:scale-105 hover:border-primary/20 border border-transparent">
+            <div className="p-2 bg-white rounded-md shadow-inner">
+              <ListTree className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12" />
             </div>
             <span className="font-medium text-sm text-foreground">{item}</span>
           </div>
@@ -145,12 +145,12 @@ function ConferenceDetailClient() {
   const isCallForPapersOpen = submissionEndDate >= today;
 
   const EyecatchyCard = ({ icon: Icon, title, children, className }: { icon: React.ElementType, title?: string, children: React.ReactNode, className?: string }) => (
-    <Card className={cn("hover:shadow-lg transition-shadow duration-300 group", className)}>
+    <Card className={cn("hover:shadow-xl transition-shadow duration-300 group bg-gradient-to-br from-white via-white to-secondary/20 border-border/50", className)}>
         {title && (
             <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 rounded-md">
-                       <Icon className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
+                       <Icon className="h-5 w-5 text-primary transition-transform duration-500 group-hover:scale-125 group-hover:animate-dance" />
                     </div>
                     {title}
                 </CardTitle>
@@ -193,7 +193,7 @@ function ConferenceDetailClient() {
     <div className="bg-secondary/30">
        <section className="relative w-full h-[500px] bg-gray-800 text-white">
         <Image
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=500&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=500&auto-format&fit=crop"
           alt="Conference background"
           fill
           className="object-cover opacity-20"
@@ -260,19 +260,19 @@ function ConferenceDetailClient() {
                         </div>
                         
                         <Accordion type="single" collapsible className="w-full space-y-2 pt-6">
-                            <AccordionItem value="item-1" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                            <AccordionItem value="item-1" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                                 <AccordionContent>
                                     <RenderHtmlContent htmlContent={conference.keynoteSpeakers} />
                                 </AccordionContent>
                             </AccordionItem>
-                            <AccordionItem value="item-2" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                            <AccordionItem value="item-2" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
                                 <AccordionContent>
                                     <RenderHtmlContent htmlContent={conference.organizingCommittee} />
                                 </AccordionContent>
                             </AccordionItem>
-                            <AccordionItem value="item-3" className="bg-secondary/50 rounded-lg px-4 border-b-0">
+                            <AccordionItem value="item-3" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
                                 <AccordionContent>
                                     {renderTracksAsCards(conference.tracks)}
