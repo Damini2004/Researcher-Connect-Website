@@ -34,6 +34,7 @@ const menuItems = [
 
 export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAdminSidebarProps) {
   const pathname = usePathname();
+  const badgeClass = "bg-red-500 text-white";
 
   return (
     <Sidebar>
@@ -52,10 +53,11 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
                 <SidebarMenuButton
                   isActive={pathname.startsWith(item.href)}
                   icon={<item.icon />}
+                  tooltip={item.label}
                 >
                   {item.label}
                   {item.badgeId === 'enquiries' && pendingEnquiriesCount > 0 && (
-                    <SidebarMenuBadge>{pendingEnquiriesCount}</SidebarMenuBadge>
+                    <SidebarMenuBadge className={badgeClass}>{pendingEnquiriesCount}</SidebarMenuBadge>
                   )}
                 </SidebarMenuButton>
               </Link>
@@ -65,7 +67,7 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
       </SidebarContent>
       <SidebarFooter>
         <Link href="/">
-          <SidebarMenuButton icon={<LogOut />}>Logout</SidebarMenuButton>
+          <SidebarMenuButton icon={<LogOut />} tooltip="Logout">Logout</SidebarMenuButton>
         </Link>
       </SidebarFooter>
     </Sidebar>
