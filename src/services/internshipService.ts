@@ -11,6 +11,7 @@ export interface Internship {
     name: string;
     description: string;
     imageSrc: string;
+    brochureUrl?: string;
     createdAt: string;
 }
 
@@ -18,12 +19,14 @@ const internshipSchema = z.object({
     name: z.string().min(5, "Internship name must be at least 5 characters."),
     description: z.string().min(20, "Description must be at least 20 characters."),
     imageSrc: z.string().url("Must be a valid URL (Base64 data URI).").or(z.string().startsWith("data:image")),
+    brochureUrl: z.string().optional(),
 });
 
 interface AddInternshipData {
     name: string;
     description: string;
     imageSrc: string;
+    brochureUrl?: string;
 }
 
 export async function addInternship(data: AddInternshipData): Promise<{ success: boolean; message: string; newInternship?: Internship }> {
@@ -69,6 +72,7 @@ export async function getInternships(): Promise<Internship[]> {
                 name: data.name,
                 description: data.description,
                 imageSrc: data.imageSrc,
+                brochureUrl: data.brochureUrl,
                 createdAt: data.createdAt.toDate().toISOString(),
             });
         });

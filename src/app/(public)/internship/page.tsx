@@ -11,6 +11,7 @@ import ContactForm from "@/components/forms/contact-form";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Download } from "lucide-react";
 
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
@@ -37,6 +38,28 @@ export default function InternshipPage() {
     fetchInternships();
   }, [toast]); 
 
+  const handleDownloadBrochure = (brochureUrl: string, internshipName: string) => {
+    if (!brochureUrl) return;
+
+    const link = document.createElement('a');
+    link.href = brochureUrl;
+
+    // Extract file type from data URI
+    const mimeType = brochureUrl.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    let fileExtension = 'file';
+    if (mimeType && mimeType.length > 1) {
+        if (mimeType[1] === 'application/pdf') fileExtension = 'pdf';
+        else if (mimeType[1] === 'application/msword') fileExtension = 'doc';
+        else if (mimeType[1] === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') fileExtension = 'docx';
+    }
+
+    link.download = `Brochure-${internshipName.replace(/\s/g, '_')}.${fileExtension}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+
   return (
     <div className="py-12 md:py-24">
       <div className="text-center mb-12">
@@ -62,7 +85,7 @@ export default function InternshipPage() {
                 <CardContent className="p-0 flex-grow">
                   <p className="text-muted-foreground line-clamp-4">{internship.description}</p>
                 </CardContent>
-                <div className="p-0 mt-6">
+                <div className="p-0 mt-6 flex flex-wrap gap-2">
                    <Dialog>
                       <DialogTrigger asChild>
                          <Button>Register Now</Button>
@@ -84,6 +107,14 @@ export default function InternshipPage() {
                         </div>
                       </DialogContent>
                    </Dialog>
+                   <Button 
+                      variant="outline" 
+                      disabled={!internship.brochureUrl}
+                      onClick={() => handleDownloadBrochure(internship.brochureUrl!, internship.name)}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Brochure
+                    </Button>
                 </div>
               </div>
             </Card>

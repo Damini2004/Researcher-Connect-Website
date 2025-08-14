@@ -29,6 +29,20 @@ const formSchema = z.object({
       (files) => files?.[0]?.type.startsWith("image/"),
       "Only image files are allowed."
     ),
+  brochure: z
+    .any()
+    .optional()
+    .refine(
+      (files) =>
+        !files ||
+        files.length === 0 ||
+        [
+          "application/pdf",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ].includes(files?.[0]?.type),
+      "Only PDF, DOC, or DOCX files are allowed."
+    ),
 });
 
 interface AddInternshipFormProps {
@@ -47,7 +61,8 @@ export default function AddInternshipForm({ onInternshipAdded }: AddInternshipFo
     },
   });
 
-  const fileRef = form.register("image");
+  const imageFileRef = form.register("image");
+  const brochureFileRef = form.register("brochure");
 
   const convertFileToBase64 = (file: File): Promise<string> => {
       return new Promise((resolve, reject) => {
@@ -84,10 +99,26 @@ export default function AddInternshipForm({ onInternshipAdded }: AddInternshipFo
       return;
     }
 
+    let brochureUrl: string | undefined = undefined;
+    if (values.brochure && values.brochure.length > 0) {
+      try {
+        brochureUrl = await convertFileToBase64(values.brochure[0]);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to read brochure file.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     const result = await addInternship({
         name: values.name,
         description: values.description,
         imageSrc: imageSrc,
+        brochureUrl: brochureUrl,
     });
 
     if (result.success) {
@@ -143,7 +174,24 @@ export default function AddInternshipForm({ onInternshipAdded }: AddInternshipFo
             <FormItem>
               <FormLabel>Display Image</FormLabel>
               <FormControl>
-                <Input type="file" accept="image/*" {...fileRef} />
+                <Input type="file" accept="image/*" {...imageFileRef} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="brochure"
+          render={() => (
+            <FormItem>
+              <FormLabel>Brochure (Optional, PDF/DOC)</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  {...brochureFileRef}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
