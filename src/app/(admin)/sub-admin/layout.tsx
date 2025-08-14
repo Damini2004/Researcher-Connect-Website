@@ -8,6 +8,7 @@ import { SidebarInset } from "@/components/ui/sidebar";
 import { getSubmissions } from '@/services/submissionService';
 import { getSubAdminByEmail } from '@/services/subAdminService';
 import { useToast } from '@/hooks/use-toast';
+import { getInquiries } from '@/services/inquiryService';
 
 export default function SubAdminLayout({
   children,
@@ -16,6 +17,7 @@ export default function SubAdminLayout({
 }) {
   const [journalCount, setJournalCount] = React.useState(0);
   const [conferenceCount, setConferenceCount] = React.useState(0);
+  const [inquiryCount, setInquiryCount] = React.useState(0);
   const { toast } = useToast();
 
   const fetchCounts = React.useCallback(async () => {
@@ -30,18 +32,25 @@ export default function SubAdminLayout({
           }
         }
       }
-      const data = await getSubmissions({ subAdminId });
+      
+      const [submissionsData, inquiriesData] = await Promise.all([
+        getSubmissions({ subAdminId }),
+        getInquiries()
+      ]);
+
       const pendingStatuses = ['Verification Pending', 'Re-Verification Pending'];
       
-      const journals = data.filter(s => s.submissionType === 'journal' && pendingStatuses.includes(s.status));
-      const conferences = data.filter(s => s.submissionType === 'conference' && pendingStatuses.includes(s.status));
+      const journals = submissionsData.filter(s => s.submissionType === 'journal' && pendingStatuses.includes(s.status));
+      const conferences = submissionsData.filter(s => s.submissionType === 'conference' && pendingStatuses.includes(s.status));
+      const newInquiries = inquiriesData.filter(i => i.status === 'New');
 
       setJournalCount(journals.length);
       setConferenceCount(conferences.length);
+      setInquiryCount(newInquiries.length);
     } catch (error) {
       toast({
         title: "Error fetching counts",
-        description: "Could not retrieve submission counts for the sidebar.",
+        description: "Could not retrieve submission and inquiry counts for the sidebar.",
         variant: "destructive"
       });
     }
@@ -54,7 +63,7 @@ export default function SubAdminLayout({
 
   return (
     <>
-      <SubAdminSidebar journalCount={journalCount} conferenceCount={conferenceCount} />
+      <SubAdminSidebar journalCount={journalCount} conferenceCount={conferenceCount} inquiryCount={inquiryCount} />
       <div className="flex flex-col w-full">
         <AdminHeader role="sub-admin" />
         <SidebarInset>

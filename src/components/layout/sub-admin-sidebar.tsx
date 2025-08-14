@@ -16,22 +16,26 @@ import { Logo } from "@/components/icons";
 import { CheckSquare, MessageSquare, Settings, LogOut, Book, Presentation } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface SubAdminSidebarProps {
   journalCount?: number;
   conferenceCount?: number;
+  inquiryCount?: number;
 }
 
 const menuItems = [
   { href: "/sub-admin/journal-submissions", label: "Journal Submissions", icon: Book, badgeId: "journal" },
   { href: "/sub-admin/conference-submissions", label: "Conference Submissions", icon: Presentation, badgeId: "conference" },
   { href: "/sub-admin/approved", label: "Approved Papers", icon: CheckSquare },
-  { href: "/sub-admin/inquiries", label: "Inquiries", icon: MessageSquare },
+  { href: "/sub-admin/inquiries", label: "Inquiries", icon: MessageSquare, badgeId: "inquiries" },
   { href: "/sub-admin/settings", label: "Profile Settings", icon: Settings },
 ];
 
-export default function SubAdminSidebar({ journalCount = 0, conferenceCount = 0 }: SubAdminSidebarProps) {
+export default function SubAdminSidebar({ journalCount = 0, conferenceCount = 0, inquiryCount = 0 }: SubAdminSidebarProps) {
   const pathname = usePathname();
+
+  const badgeClass = "bg-red-500 text-white";
 
   return (
     <Sidebar>
@@ -56,10 +60,13 @@ export default function SubAdminSidebar({ journalCount = 0, conferenceCount = 0 
                   >
                     {item.label}
                     {item.badgeId === 'journal' && journalCount > 0 && (
-                        <SidebarMenuBadge>{journalCount}</SidebarMenuBadge>
+                        <SidebarMenuBadge className={badgeClass}>{journalCount}</SidebarMenuBadge>
                     )}
                     {item.badgeId === 'conference' && conferenceCount > 0 && (
-                        <SidebarMenuBadge>{conferenceCount}</SidebarMenuBadge>
+                        <SidebarMenuBadge className={badgeClass}>{conferenceCount}</SidebarMenuBadge>
+                    )}
+                     {item.badgeId === 'inquiries' && inquiryCount > 0 && (
+                        <SidebarMenuBadge className={badgeClass}>{inquiryCount}</SidebarMenuBadge>
                     )}
                   </SidebarMenuButton>
                 </Link>
