@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { getInternships, Internship } from "@/services/internshipService";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
@@ -11,7 +11,7 @@ import ContactForm from "@/components/forms/contact-form";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Download } from "lucide-react";
+import { Download, ArrowRight } from "lucide-react";
 
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
@@ -74,9 +74,9 @@ export default function InternshipPage() {
       ) : internships.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {internships.map(internship => (
-            <Card key={internship.id} className="flex flex-col">
-              <div className="relative h-[250px] w-full overflow-hidden">
-                <Image src={internship.imageSrc} alt={internship.name} fill className="object-cover"/>
+            <Card key={internship.id} className="flex flex-col w-full max-w-sm overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="relative h-[250px] w-full">
+                <Image src={internship.imageSrc} alt={internship.name} fill className="object-cover" data-ai-hint="internship opportunity"/>
               </div>
               <div className="flex flex-col flex-grow p-6">
                 <CardHeader className="p-0 mb-4">
@@ -85,10 +85,12 @@ export default function InternshipPage() {
                 <CardContent className="p-0 flex-grow">
                   <p className="text-muted-foreground line-clamp-4">{internship.description}</p>
                 </CardContent>
-                <div className="p-0 mt-6 flex flex-wrap gap-2">
+                <CardFooter className="p-0 mt-6 flex flex-col items-start gap-3">
                    <Dialog>
                       <DialogTrigger asChild>
-                         <Button>Register Now</Button>
+                         <Button className="w-full">
+                            Register Now <ArrowRight className="ml-2 h-4 w-4" />
+                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
                         <DialogHeader>
@@ -109,13 +111,14 @@ export default function InternshipPage() {
                    </Dialog>
                    <Button 
                       variant="outline" 
+                      className="w-full"
                       disabled={!internship.brochureUrl}
                       onClick={() => handleDownloadBrochure(internship.brochureUrl!, internship.name)}
                     >
                       <Download className="mr-2 h-4 w-4" />
                       Download Brochure
                     </Button>
-                </div>
+                </CardFooter>
               </div>
             </Card>
           ))}
@@ -128,3 +131,4 @@ export default function InternshipPage() {
     </div>
   );
 }
+
