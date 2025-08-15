@@ -1,6 +1,6 @@
 // src/app/(public)/about/page.tsx
 import { getPageContent } from "@/services/cmsService";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 async function getAboutContent() {
     const result = await getPageContent("about");
@@ -18,10 +18,12 @@ export default async function AboutPage() {
       <div className="container mx-auto px-4 max-w-4xl">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-center mb-12">About Pure Research Insights</h1>
         <Card className="shadow-lg overflow-hidden">
-            <div 
-                className="prose prose-lg max-w-none p-8 prose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto"
-                dangerouslySetInnerHTML={{ __html: content || "" }} 
-            />
+            <CardContent className="p-0">
+                <div 
+                    className="prose prose-lg max-w-none p-8 prose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto bg-card text-card-foreground"
+                    dangerouslySetInnerHTML={{ __html: content || "" }} 
+                />
+            </CardContent>
         </Card>
       </div>
     </div>
