@@ -37,13 +37,19 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Archive, MailOpen, Trash2, Briefcase, Eye, Download } from "lucide-react";
+import { MoreHorizontal, Archive, MailOpen, Trash2, Briefcase, Eye, Download, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getInquiries, updateInquiryStatus, deleteInquiry, type Inquiry } from "@/services/inquiryService";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
+import { Input } from "../ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+
+const statusOptions = ["New", "Read", "Archived"];
+const typeOptions = ["General Inquiry", "Internship Application", "Webinar Registration"];
+
 
 export default function InquiriesTable() {
   const { toast } = useToast();
@@ -52,6 +58,9 @@ export default function InquiriesTable() {
   const [selectedInquiry, setSelectedInquiry] = React.useState<Inquiry | null>(null);
   const [isViewOpen, setIsViewOpen] = React.useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
+  const [searchFilter, setSearchFilter] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState("all");
+  const [typeFilter, setTypeFilter] = React.useState("all");
 
   const fetchInquiries = React.useCallback(async () => {
     setIsLoading(true);
@@ -122,6 +131,18 @@ export default function InquiriesTable() {
     link.click();
     document.body.removeChild(link);
   };
+  
+  const filteredInquiries = inquiries.filter(inquiry => {
+    const searchMatch = searchFilter === "" ||
+        inquiry.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+        inquiry.email.toLowerCase().includes(searchFilter.toLowerCase()) ||
+        (inquiry.subject && inquiry.subject.toLowerCase().includes(searchFilter.toLowerCase()));
+    
+    const statusMatch = statusFilter === 'all' || inquiry.status === statusFilter;
+    const typeMatch = typeFilter === 'all' || inquiry.type === typeFilter;
+    
+    return searchMatch && statusMatch && typeMatch;
+  });
 
 
   return (
@@ -130,6 +151,41 @@ export default function InquiriesTable() {
         <CardHeader>
           <CardTitle>Inbox</CardTitle>
           <CardDescription>Review and manage user inquiries from the contact form.</CardDescription>
+          <div className="flex flex-col md:flex-row gap-4 justify-between pt-4">
+            <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                placeholder="Search by name, email, or subject..."
+                className="pl-8"
+                value={searchFilter}
+                onChange={(e) => setSearchFilter(e.target.value)}
+                />
+            </div>
+            <div className="flex gap-4">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full md:w-[150px]">
+                        <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        {statusOptions.map(status => (
+                            <SelectItem key={status} value={status}>{status}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                 <Select value={typeFilter} onValueChange={setTypeFilter}>
+                    <SelectTrigger className="w-full md:w-[180px]">
+                        <SelectValue placeholder="Filter by type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Types</SelectItem>
+                        {typeOptions.map(type => (
+                            <SelectItem key={type} value={type}>{type}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <Table>
@@ -151,15 +207,15 @@ export default function InquiriesTable() {
                     Loading inquiries...
                   </TableCell>
                 </TableRow>
-              ) : inquiries.length > 0 ? (
-                inquiries.map((inquiry) => (
+              ) : filteredInquiries.length > 0 ? (
+                filteredInquiries.map((inquiry) => (
                   <TableRow key={inquiry.id} data-state={inquiry.status === 'New' ? 'selected' : ''} className="data-[state=selected]:bg-muted/50">
                     <TableCell>
                         <div className="font-medium">{inquiry.name}</div>
                         <div className="text-sm text-muted-foreground">{inquiry.email}</div>
                     </TableCell>
                     <TableCell className="max-w-sm truncate">
-                      {inquiry.type === 'Internship Application' ? (
+                      {inquiry.type === 'Internship Application' || inquiry.type === 'Webinar Registration' ? (
                           <div className="flex items-center gap-2 text-sm">
                               <Briefcase className="h-4 w-4 text-muted-foreground" />
                               <span className="font-semibold">{inquiry.subject}</span>
