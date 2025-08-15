@@ -281,7 +281,7 @@ export default function AddWebinarForm({ onWebinarAdded }: AddWebinarFormProps) 
                             <Command>
                                 <CommandInput placeholder="Search sub-admins..." />
                                 <CommandList>
-                                    <CommandEmpty>No sub-admin found.</CommandEmpty>
+                                    <CommandEmpty>No approved sub-admins found.</CommandEmpty>
                                     <CommandGroup>
                                         <CommandItem value={"none"} onSelect={() => { form.setValue("assignedSubAdminId", "none"); setOpenCombobox(false); }} >
                                             None

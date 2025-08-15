@@ -1,4 +1,3 @@
-
 // src/services/subAdminService.ts
 'use server';
 
@@ -79,12 +78,15 @@ export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminRes
 
 export async function getSubAdmins(options: { approvedOnly?: boolean } = {}): Promise<SubAdmin[]> {
     try {
-        let constraints = [orderBy("joinDate", "desc")];
-        if(options.approvedOnly) {
-            constraints.push(where("status", "==", "approved"));
+        const subAdminsRef = collection(db, "subAdmins");
+        let q;
+
+        if (options.approvedOnly) {
+            q = query(subAdminsRef, where("status", "==", "approved"));
+        } else {
+            q = query(subAdminsRef, orderBy("joinDate", "desc"));
         }
 
-        const q = query(collection(db, "subAdmins"), ...constraints);
         const querySnapshot = await getDocs(q);
         const subAdmins: SubAdmin[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
@@ -105,6 +107,12 @@ export async function getSubAdmins(options: { approvedOnly?: boolean } = {}): Pr
                 password: data.password,
             });
         });
+        
+        // Sort by name client-side if filtering by approved status
+        if (options.approvedOnly) {
+            subAdmins.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
         return subAdmins;
     } catch (error) {
         console.error("Error fetching sub-admins: ", error);
