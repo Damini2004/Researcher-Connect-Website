@@ -81,14 +81,16 @@ export default function ManageWebinarsPage() {
                 Add Webinar
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px]">
+          <DialogContent className="sm:max-w-[625px] max-h-[90vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>Add New Webinar</DialogTitle>
               <DialogDescription>
                 Fill out the form below to add a new webinar.
               </DialogDescription>
             </DialogHeader>
-            <AddWebinarForm onWebinarAdded={handleWebinarAdded} />
+            <div className="flex-grow overflow-y-auto pr-4 -mr-2">
+                <AddWebinarForm onWebinarAdded={handleWebinarAdded} />
+            </div>
           </DialogContent>
         </Dialog>
       </div>

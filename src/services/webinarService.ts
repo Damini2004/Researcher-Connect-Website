@@ -15,6 +15,7 @@ export interface Webinar {
     imageSrc: string;
     brochureUrl?: string;
     createdAt: string;
+    assignedSubAdminId?: string;
 }
 
 const webinarSchema = z.object({
@@ -23,6 +24,7 @@ const webinarSchema = z.object({
     date: z.string(), // Will be in YYYY-MM-DD format
     imageSrc: z.string().url("Must be a valid URL (Base64 data URI).").or(z.string().startsWith("data:image")),
     brochureUrl: z.string().optional(),
+    assignedSubAdminId: z.string().optional(),
 });
 
 interface AddWebinarData {
@@ -31,6 +33,7 @@ interface AddWebinarData {
     date: string; // This will now be YYYY-MM-DD
     imageSrc: string;
     brochureUrl?: string;
+    assignedSubAdminId?: string;
 }
 
 export async function addWebinar(data: AddWebinarData): Promise<{ success: boolean; message: string; newWebinar?: Partial<Webinar> }> {
@@ -87,6 +90,7 @@ export async function getWebinars(): Promise<Webinar[]> {
                 imageSrc: data.imageSrc,
                 brochureUrl: data.brochureUrl,
                 createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
+                assignedSubAdminId: data.assignedSubAdminId,
             });
         });
         return webinars;
