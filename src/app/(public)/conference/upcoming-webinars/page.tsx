@@ -65,22 +65,22 @@ export default function UpcomingWebinarsPage() {
         ) : upcomingWebinars.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {upcomingWebinars.map((webinar) => (
-                <Card key={webinar.id} className="ft-recipe w-full max-w-sm mx-auto">
-                    <div className="ft-recipe__thumb">
+                <Card key={webinar.id} className="flex flex-col w-full max-w-sm mx-auto overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <div className="relative h-[200px] w-full">
                         <Image src={webinar.imageSrc} alt={webinar.title} fill className="object-cover" data-ai-hint="webinar event" />
                     </div>
-                    <div className="ft-recipe__content">
-                        <CardHeader className="p-0">
-                            <CardTitle className="recipe-title">{webinar.title}</CardTitle>
-                             <div className="flex items-center gap-2 pt-2 text-sm text-muted-foreground">
+                    <div className="flex flex-col flex-grow p-6">
+                        <CardHeader className="p-0 mb-4">
+                            <CardTitle>{webinar.title}</CardTitle>
+                            <div className="flex items-center gap-2 pt-2 text-sm text-muted-foreground">
                                 <Calendar className="h-4 w-4" />
                                 <span>{webinar.date}</span>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-0 flex-grow pt-4">
+                        <CardContent className="p-0 flex-grow">
                             <p className="text-muted-foreground line-clamp-4">{webinar.description}</p>
                         </CardContent>
-                        <CardFooter className="p-0 content__footer">
+                        <CardFooter className="p-0 mt-6">
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <Button className="w-full">
