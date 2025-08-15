@@ -16,7 +16,6 @@ export interface CmsPage {
 const pagesConfig = [
     { id: "about", title: "About Us", path: "/about" },
     { id: "privacy-policy", title: "Privacy Policy", path: "/privacy-policy" },
-    { id: "publications-overview", title: "Publications Overview", path: "/publications/overview" },
 ];
 
 async function initializePages() {
@@ -43,14 +42,17 @@ export async function getPages(): Promise<CmsPage[]> {
     const pages: CmsPage[] = [];
     querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
       const data = doc.data();
-      pages.push({
-        id: doc.id,
-        title: data.title,
-        path: data.path,
-        content: data.content,
-        createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
-        updatedAt: data.updatedAt?.toDate().toISOString() || null,
-      });
+      // Only include pages that are in our config
+      if (pagesConfig.some(p => p.id === doc.id)) {
+        pages.push({
+          id: doc.id,
+          title: data.title,
+          path: data.path,
+          content: data.content,
+          createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
+          updatedAt: data.updatedAt?.toDate().toISOString() || null,
+        });
+      }
     });
     // Sort based on the config order
     return pages.sort((a, b) => pagesConfig.findIndex(p => p.id === a.id) - pagesConfig.findIndex(p => p.id === b.id));
