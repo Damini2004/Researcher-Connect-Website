@@ -1,11 +1,9 @@
-
 // src/services/inquiryService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { z } from 'zod';
-import { updateSubAdmin } from './subAdminService';
 
 export interface Enquiry {
   id: string;
@@ -22,24 +20,32 @@ export interface Inquiry {
     id: string;
     name: string;
     email: string;
-    subject: string;
-    message: string;
+    subject?: string;
+    message?: string;
     date: string;
     status: 'New' | 'Read' | 'Archived';
-    type: string; // e.g., 'General Inquiry', 'Internship Application'
-    details?: string; // e.g., Internship Name
+    type: string; 
+    details?: string;
     phone?: string;
     city?: string;
     university?: string;
     degree?: string;
     resumeData?: string;
+    organization?: string;
+    jobTitle?: string;
+    industry?: string;
+    howHeard?: string;
+    questionsForSpeaker?: string;
+    futureWebinarsInterest?: boolean;
+    consent?: boolean;
+    privacyConsent?: boolean;
 }
 
 const inquirySchema = z.object({
   name: z.string().min(2, "Name is required."),
   email: z.string().email("Please enter a valid email address."),
   subject: z.string().optional(),
-  message: z.string().min(20, "Message must be at least 20 characters."),
+  message: z.string().optional(),
   type: z.string().default('General Inquiry'),
   details: z.string().optional(),
   phone: z.string().optional(),
@@ -47,6 +53,14 @@ const inquirySchema = z.object({
   university: z.string().optional(),
   degree: z.string().optional(),
   resumeData: z.string().optional(),
+  organization: z.string().optional(),
+  jobTitle: z.string().optional(),
+  industry: z.string().optional(),
+  howHeard: z.string().optional(),
+  questionsForSpeaker: z.string().optional(),
+  futureWebinarsInterest: z.boolean().optional(),
+  consent: z.boolean().optional(),
+  privacyConsent: z.boolean().optional(),
 });
 
 export async function getPendingEnquiryCount(): Promise<number> {
@@ -113,6 +127,14 @@ export async function getInquiries(): Promise<Inquiry[]> {
                 university: data.university,
                 degree: data.degree,
                 resumeData: data.resumeData,
+                organization: data.organization,
+                jobTitle: data.jobTitle,
+                industry: data.industry,
+                howHeard: data.howHeard,
+                questionsForSpeaker: data.questionsForSpeaker,
+                futureWebinarsInterest: data.futureWebinarsInterest,
+                consent: data.consent,
+                privacyConsent: data.privacyConsent,
             });
         });
         return inquiries;
