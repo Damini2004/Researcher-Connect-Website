@@ -68,11 +68,11 @@ export async function addInquiry(data: z.infer<typeof inquirySchema>): Promise<{
         }
 
         const dataToSave = validationResult.data;
-        if (dataToSave.type === 'Internship Application' && !dataToSave.subject) {
-            dataToSave.subject = `Internship: ${dataToSave.details || 'N/A'}`;
+        if ((dataToSave.type === 'Internship Application' || dataToSave.type === 'Webinar Registration') && !dataToSave.subject) {
+            dataToSave.subject = `${dataToSave.type}: ${dataToSave.details || 'N/A'}`;
         }
         
-        if (!dataToSave.subject && dataToSave.type !== 'Internship Application') {
+        if (!dataToSave.subject && dataToSave.type === 'General Inquiry') {
             return { success: false, message: "Subject is required for this type of inquiry." };
         }
 

@@ -64,6 +64,21 @@ const internshipApplicationSchema = z.object({
   subject: z.string().optional(),
 });
 
+const webinarRegistrationSchema = z.object({
+    name: z.string().min(2, "Name is required."),
+    email: z.string().email("Please enter a valid email address."),
+    phone: z.string().optional(),
+    message: z.string().optional(),
+    // Fields not applicable to webinar but part of the union type
+    subject: z.string().optional(),
+    city: z.string().optional(),
+    university: z.string().optional(),
+    degree: z.string().optional(),
+    resume: z.any().optional(),
+    consent: z.boolean().optional(),
+});
+
+
 interface ContactFormProps {
   inquiryType?: string;
   details?: string;
@@ -72,10 +87,18 @@ interface ContactFormProps {
 export default function ContactForm({ inquiryType, details }: ContactFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  
   const isInternshipApplication = inquiryType === "Internship Application";
+  const isWebinarRegistration = inquiryType === "Webinar Registration";
+  
+  const getValidationSchema = () => {
+    if (isInternshipApplication) return internshipApplicationSchema;
+    if (isWebinarRegistration) return webinarRegistrationSchema;
+    return generalInquirySchema;
+  }
 
   const form = useForm<z.infer<typeof internshipApplicationSchema>>({
-    resolver: zodResolver(isInternshipApplication ? internshipApplicationSchema : generalInquirySchema),
+    resolver: zodResolver(getValidationSchema()),
     defaultValues: {
       name: "",
       email: "",
@@ -83,7 +106,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
       city: "",
       university: "",
       degree: "",
-      subject: isInternshipApplication ? `Internship Application: ${details}` : "",
+      subject: isInternshipApplication ? `Internship Application: ${details}` : (isWebinarRegistration ? `Webinar Registration: ${details}`: ""),
       message: "",
       consent: false,
     },
@@ -112,14 +135,14 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
       const result = await addInquiry({
         ...values,
         type: inquiryType || 'General Inquiry',
-        details: isInternshipApplication ? `Resume Attached for ${details}` : details,
+        details: details,
         resumeData: resumeData,
       });
 
       if (result.success) {
         toast({
-          title: isInternshipApplication ? "Application Sent!" : "Message Sent!",
-          description: isInternshipApplication ? "Thank you for applying. We will review your application and get back to you shortly." : "Thank you for contacting us. We will get back to you shortly.",
+          title: isInternshipApplication ? "Application Sent!" : (isWebinarRegistration ? "Registration Successful!" : "Message Sent!"),
+          description: isInternshipApplication ? "Thank you for applying. We will review your application and get back to you shortly." : (isWebinarRegistration ? "Thank you for registering. We will send you the details shortly." : "Thank you for contacting us. We will get back to you shortly."),
         });
         form.reset();
         // Close dialog if possible
@@ -229,7 +252,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
             </>
         )}
         
-        {!isInternshipApplication && (
+        {!isInternshipApplication && !isWebinarRegistration && (
             <FormField
               control={form.control}
               name="subject"
@@ -245,23 +268,25 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
             />
         )}
 
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{isInternshipApplication ? "Why do you want this internship?" : "Your Message"}</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={isInternshipApplication ? "Briefly explain your interest and qualifications..." : "Please type your message here."}
-                  className="min-h-[120px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!isWebinarRegistration && (
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{isInternshipApplication ? "Why do you want this internship?" : "Your Message"}</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={isInternshipApplication ? "Briefly explain your interest and qualifications..." : "Please type your message here."}
+                      className="min-h-[120px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        )}
         
         {isInternshipApplication && (
              <FormField
@@ -288,7 +313,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
         
         <div className="text-center">
             <Button type="submit" size="lg" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : (isInternshipApplication ? "Submit Application" : "Send Message")}
+                {isSubmitting ? "Sending..." : (isInternshipApplication ? "Submit Application" : (isWebinarRegistration ? "Register for Webinar" : "Send Message"))}
                 <Send className="ml-2 h-4 w-4" />
             </Button>
         </div>

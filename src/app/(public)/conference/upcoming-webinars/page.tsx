@@ -10,6 +10,9 @@ import { useToast } from "@/hooks/use-toast";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
 import { Logo } from "@/components/icons";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import ContactForm from "@/components/forms/contact-form";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function UpcomingWebinarsPage() {
   const [upcomingWebinars, setUpcomingWebinars] = useState<Webinar[]>([]);
@@ -62,25 +65,47 @@ export default function UpcomingWebinarsPage() {
         ) : upcomingWebinars.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {upcomingWebinars.map((webinar) => (
-                <Card key={webinar.id} className="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
-                    <div className="relative h-[200px] w-full">
+                <Card key={webinar.id} className="ft-recipe w-full max-w-sm mx-auto">
+                    <div className="ft-recipe__thumb">
                         <Image src={webinar.imageSrc} alt={webinar.title} fill className="object-cover" data-ai-hint="webinar event" />
                     </div>
-                    <CardHeader>
-                    <CardTitle>{webinar.title}</CardTitle>
-                    <div className="flex items-center gap-2 pt-2 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>{webinar.date}</span>
+                    <div className="ft-recipe__content">
+                        <CardHeader className="p-0">
+                            <CardTitle className="recipe-title">{webinar.title}</CardTitle>
+                             <div className="flex items-center gap-2 pt-2 text-sm text-muted-foreground">
+                                <Calendar className="h-4 w-4" />
+                                <span>{webinar.date}</span>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-0 flex-grow pt-4">
+                            <p className="text-muted-foreground line-clamp-4">{webinar.description}</p>
+                        </CardContent>
+                        <CardFooter className="p-0 content__footer">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button className="w-full">
+                                        Register Now <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
+                                  <DialogHeader>
+                                    <DialogTitle>Register for: {webinar.title}</DialogTitle>
+                                    <DialogDescription>
+                                      Please fill out your details below to register for the webinar.
+                                    </DialogDescription>
+                                  </DialogHeader>
+                                  <div className="flex-grow overflow-y-auto pr-6 -mr-2">
+                                      <ScrollArea className="h-full">
+                                          <ContactForm 
+                                            inquiryType="Webinar Registration"
+                                            details={webinar.title}
+                                          />
+                                      </ScrollArea>
+                                  </div>
+                                </DialogContent>
+                            </Dialog>
+                        </CardFooter>
                     </div>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                    <p className="text-muted-foreground line-clamp-3">{webinar.description}</p>
-                    </CardContent>
-                    <CardFooter>
-                    <Button className="w-full">
-                        Register Now <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                    </CardFooter>
                 </Card>
                 ))}
             </div>
