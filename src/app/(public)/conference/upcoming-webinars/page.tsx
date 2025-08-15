@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Calendar, ArrowRight, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getWebinars, Webinar } from "@/services/webinarService";
 import { useToast } from "@/hooks/use-toast";
@@ -48,9 +48,29 @@ export default function UpcomingWebinarsPage() {
     fetchAndFilterWebinars();
   }, [toast, currentDate]);
 
+  const handleDownloadBrochure = (brochureUrl: string, webinarName: string) => {
+    if (!brochureUrl) return;
+
+    const link = document.createElement('a');
+    link.href = brochureUrl;
+
+    const mimeTypeMatch = brochureUrl.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    let fileExtension = 'file';
+    if (mimeTypeMatch && mimeTypeMatch.length > 1) {
+        if (mimeTypeMatch[1] === 'application/pdf') fileExtension = 'pdf';
+        else if (mimeTypeMatch[1] === 'application/msword') fileExtension = 'doc';
+        else if (mimeTypeMatch[1] === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') fileExtension = 'docx';
+    }
+
+    link.download = `Brochure-${webinarName.replace(/\s/g, '_')}.${fileExtension}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="bg-secondary/50">
-      <div className="container py-16 md:py-24">
+      <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Upcoming Webinars</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
@@ -58,7 +78,7 @@ export default function UpcomingWebinarsPage() {
           </p>
         </div>
         
-        <section className="container mx-auto px-4">
+        <section>
             {isLoading ? (
                 <div className="flex items-center justify-center py-24">
                     <Logo className="h-32 w-32" />
@@ -81,7 +101,7 @@ export default function UpcomingWebinarsPage() {
                             <CardContent className="p-0 flex-grow">
                                 <p className="text-muted-foreground line-clamp-4">{webinar.description}</p>
                             </CardContent>
-                            <CardFooter className="p-0 mt-6">
+                            <CardFooter className="p-0 mt-6 flex flex-col items-start gap-3">
                                 <Dialog>
                                     <DialogTrigger asChild>
                                         <Button className="w-full">
@@ -105,6 +125,15 @@ export default function UpcomingWebinarsPage() {
                                     </div>
                                     </DialogContent>
                                 </Dialog>
+                                 <Button 
+                                    variant="outline" 
+                                    className="w-full"
+                                    disabled={!webinar.brochureUrl}
+                                    onClick={() => handleDownloadBrochure(webinar.brochureUrl!, webinar.title)}
+                                >
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download Brochure
+                                </Button>
                             </CardFooter>
                         </div>
                     </Card>

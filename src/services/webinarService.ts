@@ -1,4 +1,3 @@
-
 // src/services/webinarService.ts
 'use server';
 
@@ -14,6 +13,7 @@ export interface Webinar {
     date: string; // The original string date in YYYY-MM-DD format
     dateObject: Date; // A reliable UTC Date object for comparisons
     imageSrc: string;
+    brochureUrl?: string;
     createdAt: string;
 }
 
@@ -22,6 +22,7 @@ const webinarSchema = z.object({
     description: z.string().min(20, "Description must be at least 20 characters."),
     date: z.string(), // Will be in YYYY-MM-DD format
     imageSrc: z.string().url("Must be a valid URL (Base64 data URI).").or(z.string().startsWith("data:image")),
+    brochureUrl: z.string().optional(),
 });
 
 interface AddWebinarData {
@@ -29,6 +30,7 @@ interface AddWebinarData {
     description: string;
     date: string; // This will now be YYYY-MM-DD
     imageSrc: string;
+    brochureUrl?: string;
 }
 
 export async function addWebinar(data: AddWebinarData): Promise<{ success: boolean; message: string; newWebinar?: Partial<Webinar> }> {
@@ -83,6 +85,7 @@ export async function getWebinars(): Promise<Webinar[]> {
                 date: format(dateObject, "PPP"), // Format for display
                 dateObject: dateObject,
                 imageSrc: data.imageSrc,
+                brochureUrl: data.brochureUrl,
                 createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
             });
         });
