@@ -138,49 +138,56 @@ function ConferenceDetailClient() {
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
-    const figures = Array.from(doc.querySelectorAll('figure.image'));
-    
     const members: { src: string; name: string }[] = [];
+    
+    // Iterate through all top-level child nodes of the body
+    const nodes = Array.from(doc.body.childNodes);
+    for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        let src: string | null = null;
+        let name: string | null = null;
+        
+        // Check if the current node is a <figure> containing an <img>
+        if (node.nodeName === 'FIGURE' && (node as HTMLElement).querySelector('img')) {
+            src = (node as HTMLElement).querySelector('img')!.src;
 
-    figures.forEach(figure => {
-        const img = figure.querySelector('img');
-        if (img) {
-            const src = img.src;
-            let name = '';
-
-            // Find the next non-empty text node after the figure
-            let nextSibling = figure.nextSibling;
-            while (nextSibling) {
-                if (nextSibling.nodeType === Node.ELEMENT_NODE && nextSibling.textContent?.trim()) {
-                    name = nextSibling.textContent.trim();
+            // Look for the next non-empty text node for the name
+            let nextNodeIndex = i + 1;
+            while (nextNodeIndex < nodes.length) {
+                const nextNode = nodes[nextNodeIndex];
+                if (nextNode.nodeType === Node.ELEMENT_NODE && nextNode.textContent?.trim()) {
+                    name = nextNode.textContent.trim();
+                    i = nextNodeIndex; // Move index past the name node
                     break;
                 }
-                nextSibling = nextSibling.nextSibling;
-            }
-            
-            if (src && name) {
-                members.push({ src, name });
+                nextNodeIndex++;
             }
         }
-    });
+        
+        if (src && name) {
+            members.push({ src, name });
+        }
+    }
 
     if (members.length > 0) {
       return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 pt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
           {members.map((member, index) => (
-            <div key={index} className="text-center group flex flex-col items-center">
-              <div className="relative w-24 h-24 mb-3 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110 border-2 border-transparent group-hover:border-primary">
-                <Image
-                  src={member.src}
-                  alt={member.name}
-                  data-ai-hint="person portrait"
-                  fill
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  className="object-cover"
-                />
-              </div>
-              <h4 className="font-semibold text-sm text-foreground tracking-tight">{member.name}</h4>
-            </div>
+            <Card key={index} className="text-center group flex flex-col items-center p-4 border-2 border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden shadow-lg border-2 border-secondary group-hover:border-primary transition-all duration-300">
+                    <Image
+                        src={member.src}
+                        alt={member.name}
+                        data-ai-hint="person portrait"
+                        fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        className="object-cover"
+                    />
+                </div>
+                <CardContent className="p-0">
+                    <h4 className="font-semibold text-sm text-foreground tracking-tight">{member.name}</h4>
+                </CardContent>
+            </Card>
           ))}
         </div>
       );
