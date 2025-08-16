@@ -170,21 +170,20 @@ export default function UserHeader() {
       </div>
 
       {/* Main Header */}
-      <div className="container mx-auto flex h-20 items-center px-4">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
              <Logo className="h-12 w-24" />
           </Link>
-        </div>
-
-        <div className="flex flex-1 items-center justify-end">
           <nav className="hidden md:flex items-center space-x-1">
             {mainNavLinks.map((link) => (
               <NavLink key={link.label} link={link} />
             ))}
           </nav>
+        </div>
 
-          <div className="hidden md:flex items-center ml-6">
+        <div className="flex items-center">
+          <div className="hidden md:flex items-center">
             <Button asChild variant="outline" className="rounded-full">
                 <Link href="/submit-journal">Submit Article</Link>
             </Button>
