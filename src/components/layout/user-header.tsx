@@ -90,7 +90,7 @@ export default function UserHeader() {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "px-3 py-2 rounded-md flex items-center gap-1 text-base font-semibold text-foreground"
+                "px-3 py-2 rounded-md flex items-center gap-1 text-base text-foreground"
               )}
             >
               {link.label}
@@ -111,7 +111,7 @@ export default function UserHeader() {
       <Link
         href={link.href}
         className={cn(
-          "px-3 py-2 rounded-md text-base font-semibold text-foreground"
+          "px-3 py-2 rounded-md text-base text-foreground"
         )}
       >
         {link.label}
@@ -152,7 +152,7 @@ export default function UserHeader() {
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm shadow-sm">
       {/* Top Bar */}
-      <div className="bg-[#3D4C6F] py-3 text-white text-sm font-semibold hidden md:block">
+      <div className="bg-[#3D4C6F] py-3 text-white text-sm hidden md:block">
         <div className="container mx-auto px-4">
             <div className="flex items-center">
                 {topBarInfo.map(info => (
