@@ -1,4 +1,3 @@
-
 // src/app/(public)/page.tsx
 'use client';
 import * as React from 'react';
@@ -59,14 +58,14 @@ export default function HomePage() {
                                     className="object-cover"
                                     data-ai-hint={item.imageHint}
                                 />
-                                <div className="absolute inset-0 bg-black/50" />
+                                <div className="absolute inset-0 bg-white/50" />
                             </div>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
             </Carousel>
 
-            <div className="absolute inset-0 flex items-center justify-center text-center text-white z-10">
+            <div className="absolute inset-0 flex items-center justify-center text-center text-foreground z-10">
                  <div className="container px-4 md:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
@@ -78,7 +77,7 @@ export default function HomePage() {
                         <span className="block">Streamline Your Research</span>
                         <span className="block text-primary">with Researcher Connect</span>
                       </h1>
-                      <p className="max-w-xl mx-auto mt-6 text-lg text-white/90 md:text-xl">
+                      <p className="max-w-xl mx-auto mt-6 text-lg text-foreground/90 md:text-xl">
                         The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
                       </p>
                        <motion.div 
@@ -94,7 +93,7 @@ export default function HomePage() {
                             </Button>
                           </Link>
                           <Link href="/about">
-                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white hover:text-black">
+                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background">
                               Learn More
                             </Button>
                           </Link>
