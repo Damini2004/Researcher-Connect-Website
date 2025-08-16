@@ -16,9 +16,9 @@ import { motion } from "framer-motion";
 
 const carouselItems = [
     {
-        imageSrc: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1600&h=900&auto=format&fit=crop",
-        imageHint: "research academic",
-        alt: "Researcher at a desk"
+        imageSrc: "https://t4.ftcdn.net/jpg/03/84/55/29/360_F_384552930_zPoe9zgmCF7qgt8fqSedcyJ6C6Ye3dFs.jpg",
+        imageHint: "researcher in lab",
+        alt: "Researcher in a modern laboratory"
     },
     {
         imageSrc: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&h=900&auto=format&fit=crop",
