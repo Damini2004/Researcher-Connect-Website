@@ -139,11 +139,29 @@ function ConferenceDetailClient() {
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
-    const members = Array.from(doc.body.children).map(p => {
-        const img = p.querySelector('img');
-        const name = p.textContent?.trim();
-        return { src: img?.src, name };
-    }).filter(m => m.name || m.src);
+    const members: { src?: string; name?: string }[] = [];
+    
+    // This logic assumes that an image is followed by text for a person.
+    doc.body.childNodes.forEach(node => {
+        if (node.nodeName === 'P') {
+            const pElement = node as HTMLParagraphElement;
+            const img = pElement.querySelector('img');
+            const name = pElement.textContent?.trim();
+
+            if (img && name) {
+                members.push({ src: img.src, name: name });
+            } else if (img) {
+                // If there's an image but no name in the same <p>, start a new member
+                members.push({ src: img.src });
+            } else if (name && members.length > 0 && !members[members.length - 1].name) {
+                // If there's a name and the last member doesn't have a name yet, assign it
+                members[members.length - 1].name = name;
+            } else if (name) {
+                // If there's just a name, add it as a member without an image
+                 members.push({ name: name });
+            }
+        }
+    });
 
     if (members.length === 0) return <RenderHtmlContent htmlContent={htmlContent} />;
 
@@ -160,7 +178,7 @@ function ConferenceDetailClient() {
                 className="object-cover"
               />
             </div>
-            <h4 className="font-semibold text-sm text-foreground">{member.name}</h4>
+            <h4 className="font-semibold text-sm text-foreground">{member.name || "Name not specified"}</h4>
           </div>
         ))}
       </div>
