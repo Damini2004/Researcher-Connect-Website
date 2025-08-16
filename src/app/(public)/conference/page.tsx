@@ -122,14 +122,14 @@ export default function ConferencesPage() {
                 {/* Main Content */}
                 <div className="lg:col-span-8">
                     <section>
-                        <div className="max-w-5xl mx-auto border-t-4 border-red-600 shadow-lg rounded-b-lg mb-12 relative bg-background">
+                        <div className="max-w-5xl mx-auto border-t-4 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
                             <div className="p-6">
                                 <h3 className="font-bold text-center mb-4">Find International Conference</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                     <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
                                     <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger><SelectContent><SelectItem value="usa">USA</SelectItem></SelectContent></Select>
                                     <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
-                                    <Button className="w-full bg-red-600 hover:bg-red-700 sm:col-span-2 md:col-span-1"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
+                                    <Button className="w-full sm:col-span-2 md:col-span-1"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
                                 </div>
                             </div>
                         </div>
@@ -195,9 +195,9 @@ export default function ConferencesPage() {
                            </div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-red-600 text-white text-center p-6">
+                    <Card className="bg-primary text-primary-foreground text-center p-6">
                         <h3 className="text-xl font-bold">Life Science Conferences</h3>
-                        <Button variant="outline" className="mt-4 bg-white text-red-600 hover:bg-white/90">Visit Now</Button>
+                        <Button variant="secondary" className="mt-4">Visit Now</Button>
                     </Card>
                     <ConferenceSidebarForm />
                 </aside>
