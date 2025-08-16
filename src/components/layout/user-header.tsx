@@ -26,19 +26,29 @@ const topBarInfo = [
 ]
 
 const conferenceLinks = [
-    { href: "/conference", label: "All Conferences" },
+    { href: "/conference/about-conference", label: "About Conference" },
     { href: "/conference/upcoming-conferences", label: "Upcoming Conferences" },
     { href: "/conference/past-conferences", label: "Past Conferences" },
     { href: "/conference/upcoming-webinars", label: "Upcoming Webinars" },
-    { href: "/conference/plan-conference", label: "Plan a Conference" },
+    { href: "/conference/past-webinars", label: "Past Webinars" },
+    { href: "/conference/plan-conference", label: "Plan a Conference with Us" },
+    { href: "/conference/sponsors", label: "Sponsors & Exhibitors" },
+    { href: "/conference/scientific-gallery", label: "Scientific Gallery" },
+    { href: "/conference/conference-videos", label: "Conference Videos" },
+    { href: "/conference/awards", label: "Awards" },
+    { href: "/conference/workshops", label: "Workshops & Short Courses" },
+    { href: "/conference/faq", label: "FAQ" }
 ];
+
 
 const publicationsLinks = [
     { href: "/publications/overview", label: "Publication Overview" },
+    { href: "/publications/journal-selection", label: "Journal Selection" },
     { href: "/publications/digital-library", label: "Digital Library" },
     { href: "/publications/conference-proceedings", label: "Conference Proceedings" },
     { href: "/publications/journal-support", label: "Journal Support" },
     { href: "/publications/peer-review", label: "Peer Review Process" },
+    { href: "/publications/response-to-reviewers", label: "Response to Reviewers" },
 ];
 
 const iprServicesLinks = [
@@ -46,6 +56,7 @@ const iprServicesLinks = [
     { href: "/ipr-services/trademark", label: "Trademark" },
     { href: "/ipr-services/copyright", label: "Copyright" },
     { href: "/ipr-services/industrial-design", label: "Industrial Design" },
+    { href: "/ipr-services/global-ip", label: "Global IP" },
 ];
 
 const mainNavLinks = [
@@ -79,8 +90,8 @@ export default function UserHeader() {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1 text-sm font-medium",
-                pathname.startsWith(link.href) ? "text-primary bg-primary/10" : "text-foreground/70"
+                "px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1 text-base font-medium",
+                pathname.startsWith(link.href) ? "text-primary bg-accent" : "text-foreground/70"
               )}
             >
               {link.label}
@@ -101,8 +112,8 @@ export default function UserHeader() {
       <Link
         href={link.href}
         className={cn(
-          "px-3 py-2 rounded-md transition-colors hover:text-primary text-sm font-medium",
-          pathname === link.href ? "text-primary bg-primary/10" : "text-foreground/70"
+          "px-3 py-2 rounded-md transition-colors hover:text-primary text-base font-medium",
+          pathname === link.href ? "text-primary bg-accent" : "text-foreground/70"
         )}
       >
         {link.label}
