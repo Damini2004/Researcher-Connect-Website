@@ -163,67 +163,67 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-12">
-              <div className="relative group overflow-hidden rounded-xl">
+            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:max-w-none mt-12">
+              <Card className="flex flex-col overflow-hidden rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-2">
                 <Image
-                  src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=400&h=600&auto=format&fit=crop"
-                  alt="Highlight 1"
+                  src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=400&h=300&auto=format&fit=crop"
+                  alt="Cosmic Structures"
                   width={400}
-                  height={600}
+                  height={300}
                   data-ai-hint="galaxy stars"
-                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                  className="h-auto w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-4">
-                  <h3 className="text-lg font-bold text-white">Cosmic Structures</h3>
-                  <p className="text-sm text-white/80">Mapping the universe's web.</p>
-                </div>
-              </div>
-              <div className="relative group overflow-hidden rounded-xl">
+                <CardContent className="flex flex-col flex-1 p-6">
+                  <h3 className="text-xl font-bold">Cosmic Structures</h3>
+                  <p className="text-sm text-muted-foreground mt-1">By Dr. Evelyn Reed</p>
+                  <p className="mt-4 text-muted-foreground flex-1">
+                    A deep dive into the large-scale web of the universe, mapping out galaxies and dark matter.
+                  </p>
+                  <Link href="#" className="mt-4 font-semibold text-primary inline-flex items-center">
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+              <Card className="flex flex-col overflow-hidden rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-2">
                 <Image
-                  src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=400&h=600&auto=format&fit=crop"
-                  alt="Highlight 2"
+                  src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=400&h=300&auto=format&fit=crop"
+                  alt="Genetic Sequencing"
                   width={400}
-                  height={600}
+                  height={300}
                   data-ai-hint="dna strand"
-                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                  className="h-auto w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-4">
-                  <h3 className="text-lg font-bold text-white">Genetic Sequencing</h3>
-                  <p className="text-sm text-white/80">Visualizing the code of life.</p>
-                </div>
-              </div>
-              <div className="relative group overflow-hidden rounded-xl">
+                <CardContent className="flex flex-col flex-1 p-6">
+                  <h3 className="text-xl font-bold">Genetic Sequencing</h3>
+                   <p className="text-sm text-muted-foreground mt-1">By Dr. Kenji Tanaka</p>
+                  <p className="mt-4 text-muted-foreground flex-1">
+                    Visualizing the code of life through advanced sequencing techniques and computational biology.
+                  </p>
+                  <Link href="#" className="mt-4 font-semibold text-primary inline-flex items-center">
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+              <Card className="flex flex-col overflow-hidden rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-2">
                 <Image
-                  src="https://images.unsplash.com/photo-1694833256053-53538407f354?q=80&w=400&h=600&auto=format&fit=crop"
-                  alt="Highlight 3"
+                  src="https://images.unsplash.com/photo-1694833256053-53538407f354?q=80&w=400&h=300&auto=format&fit=crop"
+                  alt="Neural Pathways"
                   width={400}
-                  height={600}
+                  height={300}
                   data-ai-hint="neural network"
-                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                  className="h-auto w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-4">
-                  <h3 className="text-lg font-bold text-white">Neural Pathways</h3>
-                  <p className="text-sm text-white/80">The architecture of thought.</p>
-                </div>
-              </div>
-              <div className="relative group overflow-hidden rounded-xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1554474812-70c7c394865f?q=80&w=400&h=600&auto=format&fit=crop"
-                  alt="Highlight 4"
-                  width={400}
-                  height={600}
-                  data-ai-hint="nanotechnology material"
-                  className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-4">
-                  <h3 className="text-lg font-bold text-white">Nanomaterials</h3>
-                  <p className="text-sm text-white/80">Engineering at the atomic scale.</p>
-                </div>
-              </div>
+                <CardContent className="flex flex-col flex-1 p-6">
+                  <h3 className="text-xl font-bold">Neural Pathways</h3>
+                   <p className="text-sm text-muted-foreground mt-1">By Dr. Fatima Al-Jamil</p>
+                  <p className="mt-4 text-muted-foreground flex-1">
+                   Exploring the intricate architecture of thought and consciousness through brain mapping.
+                  </p>
+                  <Link href="#" className="mt-4 font-semibold text-primary inline-flex items-center">
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
             </div>
              <div className="mt-12 text-center">
               <Button asChild>
