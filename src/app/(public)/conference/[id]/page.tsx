@@ -132,53 +132,63 @@ function ConferenceDetailClient() {
 
   const RenderCommittee = ({ htmlContent }: { htmlContent?: string }) => {
     if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
-    
+
     if (typeof window === 'undefined') {
-        return <p className="text-muted-foreground">Loading...</p>;
+      return <p className="text-muted-foreground">Loading...</p>;
     }
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
     const members: { src?: string; name?: string }[] = [];
-    
-    // This logic assumes that an image is followed by text for a person.
-    doc.body.childNodes.forEach(node => {
-        if (node.nodeName === 'P') {
-            const pElement = node as HTMLParagraphElement;
-            const img = pElement.querySelector('img');
-            const name = pElement.textContent?.trim();
+    const childNodes = Array.from(doc.body.childNodes);
 
-            if (img && name) {
-                members.push({ src: img.src, name: name });
-            } else if (img) {
-                // If there's an image but no name in the same <p>, start a new member
-                members.push({ src: img.src });
-            } else if (name && members.length > 0 && !members[members.length - 1].name) {
-                // If there's a name and the last member doesn't have a name yet, assign it
-                members[members.length - 1].name = name;
-            } else if (name) {
-                // If there's just a name, add it as a member without an image
-                 members.push({ name: name });
+    for (let i = 0; i < childNodes.length; i++) {
+        const node = childNodes[i];
+        
+        if (node instanceof HTMLParagraphElement) {
+            const img = node.querySelector('img');
+            
+            if (img) {
+                let name = '';
+                // Look for name in the same <p> tag after the image
+                const nameInSameP = img.nextSibling?.textContent?.trim();
+                if (nameInSameP) {
+                    name = nameInSameP;
+                } else {
+                    // Look ahead for the next non-empty text node
+                    for (let j = i + 1; j < childNodes.length; j++) {
+                        const nextNode = childNodes[j];
+                        const textContent = nextNode.textContent?.trim();
+                        if (textContent) {
+                            name = textContent;
+                            i = j; // Advance the outer loop index
+                            break;
+                        }
+                    }
+                }
+                 members.push({ src: img.src, name: name || 'Name not specified' });
             }
         }
-    });
+    }
 
-    if (members.length === 0) return <RenderHtmlContent htmlContent={htmlContent} />;
+    if (members.length === 0) {
+      return <RenderHtmlContent htmlContent={htmlContent} />;
+    }
 
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {members.map((member, index) => (
           <div key={index} className="text-center group">
             <div className="relative w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110">
-              <Image 
-                src={member.src || 'https://placehold.co/100x100.png'} 
+              <Image
+                src={member.src || 'https://placehold.co/100x100.png'}
                 alt={member.name || 'Committee Member'}
                 data-ai-hint="person portrait"
                 fill
                 className="object-cover"
               />
             </div>
-            <h4 className="font-semibold text-sm text-foreground">{member.name || "Name not specified"}</h4>
+            <h4 className="font-semibold text-sm text-foreground">{member.name}</h4>
           </div>
         ))}
       </div>
