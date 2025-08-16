@@ -48,7 +48,7 @@ export default function JournalSupportPage() {
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Abstract Submission Guidelines</h1>
             <p className="text-lg text-muted-foreground">
-                PRI’s Conferences, Meetings, Summits, and Workshops offer vibrant scientific programs with the opportunity for attendees to submit and present their groundbreaking data.
+                RC’s Conferences, Meetings, Summits, and Workshops offer vibrant scientific programs with the opportunity for attendees to submit and present their groundbreaking data.
             </p>
             <Button size="lg" asChild>
                 <a href="/submit-journal">

@@ -1,7 +1,7 @@
 
 # Researcher-Connect-Website
 Researcher Connect Website
-# Firebase Studio
+
 
 This is a NextJS starter in Firebase Studio.
 

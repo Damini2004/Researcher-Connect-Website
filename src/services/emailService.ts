@@ -65,7 +65,7 @@ export async function sendEmail(params: EmailParams): Promise<{ success: boolean
 
   try {
     const info = await transporter.sendMail({
-      from: `"Pure Research Insights" <${emailUser}>`,
+      from: `"Researcher Connect" <${emailUser}>`,
       to: to,
       subject: subject,
       html: createHtmlTemplate(customMessage),

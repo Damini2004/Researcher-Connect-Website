@@ -32,7 +32,7 @@ export default function AwardsPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Awards & Recognition</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-            PRI is committed to celebrating excellence in research and innovation. Our awards honor the outstanding contributions of researchers and scholars who are pushing the boundaries of knowledge.
+            RC is committed to celebrating excellence in research and innovation. Our awards honor the outstanding contributions of researchers and scholars who are pushing the boundaries of knowledge.
           </p>
         </div>
         

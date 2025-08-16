@@ -45,7 +45,7 @@ export default function SponsorsPage() {
                 <div className="text-center mb-16">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Sponsors & Exhibitors</h1>
                     <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                        Partner with PRI to connect with a global network of innovators and leaders. Our conferences provide a unique platform to enhance your brand visibility and achieve your marketing goals.
+                        Partner with RC to connect with a global network of innovators and leaders. Our conferences provide a unique platform to enhance your brand visibility and achieve your marketing goals.
                     </p>
                 </div>
 
