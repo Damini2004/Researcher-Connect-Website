@@ -129,6 +129,43 @@ function ConferenceDetailClient() {
         />
     );
   };
+
+  const RenderCommittee = ({ htmlContent }: { htmlContent?: string }) => {
+    if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
+    
+    if (typeof window === 'undefined') {
+        return <p className="text-muted-foreground">Loading...</p>;
+    }
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const members = Array.from(doc.body.children).map(p => {
+        const img = p.querySelector('img');
+        const name = p.textContent?.trim();
+        return { src: img?.src, name };
+    }).filter(m => m.name || m.src);
+
+    if (members.length === 0) return <RenderHtmlContent htmlContent={htmlContent} />;
+
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        {members.map((member, index) => (
+          <div key={index} className="text-center group">
+            <div className="relative w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110">
+              <Image 
+                src={member.src || 'https://placehold.co/100x100.png'} 
+                alt={member.name || 'Committee Member'}
+                data-ai-hint="person portrait"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <h4 className="font-semibold text-sm text-foreground">{member.name}</h4>
+          </div>
+        ))}
+      </div>
+    );
+  };
   
   const getPaperCategoryLabel = (id: string) => {
     const map: { [key: string]: string } = {
@@ -269,7 +306,7 @@ function ConferenceDetailClient() {
                             <AccordionItem value="item-2" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
                                 <AccordionContent>
-                                    <RenderHtmlContent htmlContent={conference.organizingCommittee} />
+                                    <RenderCommittee htmlContent={conference.organizingCommittee} />
                                 </AccordionContent>
                             </AccordionItem>
                             <AccordionItem value="item-3" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
