@@ -90,7 +90,7 @@ export default function UserHeader() {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "px-3 py-2 rounded-md flex items-center gap-1 text-base font-bold text-foreground"
+                "px-3 py-2 rounded-md flex items-center gap-1 text-base font-semibold text-foreground"
               )}
             >
               {link.label}
@@ -111,7 +111,7 @@ export default function UserHeader() {
       <Link
         href={link.href}
         className={cn(
-          "px-3 py-2 rounded-md text-base font-bold text-foreground"
+          "px-3 py-2 rounded-md text-base font-semibold text-foreground"
         )}
       >
         {link.label}
