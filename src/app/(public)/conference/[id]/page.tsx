@@ -140,32 +140,23 @@ function ConferenceDetailClient() {
     const doc = parser.parseFromString(htmlContent, 'text/html');
     const members: { src: string; name: string }[] = [];
     
-    // Iterate through all top-level child nodes of the body
-    const nodes = Array.from(doc.body.childNodes);
-    for (let i = 0; i < nodes.length; i++) {
-        const node = nodes[i];
-        let src: string | null = null;
-        let name: string | null = null;
-        
-        // Check if the current node is a <figure> containing an <img>
-        if (node.nodeName === 'FIGURE' && (node as HTMLElement).querySelector('img')) {
-            src = (node as HTMLElement).querySelector('img')!.src;
+    const elements = Array.from(doc.body.children);
 
-            // Look for the next non-empty text node for the name
-            let nextNodeIndex = i + 1;
-            while (nextNodeIndex < nodes.length) {
-                const nextNode = nodes[nextNodeIndex];
-                if (nextNode.nodeType === Node.ELEMENT_NODE && nextNode.textContent?.trim()) {
-                    name = nextNode.textContent.trim();
-                    i = nextNodeIndex; // Move index past the name node
-                    break;
-                }
-                nextNodeIndex++;
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        if (element.tagName.toLowerCase() === 'figure' && element.querySelector('img')) {
+            const src = element.querySelector('img')!.src;
+            let name = '';
+            
+            // Look for the next element that is a paragraph
+            if (i + 1 < elements.length && elements[i + 1].tagName.toLowerCase() === 'p') {
+                name = elements[i + 1].textContent?.trim() || '';
+                i++; // Increment to skip the name paragraph in the next iteration
             }
-        }
-        
-        if (src && name) {
-            members.push({ src, name });
+            
+            if (src && name) {
+                members.push({ src, name });
+            }
         }
     }
 
@@ -330,7 +321,7 @@ function ConferenceDetailClient() {
                             <AccordionItem value="item-1" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                                 <AccordionContent>
-                                    <RenderHtmlContent htmlContent={conference.keynoteSpeakers} />
+                                    <RenderCommittee htmlContent={conference.keynoteSpeakers} />
                                 </AccordionContent>
                             </AccordionItem>
                             <AccordionItem value="item-2" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
