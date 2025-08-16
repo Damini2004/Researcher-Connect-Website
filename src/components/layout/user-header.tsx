@@ -20,17 +20,41 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const topBarInfo = [
-    { text: "1010 Avenue, New York, NY 10018 US.", icon: MapPin },
-    { text: "212 386 5575, 212 386 5576", icon: Phone, isLink: true, href: "tel:2123865575" },
+    { text: "No. 374 Chaurai Nagar, Somatne Phata, Talegaon Dabhade, Maharashtra 410506", icon: MapPin },
+    { text: "+91-7020996341", icon: Phone, isLink: true, href: "tel:+917020996341" },
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock, align: "ms-md-auto" }
 ]
 
+const conferenceLinks = [
+    { href: "/conference", label: "All Conferences" },
+    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences" },
+    { href: "/conference/past-conferences", label: "Past Conferences" },
+    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars" },
+    { href: "/conference/plan-conference", label: "Plan a Conference" },
+];
+
+const publicationsLinks = [
+    { href: "/publications/overview", label: "Publication Overview" },
+    { href: "/publications/digital-library", label: "Digital Library" },
+    { href: "/publications/conference-proceedings", label: "Conference Proceedings" },
+    { href: "/publications/journal-support", label: "Journal Support" },
+    { href: "/publications/peer-review", label: "Peer Review Process" },
+];
+
+const iprServicesLinks = [
+    { href: "/ipr-services/patent", label: "Patent" },
+    { href: "/ipr-services/trademark", label: "Trademark" },
+    { href: "/ipr-services/copyright", label: "Copyright" },
+    { href: "/ipr-services/industrial-design", label: "Industrial Design" },
+];
+
 const mainNavLinks = [
-  { href: "/", label: "Home", hasDropdown: true },
-  { href: "#", label: "Pages", hasDropdown: true },
-  { href: "#", label: "News", hasDropdown: true },
-  { href: "#", label: "Elements", hasDropdown: true },
-  { href: "/contact-us", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/conference", label: "Conference", dropdown: conferenceLinks },
+  { href: "/publications", label: "Publications", dropdown: publicationsLinks },
+  { href: "/ipr-services", label: "IPR Services", dropdown: iprServicesLinks },
+  { href: "/internship", label: "Internship" },
 ];
 
 
@@ -47,9 +71,9 @@ export default function UserHeader() {
     return null; 
   }
 
-  const NavLink = ({ link }: { link: { href: string, label: string, hasDropdown?: boolean } }) => {
+  const NavLink = ({ link }: { link: { href: string, label: string, dropdown?: { href: string, label: string }[] } }) => {
 
-    if (link.hasDropdown) {
+    if (link.dropdown) {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -64,9 +88,11 @@ export default function UserHeader() {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-             {/* Placeholder Dropdown Items */}
-            <DropdownMenuItem><Link href="#">Sub Page 1</Link></DropdownMenuItem>
-            <DropdownMenuItem><Link href="#">Sub Page 2</Link></DropdownMenuItem>
+            {link.dropdown.map((item) => (
+                <DropdownMenuItem key={item.label} asChild>
+                    <Link href={item.href}>{item.label}</Link>
+                </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -99,16 +125,16 @@ export default function UserHeader() {
     </Link>
   );
   
-  const MobileNavAccordion = ({ link, onLinkClick }: { link: { href: string, label: string, hasDropdown?: boolean }, onLinkClick: () => void }) => (
+  const MobileNavAccordion = ({ link, onLinkClick }: { link: { href: string, label: string, dropdown?: { href: string, label: string }[] }, onLinkClick: () => void }) => (
     <AccordionItem value={link.label}>
         <AccordionTrigger className="px-4 py-2 text-base text-foreground/80 font-normal hover:no-underline hover:text-primary">
             {link.label}
         </AccordionTrigger>
         <AccordionContent className="pb-2">
             <div className="flex flex-col space-y-1 ml-4 border-l pl-4">
-            {/* Placeholder mobile sublinks */}
-             <Link href="#" onClick={onLinkClick} className="block py-2 rounded-md text-sm">Sub Page 1</Link>
-             <Link href="#" onClick={onLinkClick} className="block py-2 rounded-md text-sm">Sub Page 2</Link>
+            {link.dropdown?.map(item => (
+                <Link key={item.label} href={item.href} onClick={onLinkClick} className="block py-2 rounded-md text-sm">{item.label}</Link>
+            ))}
             </div>
         </AccordionContent>
     </AccordionItem>
@@ -138,7 +164,7 @@ export default function UserHeader() {
       <div className="container mx-auto flex h-20 items-center px-4">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-             <Logo className="h-12 w-24" /> {/* Adjusted size */}
+             <Logo className="h-12 w-24" />
           </Link>
         </div>
 
@@ -150,7 +176,9 @@ export default function UserHeader() {
           </nav>
 
           <div className="hidden md:flex items-center ml-6">
-            <Button variant="outline" className="rounded-full border-2">Purchase</Button>
+            <Button asChild>
+                <Link href="/submit-journal">Submit Article</Link>
+            </Button>
           </div>
         </div>
 
@@ -180,13 +208,18 @@ export default function UserHeader() {
                 <div className="py-4">
                     <Accordion type="multiple" className="w-full">
                         {mainNavLinks.map((link) =>
-                            link.hasDropdown ? (
+                            link.dropdown ? (
                                 <MobileNavAccordion key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             ) : (
                                 <MobileNavLink key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             )
                         )}
                     </Accordion>
+                     <div className="p-4 border-t mt-4">
+                         <Button asChild className="w-full">
+                            <Link href="/submit-journal" onClick={() => setMenuOpen(false)}>Submit Article</Link>
+                        </Button>
+                    </div>
                 </div>
             </ScrollArea>
           </SheetContent>
