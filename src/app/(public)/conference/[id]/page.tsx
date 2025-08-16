@@ -138,16 +138,25 @@ function ConferenceDetailClient() {
   
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
-    const elements = Array.from(doc.body.children);
+    const allElements = Array.from(doc.body.children);
   
     const members: { src: string; name: string }[] = [];
+    let currentImageSrc: string | null = null;
   
-    elements.forEach(el => {
+    allElements.forEach(el => {
+      // Find an image in the current element
       const img = el.querySelector('img');
+      if (img) {
+        currentImageSrc = img.src;
+      }
+      
+      // Find text content in the current element
       const text = el.textContent?.trim();
-  
-      if (img && text) {
-        members.push({ src: img.src, name: text });
+      
+      // If we have an image and now we found some text, pair them
+      if (currentImageSrc && text) {
+        members.push({ src: currentImageSrc, name: text });
+        currentImageSrc = null; // Reset for the next pair
       }
     });
   
@@ -172,7 +181,7 @@ function ConferenceDetailClient() {
       );
     }
   
-    // Fallback for more complex or unpredictable structures
+    // Fallback if no image-name pairs are found
     return <RenderHtmlContent htmlContent={htmlContent} />;
   };
   
