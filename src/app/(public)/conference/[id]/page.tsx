@@ -330,6 +330,12 @@ function ConferenceDetailClient() {
                                     <RenderCommittee htmlContent={conference.organizingCommittee} />
                                 </AccordionContent>
                             </AccordionItem>
+                             <AccordionItem value="item-4" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
+                                <AccordionTrigger className="hover:no-underline">Editorial Board Members / Track Chairs</AccordionTrigger>
+                                <AccordionContent>
+                                    {renderRichContent(conference.editorialBoard)}
+                                </AccordionContent>
+                            </AccordionItem>
                             <AccordionItem value="item-3" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
                                 <AccordionContent>
