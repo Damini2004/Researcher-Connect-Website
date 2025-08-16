@@ -220,9 +220,11 @@ export default function HomePage() {
                     <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
                         <Image src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200&h=675&auto=format&fit=crop" alt="Business Meeting" fill className="object-cover" data-ai-hint="business meeting" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <Button variant="outline" size="icon" className="h-20 w-20 rounded-full bg-white/30 backdrop-blur-sm border-white/50 text-white hover:bg-white/50">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                            </Button>
+                            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+                                <Button variant="outline" size="icon" className="h-20 w-20 rounded-full bg-white/30 backdrop-blur-sm border-white/50 text-white hover:bg-white/50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-8">
