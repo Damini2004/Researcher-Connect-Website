@@ -145,7 +145,7 @@ export default function UserHeader() {
         <div className="flex flex-1 items-center justify-end">
           <nav className="hidden md:flex items-center space-x-1">
             {mainNavLinks.map((link) => (
-              <NavLink key={link.href} link={link} />
+              <NavLink key={link.label} link={link} />
             ))}
           </nav>
 
@@ -181,9 +181,9 @@ export default function UserHeader() {
                     <Accordion type="multiple" className="w-full">
                         {mainNavLinks.map((link) =>
                             link.hasDropdown ? (
-                                <MobileNavAccordion key={link.href} link={link} onLinkClick={() => setMenuOpen(false)} />
+                                <MobileNavAccordion key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             ) : (
-                                <MobileNavLink key={link.href} link={link} onLinkClick={() => setMenuOpen(false)} />
+                                <MobileNavLink key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             )
                         )}
                     </Accordion>
