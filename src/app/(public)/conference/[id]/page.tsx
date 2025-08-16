@@ -135,46 +135,51 @@ function ConferenceDetailClient() {
     if (typeof window === 'undefined') {
       return <p className="text-muted-foreground">Loading...</p>;
     }
-  
+
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
-    const allElements = Array.from(doc.body.children);
-  
+    const figures = Array.from(doc.querySelectorAll('figure.image'));
+    
     const members: { src: string; name: string }[] = [];
-    let currentImageSrc: string | null = null;
-  
-    allElements.forEach(el => {
-      // Find an image in the current element
-      const img = el.querySelector('img');
-      if (img) {
-        currentImageSrc = img.src;
-      }
-      
-      // Find text content in the current element
-      const text = el.textContent?.trim();
-      
-      // If we have an image and now we found some text, pair them
-      if (currentImageSrc && text) {
-        members.push({ src: currentImageSrc, name: text });
-        currentImageSrc = null; // Reset for the next pair
-      }
+
+    figures.forEach(figure => {
+        const img = figure.querySelector('img');
+        if (img) {
+            const src = img.src;
+            let name = '';
+
+            // Find the next non-empty text node after the figure
+            let nextSibling = figure.nextSibling;
+            while (nextSibling) {
+                if (nextSibling.nodeType === Node.ELEMENT_NODE && nextSibling.textContent?.trim()) {
+                    name = nextSibling.textContent.trim();
+                    break;
+                }
+                nextSibling = nextSibling.nextSibling;
+            }
+            
+            if (src && name) {
+                members.push({ src, name });
+            }
+        }
     });
-  
+
     if (members.length > 0) {
       return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 pt-4">
           {members.map((member, index) => (
-            <div key={index} className="text-center group">
-              <div className="relative w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110">
+            <div key={index} className="text-center group flex flex-col items-center">
+              <div className="relative w-24 h-24 mb-3 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110 border-2 border-transparent group-hover:border-primary">
                 <Image
                   src={member.src}
                   alt={member.name}
                   data-ai-hint="person portrait"
                   fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
-              <h4 className="font-semibold text-sm text-foreground">{member.name}</h4>
+              <h4 className="font-semibold text-sm text-foreground tracking-tight">{member.name}</h4>
             </div>
           ))}
         </div>
