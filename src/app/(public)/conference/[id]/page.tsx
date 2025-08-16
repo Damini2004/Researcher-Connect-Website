@@ -140,36 +140,22 @@ function ConferenceDetailClient() {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
     const members: { src?: string; name?: string }[] = [];
-    const childNodes = Array.from(doc.body.childNodes);
+    const elements = Array.from(doc.body.children);
 
-    for (let i = 0; i < childNodes.length; i++) {
-        const node = childNodes[i];
-        
-        if (node instanceof HTMLParagraphElement) {
-            const img = node.querySelector('img');
-            
-            if (img) {
-                let name = '';
-                // Look for name in the same <p> tag after the image
-                const nameInSameP = img.nextSibling?.textContent?.trim();
-                if (nameInSameP) {
-                    name = nameInSameP;
-                } else {
-                    // Look ahead for the next non-empty text node
-                    for (let j = i + 1; j < childNodes.length; j++) {
-                        const nextNode = childNodes[j];
-                        const textContent = nextNode.textContent?.trim();
-                        if (textContent) {
-                            name = textContent;
-                            i = j; // Advance the outer loop index
-                            break;
-                        }
-                    }
-                }
-                 members.push({ src: img.src, name: name || 'Name not specified' });
-            }
+    let currentImage: string | undefined = undefined;
+
+    elements.forEach(el => {
+        const img = el.querySelector('img');
+        if (img) {
+            currentImage = img.src;
         }
-    }
+
+        const text = el.textContent?.trim();
+        if (text && currentImage) {
+            members.push({ src: currentImage, name: text });
+            currentImage = undefined; // Reset for the next pair
+        }
+    });
 
     if (members.length === 0) {
       return <RenderHtmlContent htmlContent={htmlContent} />;
