@@ -173,8 +173,8 @@ function ConferenceDetailClient() {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
           {members.map((member, index) => (
-            <Card key={index} className="text-center group flex flex-col items-center p-4 border-2 border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden shadow-lg border-2 border-secondary group-hover:border-primary transition-all duration-300">
+            <Card key={index} className="text-center group flex flex-col items-center p-4 border hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden shadow-lg">
                     <Image
                         src={member.src}
                         alt={member.name}
