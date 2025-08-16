@@ -185,7 +185,7 @@ export default function UserHeader() {
           </nav>
 
           <div className="hidden md:flex items-center ml-6">
-            <Button asChild>
+            <Button asChild variant="outline" className="rounded-full">
                 <Link href="/submit-journal">Submit Article</Link>
             </Button>
           </div>
