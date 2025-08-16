@@ -1,65 +1,106 @@
-
+// src/app/(public)/page.tsx
+'use client';
+import * as React from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ArrowRight, BookCheck, BrainCircuit, Microscope, Calendar, MapPin } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, BookCheck, BrainCircuit, Microscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getConferences, Conference } from "@/services/conferenceService";
-import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { motion } from "framer-motion";
 
+const carouselItems = [
+    {
+        imageSrc: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1600&h=900&auto=format&fit=crop",
+        imageHint: "research academic",
+        alt: "Researcher at a desk"
+    },
+    {
+        imageSrc: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&h=900&auto=format&fit=crop",
+        imageHint: "team collaboration",
+        alt: "Team collaborating on a project"
+    },
+    {
+        imageSrc: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&h=900&auto=format&fit=crop",
+        imageHint: "business meeting",
+        alt: "Business meeting"
+    }
+];
 
 export default function HomePage() {
+    const plugin = React.useRef(
+        Autoplay({ delay: 5000, stopOnInteraction: true })
+    );
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="w-full py-20 md:py-32 lg:py-40 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/50 to-background z-0"></div>
-          <div className="container px-4 md:px-6 z-10 relative">
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
-              <div className="flex flex-col justify-center space-y-6">
-                <div className="space-y-4">
-                  <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl">
-                    <span className="block">Streamline Your Research</span>
-                    <span className="block text-primary">with Researcher Connect</span>
-                  </h1>
-                  <p className="max-w-xl text-lg text-muted-foreground md:text-xl">
-                    The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
-                  </p>
+        <section className="w-full h-[60vh] md:h-[80vh] relative overflow-hidden">
+            <Carousel
+                plugins={[plugin.current]}
+                className="w-full h-full"
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+            >
+                <CarouselContent className="h-full">
+                    {carouselItems.map((item, index) => (
+                        <CarouselItem key={index} className="h-full">
+                            <div className="w-full h-full relative">
+                                <Image
+                                    src={item.imageSrc}
+                                    alt={item.alt}
+                                    fill
+                                    className="object-cover"
+                                    data-ai-hint={item.imageHint}
+                                />
+                                <div className="absolute inset-0 bg-black/50" />
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+            </Carousel>
+
+            <div className="absolute inset-0 flex items-center justify-center text-center text-white z-10">
+                 <div className="container px-4 md:px-6">
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="max-w-3xl mx-auto"
+                    >
+                      <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight">
+                        <span className="block">Streamline Your Research</span>
+                        <span className="block text-primary">with Researcher Connect</span>
+                      </h1>
+                      <p className="max-w-xl mx-auto mt-6 text-lg text-white/90 md:text-xl">
+                        The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
+                      </p>
+                       <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                        className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
+                       >
+                          <Link href="/submit-journal">
+                            <Button size="lg" className="w-full sm:w-auto">
+                              Submit Your Paper
+                              <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
+                          </Link>
+                          <Link href="/about">
+                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white hover:text-black">
+                              Learn More
+                            </Button>
+                          </Link>
+                        </motion.div>
+                    </motion.div>
                 </div>
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <Link href="/submit-journal">
-                    <Button size="lg" className="w-full sm:w-auto">
-                      Submit Your Paper
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
-                  <Link href="/about">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                      Learn More
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-              <div className="relative group">
-                 <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-xl blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                <Image
-                  src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&h=400&auto=format&fit=crop"
-                  width="600"
-                  height="400"
-                  alt="Hero"
-                  data-ai-hint="research academic"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last relative"
-                />
-              </div>
             </div>
-          </div>
         </section>
 
         <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-background">
