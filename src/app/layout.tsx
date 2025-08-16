@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Pure Research Insights',
+  title: 'Researcher Connect',
   description: 'The leading platform for academic journal submissions and management.',
 };
 

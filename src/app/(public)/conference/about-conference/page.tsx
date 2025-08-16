@@ -13,7 +13,7 @@ export default function AboutConferencePage() {
   return (
     <div className="container mx-auto px-4 py-12 md:py-24">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">About PRI Conferences</h1>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">About RC Conferences</h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
             Learn more about our mission to advance knowledge and foster innovation by connecting the brightest minds from around the globe.
         </p>
@@ -24,7 +24,7 @@ export default function AboutConferencePage() {
             <CardHeader className="p-0 text-center">
                 <CardTitle>Our Mission</CardTitle>
                 <CardDescription className="pt-2">
-                    At PRI, our mission is to provide a premier platform for researchers, academics, and industry professionals to present and discuss the most recent innovations, trends, and concerns in various fields of engineering and technology.
+                    At RC, our mission is to provide a premier platform for researchers, academics, and industry professionals to present and discuss the most recent innovations, trends, and concerns in various fields of engineering and technology.
                 </CardDescription>
             </CardHeader>
             <CardContent className="p-0 mt-8">

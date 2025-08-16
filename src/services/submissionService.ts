@@ -239,7 +239,7 @@ Please contact our administrative office to complete the final steps for publica
 
             customMessage += `
 
-Thank you for choosing Pure Research Insights. We look forward to featuring your work.`;
+Thank you for choosing Researcher Connect. We look forward to featuring your work.`;
 
             await sendEmail({
                 to: submission.email,
