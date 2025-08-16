@@ -1,3 +1,4 @@
+
 // src/app/(public)/page.tsx
 'use client';
 import * as React from 'react';
@@ -87,7 +88,7 @@ export default function HomePage() {
                         className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
                        >
                           <Link href="/submit-journal">
-                            <Button size="lg" className="w-full sm:w-auto">
+                            <Button size="lg" className="w-full sm:w-auto bg-black text-white hover:bg-gray-800">
                               Submit Your Paper
                               <ArrowRight className="ml-2 h-5 w-5" />
                             </Button>
