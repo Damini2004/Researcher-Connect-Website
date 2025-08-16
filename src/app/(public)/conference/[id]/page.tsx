@@ -132,53 +132,48 @@ function ConferenceDetailClient() {
 
   const RenderCommittee = ({ htmlContent }: { htmlContent?: string }) => {
     if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
-
     if (typeof window === 'undefined') {
       return <p className="text-muted-foreground">Loading...</p>;
     }
-
+  
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
-    const members: { src?: string; name?: string }[] = [];
     const elements = Array.from(doc.body.children);
-
-    let currentImage: string | undefined = undefined;
-
+  
+    const members: { src: string; name: string }[] = [];
+  
     elements.forEach(el => {
-        const img = el.querySelector('img');
-        if (img) {
-            currentImage = img.src;
-        }
-
-        const text = el.textContent?.trim();
-        if (text && currentImage) {
-            members.push({ src: currentImage, name: text });
-            currentImage = undefined; // Reset for the next pair
-        }
+      const img = el.querySelector('img');
+      const text = el.textContent?.trim();
+  
+      if (img && text) {
+        members.push({ src: img.src, name: text });
+      }
     });
-
-    if (members.length === 0) {
-      return <RenderHtmlContent htmlContent={htmlContent} />;
-    }
-
-    return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        {members.map((member, index) => (
-          <div key={index} className="text-center group">
-            <div className="relative w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110">
-              <Image
-                src={member.src || 'https://placehold.co/100x100.png'}
-                alt={member.name || 'Committee Member'}
-                data-ai-hint="person portrait"
-                fill
-                className="object-cover"
-              />
+  
+    if (members.length > 0) {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          {members.map((member, index) => (
+            <div key={index} className="text-center group">
+              <div className="relative w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden shadow-lg transform transition-transform duration-300 group-hover:scale-110">
+                <Image
+                  src={member.src}
+                  alt={member.name}
+                  data-ai-hint="person portrait"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h4 className="font-semibold text-sm text-foreground">{member.name}</h4>
             </div>
-            <h4 className="font-semibold text-sm text-foreground">{member.name}</h4>
-          </div>
-        ))}
-      </div>
-    );
+          ))}
+        </div>
+      );
+    }
+  
+    // Fallback for more complex or unpredictable structures
+    return <RenderHtmlContent htmlContent={htmlContent} />;
   };
   
   const getPaperCategoryLabel = (id: string) => {
