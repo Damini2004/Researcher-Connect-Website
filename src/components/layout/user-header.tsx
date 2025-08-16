@@ -90,8 +90,7 @@ export default function UserHeader() {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1 text-base font-medium",
-                pathname.startsWith(link.href) ? "text-primary bg-accent" : "text-foreground/70"
+                "px-3 py-2 rounded-md flex items-center gap-1 text-base font-medium text-foreground"
               )}
             >
               {link.label}
@@ -112,8 +111,7 @@ export default function UserHeader() {
       <Link
         href={link.href}
         className={cn(
-          "px-3 py-2 rounded-md transition-colors hover:text-primary text-base font-medium",
-          pathname === link.href ? "text-primary bg-accent" : "text-foreground/70"
+          "px-3 py-2 rounded-md text-base font-medium text-foreground"
         )}
       >
         {link.label}
