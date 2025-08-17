@@ -17,15 +17,17 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { RenderHtmlContent } from "@/components/ui/render-html-content";
 
-function ConferenceDetailClient() {
+interface ConferenceDetailClientProps {
+    params: { id: string };
+}
+
+function ConferenceDetailClient({ params }: ConferenceDetailClientProps) {
   const [conference, setConference] = useState<Conference | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const params = useParams();
   const conferenceId = params.id as string;
 
   useEffect(() => {
@@ -412,7 +414,7 @@ function ConferenceDetailClient() {
 }
 
 
-export default function ConferenceDetailPage() {
+export default function ConferenceDetailPage({ params }: ConferenceDetailClientProps) {
   const LoadingSkeleton = () => (
     <div className="container py-12 md:py-24">
       <div className="space-y-4">
@@ -437,7 +439,7 @@ export default function ConferenceDetailPage() {
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ConferenceDetailClient />
+      <ConferenceDetailClient params={params} />
     </Suspense>
   );
 }
