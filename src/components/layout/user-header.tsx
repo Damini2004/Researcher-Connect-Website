@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, MapPin, Phone, Clock } from "lucide-react";
+import { Menu, ChevronDown, MapPin, Phone, Clock, User, LifeBuoy } from "lucide-react";
 import { Logo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -22,7 +22,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const topBarInfo = [
     { text: "No. 374 Chaurai Nagar, Somatne Phata, Talegaon Dabhade, Maharashtra 410506", icon: MapPin },
     { text: "+91-7020996341", icon: Phone, isLink: true, href: "tel:+917020996341" },
-    { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock, align: "ms-md-auto" }
+    { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
 
 const conferenceLinks = [
@@ -154,17 +154,29 @@ export default function UserHeader() {
       {/* Top Bar */}
       <div className="bg-[#3D4C6F] py-3 text-white text-sm hidden md:block">
         <div className="container mx-auto px-4">
-            <div className="flex items-center">
-                {topBarInfo.map(info => (
-                    <div key={info.text} className={cn("flex items-center mr-6", info.align)}>
-                        <info.icon className="h-4 w-4 text-amber-400 mr-2" />
-                        {info.isLink ? (
-                            <a href={info.href} className="text-white hover:text-amber-400">{info.text}</a>
-                        ) : (
-                            <span>{info.text}</span>
-                        )}
-                    </div>
-                ))}
+            <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                    {topBarInfo.map(info => (
+                        <div key={info.text} className={cn("flex items-center mr-6", info.align)}>
+                            <info.icon className="h-4 w-4 text-amber-400 mr-2" />
+                            {info.isLink ? (
+                                <a href={info.href} className="text-white hover:text-amber-400">{info.text}</a>
+                            ) : (
+                                <span>{info.text}</span>
+                            )}
+                        </div>
+                    ))}
+                </div>
+                <div className="flex items-center gap-6">
+                    <Link href="/research-support" className="flex items-center gap-2 hover:text-amber-400">
+                        <LifeBuoy className="h-4 w-4" />
+                        <span>Research Support</span>
+                    </Link>
+                    <Link href="/login" className="flex items-center gap-2 hover:text-amber-400">
+                        <User className="h-4 w-4" />
+                        <span>Login</span>
+                    </Link>
+                </div>
             </div>
         </div>
       </div>
@@ -222,10 +234,14 @@ export default function UserHeader() {
                                 <MobileNavLink key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             )
                         )}
+                         <MobileNavLink link={{href: "/research-support", label: "Research Support"}} onLinkClick={() => setMenuOpen(false)} />
                     </Accordion>
-                     <div className="p-4 border-t mt-4">
+                     <div className="p-4 border-t mt-4 space-y-2">
                          <Button asChild className="w-full">
                             <Link href="/submit-journal" onClick={() => setMenuOpen(false)}>Submit Article</Link>
+                        </Button>
+                        <Button asChild variant="outline" className="w-full">
+                            <Link href="/login" onClick={() => setMenuOpen(false)}>Login</Link>
                         </Button>
                     </div>
                 </div>
