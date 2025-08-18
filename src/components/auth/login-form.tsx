@@ -41,7 +41,7 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
 
-    if (values.email === 'superadmin@pureresearchinsights.com' && values.password === 'password') {
+    if (values.email === 'superadmin@researcherconnect.com' && values.password === 'password') {
         toast({
           title: "Login Successful",
           description: "Redirecting to super-admin dashboard...",

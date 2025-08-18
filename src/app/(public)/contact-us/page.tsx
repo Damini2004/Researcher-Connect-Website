@@ -33,8 +33,8 @@ export default function ContactUsPage() {
                     <Mail className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Email</h3>
-                <p className="text-muted-foreground">General: <a href="mailto:contact@pureresearchinsights.com" className="text-primary hover:underline">contact@pureresearchinsights.com</a></p>
-                <p className="text-muted-foreground">Support: <a href="mailto:support@pureresearchinsights.com" className="text-primary hover:underline">support@pureresearchinsights.com</a></p>
+                <p className="text-muted-foreground">General: <a href="mailto:contact@researcherconnect.com" className="text-primary hover:underline">contact@researcherconnect.com</a></p>
+                <p className="text-muted-foreground">Support: <a href="mailto:support@researcherconnect.com" className="text-primary hover:underline">support@researcherconnect.com</a></p>
             </Card>
              <Card className="p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
                 <div className="p-4 bg-primary/10 rounded-full inline-flex mb-4">
