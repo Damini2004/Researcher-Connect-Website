@@ -70,7 +70,7 @@ export default function LoginForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="admin@pureresearchinsights.com" {...field} />
+                    <Input type="email" placeholder="admin@researcherconnect.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

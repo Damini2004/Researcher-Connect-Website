@@ -53,7 +53,7 @@ export default function SubmitJournalPage() {
       <section className="w-full py-16 md:py-24 bg-secondary">
           <div className="container px-4 md:px-6">
               <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold tracking-tighter">Why Submit with Pure Research Insights?</h2>
+                  <h2 className="text-3xl font-bold tracking-tighter">Why Submit with Researcher Connect?</h2>
                   <p className="max-w-[700px] mx-auto text-muted-foreground mt-2">
                       We provide the tools and support you need to publish successfully.
                   </p>
