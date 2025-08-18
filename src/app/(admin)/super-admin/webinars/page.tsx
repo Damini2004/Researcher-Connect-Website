@@ -16,6 +16,7 @@ import AddWebinarForm from "@/components/forms/add-webinar-form";
 import WebinarsTable from "@/components/tables/webinars-table";
 import { getWebinars, Webinar } from "@/services/webinarService";
 import { useToast } from "@/hooks/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ManageWebinarsPage() {
   const [webinars, setWebinars] = React.useState<Webinar[]>([]);
@@ -76,14 +77,16 @@ export default function ManageWebinarsPage() {
               Add Webinar
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-lg max-h-[90vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>Add New Webinar</DialogTitle>
               <DialogDescription>
                 Fill out the form below to create a new webinar listing.
               </DialogDescription>
             </DialogHeader>
-            <AddWebinarForm onWebinarAdded={handleWebinarAdded} />
+            <ScrollArea className="flex-grow pr-6 -mr-2">
+                <AddWebinarForm onWebinarAdded={handleWebinarAdded} />
+            </ScrollArea>
           </DialogContent>
         </Dialog>
       </div>
