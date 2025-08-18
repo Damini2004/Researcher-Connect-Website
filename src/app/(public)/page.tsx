@@ -222,17 +222,21 @@ export default function HomePage() {
                          <div className="w-24 h-1 bg-primary mx-auto" />
                     </div>
                 </div>
-                 <div className="mx-auto grid max-w-5xl items-center gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4 lg:max-w-none mt-12">
-                    {services.map((service) => (
-                        <div key={service.title} className="flex flex-col items-center text-center space-y-3">
-                            <div className="p-4 rounded-full border-2 border-gray-200 w-fit">
-                                <service.icon className="h-8 w-8 text-primary" />
+                <Card className="mt-12">
+                  <CardContent className="p-10">
+                    <div className="mx-auto grid items-center gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4">
+                        {services.map((service) => (
+                            <div key={service.title} className="flex flex-col items-center text-center space-y-3">
+                                <div className="p-4 rounded-full border-2 border-gray-200 w-fit">
+                                    <service.icon className="h-8 w-8 text-primary" />
+                                </div>
+                                <h3 className="text-xl font-bold">{service.title}</h3>
+                                <p className="text-muted-foreground">{service.description}</p>
                             </div>
-                            <h3 className="text-xl font-bold">{service.title}</h3>
-                            <p className="text-muted-foreground">{service.description}</p>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
 
                 <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
                     <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
