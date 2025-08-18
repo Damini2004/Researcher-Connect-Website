@@ -26,18 +26,7 @@ const topBarInfo = [
 ]
 
 const conferenceLinks = [
-    { href: "/conference/about-conference", label: "About Conference" },
-    { href: "/conference/upcoming-conferences", label: "Upcoming Conferences" },
-    { href: "/conference/past-conferences", label: "Past Conferences" },
-    { href: "/conference/upcoming-webinars", label: "Upcoming Webinars" },
-    { href: "/conference/past-webinars", label: "Past Webinars" },
-    { href: "/conference/plan-conference", label: "Plan a Conference with Us" },
-    { href: "/conference/sponsors", label: "Sponsors & Exhibitors" },
-    { href: "/conference/scientific-gallery", label: "Scientific Gallery" },
-    { href: "/conference/conference-videos", label: "Conference Videos" },
-    { href: "/conference/awards", label: "Awards" },
-    { href: "/conference/workshops", label: "Workshops & Short Courses" },
-    { href: "/conference/faq", label: "FAQ" }
+    { href: "/conference", label: "Conference Details" },
 ];
 
 
