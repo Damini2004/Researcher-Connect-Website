@@ -439,9 +439,11 @@ export default function ConferenceDetailPage({ params }: ConferenceDetailPagePro
     </div>
   );
 
+  const { id } = params;
+
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ConferenceDetailClient conferenceId={params.id} />
+      <ConferenceDetailClient conferenceId={id} />
     </Suspense>
   );
 }
