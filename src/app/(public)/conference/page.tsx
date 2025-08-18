@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -72,7 +73,7 @@ export default function ConferencesPage() {
         
         <section className="relative w-full py-16 md:py-20 bg-gray-800 text-white overflow-hidden">
             <Image
-                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto-format&fit=crop"
                 alt="Conference background"
                 fill
                 className="object-cover opacity-20"
@@ -134,34 +135,40 @@ export default function ConferencesPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {isLoading ? (
-                                [...Array(5)].map((_, i) => (
-                                    <Card key={i} className="p-4"><Skeleton className="h-24 w-full" /></Card>
+                                [...Array(6)].map((_, i) => (
+                                    <Card key={i} className="p-4"><Skeleton className="h-48 w-full" /></Card>
                                 ))
                             ) : upcomingConferences.length > 0 ? (
                                 upcomingConferences.map(conference => (
-                                    <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                        <div className="p-4 flex flex-col md:flex-row items-center gap-4">
-                                            <Image src={conference.imageSrc || 'https://placehold.co/120x120.png'} alt={conference.shortTitle} width={120} height={120} className="w-28 h-28 object-contain" data-ai-hint="logo brand"/>
-                                            <div className="text-center md:text-left flex-1 space-y-2">
-                                                <h4 className="font-bold text-base hover:text-primary"><Link href={`/conference/${conference.id}`}>{conference.title}</Link></h4>
-                                                <p className="text-sm text-primary font-semibold flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
-                                            </div>
-                                            <div className="text-center md:text-right space-y-2">
-                                                 <p className="text-sm font-bold flex items-center justify-center md:justify-end gap-2 text-primary hover:underline">
-                                                    <Image src="/gps-tracker.gif" alt="Location" width={24} height={24} unoptimized />
-                                                    {conference.location}
-                                                 </p>
-                                                 <Link href={`/conference/${conference.id}`} className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center md:justify-end gap-1">
-                                                    <Eye className="h-4 w-4"/> View Details
-                                                 </Link>
-                                            </div>
-                                        </div>
+                                    <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
+                                        <CardHeader>
+                                            <CardTitle className="text-base line-clamp-2 leading-snug h-12 hover:text-primary">
+                                                <Link href={`/conference/${conference.id}`}>{conference.title}</Link>
+                                            </CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="flex-grow space-y-3 text-sm text-muted-foreground">
+                                            <p className="flex items-center gap-2">
+                                                <Calendar className="h-4 w-4 text-primary"/>
+                                                <span>{conference.date}</span>
+                                            </p>
+                                            <p className="flex items-center gap-2">
+                                                <MapPin className="h-4 w-4 text-primary"/>
+                                                <span>{conference.location}</span>
+                                            </p>
+                                        </CardContent>
+                                        <CardFooter>
+                                            <Button asChild variant="link" className="p-0 h-auto text-primary">
+                                                <Link href={`/conference/${conference.id}`}>
+                                                   View Details <Eye className="ml-2 h-4 w-4"/>
+                                                </Link>
+                                            </Button>
+                                        </CardFooter>
                                     </Card>
                                 ))
                             ) : (
-                                <div className="text-center py-16">
+                                <div className="text-center py-16 col-span-1 md:col-span-2">
                                     <p className="text-muted-foreground">
                                         No upcoming conferences found. Please check back later.
                                     </p>
