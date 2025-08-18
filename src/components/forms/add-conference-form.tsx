@@ -209,7 +209,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full overflow-hidden">
         <div className="flex-shrink-0">
             <div className="space-y-2 mb-4">
                 <Progress value={(currentStep / totalSteps) * 100} />
@@ -465,7 +465,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 )}
             </div>
         </ScrollArea>
-        <div className="flex-shrink-0 flex justify-between pt-4 border-t">
+        <div className="flex-shrink-0 flex justify-between pt-4 mt-auto border-t">
             <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
