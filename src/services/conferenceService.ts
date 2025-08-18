@@ -10,7 +10,6 @@ import { z } from 'zod';
 
 interface AddConferencePayload extends AddConferenceData {
     conferenceLogo: string;
-    paperTemplateUrl?: string;
 }
 
 export async function addConference(data: AddConferencePayload): Promise<{ success: boolean; message: string; }> {
@@ -18,13 +17,9 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     // We don't validate file objects here, just the string URLs
     const schemaForService = conferenceSchema.extend({
         conferenceLogo: z.string(),
-        paperTemplate: z.string().optional(),
     });
     
-    // Create a temporary object for validation, excluding raw file objects
-    const validatableData = { ...data, paperTemplate: data.paperTemplateUrl };
-    
-    const validationResult = schemaForService.safeParse(validatableData);
+    const validationResult = schemaForService.safeParse(data);
     if (!validationResult.success) {
         console.error("Zod validation failed:", validationResult.error.errors);
         const firstError = validationResult.error.errors[0];
@@ -38,13 +33,7 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
         createdAt: new Date(),
     };
     
-    // Only add paperTemplateUrl if it exists
-    if (data.paperTemplateUrl) {
-        dataToSave.paperTemplateUrl = data.paperTemplateUrl;
-    }
-    
-    // Remove the temporary 'paperTemplate' and 'conferenceLogo' fields from the object to be saved
-    delete dataToSave.paperTemplate;
+    // Remove the temporary 'conferenceLogo' fields from the object to be saved
     delete dataToSave.conferenceLogo;
 
 
@@ -178,7 +167,7 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
     }
 }
 
-export async function updateConference(id: string, data: Partial<AddConferenceData> & { imageSrc?: string, paperTemplateUrl?: string }): Promise<{ success: boolean; message: string }> {
+export async function updateConference(id: string, data: Partial<AddConferenceData> & { imageSrc?: string }): Promise<{ success: boolean; message: string }> {
     try {
         const validationResult = conferenceSchema.partial().safeParse(data);
         if (!validationResult.success) {
@@ -195,13 +184,9 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
         if (data.imageSrc) {
             dataToSave.imageSrc = data.imageSrc;
         }
-        if (data.paperTemplateUrl) {
-            dataToSave.paperTemplateUrl = data.paperTemplateUrl;
-        }
 
         // Remove file objects if they exist
         delete dataToSave.conferenceLogo;
-        delete dataToSave.paperTemplate;
 
         const conferenceRef = doc(db, 'conferences', id);
         await updateDoc(conferenceRef, dataToSave);

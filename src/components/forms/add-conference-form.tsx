@@ -24,8 +24,6 @@ import { CalendarIcon, Check, ChevronsUpDown, ArrowLeft, ArrowRight } from "luci
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
 import { Checkbox } from "../ui/checkbox";
-import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Progress } from "../ui/progress";
 import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -51,21 +49,18 @@ const paperCategories = [
     { id: "case_study", label: "Case Study" },
 ] as const;
 
-const totalSteps = 4;
+const totalSteps = 3;
 
 const stepFields: (keyof AddConferenceData)[][] = [
     ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'country', 'modeOfConference'],
     ['aboutConference', 'conferenceEmail'],
     ['submissionStartDate', 'submissionEndDate', 'paperCategories'],
-    ['editorChoice'] // Fields on final step that are not file inputs
 ];
 
 
 export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [subAdmins, setSubAdmins] = React.useState<SubAdmin[]>([]);
-  const [openCombobox, setOpenCombobox] = React.useState(false);
   const [currentStep, setCurrentStep] = React.useState(1);
 
   const form = useForm<AddConferenceData>({
@@ -87,33 +82,12 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
       keywords: "",
       submissionInstructions: "",
       peerReviewMethod: "",
-      registrationFees: "",
-      accommodationDetails: "",
-      faqs: "",
       modeOfConference: [],
       paperCategories: [],
-      editorChoice: "none",
     },
   });
 
-  React.useEffect(() => {
-    async function fetchAdmins() {
-        try {
-            const admins = await getSubAdmins();
-            setSubAdmins(admins.filter(admin => admin.status === 'approved'));
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "Could not fetch sub-admins for editor selection.",
-                variant: "destructive",
-            });
-        }
-    }
-    fetchAdmins();
-  }, [toast]);
-
   const logoFileRef = form.register("conferenceLogo");
-  const templateFileRef = form.register("paperTemplate");
 
   const convertFileToBase64 = (file: File): Promise<string> => {
       return new Promise((resolve, reject) => {
@@ -167,28 +141,10 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         setIsSubmitting(false);
         return;
     }
-   
-    let templateBase64;
-    if (values.paperTemplate && values.paperTemplate.length > 0) {
-         if(values.paperTemplate[0].size > 4 * 1024 * 1024) {
-             toast({ title: "Error", description: "Paper template size cannot exceed 4 MB.", variant: "destructive" });
-             setIsSubmitting(false);
-             return;
-        }
-        try {
-            templateBase64 = await convertFileToBase64(values.paperTemplate[0]);
-        } catch (error) {
-            toast({ title: "Error", description: "Failed to read template file.", variant: "destructive" });
-            setIsSubmitting(false);
-            return;
-        }
-    }
 
     const payload = {
         ...values,
         conferenceLogo: logoBase64,
-        paperTemplateUrl: templateBase64,
-        editorChoice: values.editorChoice === "none" ? undefined : values.editorChoice,
     };
 
     const result = await addConference(payload);
@@ -386,7 +342,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                 />
                                 <FormField control={form.control} name="keywords" render={({ field }) => ( <FormItem> <FormLabel>Keywords or SDG Tags (Optional)</FormLabel> <FormControl><Input placeholder="AI, Machine Learning, SDG 9, ..." {...field} /></FormControl> <FormDescription>Comma-separated values.</FormDescription> <FormMessage /> </FormItem> )} />
                                 <FormField control={form.control} name="submissionInstructions" render={({ field }) => ( <FormItem> <FormLabel>Submission Instructions (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the submission guidelines..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="paperTemplate" render={() => ( <FormItem> <FormLabel>Paper Template Upload (DOC/PDF) (Optional)</FormLabel> <FormControl><Input type="file" accept=".doc,.docx,.pdf" {...templateFileRef} /></FormControl> <FormDescription>Max file size: 4 MB</FormDescription> <FormMessage /> </FormItem> )} />
+                                
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <FormField control={form.control} name="submissionStartDate" render={({ field }) => ( <FormItem> <FormLabel>Submission Start Date</FormLabel> <Popover> <PopoverTrigger asChild><FormControl><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></FormControl></PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                                     <FormField control={form.control} name="submissionEndDate" render={({ field }) => ( <FormItem> <FormLabel>Abstract Submission Deadline</FormLabel> <Popover> <PopoverTrigger asChild><FormControl><Button variant={"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground")}> {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)} <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> </Button></FormControl></PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
@@ -439,51 +395,6 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                     )}
                                 />
                                 <FormField control={form.control} name="peerReviewMethod" render={({ field }) => ( <FormItem> <FormLabel>Peer Review Method (Optional)</FormLabel> <FormControl><Textarea placeholder="e.g., Single-Blind, Double-Blind, Open..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                            </div>
-                        </section>
-                    )}
-                    {currentStep === 4 && (
-                        <section>
-                            <h3 className="text-lg font-medium mb-4">Final Details</h3>
-                            <div className="space-y-6">
-                                <FormField control={form.control} name="registrationFees" render={({ field }) => ( <FormItem> <FormLabel>Registration & Fees (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the fee structure..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="accommodationDetails" render={({ field }) => ( <FormItem> <FormLabel>Accommodation Details (Optional)</FormLabel> <FormControl><Textarea placeholder="List nearby hotels or arrangements..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="faqs" render={({ field }) => ( <FormItem> <FormLabel>FAQs (Optional)</FormLabel> <FormControl><Textarea placeholder="Provide answers to frequently asked questions..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="editorChoice" render={({ field }) => ( 
-                                    <FormItem className="flex flex-col">
-                                        <FormLabel>Editor Choice (Assign Sub-Admin)</FormLabel>
-                                        <FormControl>
-                                            <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-                                                <PopoverTrigger asChild>
-                                                    <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")} >
-                                                        {field.value && field.value !== "none" ? subAdmins.find( (admin) => admin.id === field.value )?.name : "Select Sub-Admin"}
-                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                    </Button>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                                                    <Command>
-                                                        <CommandInput placeholder="Search sub-admins..." />
-                                                        <CommandList>
-                                                            <CommandEmpty>No sub-admin found.</CommandEmpty>
-                                                            <CommandGroup>
-                                                                <CommandItem value={"none"} onSelect={() => { form.setValue("editorChoice", "none"); setOpenCombobox(false); }} >
-                                                                    None
-                                                                </CommandItem>
-                                                                {subAdmins.map((admin) => (
-                                                                    <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("editorChoice", admin.id); setOpenCombobox(false); }} >
-                                                                        <Check className={cn("mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )}/>
-                                                                        {admin.name}
-                                                                    </CommandItem>
-                                                                ))}
-                                                            </CommandGroup>
-                                                        </CommandList>
-                                                    </Command>
-                                                </PopoverContent>
-                                            </Popover>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )} />
                             </div>
                         </section>
                     )}

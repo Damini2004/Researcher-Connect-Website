@@ -1,3 +1,4 @@
+
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -33,7 +34,6 @@ export const conferenceSchema = z.object({
   tracks: z.string().optional(),
   keywords: z.string().optional(),
   submissionInstructions: z.string().optional(),
-  paperTemplate: z.any().optional(), // File uploads are optional during step validation
   submissionStartDate: z.date({ required_error: "Submission start date is required." }),
   submissionEndDate: z.date({ required_error: "Abstract submission deadline is required." }),
   fullPaperSubmissionDeadline: z.date().optional(),
@@ -42,14 +42,6 @@ export const conferenceSchema = z.object({
     message: "You have to select at least one paper category.",
   }),
   peerReviewMethod: z.string().optional(),
-
-  // --- Additional Information ---
-  registrationFees: z.string().optional(),
-  accommodationDetails: z.string().optional(),
-  faqs: z.string().optional(),
-
-  // --- Admin ---
-  editorChoice: z.string().optional()
 });
 
 
@@ -75,17 +67,17 @@ export interface Conference {
   tracks?: string;
   keywords?: string;
   submissionInstructions?: string;
-  paperTemplateUrl?: string;
+  paperTemplateUrl?: string; // Kept for display if old data has it
   submissionStartDate: string; // ISO String
   submissionEndDate: string; // ISO String for Abstract deadline
   fullPaperSubmissionDeadline?: string; // ISO String
   registrationDeadline?: string; // ISO String
   paperCategories: string[];
   peerReviewMethod?: string;
-  registrationFees?: string;
-  accommodationDetails?: string;
-  faqs?: string;
-  editorChoice?: string;
+  registrationFees?: string; // Kept for display if old data has it
+  accommodationDetails?: string; // Kept for display if old data has it
+  faqs?: string; // Kept for display if old data has it
+  editorChoice?: string; // Kept for display if old data has it
   createdAt: string;
   dateObject: Date; // For sorting
   location: string; // For display
