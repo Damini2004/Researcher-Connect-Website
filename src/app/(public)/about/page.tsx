@@ -43,7 +43,7 @@ export default async function AboutPage() {
               <div className="grid md:grid-cols-2 items-center">
                 <div className="relative w-full h-full min-h-[300px]">
                   <Image
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=500&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=500&auto=format=fit=crop"
                     alt="CEO Portrait"
                     data-ai-hint="ceo portrait"
                     fill
