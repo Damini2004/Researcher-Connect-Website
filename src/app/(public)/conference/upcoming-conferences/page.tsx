@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Search as SearchIcon, Eye } from "lucide-react";
+import { Calendar, MapPin, Search as SearchIcon, Eye, ArrowRight } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -73,7 +73,7 @@ export default function UpcomingConferencesPage() {
         
          <section className="relative w-full py-16 md:py-20 bg-gray-800 text-white overflow-hidden">
             <Image
-                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto-format&fit=crop"
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto-format=fit=crop"
                 alt="Conference background"
                 fill
                 className="object-cover opacity-20"
@@ -132,36 +132,47 @@ export default function UpcomingConferencesPage() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {isLoading ? (
                                 [...Array(6)].map((_, i) => (
-                                    <Card key={i} className="p-4"><Skeleton className="h-48 w-full" /></Card>
+                                    <Card key={i} className="p-4"><Skeleton className="h-64 w-full" /></Card>
                                 ))
                             ) : upcomingConferences.length > 0 ? (
                                 upcomingConferences.map(conference => (
-                                     <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
-                                        <CardHeader>
-                                            <CardTitle className="text-base line-clamp-2 leading-snug h-12 hover:text-primary">
-                                                <Link href={`/conference/${conference.id}`}>{conference.title}</Link>
-                                            </CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="flex-grow space-y-3 text-sm text-muted-foreground">
-                                            <p className="flex items-center gap-2">
-                                                <Calendar className="h-4 w-4 text-primary"/>
-                                                <span>{conference.date}</span>
-                                            </p>
-                                            <p className="flex items-center gap-2">
-                                                <MapPin className="h-4 w-4 text-primary"/>
-                                                <span>{conference.location}</span>
-                                            </p>
-                                        </CardContent>
-                                        <CardFooter>
-                                            <Button asChild variant="link" className="p-0 h-auto text-primary">
-                                                <Link href={`/conference/${conference.id}`}>
-                                                   View Details <Eye className="ml-2 h-4 w-4"/>
-                                                </Link>
-                                            </Button>
-                                        </CardFooter>
+                                    <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+                                        <div className="relative w-full h-48">
+                                            <Image 
+                                                src={conference.imageSrc || "https://placehold.co/400x200.png"}
+                                                alt={conference.title}
+                                                fill
+                                                data-ai-hint="conference event"
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div className="p-6 flex flex-col flex-grow">
+                                            <CardHeader className="p-0">
+                                                <CardTitle className="text-lg font-bold line-clamp-2 leading-snug h-14 group-hover:text-primary transition-colors">
+                                                    <Link href={`/conference/${conference.id}`}>{conference.title}</Link>
+                                                </CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="p-0 flex-grow pt-4 space-y-3 text-sm text-muted-foreground">
+                                                <p className="flex items-center gap-2">
+                                                    <Calendar className="h-4 w-4 text-primary"/>
+                                                    <span>{conference.date}</span>
+                                                </p>
+                                                <p className="flex items-center gap-2">
+                                                    <MapPin className="h-4 w-4 text-primary"/>
+                                                    <span>{conference.location}</span>
+                                                </p>
+                                            </CardContent>
+                                            <CardFooter className="p-0 pt-6">
+                                                <Button asChild variant="link" className="p-0 h-auto text-primary font-semibold group-hover:gap-2 transition-all duration-300">
+                                                    <Link href={`/conference/${conference.id}`}>
+                                                       View Details <ArrowRight className="h-4 w-4"/>
+                                                    </Link>
+                                                </Button>
+                                            </CardFooter>
+                                        </div>
                                     </Card>
                                 ))
                             ) : (
