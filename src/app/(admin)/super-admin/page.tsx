@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function SuperAdminPage() {
-  redirect('/super-admin/sub-admins')
+  redirect('/super-admin/cms-pages')
 }
