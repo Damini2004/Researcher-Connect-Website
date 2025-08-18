@@ -21,14 +21,13 @@ import { cn } from "@/lib/utils";
 import { RenderHtmlContent } from "@/components/ui/render-html-content";
 
 interface ConferenceDetailClientProps {
-    params: { id: string };
+    conferenceId: string;
 }
 
-function ConferenceDetailClient({ params }: ConferenceDetailClientProps) {
+function ConferenceDetailClient({ conferenceId }: ConferenceDetailClientProps) {
   const [conference, setConference] = useState<Conference | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const conferenceId = params.id as string;
 
   useEffect(() => {
     const fetchConference = async () => {
@@ -413,8 +412,11 @@ function ConferenceDetailClient({ params }: ConferenceDetailClientProps) {
   );
 }
 
+interface ConferenceDetailPageProps {
+  params: { id: string };
+}
 
-export default function ConferenceDetailPage({ params }: ConferenceDetailClientProps) {
+export default function ConferenceDetailPage({ params }: ConferenceDetailPageProps) {
   const LoadingSkeleton = () => (
     <div className="container py-12 md:py-24">
       <div className="space-y-4">
@@ -439,7 +441,7 @@ export default function ConferenceDetailPage({ params }: ConferenceDetailClientP
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ConferenceDetailClient params={params} />
+      <ConferenceDetailClient conferenceId={params.id} />
     </Suspense>
   );
 }
