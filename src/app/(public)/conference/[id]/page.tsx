@@ -441,7 +441,7 @@ export default function ConferenceDetailPage({ params }: ConferenceDetailPagePro
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ConferenceDetailClient conferenceId={params.id} />
+      <ConferenceDetailClient conferenceId={React.use(Promise.resolve(params.id))} />
     </Suspense>
   );
 }
