@@ -217,8 +217,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
             </div>
         </div>
         <div className="flex-grow min-h-0">
-            <ScrollArea className="h-full">
-                <div className="p-4 space-y-6">
+            <ScrollArea className="h-full pr-6">
+                <div className="space-y-6">
                     {currentStep === 1 && (
                         <section>
                             <h3 className="text-lg font-medium mb-4">Basic Details</h3>
