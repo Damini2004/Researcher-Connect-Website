@@ -53,6 +53,14 @@ const paperCategories = [
 
 const totalSteps = 4;
 
+const stepFields: (keyof AddConferenceData)[][] = [
+    ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'country', 'modeOfConference'],
+    ['aboutConference', 'conferenceEmail'],
+    ['submissionStartDate', 'submissionEndDate', 'paperCategories'],
+    ['editorChoice'] // Fields on final step that are not file inputs
+];
+
+
 export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -117,6 +125,27 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   };
 
   async function onSubmit(values: AddConferenceData) {
+    // Final validation before submitting
+    const isFormValid = await form.trigger();
+    if (!isFormValid) {
+        const errors = form.formState.errors;
+        // Find which step has the first error
+        for (let i = 0; i < stepFields.length; i++) {
+            const stepHasError = stepFields[i].some(field => errors[field]);
+            if (stepHasError) {
+                setCurrentStep(i + 1);
+                toast({
+                    title: "Incomplete Form",
+                    description: `Please correct the errors on Step ${i + 1} before submitting.`,
+                    variant: "destructive",
+                });
+                return;
+            }
+        }
+        return;
+    }
+
+
     setIsSubmitting(true);
    
     let logoBase64 = "";
@@ -178,14 +207,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
 
   const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    let fieldsToValidate: (keyof AddConferenceData)[] = [];
-    if (currentStep === 1) {
-        fieldsToValidate = ['title', 'shortTitle', 'startDate', 'endDate', 'venueName', 'country', 'modeOfConference'];
-    } else if (currentStep === 2) {
-        fieldsToValidate = ['aboutConference', 'conferenceEmail'];
-    } else if (currentStep === 3) {
-        fieldsToValidate = ['submissionStartDate', 'submissionEndDate', 'paperCategories'];
-    }
+    const fieldsToValidate = stepFields[currentStep - 1] || [];
+    
     const isValid = await form.trigger(fieldsToValidate);
     if (isValid) {
         setCurrentStep(step => step + 1);
@@ -217,8 +240,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
             </div>
         </div>
         <div className="flex-grow min-h-0 overflow-hidden">
-            <ScrollArea className="h-full px-6">
-                <div className="space-y-6">
+            <ScrollArea className="h-full">
+                <div className="p-6 space-y-6">
                     {currentStep === 1 && (
                         <section>
                             <h3 className="text-lg font-medium mb-4">Basic Details</h3>
