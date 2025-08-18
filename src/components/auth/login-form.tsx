@@ -13,27 +13,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
-import { verifySubAdminCredentials } from "@/services/subAdminService";
 import * as React from "react";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email."),
   password: z.string().min(1, "Password is required."),
-  role: z.enum(["super-admin", "sub-admin"], {
-    required_error: "You need to select a role.",
-  }),
 });
 
 export default function LoginForm() {
@@ -52,40 +41,18 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
 
-    if (values.role === 'super-admin') {
-      // This is a mock login for super-admin. 
-      // In a real app, you'd have a separate verification.
-      if (values.email === 'superadmin@pureresearchinsights.com' && values.password === 'password') {
-          toast({
-            title: "Login Successful",
-            description: "Redirecting to super-admin dashboard...",
-          });
-          router.push(`/${values.role}`);
-      } else {
-           toast({
-            title: "Login Failed",
-            description: "Invalid credentials for super admin.",
-            variant: "destructive",
-          });
-      }
-    } else if (values.role === 'sub-admin') {
-      const result = await verifySubAdminCredentials(values.email, values.password);
-      if (result.success) {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('currentUserEmail', values.email);
-        }
+    if (values.email === 'superadmin@pureresearchinsights.com' && values.password === 'password') {
         toast({
           title: "Login Successful",
-          description: "Redirecting to sub-admin dashboard...",
+          description: "Redirecting to super-admin dashboard...",
         });
-        router.push(`/${values.role}`);
-      } else {
-        toast({
+        router.push(`/super-admin`);
+    } else {
+         toast({
           title: "Login Failed",
-          description: result.message,
+          description: "Invalid credentials for super admin.",
           variant: "destructive",
         });
-      }
     }
 
     setIsSubmitting(false);
@@ -118,30 +85,6 @@ export default function LoginForm() {
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a role to sign in as" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="super-admin">Super Admin</SelectItem>
-                      <SelectItem value="sub-admin">Sub Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
