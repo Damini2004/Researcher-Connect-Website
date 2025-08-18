@@ -216,7 +216,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {totalSteps}</p>
             </div>
         </div>
-        <div className="flex-grow overflow-hidden">
+        <div className="flex-grow min-h-0">
             <ScrollArea className="h-full">
                 <div className="p-4 space-y-6">
                     {currentStep === 1 && (
