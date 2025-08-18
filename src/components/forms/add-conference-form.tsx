@@ -467,7 +467,8 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                 </div>
             </ScrollArea>
         </div>
-        <div className="flex-shrink-0 flex justify-between pt-4 mt-auto border-t">
+
+        <div className="flex-shrink-0 flex justify-between pt-4 border-t p-2">
             <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
