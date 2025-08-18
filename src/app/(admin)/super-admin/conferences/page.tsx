@@ -95,7 +95,7 @@ export default function ManageConferencesPage() {
               Add Conference
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col p-0">
+          <DialogContent className="sm:max-w-4xl h-[95vh] flex flex-col p-0">
             <DialogHeader className="p-6 pb-0">
               <DialogTitle>Add New Conference</DialogTitle>
               <DialogDescription>
@@ -117,7 +117,7 @@ export default function ManageConferencesPage() {
       />
       
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col">
+        <DialogContent className="sm:max-w-4xl h-[95vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Edit Conference: {selectedConference?.shortTitle}</DialogTitle>
             <DialogDescription>
