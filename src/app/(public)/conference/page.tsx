@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -127,16 +128,21 @@ export default function ConferencesPage() {
                         <Card className="shadow-lg mb-12 bg-gradient-to-br from-background via-background to-primary/5">
                             <CardContent className="p-6">
                                 <h3 className="font-bold text-xl text-center mb-6 text-foreground">Find International Conference</h3>
-                                <div className="space-y-4">
-                                  <div className="relative">
-                                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    <Input type="text" placeholder="Search by conference name, country, or keyword..." className="w-full h-12 pl-10"/>
-                                  </div>
-                                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                      <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
-                                      <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
-                                      <Button className="w-full sm:col-span-3 lg:col-span-1 h-10"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
-                                  </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                    <div className="relative md:col-span-3">
+                                        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input
+                                            type="text"
+                                            placeholder="Search by conference name, country, or keyword..."
+                                            className="w-full h-12 pl-10 pr-28" // Added right padding
+                                        />
+                                        <Button className="absolute right-1 top-1/2 -translate-y-1/2 h-10 px-4">
+                                            Search
+                                        </Button>
+                                    </div>
+                                    <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
+                                    <Input type="text" placeholder="Search by country..." />
+                                    <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
                                 </div>
                             </CardContent>
                         </Card>
