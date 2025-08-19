@@ -125,18 +125,18 @@ export default function ConferencesPage() {
                 {/* Main Content */}
                 <div className="lg:col-span-8">
                     <section>
-                        <Card className="shadow-lg mb-12 bg-gradient-to-br from-background via-background to-primary/5">
+                        <Card className="mb-12 bg-gradient-to-br from-background via-background to-primary/5 border-none shadow-none">
                             <CardContent className="p-6">
                                 <h3 className="font-bold text-xl text-center mb-6 text-foreground">Find International Conference</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                                     <div className="relative md:col-span-3">
-                                        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                                         <Input
                                             type="text"
                                             placeholder="Search by conference name, country, or keyword..."
-                                            className="w-full h-12 pl-10 pr-28" // Added right padding
+                                            className="w-full h-12 pl-12 pr-28 rounded-full"
                                         />
-                                        <Button className="absolute right-1 top-1/2 -translate-y-1/2 h-10 px-4">
+                                        <Button className="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 px-6 rounded-full">
                                             Search
                                         </Button>
                                     </div>
