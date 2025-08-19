@@ -31,17 +31,15 @@ const AnimatedSection = ({ children }: { children: React.ReactNode }) => {
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-1">
-        <HeroSection />
-        <AnimatedSection><FeaturesSection /></AnimatedSection>
-        <AnimatedSection><KeyServicesSection /></AnimatedSection>
-        <AnimatedSection><ThingsYouGetSection /></AnimatedSection>
-        <AnimatedSection><DetailedServicesSection /></AnimatedSection>
-        <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
-        <AnimatedSection><ContactBannerSection /></AnimatedSection>
-        <AnimatedSection><HighlightsSection /></AnimatedSection>
-        <AnimatedSection><PartnersSection /></AnimatedSection>
-      </main>
+      <HeroSection />
+      <AnimatedSection><FeaturesSection /></AnimatedSection>
+      <AnimatedSection><KeyServicesSection /></AnimatedSection>
+      <AnimatedSection><ThingsYouGetSection /></AnimatedSection>
+      <AnimatedSection><DetailedServicesSection /></AnimatedSection>
+      <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
+      <AnimatedSection><ContactBannerSection /></AnimatedSection>
+      <AnimatedSection><HighlightsSection /></AnimatedSection>
+      <AnimatedSection><PartnersSection /></AnimatedSection>
     </div>
   );
 }
