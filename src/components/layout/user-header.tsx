@@ -144,10 +144,6 @@ export default function UserHeader() {
                     ))}
                 </div>
                 <div className="flex items-center gap-6">
-                    <Link href="/research-support" className="flex items-center gap-2 hover:text-amber-400">
-                        <LifeBuoy className="h-4 w-4" />
-                        <span>Research Support</span>
-                    </Link>
                     <Link href="/login" className="flex items-center gap-2 hover:text-amber-400">
                         <User className="h-4 w-4" />
                         <span>Login</span>
@@ -210,7 +206,6 @@ export default function UserHeader() {
                                 <MobileNavLink key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             )
                         )}
-                         <MobileNavLink link={{href: "/research-support", label: "Research Support"}} onLinkClick={() => setMenuOpen(false)} />
                     </Accordion>
                      <div className="p-4 border-t mt-4 space-y-2">
                          <Button asChild variant="outline" className="w-full rounded-full bg-white border-gray-200 hover:bg-gray-50 text-foreground px-6">
