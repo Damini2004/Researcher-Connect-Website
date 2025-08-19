@@ -25,36 +25,24 @@ const topBarInfo = [
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
 
-const conferenceLinks = [
-    { href: "/conference", label: "Conference Details" },
+const servicesLinks = [
+    { href: "/services/software-solutions", label: "Software Solutions (RAMS & SDGMapper)" },
+    { href: "/services/conference-management", label: "Conference Management" },
+    { href: "/services/higher-studies", label: "Higher Studies (PhD & PostDoc) Proposals" },
+    { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
+    { href: "/internship", label: "Internship Services" },
+    { href: "/services/phd-services", label: "PhD Services" },
+    { href: "/services/publications-patent", label: "Publications and Patent Consultancy" },
 ];
 
-
-const publicationsLinks = [
-    { href: "/publications/overview", label: "Publication Overview" },
-    { href: "/publications/journal-selection", label: "Journal Selection" },
-    { href: "/publications/digital-library", label: "Digital Library" },
-    { href: "/publications/conference-proceedings", label: "Conference Proceedings" },
-    { href: "/publications/journal-support", label: "Journal Support" },
-    { href: "/publications/peer-review", label: "Peer Review Process" },
-    { href: "/publications/response-to-reviewers", label: "Response to Reviewers" },
-];
-
-const iprServicesLinks = [
-    { href: "/ipr-services/patent", label: "Patent" },
-    { href: "/ipr-services/trademark", label: "Trademark" },
-    { href: "/ipr-services/copyright", label: "Copyright" },
-    { href: "/ipr-services/industrial-design", label: "Industrial Design" },
-    { href: "/ipr-services/global-ip", label: "Global IP" },
-];
 
 const mainNavLinks = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/conference", label: "Conference", dropdown: conferenceLinks },
-  { href: "/publications", label: "Publications", dropdown: publicationsLinks },
-  { href: "/ipr-services", label: "IPR Services", dropdown: iprServicesLinks },
-  { href: "/internship", label: "Internship" },
+  { href: "/about", label: "About Us" },
+  { href: "/mission-vision", label: "Mission & Vision" },
+  { href: "/services", label: "Services", dropdown: servicesLinks },
+  { href: "/blogs", label: "Blogs" },
+  { href: "/contact-us", label: "Contact" },
 ];
 
 
@@ -86,7 +74,7 @@ export default function UserHeader() {
               <ChevronDown className="h-4 w-4" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
+          <DropdownMenuContent className="w-64">
             {link.dropdown.map((item) => (
                 <DropdownMenuItem key={item.label} asChild>
                     <Link href={item.href}>{item.label}</Link>
@@ -186,7 +174,7 @@ export default function UserHeader() {
         <div className="flex items-center">
           <div className="hidden md:flex items-center">
             <Button asChild>
-                <Link href="/contact-us">Contact Us</Link>
+                <Link href="/submit-journal">Submit Paper</Link>
             </Button>
           </div>
         </div>
@@ -227,7 +215,7 @@ export default function UserHeader() {
                     </Accordion>
                      <div className="p-4 border-t mt-4 space-y-2">
                          <Button asChild className="w-full">
-                            <Link href="/contact-us" onClick={() => setMenuOpen(false)}>Contact Us</Link>
+                            <Link href="/submit-journal" onClick={() => setMenuOpen(false)}>Submit Paper</Link>
                         </Button>
                         <Button asChild variant="outline" className="w-full">
                             <Link href="/login" onClick={() => setMenuOpen(false)}>Login</Link>
