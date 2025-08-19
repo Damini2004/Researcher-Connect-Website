@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/carousel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ConferenceSidebarForm from "@/components/forms/conference-sidebar-form";
+import { Input } from "@/components/ui/input";
 
 
 export default function ConferencesPage() {
@@ -128,7 +129,7 @@ export default function ConferencesPage() {
                                 <h3 className="font-bold text-center mb-4">Find International Conference</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                     <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
-                                    <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger><SelectContent><SelectItem value="usa">USA</SelectItem></SelectContent></Select>
+                                    <Input type="text" placeholder="Search by country..."/>
                                     <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
                                     <Button className="w-full sm:col-span-2 md:col-span-1"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
                                 </div>
