@@ -31,7 +31,7 @@ export function HeroSection() {
                 >
                     <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-white">
                     <span className="block"></span>
-                    <span className="block text-primary-foreground/90">Researcher Connect</span>
+                    <span className="block text-[#3D4C6F]">Researcher Connect</span>
                     </h1>
                     <p className="max-w-xl mt-6 text-lg text-white/80 md:text-xl">
                 We look forward to help you in taking your company to new height.
