@@ -1,4 +1,5 @@
 
+
 import JournalSubmissionForm from "@/components/forms/journal-submission-form";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Image from "next/image";
