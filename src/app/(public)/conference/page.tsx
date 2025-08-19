@@ -127,11 +127,16 @@ export default function ConferencesPage() {
                         <div className="max-w-5xl mx-auto border-t-4 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
                             <div className="p-6">
                                 <h3 className="font-bold text-center mb-4">Find International Conference</h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                                    <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
-                                    <Input type="text" placeholder="Search by country..."/>
-                                    <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
-                                    <Button className="w-full sm:col-span-2 md:col-span-1"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
+                                <div className="space-y-4">
+                                  <div className="relative">
+                                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                    <Input type="text" placeholder="Search by conference name, country, or keyword..." className="w-full h-12 pl-10"/>
+                                  </div>
+                                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                      <Select><SelectTrigger><SelectValue placeholder="Select Topic" /></SelectTrigger><SelectContent><SelectItem value="ai">AI</SelectItem></SelectContent></Select>
+                                      <Select><SelectTrigger><SelectValue placeholder="Select Month" /></SelectTrigger><SelectContent><SelectItem value="aug">August</SelectItem></SelectContent></Select>
+                                      <Button className="w-full sm:col-span-3 lg:col-span-1 h-10"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
+                                  </div>
                                 </div>
                             </div>
                         </div>
