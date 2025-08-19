@@ -88,57 +88,10 @@ export default function ConferencesPage() {
   return (
     <div className="bg-secondary/30">
         
-        <section className="relative w-full py-16 md:py-20 bg-gray-800 text-white overflow-hidden">
-            <Image
-                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto-format=fit=crop"
-                alt="Conference background"
-                fill
-                className="object-cover opacity-20"
-                data-ai-hint="conference audience"
-            />
-            <div className="relative z-10 container mx-auto px-4">
-                <h2 className="text-3xl font-bold tracking-tight text-center mb-10">
-                    Upcoming International <span className="text-amber-400">Conference 2025</span>
-                </h2>
-                {isLoading ? (
-                    <div className="flex justify-center"><Skeleton className="h-64 w-full max-w-4xl" /></div>
-                ) : upcomingConferences.length > 0 && (
-                    <Carousel
-                        opts={{ align: "start", loop: true }}
-                        className="w-full max-w-5xl mx-auto"
-                    >
-                        <CarouselContent className="-ml-4">
-                            {upcomingConferences.slice(0, 6).map((conference) => (
-                                <CarouselItem key={conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                                    <div className="p-1 h-full">
-                                        <Card className="flex flex-col h-full bg-white text-black text-center p-6 shadow-lg transform transition-all hover:-translate-y-2">
-                                            <div className="flex-grow space-y-3">
-                                                <Image src={conference.imageSrc || 'https://placehold.co/100x100.png'} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain mx-auto" data-ai-hint="logo brand"/>
-                                                <h4 className="font-semibold text-sm line-clamp-3">{conference.title}</h4>
-                                            </div>
-                                            <div className="mt-4 pt-4 border-t border-gray-200 text-sm space-y-2 text-muted-foreground">
-                                                <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4 text-primary"/><span>{conference.date}</span></p>
-                                                <p className="flex items-center justify-center gap-2">
-                                                    <Image src="/gps-tracker.gif" alt="Location" width={24} height={24} unoptimized />
-                                                    <span>{conference.location}</span>
-                                                </p>
-                                            </div>
-                                        </Card>
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-8 bg-white/80 text-black hover:bg-white" />
-                        <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-8 bg-white/80 text-black hover:bg-white" />
-                    </Carousel>
-                )}
-            </div>
-        </section>
-
         <div className="py-12 md:py-16">
            <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Main Content */}
-                <div className="lg:col-span-8">
+                <div className="lg:col-span-12">
                     <section>
                         <Card className="mb-12 bg-gradient-to-br from-background via-background to-primary/5 border-none shadow-none">
                             <CardContent className="p-6">
@@ -162,7 +115,7 @@ export default function ConferencesPage() {
                             </CardContent>
                         </Card>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {isLoading ? (
                                 [...Array(6)].map((_, i) => (
                                     <Card key={i} className="p-4"><Skeleton className="h-64 w-full" /></Card>
@@ -209,7 +162,7 @@ export default function ConferencesPage() {
                                     </Card>
                                 ))
                             ) : (
-                                <div className="text-center py-16 col-span-1 md:col-span-2">
+                                <div className="text-center py-16 col-span-1 md:col-span-2 lg:col-span-3">
                                     <p className="text-muted-foreground">
                                         No upcoming conferences found. Please check back later.
                                     </p>
@@ -250,9 +203,6 @@ export default function ConferencesPage() {
                         )}
                     </section>
                 </div>
-                {/* Sidebar */}
-                <aside className="lg:col-span-4 space-y-6">
-                </aside>
             </div>
         </div>
     </div>
