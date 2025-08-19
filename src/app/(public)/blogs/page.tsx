@@ -1,9 +1,17 @@
 
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, ChevronRight, UserCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const latestArticles = [
     {
@@ -214,30 +222,45 @@ export default function BlogsPage() {
             <section className="py-16 md:py-24 bg-secondary/50">
                 <div className="container mx-auto px-4">
                      <h2 className="text-3xl font-bold mb-8">Popular Articles</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {popularArticles.map(post => (
-                            <Card key={post.id} className="flex flex-col overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-                                <Image src={post.imageSrc} alt={post.title} width={400} height={300} className="w-full object-cover" data-ai-hint={post.imageHint} />
-                                <CardHeader>
-                                    <CardTitle>{post.title}</CardTitle>
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
-                                        <UserCircle className="h-4 w-4" />
-                                        <span>{post.author}</span>
-                                        <span>&bull;</span>
-                                        <span>{post.date}</span>
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                                </CardContent>
-                                <CardFooter>
-                                    <Link href="#" className="font-semibold text-sm text-primary inline-flex items-center">
-                                        Read More <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Link>
-                                </CardFooter>
-                            </Card>
-                        ))}
-                    </div>
+                    <Carousel
+                        opts={{
+                            align: "start",
+                            loop: true,
+                        }}
+                        orientation="vertical"
+                        className="w-full max-w-lg mx-auto"
+                    >
+                        <CarouselContent className="-mt-1 h-[450px]">
+                            {popularArticles.map((post) => (
+                            <CarouselItem key={post.id} className="pt-1 md:basis-1/2">
+                                <div className="p-1">
+                                <Card className="flex flex-col h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                                    <Image src={post.imageSrc} alt={post.title} width={400} height={300} className="w-full object-cover" data-ai-hint={post.imageHint} />
+                                    <CardHeader>
+                                        <CardTitle>{post.title}</CardTitle>
+                                        <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
+                                            <UserCircle className="h-4 w-4" />
+                                            <span>{post.author}</span>
+                                            <span>&bull;</span>
+                                            <span>{post.date}</span>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Link href="#" className="font-semibold text-sm text-primary inline-flex items-center">
+                                            Read More <ArrowRight className="ml-2 h-4 w-4" />
+                                        </Link>
+                                    </CardFooter>
+                                </Card>
+                                </div>
+                            </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious />
+                        <CarouselNext />
+                    </Carousel>
                 </div>
             </section>
         </div>
