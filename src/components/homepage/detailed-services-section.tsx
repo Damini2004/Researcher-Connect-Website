@@ -1,6 +1,5 @@
 // src/components/homepage/detailed-services-section.tsx
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Mail, MessageSquare, Phone } from "lucide-react";
 import Image from "next/image";
 
@@ -25,7 +24,7 @@ export function DetailedServicesSection() {
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-4 lg:order-last">
-                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
+                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto-format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
                 </div>
                 <div className="space-y-4">
                   <h3 className="text-2xl font-bold">Tax consulting</h3>
@@ -43,39 +42,27 @@ export function DetailedServicesSection() {
               </div>
             </div>
             <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
-                <Card className="text-center group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
-                    <CardHeader className="items-center">
-                        <div className="p-3 rounded-full bg-primary/10">
-                            <Mail className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-                        <CardTitle>Special financing</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground">Apply for special financial support and earn exclusive rewards.</p>
-                    </CardContent>
-                </Card>
-                 <Card className="text-center group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
-                    <CardHeader className="items-center">
-                        <div className="p-3 rounded-full bg-primary/10">
-                          <MessageSquare className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-                        <CardTitle>Chat with team</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground">Have a question? Chat online with an expert. <a href="#" className="underline text-primary">Start chatting</a></p>
-                    </CardContent>
-                </Card>
-                 <Card className="text-center group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
-                    <CardHeader className="items-center">
-                        <div className="p-3 rounded-full bg-primary/10">
-                            <Phone className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-                        <CardTitle>Call a specialist</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground">Our 24/7 support team is ready for you at 1-800-MY-Elixir.</p>
-                    </CardContent>
-                </Card>
+                <div className="flex flex-col items-center text-center p-4">
+                    <div className="p-3 rounded-full bg-primary/10 mb-4">
+                        <Mail className="h-8 w-8 text-primary" />
+                    </div>
+                    <h4 className="text-lg font-bold">Special financing</h4>
+                    <p className="text-sm text-muted-foreground mt-1">Apply for special financial support and earn exclusive rewards.</p>
+                </div>
+                 <div className="flex flex-col items-center text-center p-4">
+                    <div className="p-3 rounded-full bg-primary/10 mb-4">
+                        <MessageSquare className="h-8 w-8 text-primary" />
+                    </div>
+                    <h4 className="text-lg font-bold">Chat with team</h4>
+                    <p className="text-sm text-muted-foreground mt-1">Have a question? Chat online with an expert. <a href="#" className="underline text-primary">Start chatting</a></p>
+                </div>
+                 <div className="flex flex-col items-center text-center p-4">
+                    <div className="p-3 rounded-full bg-primary/10 mb-4">
+                        <Phone className="h-8 w-8 text-primary" />
+                    </div>
+                    <h4 className="text-lg font-bold">Call a specialist</h4>
+                    <p className="text-sm text-muted-foreground mt-1">Our 24/7 support team is ready for you at 1-800-MY-Elixir.</p>
+                </div>
             </div>
           </div>
         </section>
