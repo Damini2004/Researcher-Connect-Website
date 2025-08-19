@@ -229,14 +229,14 @@ export default function JournalSubmissionForm() {
               name="submissionType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Submission Type</FormLabel>
+                  <FormLabel>Query type</FormLabel>
                   <Select onValueChange={(value) => {
                       field.onChange(value);
                       handleTypeChange(value);
                   }} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a type" />
+                        <SelectValue placeholder="Select a query type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -255,7 +255,7 @@ export default function JournalSubmissionForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Select {submissionType ? submissionType.charAt(0).toUpperCase() + submissionType.slice(1) : 'Target'}
+                    Select Target
                   </FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isItemsLoading || !submissionType} value={field.value}>
                     <FormControl>
