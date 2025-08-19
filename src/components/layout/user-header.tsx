@@ -21,7 +21,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const topBarInfo = [
     { text: "202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
-    { text: "+91-7020996341", icon: Phone, isLink: true, href: "tel:+917020996341" },
+    { text: "+91 99702 94396", icon: Phone, isLink: true, href: "tel:+919970294396" },
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
 
