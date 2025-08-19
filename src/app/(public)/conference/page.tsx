@@ -124,9 +124,9 @@ export default function ConferencesPage() {
                 {/* Main Content */}
                 <div className="lg:col-span-8">
                     <section>
-                        <div className="max-w-5xl mx-auto border-t-4 border-primary shadow-lg rounded-b-lg mb-12 relative bg-background">
-                            <div className="p-6">
-                                <h3 className="font-bold text-center mb-4">Find International Conference</h3>
+                        <Card className="shadow-lg mb-12 bg-gradient-to-br from-background via-background to-primary/5">
+                            <CardContent className="p-6">
+                                <h3 className="font-bold text-xl text-center mb-6 text-foreground">Find International Conference</h3>
                                 <div className="space-y-4">
                                   <div className="relative">
                                     <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -138,8 +138,8 @@ export default function ConferencesPage() {
                                       <Button className="w-full sm:col-span-3 lg:col-span-1 h-10"><SearchIcon className="mr-2 h-4 w-4" /> Search Event</Button>
                                   </div>
                                 </div>
-                            </div>
-                        </div>
+                            </CardContent>
+                        </Card>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {isLoading ? (
