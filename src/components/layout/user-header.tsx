@@ -40,7 +40,7 @@ const mainNavLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/mission-vision", label: "Mission & Vision" },
-  { href: "/services", label: "Services", dropdown: servicesLinks },
+  { href: "#", label: "Services", dropdown: servicesLinks },
   { href: "/blogs", label: "Blogs" },
   { href: "/contact-us", label: "Contact" },
 ];
