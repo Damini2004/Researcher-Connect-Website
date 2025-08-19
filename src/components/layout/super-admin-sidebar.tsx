@@ -13,7 +13,7 @@ import {
   SidebarMenuBadge
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { LogOut, Settings, LayoutTemplate, Presentation, Tv } from "lucide-react";
+import { LogOut, Settings, LayoutTemplate, Presentation, Tv, Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -25,6 +25,7 @@ const menuItems = [
   { href: "/super-admin/cms-pages", label: "CMS Pages", icon: LayoutTemplate },
   { href: "/super-admin/conferences", label: "Conferences", icon: Presentation },
   { href: "/super-admin/webinars", label: "Webinars", icon: Tv },
+  { href: "/super-admin/blogs", label: "Blogs", icon: Newspaper },
   { href: "/super-admin/settings", label: "Settings", icon: Settings },
 ];
 

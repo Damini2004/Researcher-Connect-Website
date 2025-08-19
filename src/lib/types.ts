@@ -44,6 +44,32 @@ export const conferenceSchema = z.object({
   peerReviewMethod: z.string().optional(),
 });
 
+export const blogPostSchema = z.object({
+  title: z.string().min(10, "Title must be at least 10 characters."),
+  category: z.string().min(3, "Category is required."),
+  author: z.string().min(3, "Author name is required."),
+  content: z.string().min(100, "Content must be at least 100 characters."),
+  excerpt: z.string().min(20, "Excerpt must be at least 20 characters.").max(200, "Excerpt cannot exceed 200 characters."),
+  image: z.any().refine((files) => files?.length > 0, "An image is required.").or(z.any().optional()),
+  isFeatured: z.boolean().default(false),
+});
+
+export interface BlogPost {
+    id: string;
+    title: string;
+    category: string;
+    author: string;
+    content: string;
+    excerpt: string;
+    imageSrc: string;
+    imageHint: string;
+    isFeatured: boolean;
+    createdAt: string;
+    date: string;
+}
+
+export type AddBlogPostData = z.infer<typeof blogPostSchema>;
+
 
 export interface Conference {
   id: string;
