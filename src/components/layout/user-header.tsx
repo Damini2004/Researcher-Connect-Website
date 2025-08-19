@@ -20,7 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const topBarInfo = [
-    { text: "No. 374 Chaurai Nagar, Somatne Phata, Talegaon Dabhade, Maharashtra 410506", icon: MapPin },
+    { text: "202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
     { text: "+91-7020996341", icon: Phone, isLink: true, href: "tel:+917020996341" },
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
