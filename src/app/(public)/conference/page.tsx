@@ -154,23 +154,26 @@ export default function ConferencesPage() {
                                 ))
                             ) : upcomingConferences.length > 0 ? (
                                 upcomingConferences.map(conference => (
-                                    <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+                                    <Card key={conference.id} className="overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group border-2 border-transparent hover:border-primary/30">
                                         <div className="relative w-full h-48">
                                             <Image 
                                                 src={conference.imageSrc || "https://placehold.co/400x200.png"}
                                                 alt={conference.title}
                                                 fill
                                                 data-ai-hint="conference event"
-                                                className="object-cover"
+                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                                            <div className="absolute bottom-0 left-0 p-4">
+                                                <h3 className="font-bold text-lg text-white line-clamp-2 leading-tight">
+                                                    <Link href={`/conference/${conference.id}`} className="hover:text-amber-300 transition-colors stretched-link">
+                                                        {conference.title}
+                                                    </Link>
+                                                </h3>
+                                            </div>
                                         </div>
                                         <div className="p-6 flex flex-col flex-grow">
-                                            <CardHeader className="p-0">
-                                                <CardTitle className="text-lg font-bold line-clamp-2 leading-snug h-14 group-hover:text-primary transition-colors">
-                                                    <Link href={`/conference/${conference.id}`}>{conference.title}</Link>
-                                                </CardTitle>
-                                            </CardHeader>
-                                            <CardContent className="p-0 flex-grow pt-4 space-y-3 text-sm text-muted-foreground">
+                                            <CardContent className="p-0 flex-grow space-y-3 text-sm text-muted-foreground">
                                                 <p className="flex items-center gap-2">
                                                     <Calendar className="h-4 w-4 text-primary"/>
                                                     <span>{conference.date}</span>
@@ -181,9 +184,9 @@ export default function ConferencesPage() {
                                                 </p>
                                             </CardContent>
                                             <CardFooter className="p-0 pt-6">
-                                                <Button asChild variant="link" className="p-0 h-auto text-primary font-semibold group-hover:gap-2 transition-all duration-300">
+                                                <Button asChild variant="outline" className="w-full">
                                                     <Link href={`/conference/${conference.id}`}>
-                                                       View Details <ArrowRight className="h-4 w-4"/>
+                                                       View Details <ArrowRight className="ml-2 h-4 w-4"/>
                                                     </Link>
                                                 </Button>
                                             </CardFooter>
