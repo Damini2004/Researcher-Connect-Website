@@ -1,4 +1,4 @@
-// src/components/homepage/hero-section.tsx
+
 'use client';
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
@@ -31,11 +31,11 @@ export function HeroSection() {
                     className="max-w-3xl mx-auto"
                 >
                     <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-white">
-                    <span className="block">Streamline Your Research</span>
-                    <span className="block text-primary-foreground/90">with Researcher Connect</span>
+                    <span className="block"></span>
+                    <span className="block text-primary-foreground/90">Researcher Connect</span>
                     </h1>
                     <p className="max-w-xl mx-auto mt-6 text-lg text-white/80 md:text-xl">
-                    The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
+                We look forward to help you in taking your company to new height.
                     </p>
                     <motion.div 
                     initial={{ opacity: 0, y: 20 }}
