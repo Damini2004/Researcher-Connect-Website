@@ -21,7 +21,7 @@ export function HeroSection() {
             </div>
 
 
-            <div className="relative z-10 container px-4 md:px-6">
+            <div className="relative z-10 container mx-auto px-4 md:px-6">
                  <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -44,9 +44,9 @@ export function HeroSection() {
                     transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
                     className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-start"
                     >
-                        <Link href="/submit-journal">
+                        <Link href="/contact-us">
                         <Button size="lg" className="w-full sm:w-auto">
-                            Submit Your Paper
+                            Contact Us
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
                         </Link>
