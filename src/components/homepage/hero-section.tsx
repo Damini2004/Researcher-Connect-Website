@@ -30,7 +30,10 @@ export function HeroSection() {
                 >
                     <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-white">
                     <span className="block"></span>
-                    <span className="block text-[#3D4C6F]">Researcher Connect</span>
+                    <span className="text-[#3D4C6F]">
+                        <span className="block">Researcher</span>
+                        <span className="block">Connect</span>
+                    </span>
                     </h1>
                     <p className="max-w-xl mt-6 text-lg text-white/80 md:text-xl">
                 We look forward to help you in taking your company to new height.
@@ -48,7 +51,7 @@ export function HeroSection() {
                         </Button>
                         </Link>
                         <Link href="/about">
-                        <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white/50 hover:bg-transparent hover:text-white">
+                        <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-white border-white/50 hover:bg-transparent hover:text-white">
                             Learn More
                         </Button>
                         </Link>
