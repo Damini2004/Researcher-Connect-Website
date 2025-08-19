@@ -61,7 +61,7 @@ export function KeyServicesSection() {
                 </div>
                 <Card className="mt-12">
                   <CardContent className="p-10">
-                    <div className="mx-auto grid items-center gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4">
+                    <div className="mx-auto grid items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4">
                         {services.map((service) => (
                             <div key={service.title} className="flex flex-col items-center text-center space-y-3">
                                 <div className="p-4 rounded-full border-2 border-gray-200 w-fit">

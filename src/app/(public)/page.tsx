@@ -4,6 +4,7 @@ import * as React from 'react';
 import { HeroSection } from '@/components/homepage/hero-section';
 import { FeaturesSection } from '@/components/homepage/features-section';
 import { KeyServicesSection } from '@/components/homepage/key-services-section';
+import { ThingsYouGetSection } from '@/components/homepage/things-you-get-section';
 import { DetailedServicesSection } from '@/components/homepage/detailed-services-section';
 import { WhyChooseUsSection } from '@/components/homepage/why-choose-us-section';
 import { ContactBannerSection } from '@/components/homepage/contact-banner-section';
@@ -34,6 +35,7 @@ export default function HomePage() {
         <HeroSection />
         <AnimatedSection><FeaturesSection /></AnimatedSection>
         <AnimatedSection><KeyServicesSection /></AnimatedSection>
+        <AnimatedSection><ThingsYouGetSection /></AnimatedSection>
         <AnimatedSection><DetailedServicesSection /></AnimatedSection>
         <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
         <AnimatedSection><ContactBannerSection /></AnimatedSection>
