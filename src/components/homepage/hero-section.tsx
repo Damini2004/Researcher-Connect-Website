@@ -1,4 +1,3 @@
-
 'use client';
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
@@ -52,7 +51,7 @@ export function HeroSection() {
                         </Button>
                         </Link>
                         <Link href="/about">
-                        <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-white border-white/50 hover:bg-transparent hover:text-white">
+                        <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-[#3D4C6F] border-[#3D4C6F]/50 hover:bg-transparent hover:text-[#3D4C6F] hover:border-[#3D4C6F]">
                             Learn More
                         </Button>
                         </Link>
