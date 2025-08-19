@@ -1,5 +1,6 @@
 // src/components/homepage/detailed-services-section.tsx
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Mail, MessageSquare, Phone } from "lucide-react";
 import Image from "next/image";
 
@@ -42,27 +43,39 @@ export function DetailedServicesSection() {
               </div>
             </div>
             <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
-                <div className="flex items-start gap-4">
-                    <Mail className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <div>
-                        <h4 className="font-bold">Special financing</h4>
+                <Card className="text-center group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+                    <CardHeader className="items-center">
+                        <div className="p-3 rounded-full bg-primary/10">
+                            <Mail className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                        </div>
+                        <CardTitle>Special financing</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                         <p className="text-sm text-muted-foreground">Apply for special financial support and earn exclusive rewards.</p>
-                    </div>
-                </div>
-                 <div className="flex items-start gap-4">
-                    <MessageSquare className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <div>
-                        <h4 className="font-bold">Chat with team</h4>
-                        <p className="text-sm text-muted-foreground">Have a question? Chat online with an expert. <a href="#" className="underline">Start chatting</a></p>
-                    </div>
-                </div>
-                 <div className="flex items-start gap-4">
-                    <Phone className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <div>
-                        <h4 className="font-bold">Call a specialist</h4>
+                    </CardContent>
+                </Card>
+                 <Card className="text-center group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+                    <CardHeader className="items-center">
+                        <div className="p-3 rounded-full bg-primary/10">
+                          <MessageSquare className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                        </div>
+                        <CardTitle>Chat with team</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-muted-foreground">Have a question? Chat online with an expert. <a href="#" className="underline text-primary">Start chatting</a></p>
+                    </CardContent>
+                </Card>
+                 <Card className="text-center group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+                    <CardHeader className="items-center">
+                        <div className="p-3 rounded-full bg-primary/10">
+                            <Phone className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                        </div>
+                        <CardTitle>Call a specialist</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                         <p className="text-sm text-muted-foreground">Our 24/7 support team is ready for you at 1-800-MY-Elixir.</p>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
             </div>
           </div>
         </section>
