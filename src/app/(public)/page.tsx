@@ -17,29 +17,31 @@ const AnimatedSection = ({ children }: { children: React.ReactNode }) => {
     const isInView = useInView(ref, { once: true, amount: 0.2 });
 
     return (
-        <motion.section
+        <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
         >
             {children}
-        </motion.section>
+        </motion.div>
     );
 };
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <HeroSection />
-      <AnimatedSection><FeaturesSection /></AnimatedSection>
-      <AnimatedSection><KeyServicesSection /></AnimatedSection>
-      <AnimatedSection><ThingsYouGetSection /></AnimatedSection>
-      <AnimatedSection><DetailedServicesSection /></AnimatedSection>
-      <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
-      <AnimatedSection><ContactBannerSection /></AnimatedSection>
-      <AnimatedSection><HighlightsSection /></AnimatedSection>
-      <AnimatedSection><PartnersSection /></AnimatedSection>
-    </div>
+      <div className="container mx-auto px-4">
+        <AnimatedSection><FeaturesSection /></AnimatedSection>
+        <AnimatedSection><KeyServicesSection /></AnimatedSection>
+        <AnimatedSection><ThingsYouGetSection /></AnimatedSection>
+        <AnimatedSection><DetailedServicesSection /></AnimatedSection>
+        <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
+        <AnimatedSection><ContactBannerSection /></AnimatedSection>
+        <AnimatedSection><HighlightsSection /></AnimatedSection>
+        <AnimatedSection><PartnersSection /></AnimatedSection>
+      </div>
+    </>
   );
 }
