@@ -42,7 +42,6 @@ const mainNavLinks = [
   { href: "/mission-vision", label: "Mission & Vision" },
   { href: "#", label: "Services", dropdown: servicesLinks },
   { href: "/blogs", label: "Blogs" },
-  { href: "/contact-us", label: "Contact" },
 ];
 
 
