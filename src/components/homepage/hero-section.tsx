@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 export function HeroSection() {
 
     return (
-        <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-start text-left overflow-hidden bg-gray-900">
+        <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-start text-left overflow-hidden bg-white">
              <div className="absolute inset-0 z-0">
                 <Image
                     src="/header-6.jpg"
@@ -35,7 +35,7 @@ export function HeroSection() {
                         <span className="block">Connect</span>
                     </span>
                     </h1>
-                    <p className="max-w-xl mt-6 text-lg text-white/80 md:text-xl">
+                    <p className="max-w-xl mt-6 text-lg text-[#3D4C6F] md:text-xl">
                 We look forward to help you in taking your company to new height.
                     </p>
                     <motion.div 
