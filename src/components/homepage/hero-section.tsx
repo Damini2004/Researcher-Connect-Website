@@ -1,4 +1,3 @@
-
 'use client';
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,7 @@ export function HeroSection() {
         <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-start text-left overflow-hidden bg-gray-900">
              <div className="absolute inset-0 z-0">
                 <Image
-                    src="https://img.freepik.com/free-photo/teamwork-meeting-with-business-people_23-2148825942.jpg?semt=ais_hybrid&w=740&q=80"
+                    src="/header-6.jpg"
                     alt="Business team meeting"
                     data-ai-hint="business meeting"
                     fill
