@@ -3,15 +3,16 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAojn8bWZM_s19xhK9kn8F0CpB0JcW2bjA",
-  authDomain: "journellisting.firebaseapp.com",
-  projectId: "journellisting",
-  storageBucket: "journellisting.appspot.com",
-  messagingSenderId: "96866013897",
-  appId: "1:96866013897:web:5d3d2ad16b83610b907318",
-  measurementId: "G-30NMKYLKQG"
+  apiKey: "AIzaSyC8LgKniTvYPWzjNWJzANugcjeXaotA8K0",
+  authDomain: "researcher-connect-9546c.firebaseapp.com",
+  projectId: "researcher-connect-9546c",
+  storageBucket: "researcher-connect-9546c.firebasestorage.app",
+  messagingSenderId: "442468417201",
+  appId: "1:442468417201:web:305d714f100979f5cf6c90",
+  measurementId: "G-XP0KPYLZJ4"
 };
 
 // Initialize Firebase
@@ -19,4 +20,7 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-export { app, db, storage };
+// Initialize Analytics if supported
+const analytics = isSupported().then(yes => yes ? getAnalytics(app) : null);
+
+export { app, db, storage, analytics };

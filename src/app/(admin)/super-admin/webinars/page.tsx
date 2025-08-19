@@ -1,6 +1,7 @@
-
+// src/app/(admin)/super-admin/webinars/page.tsx
 "use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,30 +11,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddWebinarForm from "@/components/forms/add-webinar-form";
 import WebinarsTable from "@/components/tables/webinars-table";
-import { useState, useEffect, useCallback } from "react";
 import { getWebinars, Webinar } from "@/services/webinarService";
 import { useToast } from "@/hooks/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ManageWebinarsPage() {
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
-  const [webinars, setWebinars] = useState<Webinar[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [webinars, setWebinars] = React.useState<Webinar[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
   const { toast } = useToast();
 
-  const fetchWebinars = useCallback(async () => {
+  const fetchWebinars = React.useCallback(async () => {
     setIsLoading(true);
     try {
       const data = await getWebinars();
@@ -49,47 +40,56 @@ export default function ManageWebinarsPage() {
     }
   }, [toast]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchWebinars();
   }, [fetchWebinars]);
-  
+
   const handleWebinarAdded = () => {
     setIsAddDialogOpen(false);
-    setIsSuccessAlertOpen(true);
-    fetchWebinars(); // Re-fetch the data
+    toast({
+      title: "Webinar Added!",
+      description: "The new webinar has been successfully created.",
+    });
+    fetchWebinars();
   };
 
   const handleWebinarDeleted = () => {
     toast({
-      title: "Webinar Deleted",
-      description: "The webinar has been removed from the list.",
+        title: "Webinar Deleted",
+        description: "The webinar has been successfully deleted.",
     });
-    fetchWebinars(); // Re-fetch the data
+    fetchWebinars();
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex items-center justify-between">
         <div>
-            <h1 className="text-2xl font-bold tracking-tight">Webinar Management</h1>
-            <p className="text-muted-foreground">Add, edit, or remove webinar listings.</p>
+          <h1 className="text-2xl font-bold tracking-tight">Webinar Management</h1>
+          <p className="text-muted-foreground">
+            Create, view, and manage all webinars.
+          </p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add Webinar
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Webinar
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px] max-h-[90vh] flex flex-col">
-            <DialogHeader>
+          <DialogContent className="sm:max-w-lg max-h-[90vh] flex flex-col p-0">
+            <DialogHeader className="p-6 pb-0">
               <DialogTitle>Add New Webinar</DialogTitle>
               <DialogDescription>
-                Fill out the form below to add a new webinar.
+                Fill out the form below to create a new webinar listing.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex-grow overflow-y-auto pr-4 -mr-2">
-                <AddWebinarForm onWebinarAdded={handleWebinarAdded} />
+            <div className="flex-grow min-h-0">
+              <ScrollArea className="h-full">
+                <div className="px-6 py-4">
+                  <AddWebinarForm onWebinarAdded={handleWebinarAdded} />
+                </div>
+              </ScrollArea>
             </div>
           </DialogContent>
         </Dialog>
@@ -100,20 +100,6 @@ export default function ManageWebinarsPage() {
         isLoading={isLoading}
         onWebinarDeleted={handleWebinarDeleted}
       />
-      
-      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Webinar Added!</AlertDialogTitle>
-            <AlertDialogDescription>
-              The new webinar has been successfully added to the list.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

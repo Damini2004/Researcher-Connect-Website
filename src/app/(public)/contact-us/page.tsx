@@ -1,56 +1,93 @@
+// src/app/(public)/contact-us/page.tsx
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, ChevronRight, Linkedin, Twitter, Facebook } from "lucide-react";
 import ContactForm from "@/components/forms/contact-form";
+import Link from "next/link";
+import Image from "next/image";
+
+const contactCards = [
+    {
+        title: "Melbourne Office",
+        lines: ["121 King Street,", "Melbourne 3000,", "Australia"],
+        icon: MapPin,
+    },
+    {
+        title: "Sydney Office",
+        lines: ["62 Collins Street West,", "Sydney 3000,", "Australia"],
+        icon: MapPin,
+    },
+];
+
+const socialLinks = [
+    { href: "#", icon: Linkedin },
+    { href: "#", icon: Twitter },
+    { href: "#", icon: Facebook },
+    { href: "#", icon: Mail },
+];
+
 
 export default function ContactUsPage() {
   return (
-    <div className="bg-secondary/50">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Get in Touch</h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">We'd love to hear from you. Whether you have a question, feedback, or need support, our team is ready to help.</p>
-        </div>
+    <div className="bg-background">
+      <section className="relative w-full h-[300px] bg-gray-800 text-white">
+          <Image
+              src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&h=300&auto=format&fit=crop"
+              alt="Team working together"
+              data-ai-hint="team collaboration"
+              fill
+              className="object-cover opacity-20"
+          />
+          <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
+              <h1 className="text-5xl font-extrabold tracking-tight">Contact</h1>
+              <div className="flex items-center text-sm text-white/80 mt-2">
+                  <Link href="/" className="hover:text-white">Home</Link>
+                  <ChevronRight className="h-4 w-4 mx-1" />
+                  <span className="font-semibold text-white">Contact</span>
+              </div>
+          </div>
+      </section>
+      
+      <div className="py-12 md:py-24">
+        <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                {contactCards.map((card) => (
+                    <Card key={card.title} className="border-0 shadow-none">
+                        <CardHeader>
+                            <CardTitle>{card.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">
+                                {card.lines.map((line, index) => (
+                                    <span key={index}>{line}<br/></span>
+                                ))}
+                            </p>
+                        </CardContent>
+                    </Card>
+                ))}
+                 <Card className="border-0 shadow-none">
+                    <CardHeader>
+                        <CardTitle>Socials</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex gap-4">
+                            {socialLinks.map((social, index) => (
+                                <Link key={index} href={social.href} className="text-muted-foreground hover:text-primary">
+                                    <social.icon className="h-6 w-6"/>
+                                </Link>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
 
-        <Card className="max-w-3xl mx-auto mb-16 shadow-xl border-primary/10">
-          <CardHeader>
-            <CardTitle className="text-center text-3xl">Send us a Message</CardTitle>
-            <CardDescription className="text-center">Fill out the form and we'll get back to you shortly.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ContactForm />
-          </CardContent>
-        </Card>
-
-        <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight">Other Ways to Connect</h2>
-            <p className="mt-3 text-muted-foreground">Find us through our other channels.</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8 text-center">
-            <Card className="p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                <div className="p-4 bg-primary/10 rounded-full inline-flex mb-4">
-                    <Mail className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Email</h3>
-                <p className="text-muted-foreground">General: <a href="mailto:contact@pureresearchinsights.com" className="text-primary hover:underline">contact@pureresearchinsights.com</a></p>
-                <p className="text-muted-foreground">Support: <a href="mailto:support@pureresearchinsights.com" className="text-primary hover:underline">support@pureresearchinsights.com</a></p>
-            </Card>
-             <Card className="p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                <div className="p-4 bg-primary/10 rounded-full inline-flex mb-4">
-                    <Phone className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Phone</h3>
-                <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                <p className="text-muted-foreground">Mon-Fri, 9am-5pm EST</p>
-            </Card>
-            <Card className="p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                <div className="p-4 bg-primary/10 rounded-full inline-flex mb-4">
-                    <MapPin className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Office</h3>
-                <p className="text-muted-foreground">123 Research Parkway</p>
-                <p className="text-muted-foreground">Cambridge, MA 02139, USA</p>
+            <Card className="max-w-4xl mx-auto shadow-lg border-t-4 border-primary">
+              <CardHeader>
+                <CardTitle className="text-2xl">Write to us</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ContactForm />
+              </CardContent>
             </Card>
         </div>
       </div>

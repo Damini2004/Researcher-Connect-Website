@@ -1,10 +1,12 @@
 
+
 "use client";
 
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Search as SearchIcon, Eye } from "lucide-react";
+import { Calendar, MapPin, Search as SearchIcon, Eye, ArrowRight } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -25,7 +27,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import ConferenceSidebarForm from "@/components/forms/conference-sidebar-form";
 
 
 export default function UpcomingConferencesPage() {
@@ -70,50 +71,6 @@ export default function UpcomingConferencesPage() {
   return (
     <div className="bg-secondary/30">
         
-         <section className="relative w-full py-16 md:py-20 bg-gray-800 text-white overflow-hidden">
-            <Image
-                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto=format&fit=crop"
-                alt="Conference background"
-                fill
-                className="object-cover opacity-20"
-                data-ai-hint="conference audience"
-            />
-            <div className="relative z-10 container mx-auto px-4">
-                <h2 className="text-3xl font-bold tracking-tight text-center mb-10">
-                    Upcoming International <span className="text-amber-400">Conference 2025</span>
-                </h2>
-                {isLoading ? (
-                    <div className="flex justify-center"><Skeleton className="h-64 w-full max-w-4xl" /></div>
-                ) : upcomingConferences.length > 0 && (
-                    <Carousel
-                        opts={{ align: "start", loop: true }}
-                        className="w-full max-w-5xl mx-auto"
-                    >
-                        <CarouselContent className="-ml-4">
-                            {upcomingConferences.slice(0, 6).map((conference) => (
-                                <CarouselItem key={conference.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                                    <div className="p-1 h-full">
-                                        <Card className="flex flex-col h-full bg-white text-black text-center p-6 shadow-lg transform transition-all hover:-translate-y-2">
-                                            <div className="flex-grow space-y-3">
-                                                <Image src={conference.imageSrc || 'https://placehold.co/100x100.png'} alt={conference.shortTitle} width={100} height={100} className="w-24 h-24 object-contain mx-auto" data-ai-hint="logo brand"/>
-                                                <h4 className="font-semibold text-sm line-clamp-3">{conference.title}</h4>
-                                            </div>
-                                            <div className="mt-4 pt-4 border-t border-gray-200 text-sm space-y-2 text-muted-foreground">
-                                                <p className="flex items-center justify-center gap-2"><Calendar className="h-4 w-4 text-primary"/><span>{conference.date}</span></p>
-                                                <p className="flex items-center justify-center gap-2"><MapPin className="h-4 w-4 text-primary"/><span>{conference.location}</span></p>
-                                            </div>
-                                        </Card>
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-8 bg-white/80 text-black hover:bg-white" />
-                        <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-8 bg-white/80 text-black hover:bg-white" />
-                    </Carousel>
-                )}
-            </div>
-        </section>
-
         <div className="container mx-auto px-4 py-12 md:py-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Main Content */}
@@ -131,31 +88,51 @@ export default function UpcomingConferencesPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {isLoading ? (
-                                [...Array(5)].map((_, i) => (
-                                    <Card key={i} className="p-4"><Skeleton className="h-24 w-full" /></Card>
+                                [...Array(6)].map((_, i) => (
+                                    <Card key={i} className="p-4"><Skeleton className="h-64 w-full" /></Card>
                                 ))
                             ) : upcomingConferences.length > 0 ? (
                                 upcomingConferences.map(conference => (
-                                    <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                        <div className="p-4 flex flex-col md:flex-row items-center gap-4">
-                                            <Image src={conference.imageSrc || 'https://placehold.co/120x120.png'} alt={conference.shortTitle} width={120} height={120} className="w-28 h-28 object-contain" data-ai-hint="logo brand"/>
-                                            <div className="text-center md:text-left flex-1 space-y-2">
-                                                <h4 className="font-bold text-base hover:text-primary"><Link href={`/conference/${conference.id}`}>{conference.title}</Link></h4>
-                                                <p className="text-sm text-primary font-semibold flex items-center justify-center md:justify-start gap-2"><Calendar className="h-4 w-4"/>{conference.date}</p>
-                                            </div>
-                                            <div className="text-center md:text-right space-y-2">
-                                                 <p className="text-sm font-bold flex items-center justify-center md:justify-end gap-2 text-primary hover:underline"><MapPin className="h-4 w-4" /> {conference.location}</p>
-                                                 <Link href={`/conference/${conference.id}`} className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center md:justify-end gap-1">
-                                                    <Eye className="h-4 w-4"/> View Details
-                                                 </Link>
-                                            </div>
+                                    <Card key={conference.id} className="overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+                                        <div className="relative w-full h-48">
+                                            <Image 
+                                                src={conference.imageSrc || "https://placehold.co/400x200.png"}
+                                                alt={conference.title}
+                                                fill
+                                                data-ai-hint="conference event"
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div className="p-6 flex flex-col flex-grow">
+                                            <CardHeader className="p-0">
+                                                <CardTitle className="text-lg font-bold line-clamp-2 leading-snug h-14 group-hover:text-primary transition-colors">
+                                                    <Link href={`/conference/${conference.id}`}>{conference.title}</Link>
+                                                </CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="p-0 flex-grow pt-4 space-y-3 text-sm text-muted-foreground">
+                                                <p className="flex items-center gap-2">
+                                                    <Calendar className="h-4 w-4 text-primary"/>
+                                                    <span>{conference.date}</span>
+                                                </p>
+                                                <p className="flex items-center gap-2">
+                                                    <MapPin className="h-4 w-4 text-primary"/>
+                                                    <span>{conference.location}</span>
+                                                </p>
+                                            </CardContent>
+                                            <CardFooter className="p-0 pt-6">
+                                                <Button asChild variant="link" className="p-0 h-auto text-primary font-semibold group-hover:gap-2 transition-all duration-300">
+                                                    <Link href={`/conference/${conference.id}`}>
+                                                       View Details <ArrowRight className="h-4 w-4"/>
+                                                    </Link>
+                                                </Button>
+                                            </CardFooter>
                                         </div>
                                     </Card>
                                 ))
                             ) : (
-                                <div className="text-center py-16">
+                                <div className="text-center py-16 col-span-1 md:col-span-2">
                                     <p className="text-muted-foreground">
                                         No upcoming conferences found. Please check back later.
                                     </p>
@@ -176,24 +153,6 @@ export default function UpcomingConferencesPage() {
                 </div>
                 {/* Sidebar */}
                 <aside className="lg:col-span-4 space-y-6">
-                     <Card>
-                        <CardHeader className="text-center bg-muted/50">
-                            <CardTitle>Indexed By</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-4">
-                             <div className="grid grid-cols-2 gap-4">
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/2038481.png" width={120} height={50} alt="DOAJ" data-ai-hint="logo brand" className="object-contain" /></div>
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/1993463.png" width={120} height={50} alt="Scopus" data-ai-hint="logo company" className="object-contain" /></div>
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/1712867.png" width={120} height={50} alt="EBSCO" data-ai-hint="logo tech" className="object-contain" /></div>
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/1101923.png" width={120} height={50} alt="Crossref" data-ai-hint="logo business" className="object-contain" /></div>
-                           </div>
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-red-600 text-white text-center p-6">
-                        <h3 className="text-xl font-bold">Life Science Conferences</h3>
-                        <Button variant="outline" className="mt-4 bg-white text-red-600 hover:bg-white/90">Visit Now</Button>
-                    </Card>
-                    <ConferenceSidebarForm />
                 </aside>
             </div>
         </div>

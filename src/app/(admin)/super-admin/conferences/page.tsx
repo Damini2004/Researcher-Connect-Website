@@ -1,6 +1,7 @@
-
+// src/app/(admin)/super-admin/conferences/page.tsx
 "use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,33 +11,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { PlusCircle } from "lucide-react";
 import AddConferenceForm from "@/components/forms/add-conference-form";
-import ConferencesTable from "@/components/tables/conferences-table";
-import { useState, useEffect, useCallback } from "react";
-import { getConferences, Conference } from "@/services/conferenceService";
-import { useToast } from "@/hooks/use-toast";
 import EditConferenceForm from "@/components/forms/edit-conference-form";
+import ConferencesTable from "@/components/tables/conferences-table";
+import { getConferences } from "@/services/conferenceService";
+import { useToast } from "@/hooks/use-toast";
+import type { Conference } from "@/lib/types";
 
 export default function ManageConferencesPage() {
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
-  const [selectedConference, setSelectedConference] = useState<Conference | null>(null);
-  const [conferences, setConferences] = useState<Conference[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [conferences, setConferences] = React.useState<Conference[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
+  const [selectedConference, setSelectedConference] = React.useState<Conference | null>(null);
   const { toast } = useToast();
 
-  const fetchConferences = useCallback(async () => {
+  const fetchConferences = React.useCallback(async () => {
     setIsLoading(true);
     try {
       const data = await getConferences();
@@ -52,32 +43,34 @@ export default function ManageConferencesPage() {
     }
   }, [toast]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchConferences();
   }, [fetchConferences]);
-  
+
   const handleConferenceAdded = () => {
     setIsAddDialogOpen(false);
-    setIsSuccessAlertOpen(true);
-    fetchConferences(); // Re-fetch the data
+    toast({
+      title: "Conference Added!",
+      description: "The new conference has been successfully created.",
+    });
+    fetchConferences();
   };
-
+  
   const handleConferenceUpdated = () => {
     setIsEditDialogOpen(false);
-    setSelectedConference(null);
     toast({
       title: "Conference Updated!",
-      description: "The conference details have been saved.",
+      description: "The conference details have been successfully saved.",
     });
     fetchConferences();
   };
 
   const handleConferenceDeleted = () => {
     toast({
-      title: "Conference Deleted",
-      description: "The conference has been removed from the list.",
+        title: "Conference Deleted",
+        description: "The conference has been successfully deleted.",
     });
-    fetchConferences(); // Re-fetch the data
+    fetchConferences();
   }
 
   const handleEditClick = (conference: Conference) => {
@@ -88,27 +81,29 @@ export default function ManageConferencesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex items-center justify-between">
         <div>
-            <h1 className="text-2xl font-bold tracking-tight">Conference Management</h1>
-            <p className="text-muted-foreground">Add, edit, or remove conference listings.</p>
+          <h1 className="text-2xl font-bold tracking-tight">Conference Management</h1>
+          <p className="text-muted-foreground">
+            Create, view, and manage all conferences.
+          </p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add Conference
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Conference
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col">
-            <DialogHeader>
+          <DialogContent className="sm:max-w-4xl h-[95vh] flex flex-col p-0">
+            <DialogHeader className="p-6 pb-0">
               <DialogTitle>Add New Conference</DialogTitle>
               <DialogDescription>
-                Fill out the form below to add a new conference.
+                Fill out the form below to create a new conference listing.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex-grow overflow-y-auto">
-              <AddConferenceForm onConferenceAdded={handleConferenceAdded} />
+            <div className="flex-grow overflow-hidden">
+                <AddConferenceForm onConferenceAdded={handleConferenceAdded} />
             </div>
           </DialogContent>
         </Dialog>
@@ -121,38 +116,24 @@ export default function ManageConferencesPage() {
         onConferenceDeleted={handleConferenceDeleted}
       />
       
-       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col">
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-4xl h-[95vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Edit Conference</DialogTitle>
+            <DialogTitle>Edit Conference: {selectedConference?.shortTitle}</DialogTitle>
             <DialogDescription>
-              Update the details for the conference below.
+              Modify the conference details below.
             </DialogDescription>
           </DialogHeader>
-          {selectedConference && (
-            <div className="flex-grow overflow-y-auto">
-              <EditConferenceForm
-                conference={selectedConference}
-                onConferenceUpdated={handleConferenceUpdated}
-              />
-            </div>
-          )}
+          <div className="flex-grow min-h-0">
+            {selectedConference && (
+                <EditConferenceForm
+                  conference={selectedConference}
+                  onConferenceUpdated={handleConferenceUpdated}
+                />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
-
-      <AlertDialog open={isSuccessAlertOpen} onOpenChange={setIsSuccessAlertOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Conference Added!</AlertDialogTitle>
-            <AlertDialogDescription>
-              The new conference has been successfully added to the list.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setIsSuccessAlertOpen(false)}>OK</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

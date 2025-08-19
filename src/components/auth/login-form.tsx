@@ -10,101 +10,79 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
-import { verifySubAdminCredentials } from "@/services/subAdminService";
 import * as React from "react";
+import { User, Lock, Eye, EyeOff } from "lucide-react";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
+import { Logo } from "../icons";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email."),
   password: z.string().min(1, "Password is required."),
-  role: z.enum(["super-admin", "sub-admin"], {
-    required_error: "You need to select a role.",
-  }),
+  rememberMe: z.boolean().optional(),
 });
 
 export default function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
 
-    if (values.role === 'super-admin') {
-      // This is a mock login for super-admin. 
-      // In a real app, you'd have a separate verification.
-      if (values.email === 'superadmin@pureresearchinsights.com' && values.password === 'password') {
-          toast({
-            title: "Login Successful",
-            description: "Redirecting to super-admin dashboard...",
-          });
-          router.push(`/${values.role}`);
-      } else {
-           toast({
-            title: "Login Failed",
-            description: "Invalid credentials for super admin.",
-            variant: "destructive",
-          });
-      }
-    } else if (values.role === 'sub-admin') {
-      const result = await verifySubAdminCredentials(values.email, values.password);
-      if (result.success) {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('currentUserEmail', values.email);
-        }
+    if (values.email === 'superadmin@researcherconnect.com' && values.password === 'password') {
         toast({
           title: "Login Successful",
-          description: "Redirecting to sub-admin dashboard...",
+          description: "Redirecting to super-admin dashboard...",
         });
-        router.push(`/${values.role}`);
-      } else {
-        toast({
+        router.push(`/super-admin`);
+    } else {
+         toast({
           title: "Login Failed",
-          description: result.message,
+          description: "Invalid credentials for super admin.",
           variant: "destructive",
         });
-      }
     }
 
     setIsSubmitting(false);
   }
 
   return (
-    <Card>
+    <Card className="bg-white/95 backdrop-blur-sm">
+        <CardHeader className="text-center">
+            <Logo className="h-10 w-10 mx-auto mb-4" />
+            <CardTitle className="text-xl font-bold">LOGIN WITH ELIXIR</CardTitle>
+        </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-6 pt-6">
+          <CardContent className="space-y-6 pt-2">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="admin@pureresearchinsights.com" {...field} />
-                  </FormControl>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <FormControl>
+                        <Input type="email" placeholder="Email or username" className="pl-10" {...field} />
+                    </FormControl>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -114,45 +92,41 @@ export default function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a role to sign in as" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="super-admin">Super Admin</SelectItem>
-                      <SelectItem value="sub-admin">Sub Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
+                    <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <FormControl>
+                            <Input type={showPassword ? "text" : "password"} placeholder="Password" className="pl-10 pr-10" {...field} />
+                        </FormControl>
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                        >
+                          {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                    </div>
+                    <FormMessage />
                 </FormItem>
               )}
             />
           </CardContent>
-          <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? 'Signing In...' : 'Sign In'}
-            </Button>
-            <Button variant="link" size="sm" asChild>
-                <Link href="/">Back to Home</Link>
+          <CardFooter className="flex items-center justify-between">
+             <FormField
+                control={form.control}
+                name="rememberMe"
+                render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                            <Checkbox id="remember-me" checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        <Label htmlFor="remember-me" className="text-sm font-normal text-muted-foreground">
+                            Remember Me
+                        </Label>
+                    </FormItem>
+                )}
+                />
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Logging In...' : 'Login'}
             </Button>
           </CardFooter>
         </form>

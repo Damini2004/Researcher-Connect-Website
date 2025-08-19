@@ -26,7 +26,7 @@ async function initializePages() {
       await setDoc(pageRef, {
         title: page.title,
         path: page.path,
-        content: `<p>This is the initial content for the ${page.title} page. Please edit it in the CMS.</p>`,
+        content: "", // Set initial content to an empty string
         createdAt: serverTimestamp(),
         updatedAt: null,
       });
