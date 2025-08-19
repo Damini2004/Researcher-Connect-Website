@@ -146,7 +146,7 @@ export default function UserHeader() {
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     {topBarInfo.map(info => (
-                        <div key={info.text} className={cn("flex items-center mr-6", info.align)}>
+                        <div key={info.text} className={cn("flex items-center mr-6")}>
                             <info.icon className="h-4 w-4 text-amber-400 mr-2" />
                             {info.isLink ? (
                                 <a href={info.href} className="text-white hover:text-amber-400">{info.text}</a>
@@ -185,8 +185,8 @@ export default function UserHeader() {
 
         <div className="flex items-center">
           <div className="hidden md:flex items-center">
-            <Button asChild variant="outline" className="rounded-full">
-                <Link href="/submit-journal">Submit Article</Link>
+            <Button asChild>
+                <Link href="/contact-us">Contact Us</Link>
             </Button>
           </div>
         </div>
@@ -227,7 +227,7 @@ export default function UserHeader() {
                     </Accordion>
                      <div className="p-4 border-t mt-4 space-y-2">
                          <Button asChild className="w-full">
-                            <Link href="/submit-journal" onClick={() => setMenuOpen(false)}>Submit Article</Link>
+                            <Link href="/contact-us" onClick={() => setMenuOpen(false)}>Contact Us</Link>
                         </Button>
                         <Button asChild variant="outline" className="w-full">
                             <Link href="/login" onClick={() => setMenuOpen(false)}>Login</Link>
