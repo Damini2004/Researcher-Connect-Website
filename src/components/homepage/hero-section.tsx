@@ -13,9 +13,9 @@ export function HeroSection() {
         <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-start text-left overflow-hidden bg-gray-900">
              <div className="absolute inset-0 z-0">
                 <Image
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqzO_v7V8m6u55Dy33R0J_TutIjJcLO8km9Q&s"
-                    alt="Abstract background"
-                    data-ai-hint="abstract background"
+                    src="https://img.freepik.com/free-photo/teamwork-meeting-with-business-people_23-2148825942.jpg?semt=ais_hybrid&w=740&q=80"
+                    alt="Business team meeting"
+                    data-ai-hint="business meeting"
                     fill
                     className="object-cover"
                 />
