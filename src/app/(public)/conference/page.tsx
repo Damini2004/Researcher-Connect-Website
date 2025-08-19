@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -87,6 +87,23 @@ export default function ConferencesPage() {
 
   return (
     <div className="bg-secondary/30">
+        <section className="relative w-full h-[300px] bg-gray-800 text-white">
+            <Image
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=300&auto=format&fit=crop"
+                alt="Conference Audience"
+                data-ai-hint="conference audience"
+                fill
+                className="object-cover opacity-20"
+            />
+            <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
+                <h1 className="text-5xl font-extrabold tracking-tight">Conferences</h1>
+                <div className="flex items-center text-sm text-white/80 mt-2">
+                    <Link href="/" className="hover:text-white">Home</Link>
+                    <ChevronRight className="h-4 w-4 mx-1" />
+                    <span className="font-semibold text-white">Conferences</span>
+                </div>
+            </div>
+        </section>
         
         <div className="py-12 md:py-16">
            <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
