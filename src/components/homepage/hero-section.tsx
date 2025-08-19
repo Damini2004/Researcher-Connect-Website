@@ -5,99 +5,68 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
 
-const carouselItems = [
-    {
-        imageSrc: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1600&auto=format&fit=crop",
-        imageHint: "researcher in lab",
-        alt: "Researcher in a modern laboratory"
-    },
-    {
-        imageSrc: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop",
-        imageHint: "team collaboration",
-        alt: "Team collaborating on a project"
-    },
-    {
-        imageSrc: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&auto=format&fit=crop",
-        imageHint: "business meeting",
-        alt: "Business meeting"
-    }
-];
-
 export function HeroSection() {
-    const plugin = React.useRef(
-        Autoplay({ delay: 5000, stopOnInteraction: true })
-    );
 
     return (
-        <section className="w-full h-[60vh] md:h-[80vh] relative overflow-hidden">
-            <Carousel
-                plugins={[plugin.current]}
-                className="w-full h-full"
-                onMouseEnter={plugin.current.stop}
-                onMouseLeave={plugin.current.reset}
-            >
-                <CarouselContent className="h-full">
-                    {carouselItems.map((item, index) => (
-                        <CarouselItem key={index} className="h-full">
-                            <div className="w-full h-full relative">
-                                <Image
-                                    src={item.imageSrc}
-                                    alt={item.alt}
-                                    fill
-                                    className="object-cover"
-                                    data-ai-hint={item.imageHint}
-                                    priority={index === 0}
-                                />
-                                <div className="absolute inset-0 bg-background/50" />
-                            </div>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-            </Carousel>
-
-            <div className="absolute inset-0 flex items-center justify-center text-center text-foreground z-10">
-                 <div className="container px-4 md:px-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="max-w-3xl mx-auto"
-                    >
-                      <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight">
-                        <span className="block">Streamline Your Research</span>
-                        <span className="block text-primary">with Researcher Connect</span>
-                      </h1>
-                      <p className="max-w-xl mx-auto mt-6 text-lg text-foreground/90 md:text-xl">
-                        The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
-                      </p>
-                       <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                        className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
-                       >
-                          <Link href="/submit-journal">
-                            <Button size="lg" className="w-full sm:w-auto">
-                              Submit Your Paper
-                              <ArrowRight className="ml-2 h-5 w-5" />
-                            </Button>
-                          </Link>
-                          <Link href="/about">
-                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-background/50 hover:bg-background/80">
-                              Learn More
-                            </Button>
-                          </Link>
-                        </motion.div>
-                    </motion.div>
+        <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-center text-center overflow-hidden bg-secondary/30">
+             <div className="absolute inset-0 z-0">
+                <div className="absolute top-0 left-0 w-1/3 h-1/2 ">
+                     <Image
+                        src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=800&auto=format&fit=crop"
+                        alt="Researcher in a modern laboratory"
+                        fill
+                        className="object-cover opacity-10"
+                        data-ai-hint="researcher lab"
+                    />
                 </div>
+                 <div className="absolute bottom-0 right-0 w-1/2 h-2/3">
+                    <Image
+                        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop"
+                        alt="Team collaborating on a project"
+                        fill
+                        className="object-cover opacity-10"
+                        data-ai-hint="team collaboration"
+                    />
+                </div>
+                <div className="absolute top-1/4 left-1/2 w-1/4 h-1/4 rounded-full bg-primary/5 blur-3xl" />
+            </div>
+
+
+            <div className="relative z-10 container px-4 md:px-6">
+                 <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="max-w-3xl mx-auto"
+                >
+                    <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-foreground">
+                    <span className="block">Streamline Your Research</span>
+                    <span className="block text-primary">with Researcher Connect</span>
+                    </h1>
+                    <p className="max-w-xl mx-auto mt-6 text-lg text-foreground/80 md:text-xl">
+                    The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
+                    </p>
+                    <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                    className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
+                    >
+                        <Link href="/submit-journal">
+                        <Button size="lg" className="w-full sm:w-auto">
+                            Submit Your Paper
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                        </Link>
+                        <Link href="/about">
+                        <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                            Learn More
+                        </Button>
+                        </Link>
+                    </motion.div>
+                </motion.div>
             </div>
         </section>
     );
