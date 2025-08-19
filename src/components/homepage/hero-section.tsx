@@ -15,17 +15,17 @@ import { motion } from "framer-motion";
 
 const carouselItems = [
     {
-        imageSrc: "https://t4.ftcdn.net/jpg/03/84/55/29/360_F_384552930_zPoe9zgmCF7qgt8fqSedcyJ6C6Ye3dFs.jpg",
+        imageSrc: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1600&auto=format&fit=crop",
         imageHint: "researcher in lab",
         alt: "Researcher in a modern laboratory"
     },
     {
-        imageSrc: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&h=900&auto=format&fit=crop",
+        imageSrc: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop",
         imageHint: "team collaboration",
         alt: "Team collaborating on a project"
     },
     {
-        imageSrc: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&h=900&auto=format&fit=crop",
+        imageSrc: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&auto=format&fit=crop",
         imageHint: "business meeting",
         alt: "Business meeting"
     }
@@ -54,8 +54,9 @@ export function HeroSection() {
                                     fill
                                     className="object-cover"
                                     data-ai-hint={item.imageHint}
+                                    priority={index === 0}
                                 />
-                                <div className="absolute inset-0 bg-white/50" />
+                                <div className="absolute inset-0 bg-background/50" />
                             </div>
                         </CarouselItem>
                     ))}
@@ -84,13 +85,13 @@ export function HeroSection() {
                         className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
                        >
                           <Link href="/submit-journal">
-                            <Button size="lg" className="w-full sm:w-auto bg-black text-white hover:bg-gray-800">
+                            <Button size="lg" className="w-full sm:w-auto">
                               Submit Your Paper
                               <ArrowRight className="ml-2 h-5 w-5" />
                             </Button>
                           </Link>
                           <Link href="/about">
-                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background">
+                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-background/50 hover:bg-background/80">
                               Learn More
                             </Button>
                           </Link>
