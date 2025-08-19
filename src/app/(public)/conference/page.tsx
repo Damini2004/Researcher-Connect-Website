@@ -252,10 +252,6 @@ export default function ConferencesPage() {
                 </div>
                 {/* Sidebar */}
                 <aside className="lg:col-span-4 space-y-6">
-                    <Card className="bg-primary text-primary-foreground text-center p-6">
-                        <h3 className="text-xl font-bold">Life Science Conferences</h3>
-                        <Button variant="secondary" className="mt-4">Visit Now</Button>
-                    </Card>
                 </aside>
             </div>
         </div>

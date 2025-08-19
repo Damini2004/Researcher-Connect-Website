@@ -197,23 +197,6 @@ export default function UpcomingConferencesPage() {
                 </div>
                 {/* Sidebar */}
                 <aside className="lg:col-span-4 space-y-6">
-                     <Card>
-                        <CardHeader className="text-center bg-muted/50">
-                            <CardTitle>Indexed By</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-4">
-                             <div className="grid grid-cols-2 gap-4">
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/2038481.png" width={120} height={50} alt="DOAJ" data-ai-hint="logo brand" className="object-contain" /></div>
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/1993463.png" width={120} height={50} alt="Scopus" data-ai-hint="logo company" className="object-contain" /></div>
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/1712867.png" width={120} height={50} alt="EBSCO" data-ai-hint="logo tech" className="object-contain" /></div>
-                                <div className="p-2 border rounded-md flex items-center justify-center"><Image src="https://logodix.com/logo/1101923.png" width={120} height={50} alt="Crossref" data-ai-hint="logo business" className="object-contain" /></div>
-                           </div>
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-red-600 text-white text-center p-6">
-                        <h3 className="text-xl font-bold">Life Science Conferences</h3>
-                        <Button variant="outline" className="mt-4 bg-white text-red-600 hover:bg-white/90">Visit Now</Button>
-                    </Card>
                 </aside>
             </div>
         </div>
