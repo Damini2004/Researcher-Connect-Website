@@ -37,10 +37,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 't4.ftcdn.net',
+        hostname: 'encrypted-tbn0.gstatic.com',
         port: '',
         pathname: '/**',
-      }
+      },
     ],
   },
 };

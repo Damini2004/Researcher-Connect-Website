@@ -10,27 +10,16 @@ import { motion } from "framer-motion";
 export function HeroSection() {
 
     return (
-        <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-center text-center overflow-hidden bg-secondary/30">
+        <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-center text-center overflow-hidden bg-gray-900">
              <div className="absolute inset-0 z-0">
-                <div className="absolute top-0 left-0 w-1/3 h-1/2 ">
-                     <Image
-                        src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=800&auto=format&fit=crop"
-                        alt="Researcher in a modern laboratory"
-                        fill
-                        className="object-cover opacity-10"
-                        data-ai-hint="researcher lab"
-                    />
-                </div>
-                 <div className="absolute bottom-0 right-0 w-1/2 h-2/3">
-                    <Image
-                        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop"
-                        alt="Team collaborating on a project"
-                        fill
-                        className="object-cover opacity-10"
-                        data-ai-hint="team collaboration"
-                    />
-                </div>
-                <div className="absolute top-1/4 left-1/2 w-1/4 h-1/4 rounded-full bg-primary/5 blur-3xl" />
+                <Image
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqzO_v7V8m6u55Dy33R0J_TutIjJcLO8km9Q&s"
+                    alt="Abstract background"
+                    data-ai-hint="abstract background"
+                    fill
+                    className="object-cover opacity-30"
+                />
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/20" />
             </div>
 
 
@@ -41,11 +30,11 @@ export function HeroSection() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="max-w-3xl mx-auto"
                 >
-                    <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-foreground">
+                    <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-white">
                     <span className="block">Streamline Your Research</span>
-                    <span className="block text-primary">with Researcher Connect</span>
+                    <span className="block text-primary-foreground/90">with Researcher Connect</span>
                     </h1>
-                    <p className="max-w-xl mx-auto mt-6 text-lg text-foreground/80 md:text-xl">
+                    <p className="max-w-xl mx-auto mt-6 text-lg text-white/80 md:text-xl">
                     The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
                     </p>
                     <motion.div 
@@ -61,7 +50,7 @@ export function HeroSection() {
                         </Button>
                         </Link>
                         <Link href="/about">
-                        <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                        <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white/50 hover:bg-white/10 hover:text-white">
                             Learn More
                         </Button>
                         </Link>
