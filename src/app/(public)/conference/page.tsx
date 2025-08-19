@@ -36,6 +36,9 @@ export default function ConferencesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
+
 
    useEffect(() => {
     setCurrentDate(getCurrentDateInIndia());
@@ -69,6 +72,19 @@ export default function ConferencesPage() {
   useEffect(() => {
     fetchAndFilterConferences();
   }, [fetchAndFilterConferences]);
+
+  const totalPages = Math.ceil(upcomingConferences.length / ITEMS_PER_PAGE);
+  const paginatedConferences = upcomingConferences.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
 
   return (
     <div className="bg-secondary/30">
@@ -152,8 +168,8 @@ export default function ConferencesPage() {
                                 [...Array(6)].map((_, i) => (
                                     <Card key={i} className="p-4"><Skeleton className="h-64 w-full" /></Card>
                                 ))
-                            ) : upcomingConferences.length > 0 ? (
-                                upcomingConferences.map(conference => (
+                            ) : paginatedConferences.length > 0 ? (
+                                paginatedConferences.map(conference => (
                                     <Card key={conference.id} className="overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group border-2 border-transparent hover:border-primary/30">
                                         <div className="relative w-full h-48">
                                             <Image 
@@ -201,13 +217,35 @@ export default function ConferencesPage() {
                                 </div>
                             )}
                         </div>
-                         {upcomingConferences.length > 0 && (
+                        {totalPages > 1 && (
                             <div className="flex justify-center mt-8">
                                 <nav className="flex rounded-md shadow-sm">
-                                    <Button variant="outline" className="rounded-r-none">1</Button>
-                                    <Button variant="outline" className="rounded-none">2</Button>
-                                    <Button variant="outline" className="rounded-none">3</Button>
-                                    <Button variant="outline" className="rounded-l-none">4</Button>
+                                <Button
+                                    variant="outline"
+                                    className="rounded-r-none"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                {[...Array(totalPages)].map((_, i) => (
+                                    <Button
+                                    key={i + 1}
+                                    variant={currentPage === i + 1 ? "default" : "outline"}
+                                    className="rounded-none"
+                                    onClick={() => handlePageChange(i + 1)}
+                                    >
+                                    {i + 1}
+                                    </Button>
+                                ))}
+                                <Button
+                                    variant="outline"
+                                    className="rounded-l-none"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                >
+                                    Next
+                                </Button>
                                 </nav>
                             </div>
                         )}
