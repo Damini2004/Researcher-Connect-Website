@@ -1,3 +1,4 @@
+
 'use client';
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,7 @@ export function HeroSection() {
                     </span>
                     </h1>
                     <p className="max-w-xl mt-6 text-lg text-[#3D4C6F] md:text-xl">
-                We look forward to help you in taking your company to new height.
+                We look forward to help you in taking <br /> your company to new height.
                     </p>
                     <motion.div 
                     initial={{ opacity: 0, y: 20 }}
