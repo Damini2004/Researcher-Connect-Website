@@ -18,13 +18,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 async function PageContent() {
     const allPosts: BlogPost[] = await getBlogPosts();
 
-    const featuredArticles = allPosts.filter(p => p.isFeatured).slice(0, 1);
+    const featuredArticles = allPosts.filter(p => p.isFeatured);
     const regularArticles = allPosts.filter(p => !p.isFeatured);
     
     // Create a combined list for the "Latest Articles" section
     const latestArticles = [...featuredArticles, ...regularArticles].slice(0, 11);
 
-    const featuredArticle = latestArticles.length > 0 ? latestArticles[0] : null;
+    const mainFeaturedArticle = latestArticles.length > 0 ? latestArticles[0] : null;
     const sideArticles = latestArticles.slice(1, 7);
     const bottomArticles = latestArticles.slice(7);
 
@@ -55,27 +55,27 @@ async function PageContent() {
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8">Latest Articles</h2>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Left Column */}
-                        <div className="space-y-6">
-                            {featuredArticle ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Left Column (Main Article) */}
+                        <div className="lg:col-span-2 space-y-6">
+                            {mainFeaturedArticle ? (
                                 <div className="group">
-                                    <Image src={featuredArticle.imageSrc} alt={featuredArticle.title} width={800} height={600} className="w-full object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity" data-ai-hint={featuredArticle.imageHint} />
+                                    <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity" data-ai-hint={mainFeaturedArticle.imageHint} />
                                     <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
-                                        <span>{featuredArticle.category.toUpperCase()}</span>
+                                        <span>{mainFeaturedArticle.category.toUpperCase()}</span>
                                         <span>JOURNALS</span>
                                     </div>
                                     <h3 className="text-2xl font-bold hover:text-primary transition-colors">
-                                        <Link href="#">{featuredArticle.title}</Link>
+                                        <Link href="#">{mainFeaturedArticle.title}</Link>
                                     </h3>
-                                    <p className="text-muted-foreground mt-2">{featuredArticle.excerpt}</p>
+                                    <p className="text-muted-foreground mt-2">{mainFeaturedArticle.excerpt}</p>
                                     <Link href="#" className="text-sm font-semibold text-primary inline-flex items-center mt-2">
                                         Read more <ArrowRight className="ml-1 h-4 w-4" />
                                     </Link>
                                 </div>
                             ) : <Skeleton className="h-[400px] w-full" />}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
-                                {bottomArticles.slice(0, 4).map(article => (
+                                {bottomArticles.map(article => (
                                      <div key={article.id} className="group flex gap-4 items-start">
                                         <div className="w-24 h-24 relative flex-shrink-0">
                                             <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
@@ -94,7 +94,7 @@ async function PageContent() {
                         </div>
 
                         {/* Right Column */}
-                        <div className="space-y-6">
+                        <div className="lg:col-span-1 space-y-6">
                            {sideArticles.map(article => (
                                 <div key={article.id} className="group flex gap-4 items-center">
                                     <div className="w-32 h-24 relative flex-shrink-0">
