@@ -69,7 +69,7 @@ export default async function AboutPage() {
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold tracking-tight">Company Overview</h2>
-                    <div className="mt-2 w-24 h-1 bg-primary mx-auto" />
+                    <div className="mt-2 w-24 h-1 bg-primary mx-auto animate-width-pulse" />
                 </div>
                 <div className="space-y-8 text-muted-foreground">
                     <div>
