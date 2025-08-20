@@ -43,7 +43,7 @@ export function HeroSection() {
                                     className="object-cover"
                                     priority={index === 0}
                                 />
-                                <div className="absolute inset-0 bg-black/30" />
+                                
                             </div>
                         </CarouselItem>
                     ))}
@@ -53,7 +53,7 @@ export function HeroSection() {
             </Carousel>
 
 
-            <div className="relative z-10 container mx-auto px-4 md:px-6 ml-4 md:ml-12">
+            <div className="relative z-10 container mx-auto px-4 ml-4 md:ml-12">
                  <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
