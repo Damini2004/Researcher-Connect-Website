@@ -1,3 +1,4 @@
+
 'use client';
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
@@ -48,12 +49,12 @@ export function HeroSection() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
-                <CarouselNext className="absolute right-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
             </Carousel>
 
 
-            <div className="relative z-10 container mx-auto px-4 ml-4 md:ml-12">
+            <div className="relative z-10 container mx-auto px-4 ml-12 md:ml-24">
                  <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
