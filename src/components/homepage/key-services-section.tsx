@@ -53,10 +53,10 @@ export function KeyServicesSection() {
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Key Services</h2>
-                        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        <div className="w-24 h-1 bg-primary mx-auto animate-width-pulse" />
+                        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed pt-2">
                             Get expert consultancy and support with our advisory firm that stands by your side always.
                         </p>
-                         <div className="w-24 h-1 bg-primary mx-auto animate-width-pulse" />
                     </div>
                 </div>
                 <Card className="mt-12">
