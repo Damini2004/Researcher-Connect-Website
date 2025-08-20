@@ -37,7 +37,7 @@ export default async function AboutPage() {
         </section>
 
         <div className="w-full py-12 md:py-24 lg:py-32 bg-secondary/30">
-          <div className="container px-4 md:px-6 space-y-16">
+          <div className="container mx-auto px-4 md:px-6 space-y-16">
             
              <Card className="max-w-4xl mx-auto shadow-lg">
               <div className="grid md:grid-cols-2 items-center">
@@ -83,8 +83,8 @@ export default async function AboutPage() {
                         <svg className="absolute left-2 top-4 h-8 w-8 text-muted" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
                             <path d="M9.981 3c-2.9 0-5.58 1.9-5.58 4.7 0 1.9 1.1 3.5 2.7 4.1.1.1.2.1.2.2v.1l-.1.1c-1.3.4-2.8 1.5-2.8 3.5 0 2.2 1.9 3.6 4.1 3.6h.1V22h-3v3h3v2h3v-2h5v-3h-5v-5.2c0-2.4-1.6-4.1-4-4.5.3-.3.5-.7.5-1.1 0-1-1-1.9-2.1-1.9zM23.981 3c-2.9 0-5.58 1.9-5.58 4.7 0 1.9 1.1 3.5 2.7 4.1.1.1.2.1.2.2v.1l-.1.1c-1.3.4-2.8 1.5-2.8 3.5 0 2.2 1.9 3.6 4.1 3.6h.1V22h-3v3h3v2h3v-2h5v-3h-5v-5.2c0-2.4-1.6-4.1-4-4.5.3-.3.5-.7.5-1.1 0-1-1-1.9-2.1-1.9z"></path>
                         </svg>
-                        <blockquote className="text-xl italic text-foreground font-semibold">
-                            But how do we do it? We like to call it earning the right, walking the talk and playing the game...
+                        <blockquote className="text-xl italic text-foreground font-semibold text-center">
+                            "But how do we do it? We like to call it earning the right, walking the talk and playing the game..."
                         </blockquote>
                     </div>
 
