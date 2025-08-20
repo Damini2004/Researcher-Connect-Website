@@ -89,7 +89,7 @@ export default {
           },
         },
         'width-pulse': {
-          '0%, 100%': { width: '10%' },
+          '0%, 100%': { width: '40%' },
           '50%': { width: '100%' },
         },
         'dance': {
