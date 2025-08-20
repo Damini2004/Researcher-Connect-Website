@@ -56,7 +56,7 @@ export function KeyServicesSection() {
                         <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                             Get expert consultancy and support with our advisory firm that stands by your side always.
                         </p>
-                         <div className="w-24 h-1 bg-primary mx-auto" />
+                         <div className="w-24 h-1 bg-primary mx-auto animate-width-pulse" />
                     </div>
                 </div>
                 <Card className="mt-12">
