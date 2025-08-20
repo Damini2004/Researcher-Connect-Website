@@ -11,7 +11,7 @@ import Autoplay from "embla-carousel-autoplay";
 const carouselImages = [
     { src: "/header-6.jpg", alt: "Business team meeting", hint: "business meeting" },
     { src: "/header-5.jpg", alt: "Man presenting in a meeting", hint: "business presentation" },
-    { src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop", alt: "Team collaboration", hint: "team collaboration" }
+    { src: "/header-1.jpg", alt: "Team collaboration", hint: "team collaboration" }
 ];
 
 
