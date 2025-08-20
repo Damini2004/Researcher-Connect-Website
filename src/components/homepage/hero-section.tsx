@@ -67,7 +67,7 @@ export function HeroSection() {
                         <span className="block">Connect</span>
                     </span>
                     </h1>
-                    <p className="max-w-xl mt-6 text-lg text-white md:text-xl drop-shadow-md">
+                    <p className="max-w-xl mt-6 text-lg md:text-xl drop-shadow-md">
                         We look forward to help you in taking <br /> your company to new height.
                     </p>
                     <motion.div 
