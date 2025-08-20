@@ -48,8 +48,8 @@ export function HeroSection() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
+                <CarouselPrevious className="absolute left-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
+                <CarouselNext className="absolute right-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
             </Carousel>
 
 
