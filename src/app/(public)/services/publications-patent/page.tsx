@@ -177,7 +177,7 @@ export default function PublicationsPatentPage() {
                                         </div>
                                         <div className="flex flex-col flex-grow p-6">
                                             <CardHeader className="p-0 mb-4">
-                                                <CardTitle className="text-xl group-hover:text-primary transition-colors">{webinar.title}</CardTitle>
+                                                <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2 h-14">{webinar.title}</CardTitle>
                                                 <div className="flex items-center gap-2 pt-2 text-sm text-muted-foreground">
                                                     <Calendar className="h-4 w-4" />
                                                     <span>{webinar.date}</span>
