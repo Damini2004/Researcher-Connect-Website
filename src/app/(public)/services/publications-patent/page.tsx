@@ -1,9 +1,17 @@
+// src/app/(public)/services/publications-patent/page.tsx
+"use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, ChevronRight, ShieldCheck, Edit, Award } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { FileText, ChevronRight, ShieldCheck, Edit, Award, Search, BookOpen, Calendar, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { getWebinars, Webinar } from "@/services/webinarService";
+import { useToast } from "@/hooks/use-toast";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { getCurrentDateInIndia } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const services = [
     { title: "Patent Search & Analysis", description: "In-depth prior art searches to assess patentability.", icon: Search },
@@ -12,25 +20,40 @@ const services = [
     { title: "IP Strategy", description: "Developing a comprehensive strategy to protect your intellectual assets.", icon: ShieldCheck },
 ];
 
-function Search(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function BookOpen(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-    </svg>
-  );
-}
-
 export default function PublicationsPatentPage() {
+    const [webinars, setWebinars] = React.useState<Webinar[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const { toast } = useToast();
+    const [currentDate, setCurrentDate] = React.useState<Date | null>(null);
+
+    React.useEffect(() => {
+        setCurrentDate(getCurrentDateInIndia());
+    }, []);
+
+    React.useEffect(() => {
+        if (!currentDate) return;
+
+        const fetchWebinars = async () => {
+            setIsLoading(true);
+            try {
+                const allWebinars = await getWebinars();
+                const upcoming = allWebinars
+                    .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() >= currentDate.getTime())
+                    .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
+                setWebinars(upcoming);
+            } catch (error) {
+                toast({
+                    title: "Error",
+                    description: "Could not fetch upcoming webinars.",
+                    variant: "destructive",
+                });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchWebinars();
+    }, [toast, currentDate]);
+
     return (
         <div className="bg-secondary/30">
             <section className="relative w-full h-[300px] bg-gray-800 text-white">
@@ -72,6 +95,72 @@ export default function PublicationsPatentPage() {
                                 </CardContent>
                             </Card>
                         ))}
+                    </div>
+
+                    <div className="mt-24">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-bold tracking-tight">Upcoming Webinars</h2>
+                            <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
+                                Join our expert-led online sessions to stay ahead of the curve.
+                            </p>
+                        </div>
+                        <div className="flex justify-center">
+                            <Carousel
+                                opts={{
+                                    align: "start",
+                                }}
+                                orientation="vertical"
+                                className="w-full max-w-lg h-[450px]"
+                            >
+                                <CarouselContent className="h-[450px]">
+                                    {isLoading ? (
+                                        [...Array(3)].map((_, index) => (
+                                            <CarouselItem key={index} className="pt-4 md:basis-1/2">
+                                                <div className="p-1">
+                                                    <Skeleton className="w-full h-[180px] rounded-lg"/>
+                                                </div>
+                                            </CarouselItem>
+                                        ))
+                                    ) : webinars.length > 0 ? (
+                                        webinars.map((webinar) => (
+                                            <CarouselItem key={webinar.id} className="pt-4 md:basis-1/2">
+                                                <div className="p-1">
+                                                    <Card className="flex flex-row overflow-hidden hover:shadow-lg transition-shadow">
+                                                        <div className="relative w-1/3">
+                                                            <Image 
+                                                                src={webinar.imageSrc} 
+                                                                alt={webinar.title} 
+                                                                fill
+                                                                data-ai-hint="webinar event"
+                                                                className="object-cover" 
+                                                            />
+                                                        </div>
+                                                        <div className="w-2/3 flex flex-col p-4">
+                                                            <CardHeader className="p-0">
+                                                                <CardTitle className="text-base line-clamp-2">{webinar.title}</CardTitle>
+                                                                <div className="flex items-center gap-2 pt-1 text-xs text-muted-foreground">
+                                                                    <Calendar className="h-3 w-3" />
+                                                                    <span>{webinar.date}</span>
+                                                                </div>
+                                                            </CardHeader>
+                                                            <CardFooter className="p-0 pt-4 mt-auto">
+                                                                <Button variant="link" size="sm" asChild className="p-0 h-auto">
+                                                                    <Link href="/conference/upcoming-webinars">Register <ArrowRight className="ml-1 h-3 w-3" /></Link>
+                                                                </Button>
+                                                            </CardFooter>
+                                                        </div>
+                                                    </Card>
+                                                </div>
+                                            </CarouselItem>
+                                        ))
+                                    ) : (
+                                        <div className="text-center text-muted-foreground col-span-full py-10">
+                                            No upcoming webinars. Please check back later.
+                                        </div>
+                                    )}
+                                </CarouselContent>
+                            </Carousel>
+                        </div>
                     </div>
                 </div>
             </section>
