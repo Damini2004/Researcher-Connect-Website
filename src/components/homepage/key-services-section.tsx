@@ -75,8 +75,8 @@ export function KeyServicesSection() {
                   </CardContent>
                 </Card>
 
-                <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
-                    <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
+                <div className="mt-20 flex flex-col items-center gap-12">
+                    <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg">
                         <Image src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200&h=675&auto=format&fit=crop" alt="Business Meeting" fill className="object-cover" data-ai-hint="business meeting" />
                         <div className="absolute inset-0 flex items-center justify-center">
                             <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
@@ -86,7 +86,7 @@ export function KeyServicesSection() {
                             </Link>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
                         {subServices.map((service) => (
                            <div key={service.title} className="flex items-start gap-4">
                                 <div className="p-2 bg-primary/10 rounded-md">
