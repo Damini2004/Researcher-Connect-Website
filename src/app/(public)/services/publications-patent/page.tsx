@@ -9,9 +9,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { getWebinars, Webinar } from "@/services/webinarService";
 import { useToast } from "@/hooks/use-toast";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import ContactForm from "@/components/forms/contact-form";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const services = [
     { title: "Patent Search & Analysis", description: "In-depth prior art searches to assess patentability.", icon: Search },
@@ -25,6 +29,8 @@ export default function PublicationsPatentPage() {
     const [isLoading, setIsLoading] = React.useState(true);
     const { toast } = useToast();
     const [currentDate, setCurrentDate] = React.useState<Date | null>(null);
+    const [searchTerm, setSearchTerm] = React.useState("");
+    const [sortOrder, setSortOrder] = React.useState("date-asc");
 
     React.useEffect(() => {
         setCurrentDate(getCurrentDateInIndia());
@@ -53,6 +59,29 @@ export default function PublicationsPatentPage() {
         };
         fetchWebinars();
     }, [toast, currentDate]);
+
+    const filteredAndSortedWebinars = React.useMemo(() => {
+        return webinars
+            .filter(webinar =>
+                webinar.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                webinar.description.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .sort((a, b) => {
+                switch (sortOrder) {
+                    case "date-asc":
+                        return a.dateObject.getTime() - b.dateObject.getTime();
+                    case "date-desc":
+                        return b.dateObject.getTime() - a.dateObject.getTime();
+                    case "title-asc":
+                        return a.title.localeCompare(b.title);
+                    case "title-desc":
+                        return b.title.localeCompare(a.title);
+                    default:
+                        return 0;
+                }
+            });
+    }, [webinars, searchTerm, sortOrder]);
+
 
     return (
         <div className="bg-secondary/30">
@@ -104,62 +133,92 @@ export default function PublicationsPatentPage() {
                                 Join our expert-led online sessions to stay ahead of the curve.
                             </p>
                         </div>
-                        <div className="flex justify-center">
-                            <Carousel
-                                opts={{
-                                    align: "start",
-                                }}
-                                orientation="vertical"
-                                className="w-full max-w-lg h-[450px]"
-                            >
-                                <CarouselContent className="h-[450px]">
-                                    {isLoading ? (
-                                        [...Array(3)].map((_, index) => (
-                                            <CarouselItem key={index} className="pt-4 md:basis-1/2">
-                                                <div className="p-1">
-                                                    <Skeleton className="w-full h-[180px] rounded-lg"/>
-                                                </div>
-                                            </CarouselItem>
-                                        ))
-                                    ) : webinars.length > 0 ? (
-                                        webinars.map((webinar) => (
-                                            <CarouselItem key={webinar.id} className="pt-4 md:basis-1/2">
-                                                <div className="p-1">
-                                                    <Card className="flex flex-row overflow-hidden hover:shadow-lg transition-shadow">
-                                                        <div className="relative w-1/3">
-                                                            <Image 
-                                                                src={webinar.imageSrc} 
-                                                                alt={webinar.title} 
-                                                                fill
-                                                                data-ai-hint="webinar event"
-                                                                className="object-cover" 
-                                                            />
-                                                        </div>
-                                                        <div className="w-2/3 flex flex-col p-4">
-                                                            <CardHeader className="p-0">
-                                                                <CardTitle className="text-base line-clamp-2">{webinar.title}</CardTitle>
-                                                                <div className="flex items-center gap-2 pt-1 text-xs text-muted-foreground">
-                                                                    <Calendar className="h-3 w-3" />
-                                                                    <span>{webinar.date}</span>
-                                                                </div>
-                                                            </CardHeader>
-                                                            <CardFooter className="p-0 pt-4 mt-auto">
-                                                                <Button variant="link" size="sm" asChild className="p-0 h-auto">
-                                                                    <Link href="/conference/upcoming-webinars">Register <ArrowRight className="ml-1 h-3 w-3" /></Link>
-                                                                </Button>
-                                                            </CardFooter>
-                                                        </div>
-                                                    </Card>
-                                                </div>
-                                            </CarouselItem>
-                                        ))
-                                    ) : (
-                                        <div className="text-center text-muted-foreground col-span-full py-10">
-                                            No upcoming webinars. Please check back later.
+
+                         <Card className="mb-8 bg-gradient-to-br from-background via-background to-primary/5 border-none shadow-sm">
+                            <CardContent className="p-6">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                    <div className="relative md:col-span-2">
+                                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                                        <Input
+                                            type="text"
+                                            placeholder="Search by webinar title or description..."
+                                            className="w-full h-12 pl-12"
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                    </div>
+                                    <Select value={sortOrder} onValueChange={setSortOrder}>
+                                        <SelectTrigger className="h-12">
+                                            <SelectValue placeholder="Sort by..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="date-asc">Date: Nearest First</SelectItem>
+                                            <SelectItem value="date-desc">Date: Furthest First</SelectItem>
+                                            <SelectItem value="title-asc">Title: A-Z</SelectItem>
+                                            <SelectItem value="title-desc">Title: Z-A</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {isLoading ? (
+                                Array.from({ length: 3 }).map((_, index) => (
+                                    <Skeleton key={index} className="h-[450px] w-full rounded-lg" />
+                                ))
+                            ) : filteredAndSortedWebinars.length > 0 ? (
+                                filteredAndSortedWebinars.map((webinar) => (
+                                    <Card key={webinar.id} className="flex flex-col w-full mx-auto overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group">
+                                        <div className="relative h-[200px] w-full overflow-hidden">
+                                            <Image src={webinar.imageSrc} alt={webinar.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" data-ai-hint="webinar event" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                                         </div>
-                                    )}
-                                </CarouselContent>
-                            </Carousel>
+                                        <div className="flex flex-col flex-grow p-6">
+                                            <CardHeader className="p-0 mb-4">
+                                                <CardTitle className="text-xl group-hover:text-primary transition-colors">{webinar.title}</CardTitle>
+                                                <div className="flex items-center gap-2 pt-2 text-sm text-muted-foreground">
+                                                    <Calendar className="h-4 w-4" />
+                                                    <span>{webinar.date}</span>
+                                                </div>
+                                            </CardHeader>
+                                            <CardContent className="p-0 flex-grow">
+                                                <p className="text-muted-foreground line-clamp-4">{webinar.description}</p>
+                                            </CardContent>
+                                            <CardFooter className="p-0 mt-6 flex flex-col items-start gap-3">
+                                                 <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button className="w-full">
+                                                            Register Now <ArrowRight className="ml-2 h-4 w-4" />
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
+                                                    <DialogHeader>
+                                                        <DialogTitle>Register for: {webinar.title}</DialogTitle>
+                                                        <DialogDescription>
+                                                        Please fill out your details below to register for the webinar.
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="flex-grow overflow-y-auto pr-6 -mr-2">
+                                                        <ScrollArea className="h-full">
+                                                            <ContactForm 
+                                                                inquiryType="Webinar Registration"
+                                                                details={webinar.title}
+                                                            />
+                                                        </ScrollArea>
+                                                    </div>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </CardFooter>
+                                        </div>
+                                    </Card>
+                                ))
+                            ) : (
+                                <div className="text-center text-muted-foreground col-span-full py-16">
+                                    <p>No upcoming webinars match your search criteria.</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
