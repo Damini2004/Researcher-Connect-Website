@@ -1,4 +1,5 @@
 // src/app/(public)/blogs/page.tsx
+import React from "react";
 import { getBlogPosts, BlogPost } from "@/services/blogService";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

@@ -3,7 +3,7 @@
 
 import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { BlogPost, AddBlogPostData, blogPostSchema } from '@/lib/types';
+import { AddBlogPostData, blogPostSchema, BlogPost } from '@/lib/types';
 import { z } from 'zod';
 import { format } from 'date-fns';
 
