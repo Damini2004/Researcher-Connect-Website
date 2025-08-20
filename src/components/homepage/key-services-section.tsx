@@ -86,16 +86,16 @@ export function KeyServicesSection() {
                             </Link>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mt-8">
                         {subServices.map((service) => (
-                           <div key={service.title} className="flex items-start gap-4">
-                                <div className="p-2 bg-primary/10 rounded-md">
-                                    <service.icon className="h-6 w-6 text-primary" />
-                                </div>
-                                <div>
+                           <div key={service.title} className="flex flex-col text-left">
+                                <div className="flex items-center gap-3">
+                                    <service.icon className="h-6 w-6 text-primary flex-shrink-0" />
                                     <h4 className="text-lg font-bold">{service.title}</h4>
-                                    <p className="text-muted-foreground mt-1">{service.description}</p>
                                 </div>
+                                <p className="text-muted-foreground mt-2">
+                                    {service.description}
+                                </p>
                            </div>
                         ))}
                     </div>
