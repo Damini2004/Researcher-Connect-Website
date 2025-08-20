@@ -24,7 +24,7 @@ export function DetailedServicesSection() {
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-4 lg:order-last">
-                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto-format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
+                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
                 </div>
                 <div className="space-y-4">
                   <h3 className="text-2xl font-bold">Tax consulting</h3>
@@ -36,32 +36,38 @@ export function DetailedServicesSection() {
                 <Image src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop" alt="Advisory" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="advisory meeting" />
                 <div className="space-y-4">
                   <h3 className="text-2xl font-bold">Advisory</h3>
-                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1,165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
+                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
                   <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
                 </div>
               </div>
             </div>
             <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
-                <div className="flex flex-col items-center text-center p-4">
-                    <div className="p-3 rounded-full bg-primary/10 mb-4">
-                        <Mail className="h-8 w-8 text-primary" />
+                <div className="flex items-start text-left p-4 gap-4">
+                    <div className="p-2 rounded-md bg-primary/10 mt-1">
+                        <Mail className="h-6 w-6 text-primary" />
                     </div>
-                    <h4 className="text-lg font-bold">Special financing</h4>
-                    <p className="text-sm text-muted-foreground mt-1">Apply for special financial support and earn exclusive rewards.</p>
+                    <div>
+                        <h4 className="text-lg font-bold">Special financing</h4>
+                        <p className="text-sm text-muted-foreground mt-1">Apply for special financial support and earn exclusive rewards.</p>
+                    </div>
                 </div>
-                 <div className="flex flex-col items-center text-center p-4">
-                    <div className="p-3 rounded-full bg-primary/10 mb-4">
-                        <MessageSquare className="h-8 w-8 text-primary" />
+                 <div className="flex items-start text-left p-4 gap-4">
+                    <div className="p-2 rounded-md bg-primary/10 mt-1">
+                        <MessageSquare className="h-6 w-6 text-primary" />
                     </div>
-                    <h4 className="text-lg font-bold">Chat with team</h4>
-                    <p className="text-sm text-muted-foreground mt-1">Have a question? Chat online with an expert. <a href="#" className="underline text-primary">Start chatting</a></p>
+                    <div>
+                        <h4 className="text-lg font-bold">Chat with team</h4>
+                        <p className="text-sm text-muted-foreground mt-1">Have a question? Chat online with an expert. <a href="#" className="underline text-primary">Start chatting</a></p>
+                    </div>
                 </div>
-                 <div className="flex flex-col items-center text-center p-4">
-                    <div className="p-3 rounded-full bg-primary/10 mb-4">
-                        <Phone className="h-8 w-8 text-primary" />
+                 <div className="flex items-start text-left p-4 gap-4">
+                    <div className="p-2 rounded-md bg-primary/10 mt-1">
+                        <Phone className="h-6 w-6 text-primary" />
                     </div>
-                    <h4 className="text-lg font-bold">Call a specialist</h4>
-                    <p className="text-sm text-muted-foreground mt-1">Our 24/7 support team is ready for you at 1-800-MY-Elixir.</p>
+                    <div>
+                        <h4 className="text-lg font-bold">Call a specialist</h4>
+                        <p className="text-sm text-muted-foreground mt-1">Our 24/7 support team is ready for you at 1-800-MY-Elixir.</p>
+                    </div>
                 </div>
             </div>
           </div>
