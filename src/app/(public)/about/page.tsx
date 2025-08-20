@@ -74,7 +74,7 @@ export default async function AboutPage() {
                 <div className="space-y-8 text-muted-foreground">
                     <div>
                         <h3 className="text-2xl font-semibold text-foreground mb-3">Earning the right</h3>
-                        <p>
+                        <p className="text-justify">
                             As a first-order business consulting firm, we help companies, foundations and individuals make a difference. Our work gets to the heart of the matter. We break silos because it takes more than any one check or policy or letter to tackle big issues like economic security, human rights or climate sustainability. We prescribe a custom formula of advocacy, collaboration, investment, philanthropy, policy and new ways of doing business in order to help you make progress.
                         </p>
                     </div>
@@ -89,7 +89,7 @@ export default async function AboutPage() {
                     </div>
 
                     <div className="grid grid-cols-1">
-                        <p className="md:columns-2 gap-8">
+                        <p className="md:columns-2 gap-8 text-justify">
                             <span className="float-left text-7xl font-bold text-primary mr-3 -mt-2 leading-none">E</span>lixir serves to help people with creative ideas succeed. Our platform empowers millions of people — from individuals and local artists to entrepreneurs shaping the world’s most iconic businesses — to share their stories and create an impactful, stylish, and easy-to-manage online presence. The Cambridge office is the home of the Risk management practice. We work to assure the safe performance of complex critical systems; develop safety leadership and culture; manage safety and risk in high-hazard industries; understand complex project risks, measure and report risk performance. We work across a wide range of industries and public sector organizations that include upstream and downstream oil and gas; rail and road transportation; construction; and gas utilities and distribution. We work worldwide in Europe, Middle East and Asia, Africa and South America based out of our offices in Cambridge, UK and Milan, Italy.
                         </p>
                     </div>
