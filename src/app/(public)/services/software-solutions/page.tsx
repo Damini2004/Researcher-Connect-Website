@@ -27,6 +27,8 @@ export default function SoftwareSolutionsPage() {
                     <div className="flex items-center text-sm text-white/80 mt-2">
                         <Link href="/" className="hover:text-white">Home</Link>
                         <ChevronRight className="h-4 w-4 mx-1" />
+                        <Link href="/#services" className="hover:text-white">Services</Link>
+                        <ChevronRight className="h-4 w-4 mx-1" />
                         <span className="font-semibold text-white">Software Solutions</span>
                     </div>
                 </div>
@@ -39,8 +41,8 @@ export default function SoftwareSolutionsPage() {
                             alt="Software Interface"
                             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
                             height="310"
-                            src="https://images.unsplash.com/photo-1516116216624-53e6973bea12?q=80&w=800&auto=format&fit=crop"
-                            data-ai-hint="software code"
+                            src="https://cdn.intuji.com/2023/08/Custom-software-development.jpg"
+                            data-ai-hint="software development"
                             width="550"
                         />
                         <div className="flex flex-col justify-center space-y-4">
