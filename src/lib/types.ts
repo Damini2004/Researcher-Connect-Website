@@ -54,7 +54,7 @@ export const blogPostSchema = z.object({
   isFeatured: z.boolean().default(false),
 });
 
-export interface BlogPost {
+export type BlogPost = {
     id: string;
     title: string;
     category: string;

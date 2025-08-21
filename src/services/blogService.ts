@@ -1,9 +1,11 @@
+
 // src/services/blogService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { AddBlogPostData, blogPostSchema, BlogPost } from '@/lib/types';
+import type { AddBlogPostData, BlogPost } from '@/lib/types';
+import { blogPostSchema } from '@/lib/types';
 import { z } from 'zod';
 import { format } from 'date-fns';
 
@@ -102,5 +104,3 @@ export async function deleteBlogPost(id: string): Promise<{ success: boolean; me
         return { success: false, message: `Failed to delete blog post: ${message}` };
     }
 }
-
-export { BlogPost };
