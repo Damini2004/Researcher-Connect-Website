@@ -1,3 +1,4 @@
+
 // src/app/(public)/services/publications-patent/page.tsx
 "use client";
 
@@ -103,6 +104,34 @@ export default function PublicationsPatentPage() {
                 </div>
             </section>
             
+            <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+                <div className="container px-4 md:px-6">
+                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+                        <Image
+                            alt="Innovation and Research"
+                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                            height="310"
+                            src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?q=80&w=800&auto=format&fit=crop"
+                            data-ai-hint="researcher scientist"
+                            width="550"
+                        />
+                        <div className="flex flex-col justify-center space-y-4">
+                            <div className="space-y-2">
+                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">From Lab to Legacy</h2>
+                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                    We bridge the gap between innovation and impact. Our integrated consultancy services guide you through the complexities of securing your intellectual property with patents while strategically positioning your research for publication in high-impact journals.
+                                </p>
+                            </div>
+                             <Button asChild size="lg" className="w-fit">
+                                <Link href="/contact-us">
+                                    Get a Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
