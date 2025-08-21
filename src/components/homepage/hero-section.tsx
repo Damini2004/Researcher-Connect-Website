@@ -19,7 +19,7 @@ const carouselImages = [
 export function HeroSection() {
 
     return (
-        <section className="w-full min-h-[60vh] md:min-h-[80vh] relative flex items-center justify-start text-left overflow-hidden bg-white">
+        <section className="w-full h-[500px] relative flex items-center justify-start text-left overflow-hidden bg-white">
             <Carousel
                 plugins={[
                     Autoplay({
@@ -35,7 +35,7 @@ export function HeroSection() {
                 <CarouselContent>
                     {carouselImages.map((image, index) => (
                         <CarouselItem key={index}>
-                            <div className="w-full h-full min-h-[60vh] md:min-h-[80vh] relative">
+                            <div className="w-full h-[500px] relative">
                                 <Image
                                     src={image.src}
                                     alt={image.alt}
