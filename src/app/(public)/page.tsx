@@ -5,7 +5,6 @@ import { HeroSection } from '@/components/homepage/hero-section';
 import { KeyServicesSection } from '@/components/homepage/key-services-section';
 import { DetailedServicesSection } from '@/components/homepage/detailed-services-section';
 import { WhyChooseUsSection } from '@/components/homepage/why-choose-us-section';
-import { ContactBannerSection } from '@/components/homepage/contact-banner-section';
 import { PartnersSection } from '@/components/homepage/partners-section';
 import { motion, useInView } from 'framer-motion';
 
@@ -33,7 +32,6 @@ export default function HomePage() {
         <AnimatedSection><KeyServicesSection /></AnimatedSection>
         <AnimatedSection><DetailedServicesSection /></AnimatedSection>
         <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
-        <AnimatedSection><ContactBannerSection /></AnimatedSection>
         <AnimatedSection><PartnersSection /></AnimatedSection>
       </div>
     </>
