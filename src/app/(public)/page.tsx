@@ -33,7 +33,6 @@ export default function HomePage() {
     <>
       <HeroSection />
       <div className="container mx-auto px-4">
-        <AnimatedSection><FeaturesSection /></AnimatedSection>
         <AnimatedSection><KeyServicesSection /></AnimatedSection>
         <AnimatedSection><ThingsYouGetSection /></AnimatedSection>
         <AnimatedSection><DetailedServicesSection /></AnimatedSection>
