@@ -50,17 +50,7 @@ export function KeyServicesSection() {
     return (
         <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
             <div className="container px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                    <div className="space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Key Services</h2>
-                        <div className="w-24 h-1 bg-primary mx-auto animate-width-pulse" />
-                        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed pt-2">
-                            Get expert consultancy and support with our advisory firm that stands by your side always.
-                        </p>
-                    </div>
-                </div>
-
-                <div className="mt-20 flex flex-col items-center gap-12">
+                <div className="flex flex-col items-center gap-12">
                     <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg">
                         <Image src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200&h=675&auto=format&fit=crop" alt="Business Meeting" fill className="object-cover" data-ai-hint="business meeting" />
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -86,7 +76,17 @@ export function KeyServicesSection() {
                     </div>
                 </div>
 
-                <Card className="mt-20">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center mt-20">
+                    <div className="space-y-2">
+                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Key Services</h2>
+                        <div className="w-24 h-1 bg-primary mx-auto animate-width-pulse" />
+                        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed pt-2">
+                            Get expert consultancy and support with our advisory firm that stands by your side always.
+                        </p>
+                    </div>
+                </div>
+
+                <Card className="mt-12">
                   <CardContent className="p-10">
                     <div className="mx-auto grid items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4">
                         {services.map((service) => (
