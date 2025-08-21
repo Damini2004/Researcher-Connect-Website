@@ -46,6 +46,12 @@ const nextConfig: NextConfig = {
         hostname: 'img.freepik.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.intuji.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
