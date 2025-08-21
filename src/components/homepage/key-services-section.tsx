@@ -1,32 +1,53 @@
 // src/components/homepage/key-services-section.tsx
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bell, Headphones, Lightbulb, Users, Shield, Zap } from "lucide-react";
+import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const services = [
     {
-        icon: BarChart,
-        title: "Business Consulting",
-        description: "Solution for every business related problems, readily and skillfully."
+        icon: Cpu,
+        title: "Software Solutions",
+        description: "RAMS & SDGMapper for reliability and sustainable development goal tracking."
     },
     {
-        icon: Bell,
-        title: "Risk Management",
-        description: "Calculate every possible risk in your business, take control over them."
+        icon: Presentation,
+        title: "Conference Management",
+        description: "End-to-end support for organizing successful academic conferences."
     },
     {
-        icon: Lightbulb,
-        title: "Market Research",
-        description: "Know the market before taking any step, reduce risks before you go."
+        icon: GraduationCap,
+        title: "Higher Studies Proposals",
+        description: "Guidance for crafting impactful PhD and Postdoctoral research proposals."
     },
     {
-        icon: Headphones,
-        title: "Quality Services",
-        description: "Experience unparalleled service, from beginning to final construction."
+        icon: Award,
+        title: "EB-1 Consultancy",
+        description: "Expert assistance for navigating the EB-1 visa application process."
+    },
+    {
+        icon: Briefcase,
+        title: "Internship Services",
+        description: "Connecting talented students with valuable research internship opportunities."
+    },
+    {
+        icon: BookMarked,
+        title: "PhD Services",
+        description: "Comprehensive support throughout your entire PhD journey."
+    },
+    {
+        icon: FileText,
+        title: "Publications Consultancy",
+        description: "Assistance with manuscript preparation and publishing in high-impact journals."
+    },
+    {
+        icon: Shield,
+        title: "Patent Consultancy",
+        description: "Protecting your intellectual property with expert patent filing support."
     }
 ];
+
 
 const subServices = [
     {
@@ -35,7 +56,7 @@ const subServices = [
         description: "Before talking destination, we shine a spotlight across your organization to fully understand it."
     },
     {
-        icon: Shield,
+        icon: Headphones,
         title: "Excellent Support",
         description: "If you face any trouble, you can always let our dedicated support team help you. They are ready for you 24/7."
     },
