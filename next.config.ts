@@ -52,6 +52,12 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.intuji.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'greencard.writewing.in',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

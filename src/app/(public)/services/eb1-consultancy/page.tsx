@@ -39,7 +39,7 @@ export default function EB1ConsultancyPage() {
                             alt="Visa Application"
                             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
                             height="310"
-                            src="https://images.unsplash.com/photo-1556742502-ec7c0e2f34b1?q=80&w=800&auto=format&fit=crop"
+                            src="https://greencard.writewing.in/wp-content/uploads/2025/01/eb1-free-evaluation4.jpg"
                             data-ai-hint="visa documents"
                             width="550"
                         />
