@@ -1,14 +1,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Star, ChevronRight, Award, BookOpen, UserCheck } from "lucide-react";
+import { Star, ChevronRight, Award, BookOpen, UserCheck, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const criteria = [
-    { title: "Extraordinary Ability", description: "Demonstrate sustained national or international acclaim in your field." },
-    { title: "Outstanding Professor/Researcher", description: "Show international recognition for your outstanding academic achievements." },
-    { title: "Multinational Manager/Executive", description: "For executives transferring to a U.S. affiliate of their company." },
+    { title: "Extraordinary Ability", description: "Demonstrate sustained national or international acclaim in your field.", icon: Award },
+    { title: "Outstanding Professor/Researcher", description: "Show international recognition for your outstanding academic achievements.", icon: BookOpen },
+    { title: "Multinational Manager/Executive", description: "For executives transferring to a U.S. affiliate of their company.", icon: UserCheck },
 ];
 
 export default function EB1ConsultancyPage() {
@@ -32,7 +32,30 @@ export default function EB1ConsultancyPage() {
                 </div>
             </section>
 
-            <section className="py-16 md:py-24">
+             <section className="w-full py-12 md:py-24 lg:py-32">
+                <div className="container px-4 md:px-6">
+                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+                        <Image
+                            alt="Visa Application"
+                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                            height="310"
+                            src="https://images.unsplash.com/photo-1556742502-ec7c0e2f34b1?q=80&w=800&auto=format&fit=crop"
+                            data-ai-hint="visa documents"
+                            width="550"
+                        />
+                        <div className="flex flex-col justify-center space-y-4">
+                            <div className="space-y-2">
+                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Navigate the Path to U.S. Residency</h2>
+                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                   The EB-1 visa category is designed for foreign nationals who demonstrate extraordinary ability in their field. We provide expert consultancy to help you navigate the complex application process, ensuring your petition is strong, comprehensive, and well-documented.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section className="py-16 md:py-24 bg-secondary/30">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold tracking-tight">Achieve Your American Dream</h2>
@@ -42,8 +65,11 @@ export default function EB1ConsultancyPage() {
                     </div>
                     <div className="grid md:grid-cols-3 gap-8">
                         {criteria.map(item => (
-                            <Card key={item.title}>
-                                <CardHeader>
+                            <Card key={item.title} className="text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                                <CardHeader className="items-center">
+                                    <div className="p-4 bg-primary/10 rounded-full w-fit mb-3">
+                                      <item.icon className="h-8 w-8 text-primary" />
+                                    </div>
                                     <CardTitle>{item.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
@@ -54,7 +80,7 @@ export default function EB1ConsultancyPage() {
                     </div>
                     <div className="text-center mt-12">
                         <Button size="lg" asChild>
-                            <Link href="/contact-us">Consult with an Expert</Link>
+                            <Link href="/contact-us">Consult with an Expert <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
                     </div>
                 </div>
