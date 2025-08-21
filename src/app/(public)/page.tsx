@@ -2,13 +2,11 @@
 'use client';
 import * as React from 'react';
 import { HeroSection } from '@/components/homepage/hero-section';
-import { FeaturesSection } from '@/components/homepage/features-section';
 import { KeyServicesSection } from '@/components/homepage/key-services-section';
 import { ThingsYouGetSection } from '@/components/homepage/things-you-get-section';
 import { DetailedServicesSection } from '@/components/homepage/detailed-services-section';
 import { WhyChooseUsSection } from '@/components/homepage/why-choose-us-section';
 import { ContactBannerSection } from '@/components/homepage/contact-banner-section';
-import { HighlightsSection } from '@/components/homepage/highlights-section';
 import { PartnersSection } from '@/components/homepage/partners-section';
 import { motion, useInView } from 'framer-motion';
 
@@ -38,7 +36,6 @@ export default function HomePage() {
         <AnimatedSection><DetailedServicesSection /></AnimatedSection>
         <AnimatedSection><WhyChooseUsSection /></AnimatedSection>
         <AnimatedSection><ContactBannerSection /></AnimatedSection>
-        <AnimatedSection><HighlightsSection /></AnimatedSection>
         <AnimatedSection><PartnersSection /></AnimatedSection>
       </div>
     </>
