@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export function WhyChooseUsSection() {
     return (
-        <section id="why-choose-us" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/50">
+        <section id="why-choose-us" className="w-full py-12 md:py-24 lg:py-32 bg-background">
             <div className="container px-4 md:px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
                     <div className="relative w-full h-full min-h-[300px] lg:min-h-[400px]">
