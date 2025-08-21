@@ -39,7 +39,6 @@ const servicesLinks = [
 const mainNavLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/mission-vision", label: "Mission & Vision" },
   { href: "#", label: "Services", dropdown: servicesLinks },
   { href: "/blogs", label: "Blogs" },
 ];

@@ -2,7 +2,7 @@
 import { getPageContent } from "@/services/cmsService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Eye, Goal, Heart, CheckCircle } from "lucide-react";
 import Link from "next/link";
 
 async function getAboutContent() {
@@ -12,6 +12,15 @@ async function getAboutContent() {
     }
     return "";
 }
+
+const coreValues = [
+    "Integrity",
+    "Excellence",
+    "Collaboration",
+    "Innovation",
+    "Inclusivity"
+];
+
 
 export default async function AboutPage() {
   const content = await getAboutContent();
@@ -95,8 +104,45 @@ export default async function AboutPage() {
                     </div>
                 </div>
             </div>
+            
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+                <Card className="shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <CardHeader className="text-center">
+                        <Goal className="h-12 w-12 mx-auto text-primary" />
+                        <CardTitle className="mt-4 text-3xl">Our Mission</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center text-muted-foreground text-lg">
+                        <p>To empower researchers and innovators by providing a seamless, transparent, and supportive ecosystem for publishing and protecting their work, fostering global collaboration and accelerating scientific progress.</p>
+                    </CardContent>
+                </Card>
+                <Card className="shadow-lg transform hover:scale-105 transition-transform duration-300">
+                        <CardHeader className="text-center">
+                        <Eye className="h-12 w-12 mx-auto text-primary" />
+                        <CardTitle className="mt-4 text-3xl">Our Vision</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center text-muted-foreground text-lg">
+                        <p>To be the world's most trusted and innovative platform for the dissemination and protection of academic research, creating a future where knowledge knows no boundaries.</p>
+                    </CardContent>
+                </Card>
+            </div>
+            
+             <div className="max-w-4xl mx-auto">
+                 <div className="text-center mb-12">
+                    <Heart className="h-12 w-12 mx-auto text-primary mb-4" />
+                    <h2 className="text-3xl font-bold tracking-tight">Our Core Values</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">The principles that guide our work and our community.</p>
+                 </div>
+                 <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                    {coreValues.map(value => (
+                        <div key={value} className="flex items-center gap-3 p-4 bg-secondary/50 rounded-lg">
+                           <CheckCircle className="h-5 w-5 text-green-500" />
+                           <span className="font-semibold">{value}</span>
+                        </div>
+                    ))}
+                 </div>
+            </div>
+
           </div>
         </div>
     </div>
   );
-}
