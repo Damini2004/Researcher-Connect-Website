@@ -23,17 +23,17 @@ export function PartnersSection() {
                 </p>
               </div>
             </div>
-            <div className="relative w-full h-48 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] mt-12">
-                <div className="flex flex-col h-max animate-[scroll-y_30s_linear_infinite]">
+            <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)] mt-12">
+                <div className="flex w-max animate-[scroll-x_30s_linear_infinite]">
                     {[...sponsorLogos, ...sponsorLogos].map((logo, index) => (
-                        <Image 
+                         <Image 
                             key={index}
                             src={logo.src} 
                             width={150} 
                             height={60} 
                             alt={logo.alt} 
                             data-ai-hint={logo.hint}
-                            className="my-8 h-16 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 mx-auto" 
+                            className="mx-8 h-16 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" 
                         />
                     ))}
                 </div>
