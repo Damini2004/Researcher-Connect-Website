@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -29,6 +29,23 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
+const features: { title: string; description: string; icon: LucideIcon }[] = [
+    {
+        title: "End-to-End Management",
+        description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail.",
+        icon: Handshake,
+    },
+    {
+        title: "Global Promotion",
+        description: "Leverage our extensive network to attract speakers, sponsors, and attendees from around the world.",
+        icon: CheckCircle,
+    },
+    {
+        title: "Seamless Submissions",
+        description: "Our robust platform simplifies the process for paper submission, peer review, and proceedings publication.",
+        icon: CheckCircle,
+    },
+];
 
 export default function ConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
@@ -104,8 +121,61 @@ export default function ConferencesPage() {
                 </div>
             </div>
         </section>
+
+         <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="relative aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+                        <Image 
+                            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=600&h=800&auto=format&fit=crop"
+                            alt="Team planning a conference"
+                            data-ai-hint="team planning"
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                    <div className="space-y-6">
+                        <h2 className="text-3xl font-bold tracking-tight">Comprehensive Conference Management</h2>
+                        <p className="text-lg text-muted-foreground">
+                            At Researcher Connect, we specialize in transforming your vision into a landmark event. Our dedicated team provides full-service conference management, ensuring a seamless and impactful experience for organizers, speakers, and attendees alike. From international symposia to specialized workshops, we are your trusted partner in academic event organization.
+                        </p>
+                         <Button size="lg" asChild>
+                            <Link href="/contact-us">
+                                Plan Your Conference <ArrowRight className="ml-2 h-5 w-5" />
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="py-16 md:py-24 bg-secondary/30">
+            <div className="container mx-auto px-4">
+                 <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold tracking-tight">Our Key Features</h2>
+                    <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
+                        We provide a complete suite of services to ensure your conference is a success.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-8">
+                    {features.map((feature, index) => (
+                        <Card key={index} className="text-center bg-background transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                            <CardHeader className="items-center">
+                                <div className="p-4 bg-primary/10 rounded-full w-fit mb-3">
+                                  <feature.icon className="h-8 w-8 text-primary" />
+                                </div>
+                                <CardTitle>{feature.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{feature.description}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </section>
         
-        <div className="py-12 md:py-16">
+        <div className="py-12 md:py-16 bg-background">
            <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Main Content */}
                 <div className="lg:col-span-12">
