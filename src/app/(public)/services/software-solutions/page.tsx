@@ -36,22 +36,20 @@ export default function SoftwareSolutionsPage() {
             
             <section className="w-full py-12 md:py-24 lg:py-32">
                 <div className="container px-4 md:px-6">
-                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+                    <div className="flex flex-col items-center justify-center space-y-8 text-center max-w-3xl mx-auto">
                         <Image
                             alt="Software Interface"
-                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                            className="w-full max-w-2xl aspect-video overflow-hidden rounded-xl object-cover object-center shadow-lg"
                             height="310"
                             src="https://cdn.intuji.com/2023/08/Custom-software-development.jpg"
                             data-ai-hint="software development"
                             width="550"
                         />
-                        <div className="flex flex-col justify-center space-y-4">
-                            <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">RAMS & SDGMapper</h2>
-                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                   We provide state-of-the-art software solutions tailored for complex engineering and development projects. Our flagship products, RAMS for reliability engineering and SDGMapper for sustainable development goal tracking, empower organizations to achieve excellence and impact.
-                                </p>
-                            </div>
+                        <div className="space-y-4">
+                            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">RAMS & SDGMapper</h2>
+                            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                               We provide state-of-the-art software solutions tailored for complex engineering and development projects. Our flagship products, RAMS for reliability engineering and SDGMapper for sustainable development goal tracking, empower organizations to achieve excellence and impact.
+                            </p>
                         </div>
                     </div>
                 </div>
