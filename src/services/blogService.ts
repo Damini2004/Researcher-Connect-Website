@@ -102,3 +102,5 @@ export async function deleteBlogPost(id: string): Promise<{ success: boolean; me
         return { success: false, message: `Failed to delete blog post: ${message}` };
     }
 }
+
+export { BlogPost };
