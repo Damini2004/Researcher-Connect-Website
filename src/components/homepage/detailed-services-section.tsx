@@ -10,8 +10,8 @@ const services = [
     description:
       "Leverage advanced reliability analysis and sustainable development tracking with our custom-built tools, helping organizations make informed, impactful decisions.",
     imageUrl:
-      "/software.png",
-    imageHint: "team collaboration",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+    imageHint: "data dashboard",
     link: "/services/software-solutions",
   },
   {
@@ -19,7 +19,7 @@ const services = [
     description:
       "Plan, organize, and execute academic conferences seamlessly — from budgeting and logistics to on-site coordination and post-event reporting.",
     imageUrl:
-      "/conference.png",
+      "https://kmeducationhub.de/wp-content/uploads/2014/08/wc-knowledgemanagement-conferences.jpg",
     imageHint: "conference audience",
     link: "/conference",
   },
@@ -28,7 +28,7 @@ const services = [
     description:
       "Receive expert guidance to craft competitive PhD and Postdoctoral research proposals, improving your chances of acceptance and funding.",
     imageUrl:
-      "/postdoc.png",
+      "https://bmmagazine.co.uk/wp-content/uploads/2021/06/shutterstock_1229594236-scaled.jpg",
     imageHint: "advisory meeting",
     link: "/services/phd-services",
   },
@@ -37,7 +37,7 @@ const services = [
     description:
       "Navigate the EB-1 visa process with confidence. Our specialists help showcase your extraordinary ability and prepare a strong application for U.S. immigration.",
     imageUrl:
-      "/visa.png",
+      "https://greencard.writewing.in/wp-content/uploads/2025/01/eb1-free-evaluation4.jpg",
     imageHint: "professional career",
     link: "/services/eb1-consultancy",
   },
@@ -46,16 +46,16 @@ const services = [
     description:
       "Connect with top research institutions and industry leaders to secure internships that build valuable skills and strengthen your academic profile.",
     imageUrl:
-      "/internship.png",
+      "https://img.freepik.com/free-photo/group-people-working-out-business-plan-office_1303-15773.jpg?w=800&t=st=1716368965~exp=1716369565~hmac=2a65751d8d21a8d052a920235d254b7d15919799468902f4104c35b44a034876",
     imageHint: "professional career",
-    link: "/services/internships",
+    link: "/internship",
   },
   {
     title: "PhD Services",
     description:
       "Get end-to-end PhD support — from identifying programs and preparing applications to proposal development, publication strategy, and career planning.",
     imageUrl:
-      "/postdoc.png",
+      "https://bmmagazine.co.uk/wp-content/uploads/2021/06/shutterstock_1229594236-scaled.jpg",
     imageHint: "professional career",
     link: "/services/phd-services",
   },
@@ -64,11 +64,18 @@ const services = [
     description:
       "Turn innovative ideas into impactful publications and secure intellectual property through guided patent application and journal submission processes.",
     imageUrl:
-      "/patent.png",
+      "https://images.unsplash.com/photo-1554497103-93ba3e71d222?q=80&w=800&auto=format&fit=crop",
     imageHint: "tax documents",
     link: "/services/publications-patent",
   },
 ];
+
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+);
+
 
 export function DetailedServicesSection() {
   return (
@@ -113,32 +120,46 @@ export function DetailedServicesSection() {
             </div>
           ))}
         </div>
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 border-t pt-12">
-          <div className="flex items-start text-left p-4 gap-4">
-            <div className="p-2 rounded-md bg-primary/10 mt-1">
-              <MessageSquare className="h-6 w-6 text-primary" />
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
+            <div className="flex items-start text-left p-4 gap-4">
+                <div className="p-2 rounded-md bg-primary/10 mt-1">
+                    <Mail className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <h4 className="text-lg font-bold">Email Us</h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        Get in touch via email.{" "}
+                        <a href="mailto:support@researcherconnect.com" className="underline text-primary">
+                            Send an email
+                        </a>
+                    </p>
+                </div>
             </div>
-            <div>
-              <h4 className="text-lg font-bold">Chat with team</h4>
-              <p className="text-sm text-muted-foreground mt-1">
-                Have a question? Chat online with an expert.{" "}
-                <a href="#" className="underline text-primary">
-                  Start chatting
-                </a>
-              </p>
+            <div className="flex items-start text-left p-4 gap-4">
+                <div className="p-2 rounded-md bg-primary/10 mt-1">
+                    <Phone className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <h4 className="text-lg font-bold">Call a Specialist</h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        Our support team is ready for you at <a href="tel:+919970294396" className="underline text-primary">+91-9970294396</a>.
+                    </p>
+                </div>
             </div>
-          </div>
-          <div className="flex items-start text-left p-4 gap-4">
-            <div className="p-2 rounded-md bg-primary/10 mt-1">
-              <Phone className="h-6 w-6 text-primary" />
+             <div className="flex items-start text-left p-4 gap-4">
+                <div className="p-2 rounded-md bg-primary/10 mt-1">
+                    <WhatsAppIcon className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <h4 className="text-lg font-bold">Chat on WhatsApp</h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        Connect with us instantly on WhatsApp.{" "}
+                        <a href="https://wa.me/919970294396" target="_blank" rel="noopener noreferrer" className="underline text-primary">
+                            Start chatting
+                        </a>
+                    </p>
+                </div>
             </div>
-            <div>
-              <h4 className="text-lg font-bold">Call a specialist</h4>
-              <p className="text-sm text-muted-foreground mt-1">
-                Our 24/7 support team is ready for you at 1-800-MY-Elixir.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
