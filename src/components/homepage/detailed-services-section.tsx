@@ -2,6 +2,40 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail, MessageSquare, Phone } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+
+const services = [
+    {
+        title: "Conference & Event Management",
+        description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail to ensure your academic event is a success.",
+        imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&h=600&auto=format&fit=crop",
+        imageHint: "team collaboration",
+        link: "/conference"
+    },
+    {
+        title: "Publication & Patent Support",
+        description: "We bridge the gap between innovation and impact, guiding you through securing patents and publishing in high-impact journals.",
+        imageUrl: "https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop",
+        imageHint: "tax documents",
+        link: "/services/publications-patent",
+        imageLeft: true
+    },
+    {
+        title: "PhD & Higher Studies Guidance",
+        description: "Navigating the path to a PhD or Postdoctoral position requires a meticulously crafted research proposal. We offer specialized guidance to help aspiring academics succeed.",
+        imageUrl: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop",
+        imageHint: "advisory meeting",
+        link: "/services/phd-services"
+    },
+    {
+        title: "EB-1 Visa & Career Consultancy",
+        description: "The EB-1 visa is for individuals with extraordinary ability. We provide expert consultancy to help you navigate the complex application process and advance your career.",
+        imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&h=600&auto=format&fit=crop",
+        imageHint: "professional career",
+        link: "/services/eb1-consultancy",
+        imageLeft: true
+    }
+];
 
 export function DetailedServicesSection() {
     return (
@@ -14,68 +48,20 @@ export function DetailedServicesSection() {
               </div>
             </div>
             <div className="mx-auto grid max-w-7xl gap-y-16 mt-16">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <Image src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&h=600&auto=format&fit=crop" alt="Business Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="team collaboration" />
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Business Consulting</h3>
-                  <p className="text-muted-foreground">As one of the world's largest accountancy networks, Elixir helps a diverse range of clients with a diverse range of needs. This is especially true of our Advisory Practice, which provides corporate finance and transaction services, business restructuring.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-4 lg:order-last">
-                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Tax consulting</h3>
-                  <p className="text-muted-foreground">Elixir serves clients across the country and around the world as they navigate an increasingly complex tax landscape. Our tax professionals draw on deep experience and industry-specific knowledge to deliver clients the insights and innovation they need.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <Image src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop" alt="Advisory" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="advisory meeting" />
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Advisory</h3>
-                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-4 lg:order-last">
-                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Tax consulting</h3>
-                  <p className="text-muted-foreground">Elixir serves clients across the country and around the world as they navigate an increasingly complex tax landscape. Our tax professionals draw on deep experience and industry-specific knowledge to deliver clients the insights and innovation they need.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <Image src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop" alt="Advisory" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="advisory meeting" />
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Advisory</h3>
-                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-4 lg:order-last">
-                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Tax consulting</h3>
-                  <p className="text-muted-foreground">Elixir serves clients across the country and around the world as they navigate an increasingly complex tax landscape. Our tax professionals draw on deep experience and industry-specific knowledge to deliver clients the insights and innovation they need.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <Image src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop" alt="Advisory" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="advisory meeting" />
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Advisory</h3>
-                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
-                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
-                </div>
-              </div>
+              {services.map(service => (
+                 <div key={service.title} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div className={service.imageLeft ? 'lg:order-last' : ''}>
+                      <Image src={service.imageUrl} alt={service.title} width={800} height={600} className="rounded-lg object-cover" data-ai-hint={service.imageHint} />
+                    </div>
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-bold">{service.title}</h3>
+                      <p className="text-muted-foreground">{service.description}</p>
+                      <Button variant="link" className="p-0 h-auto" asChild>
+                        <Link href={service.link}>Learn More <ArrowRight className="ml-2" /></Link>
+                      </Button>
+                    </div>
+                  </div>
+              ))}
             </div>
             <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
                 <div className="flex items-start text-left p-4 gap-4">
