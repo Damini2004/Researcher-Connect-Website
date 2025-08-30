@@ -10,7 +10,7 @@ const services = [
     description:
       "Leverage advanced reliability analysis and sustainable development tracking with our custom-built tools, helping organizations make informed, impactful decisions.",
     imageUrl:
-      "https://bmmagazine.co.uk/wp-content/uploads/2021/06/shutterstock_1229594236-scaled.jpg",
+      "/software.png",
     imageHint: "team collaboration",
     link: "/services/software-solutions",
   },
@@ -19,7 +19,7 @@ const services = [
     description:
       "Plan, organize, and execute academic conferences seamlessly — from budgeting and logistics to on-site coordination and post-event reporting.",
     imageUrl:
-      "https://kmeducationhub.de/wp-content/uploads/2014/08/wc-knowledgemanagement-conferences.jpg",
+      "/conference.png",
     imageHint: "conference audience",
     link: "/conference",
   },
@@ -28,7 +28,7 @@ const services = [
     description:
       "Receive expert guidance to craft competitive PhD and Postdoctoral research proposals, improving your chances of acceptance and funding.",
     imageUrl:
-      "https://www.insidehighered.com/sites/default/files/styles/max_650x650/public/2025-01/GettyImages-1269698264.jpg?itok=iX7zOHDm",
+      "/postdoc.png",
     imageHint: "advisory meeting",
     link: "/services/phd-services",
   },
@@ -37,7 +37,7 @@ const services = [
     description:
       "Navigate the EB-1 visa process with confidence. Our specialists help showcase your extraordinary ability and prepare a strong application for U.S. immigration.",
     imageUrl:
-      "https://cdn.prod.website-files.com/68209b7cca9ee8ebdd653f0c/6881cf401340fb408976a022_phd%20holder.jpg",
+      "/visa.png",
     imageHint: "professional career",
     link: "/services/eb1-consultancy",
   },
@@ -46,7 +46,7 @@ const services = [
     description:
       "Connect with top research institutions and industry leaders to secure internships that build valuable skills and strengthen your academic profile.",
     imageUrl:
-      "https://cdn.prod.website-files.com/663c844e64d28ad42770d8f9/66b49977106e7d1b0a6b5c72_internship-program-benefits.webp",
+      "/internship.png",
     imageHint: "professional career",
     link: "/services/internships",
   },
@@ -55,7 +55,7 @@ const services = [
     description:
       "Get end-to-end PhD support — from identifying programs and preparing applications to proposal development, publication strategy, and career planning.",
     imageUrl:
-      "https://digitalwheel.in/wp-content/uploads/2025/05/How-to-apply-for-PhD-without-NET.jpg",
+      "/postdoc.png",
     imageHint: "professional career",
     link: "/services/phd-services",
   },
@@ -64,7 +64,7 @@ const services = [
     description:
       "Turn innovative ideas into impactful publications and secure intellectual property through guided patent application and journal submission processes.",
     imageUrl:
-      "https://www.levinconsultinggroup.com/wp-content/uploads/2020/06/patent-licensing-a-definitive-guide.jpg",
+      "/patent.png",
     imageHint: "tax documents",
     link: "/services/publications-patent",
   },

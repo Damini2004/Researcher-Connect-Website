@@ -31,27 +31,6 @@ const Footer = () => {
         <footer className="bg-[#3D4C6F] text-white">
             <div className="container mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16">
-                    {/* Column 1: Sign up form */}
-                    <div className="md:col-span-6">
-                        <div className="bg-[#303d5c] p-8 rounded-lg shadow-lg">
-                            <h3 className="text-3xl font-bold mb-2">Sign up for email alerts</h3>
-                            <p className="text-gray-400 mb-6">Stay current with our latest insights</p>
-                            <form className="flex flex-col sm:flex-row gap-2">
-                                <Input 
-                                    type="email" 
-                                    placeholder="Enter Email Here" 
-                                    className="bg-white text-black border-none flex-grow h-12"
-                                />
-                                <Button 
-                                    type="submit" 
-                                    className="bg-[#FFC107] text-black hover:bg-[#ffca2c] h-12 px-8 font-bold"
-                                >
-                                    Submit
-                                </Button>
-                            </form>
-                        </div>
-                    </div>
-                    
                     {/* Column 2: Links */}
                     <div className="md:col-span-3">
                          <ul className="space-y-3 text-gray-300">
