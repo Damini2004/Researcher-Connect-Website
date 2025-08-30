@@ -10,8 +10,6 @@ const quickLinks = [
     { href: "/conference/faq", label: "FAQ" },
     { href: "/privacy-policy", label: "Privacy Policy" },
     { href: "#", label: "Terms of Use" },
-    { href: "#", label: "Global Office" },
-    { href: "#", label: "Local Office" },
 ]
 
 const socialLinks = [
