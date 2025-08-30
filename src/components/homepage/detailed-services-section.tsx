@@ -5,8 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 const services = [
+  {
+    title: "Software Solutions (RAMS & SDGMapper)",
+    description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail to ensure your academic event is a success.",
+    imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&h=600&auto=format&fit=crop",
+    imageHint: "team collaboration",
+    link: "/services/software-solutions"
+},
     {
-        title: "Conference & Event Management",
+        title: "Conference  Management",
         description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail to ensure your academic event is a success.",
         imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&h=600&auto=format&fit=crop",
         imageHint: "team collaboration",
@@ -33,6 +40,14 @@ const services = [
         imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&h=600&auto=format&fit=crop",
         imageHint: "professional career",
         link: "/services/eb1-consultancy",
+        imageLeft: true
+    },
+    {
+        title: "Higher Studies (PhD & PostDoc) Proposals",
+        description: "The EB-1 visa is for individuals with extraordinary ability. We provide expert consultancy to help you navigate the complex application process and advance your career.",
+        imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&h=600&auto=format&fit=crop",
+        imageHint: "professional career",
+        link: "/services/higher-studies",
         imageLeft: true
     }
 ];
