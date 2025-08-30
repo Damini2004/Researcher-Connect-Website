@@ -113,18 +113,7 @@ export function DetailedServicesSection() {
             </div>
           ))}
         </div>
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
-          <div className="flex items-start text-left p-4 gap-4">
-            <div className="p-2 rounded-md bg-primary/10 mt-1">
-              <Mail className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h4 className="text-lg font-bold">Special financing</h4>
-              <p className="text-sm text-muted-foreground mt-1">
-                Apply for special financial support and earn exclusive rewards.
-              </p>
-            </div>
-          </div>
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 border-t pt-12">
           <div className="flex items-start text-left p-4 gap-4">
             <div className="p-2 rounded-md bg-primary/10 mt-1">
               <MessageSquare className="h-6 w-6 text-primary" />
