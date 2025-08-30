@@ -1,37 +1,21 @@
 // src/app/(public)/page.tsx
 'use client';
+
 import * as React from 'react';
 import { HeroSection } from '@/components/homepage/hero-section';
 import { KeyServicesSection } from '@/components/homepage/key-services-section';
 import { DetailedServicesSection } from '@/components/homepage/detailed-services-section';
 import { PartnersSection } from '@/components/homepage/partners-section';
-import { motion, useInView } from 'framer-motion';
-
-const AnimatedSection = ({ children }: { children: React.ReactNode }) => {
-    const ref = React.useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.2 });
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-            {children}
-        </motion.div>
-    );
-};
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <div className="container mx-auto px-4">
-        <AnimatedSection><KeyServicesSection /></AnimatedSection>
-        <AnimatedSection><DetailedServicesSection /></AnimatedSection>
-        <AnimatedSection><PartnersSection /></AnimatedSection>
-      </div>
+      <main className="container mx-auto px-4 space-y-24">
+        <KeyServicesSection />
+        <DetailedServicesSection />
+        <PartnersSection />
+      </main>
     </>
   );
 }
