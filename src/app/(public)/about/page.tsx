@@ -2,7 +2,7 @@
 import { getPageContent } from "@/services/cmsService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { ChevronRight, Eye, Goal, Heart, CheckCircle } from "lucide-react";
+import { ChevronRight, Eye, Goal, Heart, CheckCircle, Linkedin, Twitter } from "lucide-react";
 import Link from "next/link";
 
 async function getAboutContent() {
@@ -12,6 +12,30 @@ async function getAboutContent() {
     }
     return "";
 }
+
+const leadershipTeam = [
+    {
+        name: "Renal Scott",
+        title: "Chief Executive Officer",
+        description: "Elixir co-operates with clients in solving the hardest problems they face in their businesses—and the world. We do this by channeling the diversity of our people and their thinking.",
+        imageSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=400&auto=format=fit=crop",
+        imageHint: "ceo portrait"
+    },
+    {
+        name: "Alexia Jordan",
+        title: "Chief Marketing Officer",
+        description: "Alexia leads our global marketing efforts, shaping the Researcher Connect brand and driving growth through innovative strategies and a deep understanding of the academic community.",
+        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=400&auto=format&fit=crop",
+        imageHint: "cmo portrait"
+    },
+    {
+        name: "Ben Carter",
+        title: "Chief Technology Officer",
+        description: "Ben oversees our technology stack, ensuring our platform is robust, scalable, and at the forefront of innovation to best serve the needs of researchers worldwide.",
+        imageSrc: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=400&h=400&auto=format&fit=crop",
+        imageHint: "cto portrait"
+    }
+];
 
 const coreValues = [
     "Integrity",
@@ -46,35 +70,42 @@ export default async function AboutPage() {
         </section>
 
         <div className="w-full py-12 md:py-24 lg:py-32 bg-secondary/30">
-          <div className="container mx-auto px-4 md:px-6 space-y-16">
+          <div className="container mx-auto px-4 md:px-6 space-y-24">
             
-             <Card className="max-w-4xl mx-auto shadow-lg">
-              <div className="grid md:grid-cols-2 items-center">
-                <div className="relative w-full h-full min-h-[300px]">
-                  <Image
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=500&auto=format=fit=crop"
-                    alt="CEO Portrait"
-                    data-ai-hint="ceo portrait"
-                    fill
-                    className="object-cover rounded-l-lg"
-                  />
+            <section>
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold tracking-tight">Meet Our Leadership</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">The driving force behind our mission to revolutionize academic publishing.</p>
                 </div>
-                <div className="p-8 md:p-12">
-                  <h3 className="text-xl font-bold text-primary mb-4">Message From CEO</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Elixir co-operates with clients in solving the hardest problems they face in their businesses—and the world. We do this by channeling the diversity of our people and their thinking.
-                  </p>
-                  <div className="flex flex-col items-start">
-                    <div className="relative w-24 h-12 mb-2">
-                        <Image src="https://logodix.com/logo/10131.png" alt="Signature" data-ai-hint="signature text" fill className="object-contain" />
-                    </div>
-                    <p className="font-bold text-lg text-foreground">RENAL SCOTT</p>
-                    <p className="text-sm text-muted-foreground">UK office</p>
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {leadershipTeam.map(member => (
+                        <Card key={member.name} className="group overflow-hidden text-center transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-primary/20">
+                           <div className="relative h-56 w-full">
+                                <Image
+                                    src={member.imageSrc}
+                                    alt={member.name}
+                                    data-ai-hint={member.imageHint}
+                                    fill
+                                    className="object-cover object-top group-hover:scale-110 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                                <div className="absolute bottom-4 left-4 text-left">
+                                    <h3 className="text-2xl font-bold text-white tracking-tight">{member.name}</h3>
+                                    <p className="text-primary-foreground/80 font-medium">{member.title}</p>
+                                </div>
+                            </div>
+                            <CardContent className="p-6">
+                                <p className="text-muted-foreground mb-4 text-sm">{member.description}</p>
+                                <div className="flex justify-center gap-4">
+                                    <Link href="#" className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
+                                    <Link href="#" className="text-muted-foreground hover:text-primary"><Twitter className="h-5 w-5" /></Link>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
-              </div>
-            </Card>
-
+            </section>
+             
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold tracking-tight">Company Overview</h2>
