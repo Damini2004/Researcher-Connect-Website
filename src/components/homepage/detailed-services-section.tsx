@@ -7,49 +7,41 @@ import Link from "next/link";
 const services = [
   {
     title: "Software Solutions (RAMS & SDGMapper)",
-    description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail to ensure your academic event is a success.",
+    description: "State-of-the-art tools for reliability engineering and sustainable development goal tracking, empowering organizations to achieve excellence and impact.",
     imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&h=600&auto=format&fit=crop",
     imageHint: "team collaboration",
     link: "/services/software-solutions"
-},
-    {
-        title: "Conference  Management",
-        description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail to ensure your academic event is a success.",
-        imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&h=600&auto=format&fit=crop",
-        imageHint: "team collaboration",
-        link: "/conference"
-    },
-    {
-        title: "Publication & Patent Support",
-        description: "We bridge the gap between innovation and impact, guiding you through securing patents and publishing in high-impact journals.",
-        imageUrl: "https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop",
-        imageHint: "tax documents",
-        link: "/services/publications-patent",
-        imageLeft: true
-    },
-    {
-        title: "PhD & Higher Studies Guidance",
-        description: "Navigating the path to a PhD or Postdoctoral position requires a meticulously crafted research proposal. We offer specialized guidance to help aspiring academics succeed.",
-        imageUrl: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop",
-        imageHint: "advisory meeting",
-        link: "/services/phd-services"
-    },
-    {
-        title: "EB-1 Visa & Career Consultancy",
-        description: "The EB-1 visa is for individuals with extraordinary ability. We provide expert consultancy to help you navigate the complex application process and advance your career.",
-        imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&h=600&auto=format&fit=crop",
-        imageHint: "professional career",
-        link: "/services/eb1-consultancy",
-        imageLeft: true
-    },
-    {
-        title: "Higher Studies (PhD & PostDoc) Proposals",
-        description: "The EB-1 visa is for individuals with extraordinary ability. We provide expert consultancy to help you navigate the complex application process and advance your career.",
-        imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&h=600&auto=format&fit=crop",
-        imageHint: "professional career",
-        link: "/services/higher-studies",
-        imageLeft: true
-    }
+  },
+  {
+      title: "Conference Management",
+      description: "From initial planning and budgeting to on-site execution and post-conference analysis, we handle every detail to ensure your academic event is a success.",
+      imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&h=600&auto=format&fit=crop",
+      imageHint: "conference audience",
+      link: "/conference",
+      imageLeft: true
+  },
+  {
+      title: "Publication & Patent Support",
+      description: "We bridge the gap between innovation and impact, guiding you through securing patents and publishing in high-impact journals.",
+      imageUrl: "https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop",
+      imageHint: "tax documents",
+      link: "/services/publications-patent",
+  },
+  {
+      title: "PhD & Higher Studies Guidance",
+      description: "Navigating the path to a PhD or Postdoctoral position requires a meticulously crafted research proposal. We offer specialized guidance to help aspiring academics succeed.",
+      imageUrl: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop",
+      imageHint: "advisory meeting",
+      link: "/services/phd-services",
+      imageLeft: true
+  },
+  {
+      title: "EB-1 Visa & Career Consultancy",
+      description: "The EB-1 visa is for individuals with extraordinary ability. We provide expert consultancy to help you navigate the complex application process and advance your career.",
+      imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&h=600&auto=format&fit=crop",
+      imageHint: "professional career",
+      link: "/services/eb1-consultancy",
+  },
 ];
 
 export function DetailedServicesSection() {
