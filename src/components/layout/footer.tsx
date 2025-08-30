@@ -12,6 +12,16 @@ const quickLinks = [
     { href: "#", label: "Terms of Use" },
 ]
 
+const servicesLinks = [
+    { href: "/services/software-solutions", label: "Software Solutions" },
+    { href: "/conference", label: "Conference Management" },
+    { href: "/services/higher-studies", label: "Higher Studies Proposals" },
+    { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
+    { href: "/internship", label: "Internship Services" },
+    { href: "/services/phd-services", label: "PhD Services" },
+    { href: "/services/publications-patent", label: "Publications & Patent" },
+];
+
 const socialLinks = [
     { href: "#", icon: Linkedin, label: "Linkedin" },
     { href: "#", icon: Twitter, label: "Twitter" },
@@ -28,18 +38,40 @@ const Footer = () => {
     return (
         <footer className="bg-[#3D4C6F] text-white">
             <div className="container mx-auto px-4 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16">
-                    {/* Column 2: Links */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+                    {/* Column 1: Logo & About */}
+                    <div className="md:col-span-4">
+                        <Link href="/" className="inline-block mb-4">
+                            <Logo className="h-12 w-24" />
+                        </Link>
+                        <p className="text-gray-300 text-sm max-w-xs">
+                            We look forward to helping you take your company to new heights with our expert consultancy and services.
+                        </p>
+                    </div>
+
+                    {/* Column 2: Services */}
                     <div className="md:col-span-3">
+                        <h4 className="font-bold text-lg mb-4">Our Services</h4>
                          <ul className="space-y-3 text-gray-300">
-                            {quickLinks.map(link => (
-                                <li key={link.label}><Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link></li>
+                            {servicesLinks.map(link => (
+                                <li key={link.label}><Link href={link.href} className="hover:text-white transition-colors text-sm">{link.label}</Link></li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* Column 3: Social Links */}
+                    {/* Column 3: Quick Links */}
+                    <div className="md:col-span-2">
+                        <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+                         <ul className="space-y-3 text-gray-300">
+                            {quickLinks.map(link => (
+                                <li key={link.label}><Link href={link.href} className="hover:text-white transition-colors text-sm">{link.label}</Link></li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Column 4: Social Links */}
                     <div className="md:col-span-3">
+                        <h4 className="font-bold text-lg mb-4">Connect With Us</h4>
                         <ul className="space-y-3 text-gray-300">
                            {socialLinks.map((link, index) => (
                                 <li key={link.label}>
@@ -47,7 +79,7 @@ const Footer = () => {
                                         <div className="bg-[#303d5c] p-2 rounded-sm">
                                             <link.icon className="h-5 w-5" />
                                         </div>
-                                        <span>{link.label}</span>
+                                        <span className="text-sm">{link.label}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -56,7 +88,7 @@ const Footer = () => {
                                     <div className="bg-[#303d5c] p-2 rounded-sm">
                                         <GooglePlusIcon className="h-5 w-5" />
                                     </div>
-                                    <span>Google+</span>
+                                    <span className="text-sm">Google+</span>
                                 </Link>
                             </li>
                         </ul>
@@ -67,9 +99,6 @@ const Footer = () => {
             {/* Bottom bar */}
             <div className="border-t border-gray-700/50">
                 <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-                    <div className="flex items-center gap-2 mb-4 md:mb-0">
-                         <Logo className="h-8 w-16" />
-                    </div>
                     <div className="mb-4 md:mb-0">
                          <p>&copy; Copyright 2024 Researcher Connect. All Rights Reserved.</p>
                     </div>
