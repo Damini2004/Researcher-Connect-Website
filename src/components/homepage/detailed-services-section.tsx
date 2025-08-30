@@ -40,6 +40,42 @@ export function DetailedServicesSection() {
                   <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
                 </div>
               </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-4 lg:order-last">
+                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold">Tax consulting</h3>
+                  <p className="text-muted-foreground">Elixir serves clients across the country and around the world as they navigate an increasingly complex tax landscape. Our tax professionals draw on deep experience and industry-specific knowledge to deliver clients the insights and innovation they need.</p>
+                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <Image src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop" alt="Advisory" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="advisory meeting" />
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold">Advisory</h3>
+                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
+                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-4 lg:order-last">
+                  <Image src="https://images.unsplash.com/photo-1556742044-53c85d8a9568?q=80&w=800&h=600&auto=format&fit=crop" alt="Tax Consulting" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="tax documents" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold">Tax consulting</h3>
+                  <p className="text-muted-foreground">Elixir serves clients across the country and around the world as they navigate an increasingly complex tax landscape. Our tax professionals draw on deep experience and industry-specific knowledge to deliver clients the insights and innovation they need.</p>
+                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <Image src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&h=600&auto=format&fit=crop" alt="Advisory" width={800} height={600} className="rounded-lg object-cover" data-ai-hint="advisory meeting" />
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold">Advisory</h3>
+                  <p className="text-muted-foreground">To help you understand what this road looks like, we surveyed 1165 digital marketers across Europe and North America to explore current trends and priorities in digital marketing.</p>
+                  <Button variant="link" className="p-0 h-auto">Learn More <ArrowRight className="ml-2" /></Button>
+                </div>
+              </div>
             </div>
             <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-12">
                 <div className="flex items-start text-left p-4 gap-4">
