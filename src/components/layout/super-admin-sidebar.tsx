@@ -1,3 +1,4 @@
+
 // src/components/layout/super-admin-sidebar.tsx
 "use client";
 
@@ -13,7 +14,7 @@ import {
   SidebarMenuBadge
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { LogOut, Settings, LayoutTemplate, Presentation, Tv, Newspaper, Briefcase, Inbox } from "lucide-react";
+import { LogOut, Settings, LayoutTemplate, Presentation, Tv, Newspaper, Briefcase, Inbox, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,6 +24,7 @@ interface SuperAdminSidebarProps {
 
 const menuItems = [
   { href: "/super-admin/cms-pages", label: "CMS Pages", icon: LayoutTemplate },
+  { href: "/super-admin/banners", label: "Banners", icon: ImageIcon },
   { href: "/super-admin/inbox", label: "Inbox", icon: Inbox, badgeId: 'enquiries' },
   { href: "/super-admin/conferences", label: "Conferences", icon: Presentation },
   { href: "/super-admin/webinars", label: "Webinars", icon: Tv },
