@@ -28,7 +28,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { MoreHorizontal, Trash2, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -38,10 +38,11 @@ import { deleteBanner } from "@/services/bannerService";
 interface BannersTableProps {
   banners: Banner[];
   isLoading: boolean;
+  onEdit: (banner: Banner) => void;
   onBannerDeleted: () => void;
 }
 
-export default function BannersTable({ banners, isLoading, onBannerDeleted }: BannersTableProps) {
+export default function BannersTable({ banners, isLoading, onEdit, onBannerDeleted }: BannersTableProps) {
   const { toast } = useToast();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   const [selectedBanner, setSelectedBanner] = React.useState<Banner | null>(null);
@@ -128,6 +129,10 @@ export default function BannersTable({ banners, isLoading, onBannerDeleted }: Ba
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                           <DropdownMenuItem onSelect={() => onEdit(banner)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
                           <DropdownMenuItem 
                             className="text-destructive"
                             onSelect={() => handleDeleteClick(banner)}

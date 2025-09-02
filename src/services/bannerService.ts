@@ -3,11 +3,10 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { z } from 'zod';
 
-// Schema for data coming from the form, including the base64 string for the image
-const bannerFormSchema = z.object({
+const bannerSchema = z.object({
   titleLine1: z.string().min(1, "First title line is required."),
   titleLine2: z.string().min(1, "Second title line is required."),
   subtitle: z.string().min(1, "Subtitle is required."),
@@ -16,10 +15,14 @@ const bannerFormSchema = z.object({
   button2Text: z.string().min(1, "Button 2 text is required."),
   button2Link: z.string().min(1, "Please enter a link for Button 2.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
   order: z.coerce.number().min(0, "Order must be a positive number."),
+});
+
+const bannerFormSchema = bannerSchema.extend({
   imageSrc: z.string().min(1, "Image data is missing.").startsWith("data:image/", "Image data must be a valid data URI."),
 });
 
 type BannerFormData = z.infer<typeof bannerFormSchema>;
+export type UpdateBannerData = z.infer<typeof bannerSchema> & { imageSrc?: string };
 
 export interface Banner {
     id: string;
@@ -35,10 +38,6 @@ export interface Banner {
     createdAt: string; 
 }
 
-/**
- * Adds a new banner document to the 'heroBanners' collection in Firestore.
- * The image is provided as a base64 data URI string and stored directly.
- */
 export async function addBanner(data: BannerFormData): Promise<{ success: boolean; message: string; }> {
   try {
     const validationResult = bannerFormSchema.safeParse(data);
@@ -59,15 +58,36 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
   }
 }
 
-/**
- * Fetches all banners from the 'heroBanners' collection, ordered by the 'order' field.
- * This function is resilient to missing or malformed data in Firestore.
- */
+export async function updateBanner(id: string, data: UpdateBannerData): Promise<{ success: boolean, message: string }> {
+    try {
+        const schemaForUpdate = bannerSchema.extend({
+            imageSrc: z.string().optional(),
+        });
+
+        const validationResult = schemaForUpdate.safeParse(data);
+        if (!validationResult.success) {
+            const firstError = validationResult.error.errors[0];
+            return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
+        }
+
+        const bannerRef = doc(db, 'heroBanners', id);
+        await updateDoc(bannerRef, {
+            ...validationResult.data,
+            updatedAt: serverTimestamp()
+        });
+        
+        return { success: true, message: 'Banner updated successfully!' };
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        return { success: false, message: `Failed to update banner: ${message}` };
+    }
+}
+
+
 export async function getBanners(): Promise<Banner[]> {
     try {
         const q = query(
             collection(db, "heroBanners"),
-            orderBy("order", "asc"),
             orderBy("createdAt", "desc")
         );
 
@@ -77,8 +97,7 @@ export async function getBanners(): Promise<Banner[]> {
         querySnapshot.forEach((docSnap: QueryDocumentSnapshot<DocumentData>) => {
             const data = docSnap.data();
 
-            // Safely handle timestamp conversion
-            let createdAtString = new Date().toISOString(); // Default to now if missing
+            let createdAtString = new Date().toISOString(); 
             const createdAt = data.createdAt;
             if (createdAt instanceof Timestamp) {
                 createdAtString = createdAt.toDate().toISOString();
@@ -86,7 +105,6 @@ export async function getBanners(): Promise<Banner[]> {
                 createdAtString = createdAt.toDate().toISOString();
             }
 
-            // Construct the banner object with defaults for missing fields
             const banner: Banner = {
                 id: docSnap.id,
                 titleLine1: data.titleLine1 || "",
@@ -103,10 +121,9 @@ export async function getBanners(): Promise<Banner[]> {
             banners.push(banner);
         });
 
-        return banners;
+        return banners.sort((a, b) => a.order - b.order);
     } catch (error) {
         console.error("Error fetching banners:", error);
-        // In case of an error, return an empty array to prevent the app from crashing.
         return [];
     }
 }

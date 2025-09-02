@@ -17,18 +17,22 @@ import { useToast } from "@/hooks/use-toast";
 import type { Banner } from "@/services/bannerService";
 import { getBanners } from "@/services/bannerService";
 import AddBannerForm from "@/components/forms/add-banner-form";
+import EditBannerForm from "@/components/forms/edit-banner-form";
 import BannersTable from "@/components/tables/banners-table";
 
 export default function ManageBannersPage() {
   const [banners, setBanners] = React.useState<Banner[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
+  const [selectedBanner, setSelectedBanner] = React.useState<Banner | null>(null);
   const { toast } = useToast();
 
   const fetchBanners = React.useCallback(async () => {
     setIsLoading(true);
     try {
       const data = await getBanners();
+      console.log(data);
       setBanners(data);
     } catch (error) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred.";
@@ -54,6 +58,15 @@ export default function ManageBannersPage() {
     });
     fetchBanners(); // Refresh the list
   };
+
+  const handleBannerUpdated = () => {
+    setIsEditDialogOpen(false);
+    toast({
+      title: "Banner Updated!",
+      description: "The banner has been successfully updated.",
+    });
+    fetchBanners();
+  };
   
   const handleBannerDeleted = () => {
     toast({
@@ -62,6 +75,11 @@ export default function ManageBannersPage() {
     });
     fetchBanners(); // Refresh the list
   }
+  
+  const handleEditClick = (banner: Banner) => {
+    setSelectedBanner(banner);
+    setIsEditDialogOpen(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -96,8 +114,28 @@ export default function ManageBannersPage() {
       <BannersTable 
         banners={banners}
         isLoading={isLoading}
+        onEdit={handleEditClick}
         onBannerDeleted={handleBannerDeleted}
       />
+
+       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="sm:max-w-3xl h-[80vh] flex flex-col p-0">
+            <DialogHeader className="p-6 pb-4">
+              <DialogTitle>Edit Banner</DialogTitle>
+              <DialogDescription>
+                Modify the details for this homepage banner.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex-grow min-h-0">
+                {selectedBanner && (
+                    <EditBannerForm
+                        banner={selectedBanner}
+                        onBannerUpdated={handleBannerUpdated}
+                    />
+                )}
+            </div>
+          </DialogContent>
+        </Dialog>
     </div>
   );
 }
