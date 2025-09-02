@@ -14,7 +14,7 @@ const bannerSchema = z.object({
   button1Link: z.string().min(1, "Please enter a link for Button 1."),
   button2Text: z.string().min(1, "Button 2 text is required."),
   button2Link: z.string().min(1, "Please enter a link for Button 2."),
-  order: z.number().min(0, "Order must be a positive number."),
+  order: z.coerce.number().min(0, "Order must be a positive number."),
   imageSrc: z.string().min(1, "Image is required."),
 });
 
@@ -47,24 +47,26 @@ export async function getBanners(): Promise<Banner[]> {
     try {
         const q = query(collection(db, "heroBanners"), orderBy("order", "asc"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
-            const data = doc.data();
-            // This now correctly maps all fields expected by the Banner interface.
+        
+        return querySnapshot.docs.map((docSnap: QueryDocumentSnapshot<DocumentData>) => {
+            const data = docSnap.data();
+            // Robustly map data from Firestore to the Banner interface
             return {
-                id: doc.id,
+                id: docSnap.id,
                 titleLine1: data.titleLine1 || "",
                 titleLine2: data.titleLine2 || "",
                 subtitle: data.subtitle || "",
-                button1Text: data.button1Text || "",
+                button1Text: data.button1Text || "Learn More",
                 button1Link: data.button1Link || "/",
-                button2Text: data.button2Text || "",
-                button2Link: data.button2Link || "/",
-                order: data.order || 0,
+                button2Text: data.button2Text || "Contact Us",
+                button2Link: data.button2Link || "/contact-us",
+                order: data.order ?? 0,
                 imageSrc: data.imageSrc || "",
             } satisfies Banner;
         });
     } catch (error) {
         console.error("Error fetching banners: ", error);
+        // In case of an error, return an empty array to prevent app crashes.
         return [];
     }
 }
