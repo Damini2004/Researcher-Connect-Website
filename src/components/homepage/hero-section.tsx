@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { getBanners, type Banner } from '@/services/bannerService';
 import { Skeleton } from '../ui/skeleton';
@@ -24,6 +24,8 @@ async function getBannersData(): Promise<Banner[]> {
 export function HeroSection() {
     const [banners, setBanners] = React.useState<Banner[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [api, setApi] = React.useState<CarouselApi>()
+    const [current, setCurrent] = React.useState(0)
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +36,24 @@ export function HeroSection() {
         };
         fetchData();
     }, []);
+
+    React.useEffect(() => {
+        if (!api) {
+          return
+        }
+    
+        setCurrent(api.selectedScrollSnap())
+    
+        const onSelect = () => {
+          setCurrent(api.selectedScrollSnap())
+        }
+    
+        api.on("select", onSelect)
+    
+        return () => {
+          api.off("select", onSelect)
+        }
+      }, [api])
 
     if (isLoading) {
         return (
@@ -51,9 +71,12 @@ export function HeroSection() {
         )
     }
 
+    const currentBanner = banners[current];
+
     return (
         <section className="w-full h-[500px] relative flex items-center justify-start text-left overflow-hidden bg-white">
             <Carousel
+                setApi={setApi}
                 plugins={[
                     Autoplay({
                       delay: 5000,
@@ -87,40 +110,43 @@ export function HeroSection() {
             
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent z-0" />
 
-            <div className="relative z-10 container mx-auto px-4 ml-12 md:ml-24">
-                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="max-w-3xl"
-                >
-                    <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-gray-900">
-                        <span className="block text-[#3D4C6F]">{banners[0].titleLine1}</span>
-                        <span className="text-[#3D4C6F]">{banners[0].titleLine2}</span>
-                    </h1>
-                    <p className="max-w-xl mt-6 text-lg md:text-xl text-gray-700 drop-shadow-md">
-                       {banners[0].subtitle.split('\n').map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}
-                    </p>
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
+            {currentBanner && (
+                <div className="relative z-10 container mx-auto px-4 ml-12 md:ml-24">
+                    <motion.div
+                        key={currentBanner.id} // Re-trigger animation on slide change
+                        initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                        className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-start"
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="max-w-3xl"
                     >
-                        <Link href={banners[0].button1Link}>
-                            <Button size="lg" className="w-full sm:w-auto">
-                                {banners[0].button1Text}
-                                <ArrowRight className="ml-2 h-5 w-5" />
-                            </Button>
-                        </Link>
-                        <Link href={banners[0].button2Link}>
-                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/90 text-[#3D4C6F] border-gray-200 hover:bg-white">
-                                {banners[0].button2Text}
-                            </Button>
-                        </Link>
+                        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-gray-900">
+                            <span className="block text-[#3D4C6F]">{currentBanner.titleLine1}</span>
+                            <span className="text-[#3D4C6F]">{currentBanner.titleLine2}</span>
+                        </h1>
+                        <p className="max-w-xl mt-6 text-lg md:text-xl text-gray-700 drop-shadow-md">
+                        {currentBanner.subtitle.split('\n').map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}
+                        </p>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                            className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-start"
+                        >
+                            <Link href={currentBanner.button1Link}>
+                                <Button size="lg" className="w-full sm:w-auto">
+                                    {currentBanner.button1Text}
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Button>
+                            </Link>
+                            <Link href={currentBanner.button2Link}>
+                                <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/90 text-[#3D4C6F] border-gray-200 hover:bg-white">
+                                    {currentBanner.button2Text}
+                                </Button>
+                            </Link>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-            </div>
+                </div>
+            )}
         </section>
     );
 }
