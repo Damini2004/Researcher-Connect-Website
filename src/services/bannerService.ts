@@ -1,4 +1,3 @@
-
 // src/services/bannerService.ts
 'use server';
 
@@ -6,7 +5,7 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
-// Schema for data coming from the form
+// Schema for data coming from the form, including the base64 string for the image
 const bannerFormSchema = z.object({
   titleLine1: z.string().min(1, "First title line is required."),
   titleLine2: z.string().min(1, "Second title line is required."),
@@ -16,7 +15,7 @@ const bannerFormSchema = z.object({
   button2Text: z.string().min(1, "Button 2 text is required."),
   button2Link: z.string().min(1, "Please enter a link for Button 2.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
   order: z.coerce.number().min(0, "Order must be a positive number."),
-  imageSrc: z.string().min(1, "Image data is missing."),
+  imageSrc: z.string().min(1, "Image data is missing.").startsWith("data:image/", "Image data must be a valid data URI."),
 });
 
 type BannerFormData = z.infer<typeof bannerFormSchema>;
@@ -35,6 +34,10 @@ export interface Banner {
     createdAt: string; 
 }
 
+/**
+ * Adds a new banner document to the 'heroBanners' collection in Firestore.
+ * The image is provided as a base64 data URI string and stored directly.
+ */
 export async function addBanner(data: BannerFormData): Promise<{ success: boolean; message: string; }> {
   try {
     const validationResult = bannerFormSchema.safeParse(data);
@@ -55,6 +58,10 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
   }
 }
 
+/**
+ * Fetches all banners from the 'heroBanners' collection, ordered by the 'order' field.
+ * This function is resilient to missing or malformed data in Firestore.
+ */
 export async function getBanners(): Promise<Banner[]> {
     try {
         const q = query(
@@ -72,14 +79,10 @@ export async function getBanners(): Promise<Banner[]> {
             // Safely handle timestamp conversion
             let createdAtString = new Date().toISOString(); // Default to now if missing
             const createdAt = data.createdAt;
-            if (createdAt && typeof createdAt.toDate === 'function') {
+            if (createdAt instanceof Timestamp) {
                 createdAtString = createdAt.toDate().toISOString();
-            } else if (createdAt) {
-                // Fallback for other potential date formats
-                const d = new Date(createdAt);
-                if (!isNaN(d.getTime())) {
-                    createdAtString = d.toISOString();
-                }
+            } else if (createdAt && typeof createdAt.toDate === 'function') {
+                createdAtString = createdAt.toDate().toISOString();
             }
 
             // Construct the banner object with defaults for missing fields
@@ -92,7 +95,7 @@ export async function getBanners(): Promise<Banner[]> {
                 button1Link: data.button1Link || "/",
                 button2Text: data.button2Text || "Contact Us",
                 button2Link: data.button2Link || "/contact-us",
-                order: data.order ?? 0,
+                order: typeof data.order === 'number' ? data.order : 0,
                 imageSrc: data.imageSrc || "",
                 createdAt: createdAtString,
             };

@@ -1,4 +1,3 @@
-
 // src/components/forms/add-banner-form.tsx
 "use client";
 
@@ -24,6 +23,8 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Progress } from "../ui/progress";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 
+// The form schema now validates the browser's FileList object.
+// The actual conversion to a base64 string happens before submission.
 const formSchema = z.object({
   titleLine1: z.string().min(1, "First title line is required."),
   titleLine2: z.string().min(1, "Second title line is required."),
@@ -37,14 +38,18 @@ const formSchema = z.object({
     .any()
     .refine((files) => files?.length > 0, "An image is required.")
     .refine(
+      (files) => files?.[0]?.size <= 5 * 1024 * 1024, // 5MB limit
+      "Image size cannot exceed 5MB."
+    )
+    .refine(
       (files) => files?.[0]?.type.startsWith("image/"),
       "Only image files are allowed."
     ),
 });
 
-type BannerFormData = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof formSchema>;
 
-const stepFields: (keyof BannerFormData)[][] = [
+const stepFields: (keyof FormValues)[][] = [
     ['titleLine1', 'titleLine2', 'subtitle', 'button1Text', 'button1Link', 'button2Text', 'button2Link'],
     ['order', 'image'],
 ];
@@ -83,7 +88,8 @@ const compressImage = (file: File): Promise<string> => {
         const ctx = canvas.getContext('2d');
         ctx?.drawImage(img, 0, 0, width, height);
 
-        resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
+        // Compress to 70% quality JPEG, which is efficient for photos.
+        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
       };
       img.onerror = reject;
       img.src = event.target?.result as string;
@@ -98,7 +104,7 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [currentStep, setCurrentStep] = React.useState(1);
 
-  const form = useForm<BannerFormData>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       titleLine1: "Researcher",
@@ -114,39 +120,48 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
 
   const imageFileRef = form.register("image");
 
-  async function onSubmit(values: BannerFormData) {
+  async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
     
-    let compressedImageSrc = "";
-    if (values.image && values.image.length > 0) {
-        try {
-            compressedImageSrc = await compressImage(values.image[0]);
-        } catch (error) {
-             toast({ title: "Error", description: "Failed to compress the image. Please try another file.", variant: "destructive" });
-             setIsSubmitting(false);
-             return;
-        }
-    }
+    try {
+      // Compress the image and get the base64 data URI
+      const compressedImageSrc = await compressImage(values.image[0]);
 
-    const payload = { ...values, imageSrc: compressedImageSrc };
-    const result = await addBanner(payload);
+      // Create payload without the 'image' FileList, using 'imageSrc' instead.
+      const payload = {
+        titleLine1: values.titleLine1,
+        titleLine2: values.titleLine2,
+        subtitle: values.subtitle,
+        button1Text: values.button1Text,
+        button1Link: values.button1Link,
+        button2Text: values.button2Text,
+        button2Link: values.button2Link,
+        order: values.order,
+        imageSrc: compressedImageSrc,
+      };
 
-    if (result.success) {
-      form.reset();
-      onBannerAdded();
-    } else {
-      toast({
-        title: "Error Adding Banner",
-        description: result.message,
-        variant: "destructive",
-      });
+      const result = await addBanner(payload);
+
+      if (result.success) {
+        form.reset();
+        onBannerAdded();
+      } else {
+        toast({
+          title: "Error Adding Banner",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({ title: "Image Processing Error", description: "Failed to compress the image. Please try another file.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   }
 
   const handleNext = async () => {
     const fieldsToValidate = stepFields[currentStep - 1] || [];
-    const isValid = await form.trigger(fieldsToValidate as (keyof BannerFormData)[]);
+    const isValid = await form.trigger(fieldsToValidate as (keyof FormValues)[]);
     if (isValid) {
         setCurrentStep(step => step + 1);
     } else {
@@ -201,7 +216,7 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
                          <section className="space-y-6">
                              <div className="grid grid-cols-2 gap-6">
                                 <FormField control={form.control} name="order" render={({ field }) => ( <FormItem> <FormLabel>Display Order</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormDescription>Lower numbers appear first.</FormDescription> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="image" render={() => ( <FormItem> <FormLabel>Background Image</FormLabel> <FormControl><Input type="file" accept="image/*" {...imageFileRef} /></FormControl> <FormDescription>Will be compressed. Max original size 5MB.</FormDescription> <FormMessage /> </FormItem> )} />
+                                <FormField control={form.control} name="image" render={() => ( <FormItem> <FormLabel>Background Image</FormLabel> <FormControl><Input type="file" accept="image/*" {...imageFileRef} /></FormControl> <FormDescription>Image will be compressed. Max original size 5MB.</FormDescription> <FormMessage /> </FormItem> )} />
                             </div>
                          </section>
                     )}
