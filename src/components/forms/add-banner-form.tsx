@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldError } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +20,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addBanner } from "@/services/bannerService";
 import { Textarea } from "../ui/textarea";
+import { ScrollArea } from "../ui/scroll-area";
+import { Progress } from "../ui/progress";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const formSchema = z.object({
   titleLine1: z.string().min(1, "First title line is required."),
@@ -45,6 +48,14 @@ const formSchema = z.object({
 
 type BannerFormData = z.infer<typeof formSchema>;
 
+const stepFields: (keyof BannerFormData)[][] = [
+    ['titleLine1', 'titleLine2', 'subtitle', 'button1Text', 'button1Link', 'button2Text', 'button2Link'],
+    ['order', 'image'],
+];
+
+const totalSteps = stepFields.length;
+
+
 interface AddBannerFormProps {
     onBannerAdded: () => void;
 }
@@ -52,6 +63,7 @@ interface AddBannerFormProps {
 export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [currentStep, setCurrentStep] = React.useState(1);
 
   const form = useForm<BannerFormData>({
     resolver: zodResolver(formSchema),
@@ -108,30 +120,85 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
     setIsSubmitting(false);
   }
 
+  const handleNext = async () => {
+    const fieldsToValidate = stepFields[currentStep - 1] || [];
+    const isValid = await form.trigger(fieldsToValidate as (keyof BannerFormData)[]);
+    if (isValid) {
+        setCurrentStep(step => step + 1);
+    } else {
+        const errors = form.formState.errors;
+        const firstErrorField = fieldsToValidate.find(field => errors[field]);
+        if (firstErrorField) {
+            const error = errors[firstErrorField] as FieldError | undefined;
+            toast({
+                title: "Incomplete Step",
+                description: error?.message || `Please fill out all required fields in this step.`,
+                variant: "destructive",
+            });
+        }
+    }
+  };
+
+  const handleBack = () => {
+    setCurrentStep(step => step - 1);
+  };
+
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField control={form.control} name="titleLine1" render={({ field }) => ( <FormItem> <FormLabel>Title Line 1</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField control={form.control} name="titleLine2" render={({ field }) => ( <FormItem> <FormLabel>Title Line 2</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField control={form.control} name="subtitle" render={({ field }) => ( <FormItem> <FormLabel>Subtitle</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        
-        <div className="grid grid-cols-2 gap-6">
-          <FormField control={form.control} name="button1Text" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Text</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-          <FormField control={form.control} name="button1Link" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Link</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+        <div className="flex-shrink-0 px-6 pt-2">
+            <div className="space-y-2 mb-4">
+                <Progress value={(currentStep / totalSteps) * 100} />
+                <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {totalSteps}</p>
+            </div>
         </div>
-        <div className="grid grid-cols-2 gap-6">
-            <FormField control={form.control} name="button2Text" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Text</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-            <FormField control={form.control} name="button2Link" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Link</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        </div>
-        
-        <div className="grid grid-cols-2 gap-6">
-            <FormField control={form.control} name="order" render={({ field }) => ( <FormItem> <FormLabel>Display Order</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormDescription>Lower numbers appear first.</FormDescription> <FormMessage /> </FormItem> )} />
-            <FormField control={form.control} name="image" render={() => ( <FormItem> <FormLabel>Background Image</FormLabel> <FormControl><Input type="file" accept="image/*" {...imageFileRef} /></FormControl> <FormDescription>Recommended size: 1600x500px. Max 2MB.</FormDescription> <FormMessage /> </FormItem> )} />
-        </div>
+        <div className="flex-grow min-h-0 overflow-hidden">
+            <ScrollArea className="h-full">
+                <div className="p-6 space-y-6">
+                    {currentStep === 1 && (
+                        <section className="space-y-6">
+                            <FormField control={form.control} name="titleLine1" render={({ field }) => ( <FormItem> <FormLabel>Title Line 1</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField control={form.control} name="titleLine2" render={({ field }) => ( <FormItem> <FormLabel>Title Line 2</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField control={form.control} name="subtitle" render={({ field }) => ( <FormItem> <FormLabel>Subtitle</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            
+                            <div className="grid grid-cols-2 gap-6">
+                            <FormField control={form.control} name="button1Text" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Text</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField control={form.control} name="button1Link" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Link</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-6">
+                                <FormField control={form.control} name="button2Text" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Text</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                                <FormField control={form.control} name="button2Link" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Link</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            </div>
+                        </section>
+                    )}
 
-        <Button type="submit" size="lg" disabled={isSubmitting}>
-          {isSubmitting ? "Adding Banner..." : "Add Banner"}
-        </Button>
+                    {currentStep === 2 && (
+                         <section className="space-y-6">
+                             <div className="grid grid-cols-2 gap-6">
+                                <FormField control={form.control} name="order" render={({ field }) => ( <FormItem> <FormLabel>Display Order</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormDescription>Lower numbers appear first.</FormDescription> <FormMessage /> </FormItem> )} />
+                                <FormField control={form.control} name="image" render={() => ( <FormItem> <FormLabel>Background Image</FormLabel> <FormControl><Input type="file" accept="image/*" {...imageFileRef} /></FormControl> <FormDescription>Recommended size: 1600x500px. Max 2MB.</FormDescription> <FormMessage /> </FormItem> )} />
+                            </div>
+                         </section>
+                    )}
+                </div>
+            </ScrollArea>
+        </div>
+        
+        <div className="flex-shrink-0 flex justify-between pt-4 border-t p-6">
+            <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
+            </Button>
+            {currentStep < totalSteps ? (
+                <Button type="button" onClick={handleNext}>
+                    Next <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+            ) : (
+                <Button type="submit" size="lg" disabled={isSubmitting}>
+                    {isSubmitting ? "Adding Banner..." : "Add Banner"}
+                </Button>
+            )}
+        </div>
       </form>
     </Form>
   );

@@ -18,7 +18,6 @@ import type { Banner } from "@/services/bannerService";
 import { getBanners } from "@/services/bannerService";
 import AddBannerForm from "@/components/forms/add-banner-form";
 import BannersTable from "@/components/tables/banners-table";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ManageBannersPage() {
   const [banners, setBanners] = React.useState<Banner[]>([]);
@@ -79,19 +78,15 @@ export default function ManageBannersPage() {
               Add Banner
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col p-0">
-            <DialogHeader className="p-6 pb-0">
+          <DialogContent className="sm:max-w-3xl h-[80vh] flex flex-col p-0">
+            <DialogHeader className="p-6 pb-4">
               <DialogTitle>Add New Banner</DialogTitle>
               <DialogDescription>
                 Fill out the form below to create a new homepage banner.
               </DialogDescription>
             </DialogHeader>
             <div className="flex-grow min-h-0">
-                <ScrollArea className="h-full">
-                    <div className="p-6">
-                        <AddBannerForm onBannerAdded={handleBannerAdded} />
-                    </div>
-                </ScrollArea>
+              <AddBannerForm onBannerAdded={handleBannerAdded} />
             </div>
           </DialogContent>
         </Dialog>
