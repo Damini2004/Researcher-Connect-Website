@@ -11,9 +11,9 @@ const bannerSchema = z.object({
   titleLine2: z.string().min(1, "Second title line is required."),
   subtitle: z.string().min(1, "Subtitle is required."),
   button1Text: z.string().min(1, "Button 1 text is required."),
-  button1Link: z.string().url("Please enter a valid URL for Button 1."),
+  button1Link: z.string().min(1, "Please enter a link for Button 1."),
   button2Text: z.string().min(1, "Button 2 text is required."),
-  button2Link: z.string().url("Please enter a valid URL for Button 2."),
+  button2Link: z.string().min(1, "Please enter a link for Button 2."),
   order: z.number().min(0, "Order must be a positive number."),
   imageSrc: z.string().min(1, "Image is required."),
 });
