@@ -11,9 +11,9 @@ const bannerSchema = z.object({
   titleLine2: z.string().min(1, "Second title line is required."),
   subtitle: z.string().min(1, "Subtitle is required."),
   button1Text: z.string().min(1, "Button 1 text is required."),
-  button1Link: z.string().min(1, "Button 1 link is required."),
+  button1Link: z.string().min(1, "Please enter a link for Button 1."),
   button2Text: z.string().min(1, "Button 2 text is required."),
-  button2Link: z.string().min(1, "Button 2 link is required."),
+  button2Link: z.string().min(1, "Please enter a link for Button 2."),
   order: z.coerce.number().min(0, "Order must be a positive number."),
   imageSrc: z.string().min(1, "Image is required."),
 });
@@ -28,7 +28,6 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
   try {
     const validationResult = bannerSchema.safeParse(data);
     if (!validationResult.success) {
-        // Return a detailed error message from Zod
         const firstError = validationResult.error.errors[0];
         return { success: false, message: `${firstError.path.join('.')}: ${firstError.message}` };
     }
@@ -65,7 +64,7 @@ export async function getBanners(): Promise<Banner[]> {
                 button2Link: data.button2Link || "/contact-us",
                 order: typeof data.order === 'number' ? data.order : 0,
                 imageSrc: data.imageSrc || "https://placehold.co/1600x500.png",
-            } satisfies Banner;
+            };
         });
     } catch (error) {
         console.error("Error fetching banners: ", error);
