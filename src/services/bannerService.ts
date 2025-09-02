@@ -11,9 +11,9 @@ const bannerSchema = z.object({
   titleLine2: z.string().min(1, "Second title line is required."),
   subtitle: z.string().min(1, "Subtitle is required."),
   button1Text: z.string().min(1, "Button 1 text is required."),
-  button1Link: z.string().min(1, "Please enter a link for Button 1."),
+  button1Link: z.string().min(1, "Button 1 link is required."),
   button2Text: z.string().min(1, "Button 2 text is required."),
-  button2Link: z.string().min(1, "Please enter a link for Button 2."),
+  button2Link: z.string().min(1, "Button 2 link is required."),
   order: z.coerce.number().min(0, "Order must be a positive number."),
   imageSrc: z.string().min(1, "Image is required."),
 });
@@ -28,7 +28,9 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
   try {
     const validationResult = bannerSchema.safeParse(data);
     if (!validationResult.success) {
-        return { success: false, message: validationResult.error.errors[0].message };
+        // Return a detailed error message from Zod
+        const firstError = validationResult.error.errors[0];
+        return { success: false, message: `${firstError.path.join('.')}: ${firstError.message}` };
     }
     
     await addDoc(collection(db, 'heroBanners'), {
@@ -50,18 +52,19 @@ export async function getBanners(): Promise<Banner[]> {
         
         return querySnapshot.docs.map((docSnap: QueryDocumentSnapshot<DocumentData>) => {
             const data = docSnap.data();
-            // Robustly map data from Firestore to the Banner interface
+            // This robust mapping ensures that every field of the Banner interface is correctly populated,
+            // with sensible defaults to prevent crashes if data is missing from the database.
             return {
                 id: docSnap.id,
-                titleLine1: data.titleLine1 || "",
-                titleLine2: data.titleLine2 || "",
-                subtitle: data.subtitle || "",
+                titleLine1: data.titleLine1 || "Default Title 1",
+                titleLine2: data.titleLine2 || "Default Title 2",
+                subtitle: data.subtitle || "Default subtitle for the banner.",
                 button1Text: data.button1Text || "Learn More",
                 button1Link: data.button1Link || "/",
                 button2Text: data.button2Text || "Contact Us",
                 button2Link: data.button2Link || "/contact-us",
-                order: data.order ?? 0,
-                imageSrc: data.imageSrc || "",
+                order: typeof data.order === 'number' ? data.order : 0,
+                imageSrc: data.imageSrc || "https://placehold.co/1600x500.png",
             } satisfies Banner;
         });
     } catch (error) {
