@@ -1,4 +1,3 @@
-
 // src/app/(admin)/super-admin/banners/page.tsx
 "use client";
 

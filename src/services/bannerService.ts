@@ -1,4 +1,3 @@
-
 // src/services/bannerService.ts
 'use server';
 
@@ -51,25 +50,24 @@ export async function getBanners(): Promise<Banner[]> {
         
         return querySnapshot.docs.map((docSnap: QueryDocumentSnapshot<DocumentData>) => {
             const data = docSnap.data();
-            const bannerData: Banner = {
+            // Validate data against schema to ensure all fields are present and of the correct type
+            const validation = bannerSchema.safeParse(data);
+            if (!validation.success) {
+                console.warn(`Invalid banner data for doc ID ${docSnap.id}:`, validation.error.errors);
+                // Return a default or skip this banner
+                return null;
+            }
+            return {
                 id: docSnap.id,
-                titleLine1: data.titleLine1 || "",
-                titleLine2: data.titleLine2 || "",
-                subtitle: data.subtitle || "",
-                button1Text: data.button1Text || "",
-                button1Link: data.button1Link || "/",
-                button2Text: data.button2Text || "",
-                button2Link: data.button2Link || "/",
-                order: data.order ?? 0,
-                imageSrc: data.imageSrc || "https://placehold.co/1600x500.png",
+                ...validation.data,
             };
-            return bannerData;
-        });
+        }).filter((banner): banner is Banner => banner !== null); // Filter out any null (invalid) banners
     } catch (error) {
         console.error("Error fetching banners: ", error);
         return [];
     }
 }
+
 
 export async function deleteBanner(id: string): Promise<{ success: boolean; message: string }> {
     try {
