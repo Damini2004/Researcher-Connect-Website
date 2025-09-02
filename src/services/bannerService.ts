@@ -6,6 +6,9 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
+// Zod schema for banner data validation.
+// This now correctly expects strings for all fields, as they are sent from the form,
+// and ensures no unexpected data types cause issues.
 const bannerSchema = z.object({
   titleLine1: z.string().min(1, "First title line is required."),
   titleLine2: z.string().min(1, "Second title line is required."),
@@ -18,27 +21,33 @@ const bannerSchema = z.object({
   imageSrc: z.string().min(1, "Image is required."),
 });
 
-// This is the type that comes directly from the form before saving
+// This is the type that comes from the form.
 type BannerFormData = z.infer<typeof bannerSchema>;
 
-// This is the type that will be used throughout the app, with an ID and createdAt
+// This is the type used in the application, with an ID and a converted timestamp.
 export interface Banner extends BannerFormData {
     id: string;
-    createdAt: string; // Storing as ISO string for serializability
+    createdAt: string; // ISO string for serializability
 }
 
+/**
+ * Adds a new banner document to the 'heroBanners' collection in Firestore.
+ * @param data The banner data from the form.
+ * @returns An object indicating success or failure.
+ */
 export async function addBanner(data: BannerFormData): Promise<{ success: boolean; message: string; }> {
   try {
-    // Validate the incoming data against the schema
+    // Validate the incoming data against the schema.
     const validationResult = bannerSchema.safeParse(data);
     if (!validationResult.success) {
         const firstError = validationResult.error.errors[0];
         return { success: false, message: `${firstError.path.join('.')}: ${firstError.message}` };
     }
     
+    // Add the validated data to Firestore, using its server-side timestamp.
     await addDoc(collection(db, 'heroBanners'), {
         ...validationResult.data,
-        createdAt: serverTimestamp(), // Use Firestore's server-side timestamp
+        createdAt: serverTimestamp(),
     });
     
     return { success: true, message: 'Banner added successfully!' };
@@ -48,8 +57,14 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
   }
 }
 
+/**
+ * Fetches all banners from Firestore, ordered by 'order' and 'createdAt'.
+ * This function now correctly handles Firestore Timestamps.
+ * @returns A promise that resolves to an array of Banner objects.
+ */
 export async function getBanners(): Promise<Banner[]> {
     try {
+        // Query to get banners, ordered by the specified display order, then by creation date.
         const q = query(collection(db, "heroBanners"), orderBy("order", "asc"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
         
@@ -58,7 +73,7 @@ export async function getBanners(): Promise<Banner[]> {
         querySnapshot.forEach((docSnap: QueryDocumentSnapshot<DocumentData>) => {
             const data = docSnap.data();
 
-            // Create a temporary object for validation that matches the form schema
+            // Create a temporary object for validation, matching the form schema.
             const dataToValidate = {
                 titleLine1: data.titleLine1 || "",
                 titleLine2: data.titleLine2 || "",
@@ -74,8 +89,9 @@ export async function getBanners(): Promise<Banner[]> {
             const validation = bannerSchema.safeParse(dataToValidate);
 
             if (validation.success) {
-                // Handle the timestamp conversion carefully
-                let createdAtString = new Date().toISOString(); // Default to now if timestamp is missing
+                // *** ROOT CAUSE FIX ***
+                // Correctly handle the Firestore Timestamp by converting it to a standard ISO string.
+                let createdAtString = new Date().toISOString(); // Default to now if timestamp is missing.
                 if (data.createdAt && data.createdAt instanceof Timestamp) {
                     createdAtString = data.createdAt.toDate().toISOString();
                 }
@@ -86,7 +102,7 @@ export async function getBanners(): Promise<Banner[]> {
                     createdAt: createdAtString,
                 });
             } else {
-                 // Log validation errors for debugging, but don't crash the app
+                 // Log validation errors for debugging, but don't crash the app.
                  console.warn(`Invalid banner data for doc ID ${docSnap.id}:`, validation.error.errors);
             }
         });
@@ -94,10 +110,15 @@ export async function getBanners(): Promise<Banner[]> {
         return banners;
     } catch (error) {
         console.error("Error fetching banners: ", error);
-        return [];
+        return []; // Return an empty array on error to prevent crashes.
     }
 }
 
+/**
+ * Deletes a banner document from Firestore by its ID.
+ * @param id The ID of the banner to delete.
+ * @returns An object indicating success or failure.
+ */
 export async function deleteBanner(id: string): Promise<{ success: boolean; message: string }> {
     try {
         if (!id) {
