@@ -138,6 +138,7 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
         button2Link: values.button2Link,
         order: values.order,
         imageSrc: compressedImageSrc,
+        createdAt: new Date().toISOString(),
       };
 
       const result = await addBanner(payload);

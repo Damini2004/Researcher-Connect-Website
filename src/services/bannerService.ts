@@ -1,4 +1,3 @@
-
 // src/services/bannerService.ts
 'use server';
 
@@ -15,14 +14,15 @@ const bannerSchema = z.object({
   button2Text: z.string().min(1, "Button 2 text is required."),
   button2Link: z.string().min(1, "Please enter a link for Button 2.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
   order: z.coerce.number().min(0, "Order must be a positive number."),
+  createdAt: z.string().datetime(),
 });
 
 const bannerFormSchema = bannerSchema.extend({
   imageSrc: z.string().min(1, "Image data is missing.").startsWith("data:image/", "Image data must be a valid data URI."),
 });
 
-type BannerFormData = z.infer<typeof bannerFormSchema>;
-export type UpdateBannerData = z.infer<typeof bannerSchema> & { imageSrc?: string };
+type AddBannerPayload = z.infer<typeof bannerFormSchema>;
+export type UpdateBannerPayload = z.infer<typeof bannerSchema> & { imageSrc?: string };
 
 export interface Banner {
     id: string;
@@ -38,7 +38,7 @@ export interface Banner {
     createdAt: string; 
 }
 
-export async function addBanner(data: BannerFormData): Promise<{ success: boolean; message: string; }> {
+export async function addBanner(data: AddBannerPayload): Promise<{ success: boolean; message: string; }> {
   try {
     const validationResult = bannerFormSchema.safeParse(data);
     if (!validationResult.success) {
@@ -48,7 +48,7 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
     
     await addDoc(collection(db, 'heroBanners'), {
         ...validationResult.data,
-        createdAt: serverTimestamp(),
+        createdAt: new Date(validationResult.data.createdAt),
     });
     
     return { success: true, message: 'Banner added successfully!' };
@@ -58,11 +58,11 @@ export async function addBanner(data: BannerFormData): Promise<{ success: boolea
   }
 }
 
-export async function updateBanner(id: string, data: UpdateBannerData): Promise<{ success: boolean, message: string }> {
+export async function updateBanner(id: string, data: UpdateBannerPayload): Promise<{ success: boolean, message: string }> {
     try {
         const schemaForUpdate = bannerSchema.extend({
             imageSrc: z.string().optional(),
-        });
+        }).omit({createdAt: true});
 
         const validationResult = schemaForUpdate.safeParse(data);
         if (!validationResult.success) {
@@ -88,7 +88,7 @@ export async function getBanners(): Promise<Banner[]> {
     try {
         const q = query(
             collection(db, "heroBanners"),
-            orderBy("createdAt", "desc")
+            orderBy("order", "asc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -96,13 +96,19 @@ export async function getBanners(): Promise<Banner[]> {
 
         querySnapshot.forEach((docSnap: QueryDocumentSnapshot<DocumentData>) => {
             const data = docSnap.data();
-
-            let createdAtString = new Date().toISOString(); 
+            
+            // Robustly handle createdAt field
+            let createdAtString: string;
             const createdAt = data.createdAt;
+
             if (createdAt instanceof Timestamp) {
                 createdAtString = createdAt.toDate().toISOString();
-            } else if (createdAt && typeof createdAt.toDate === 'function') {
+            } else if (typeof createdAt === 'string') {
+                createdAtString = createdAt;
+            } else if (createdAt && typeof createdAt === 'object' && typeof createdAt.toDate === 'function') {
                 createdAtString = createdAt.toDate().toISOString();
+            } else {
+                createdAtString = new Date().toISOString(); // Fallback
             }
 
             const banner: Banner = {
@@ -121,7 +127,7 @@ export async function getBanners(): Promise<Banner[]> {
             banners.push(banner);
         });
 
-        return banners.sort((a, b) => a.order - b.order);
+        return banners;
     } catch (error) {
         console.error("Error fetching banners:", error);
         return [];

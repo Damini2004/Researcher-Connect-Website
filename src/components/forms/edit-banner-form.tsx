@@ -1,4 +1,3 @@
-
 // src/components/forms/edit-banner-form.tsx
 "use client";
 
@@ -18,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { updateBanner, type Banner, type UpdateBannerData } from "@/services/bannerService";
+import { updateBanner, type Banner, type UpdateBannerPayload } from "@/services/bannerService";
 import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "../ui/scroll-area";
 import { Progress } from "../ui/progress";
@@ -124,7 +123,7 @@ export default function EditBannerForm({ banner, onBannerUpdated }: EditBannerFo
     setIsSubmitting(true);
     
     try {
-      const payload: UpdateBannerData = { ...values };
+      const payload: UpdateBannerPayload = { ...values };
 
       // If a new image was selected, compress it and add to payload
       if (values.image && values.image.length > 0) {
