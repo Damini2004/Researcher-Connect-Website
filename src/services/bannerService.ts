@@ -49,18 +49,19 @@ export async function getBanners(): Promise<Banner[]> {
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
             const data = doc.data();
+            // This now correctly maps all fields expected by the Banner interface.
             return {
                 id: doc.id,
-                titleLine1: data.titleLine1,
-                titleLine2: data.titleLine2,
-                subtitle: data.subtitle,
-                button1Text: data.button1Text,
-                button1Link: data.button1Link,
-                button2Text: data.button2Text,
-                button2Link: data.button2Link,
-                order: data.order,
-                imageSrc: data.imageSrc,
-            }
+                titleLine1: data.titleLine1 || "",
+                titleLine2: data.titleLine2 || "",
+                subtitle: data.subtitle || "",
+                button1Text: data.button1Text || "",
+                button1Link: data.button1Link || "/",
+                button2Text: data.button2Text || "",
+                button2Link: data.button2Link || "/",
+                order: data.order || 0,
+                imageSrc: data.imageSrc || "",
+            } satisfies Banner;
         });
     } catch (error) {
         console.error("Error fetching banners: ", error);
