@@ -8,15 +8,15 @@ import { z } from 'zod';
 
 // Schema for data coming from the form
 const bannerFormSchema = z.object({
-  titleLine1: z.string(),
-  titleLine2: z.string(),
-  subtitle: z.string(),
-  button1Text: z.string(),
-  button1Link: z.string(),
-  button2Text: z.string(),
-  button2Link: z.string(),
-  order: z.number(),
-  imageSrc: z.string(),
+  titleLine1: z.string().min(1, "First title line is required."),
+  titleLine2: z.string().min(1, "Second title line is required."),
+  subtitle: z.string().min(1, "Subtitle is required."),
+  button1Text: z.string().min(1, "Button 1 text is required."),
+  button1Link: z.string().min(1, "Please enter a link for Button 1.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
+  button2Text: z.string().min(1, "Button 2 text is required."),
+  button2Link: z.string().min(1, "Please enter a link for Button 2.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
+  order: z.coerce.number().min(0, "Order must be a positive number."),
+  imageSrc: z.string().min(1, "Image data is missing."),
 });
 
 type BannerFormData = z.infer<typeof bannerFormSchema>;
@@ -37,7 +37,6 @@ export interface Banner {
 
 export async function addBanner(data: BannerFormData): Promise<{ success: boolean; message: string; }> {
   try {
-    // Validate the final payload before sending to Firestore
     const validationResult = bannerFormSchema.safeParse(data);
     if (!validationResult.success) {
         const firstError = validationResult.error.errors[0];
@@ -71,12 +70,13 @@ export async function getBanners(): Promise<Banner[]> {
             const data = docSnap.data();
 
             // Safely handle timestamp conversion
-            let createdAtString = new Date().toISOString(); // Default value
-            if (data.createdAt && typeof data.createdAt.toDate === 'function') {
-                createdAtString = data.createdAt.toDate().toISOString();
-            } else if (data.createdAt) {
+            let createdAtString = new Date().toISOString(); // Default to now if missing
+            const createdAt = data.createdAt;
+            if (createdAt && typeof createdAt.toDate === 'function') {
+                createdAtString = createdAt.toDate().toISOString();
+            } else if (createdAt) {
                 // Fallback for other potential date formats
-                const d = new Date(data.createdAt);
+                const d = new Date(createdAt);
                 if (!isNaN(d.getTime())) {
                     createdAtString = d.toISOString();
                 }
