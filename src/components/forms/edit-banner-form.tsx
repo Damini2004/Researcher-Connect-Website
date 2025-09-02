@@ -29,9 +29,9 @@ const formSchema = z.object({
   titleLine2: z.string().min(1, "Second title line is required."),
   subtitle: z.string().min(1, "Subtitle is required."),
   button1Text: z.string().min(1, "Button 1 text is required."),
-  button1Link: z.string().min(1, "Please enter a link for Button 1."),
+  button1Link: z.string().min(1, "Please enter a link for Button 1.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
   button2Text: z.string().min(1, "Button 2 text is required."),
-  button2Link: z.string().min(1, "Please enter a link for Button 2."),
+  button2Link: z.string().min(1, "Please enter a link for Button 2.").refine(val => val.startsWith('/') || val.startsWith('http'), { message: "Link must be a relative path (e.g., /about) or a full URL."}),
   order: z.coerce.number().min(0, "Order must be a positive number."),
   image: z
     .any()
@@ -123,13 +123,15 @@ export default function EditBannerForm({ banner, onBannerUpdated }: EditBannerFo
     setIsSubmitting(true);
     
     try {
-      const payload: UpdateBannerPayload = { ...values };
+      const payload: Partial<UpdateBannerPayload> = { ...values };
 
       // If a new image was selected, compress it and add to payload
       if (values.image && values.image.length > 0) {
         payload.imageSrc = await compressImage(values.image[0]);
       }
       
+      delete (payload as any).image;
+
       const result = await updateBanner(banner.id, payload);
 
       if (result.success) {
@@ -148,7 +150,8 @@ export default function EditBannerForm({ banner, onBannerUpdated }: EditBannerFo
     }
   }
 
-  const handleNext = async () => {
+  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     const fieldsToValidate = stepFields[currentStep - 1] || [];
     const isValid = await form.trigger(fieldsToValidate as (keyof FormValues)[]);
     if (isValid) {
@@ -224,7 +227,7 @@ export default function EditBannerForm({ banner, onBannerUpdated }: EditBannerFo
             ) : (
                 <Button type="submit" size="lg" disabled={isSubmitting}>
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isSubmitting ? "Saving Banner..." : "Save Changes"}
+                    {isSubmitting ? "Saving Changes..." : "Save Changes"}
                 </Button>
             )}
         </div>
