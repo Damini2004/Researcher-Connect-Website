@@ -11,16 +11,6 @@ import Autoplay from "embla-carousel-autoplay";
 import { getBanners, type Banner } from '@/services/bannerService';
 import { Skeleton } from '../ui/skeleton';
 
-async function getBannersData(): Promise<Banner[]> {
-    try {
-        const banners = await getBanners();
-        return banners;
-    } catch (error) {
-        console.error("Failed to fetch banners for hero section:", error);
-        return [];
-    }
-}
-
 export function HeroSection() {
     const [banners, setBanners] = React.useState<Banner[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -30,9 +20,14 @@ export function HeroSection() {
     React.useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const data = await getBannersData();
-            setBanners(data);
-            setIsLoading(false);
+            try {
+                const data = await getBanners();
+                setBanners(data);
+            } catch (error) {
+                console.error("Failed to fetch banners:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
         fetchData();
     }, []);
