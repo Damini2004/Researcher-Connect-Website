@@ -96,11 +96,6 @@ export default function PublicationsPatentPage() {
                 />
                 <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
                     <h1 className="text-5xl font-extrabold tracking-tight">Publications & Patent Consultancy</h1>
-                    <div className="flex items-center text-sm text-white/80 mt-2">
-                        <Link href="/" className="hover:text-white">Home</Link>
-                        <ChevronRight className="h-4 w-4 mx-1" />
-                        <span className="font-semibold text-white">Publications & Patent</span>
-                    </div>
                 </div>
             </section>
             

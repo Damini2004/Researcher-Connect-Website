@@ -24,11 +24,6 @@ export default function EB1ConsultancyPage() {
                 />
                 <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
                     <h1 className="text-5xl font-extrabold tracking-tight">EB-1 Visa Consultancy</h1>
-                    <div className="flex items-center text-sm text-white/80 mt-2">
-                        <Link href="/" className="hover:text-white">Home</Link>
-                        <ChevronRight className="h-4 w-4 mx-1" />
-                        <span className="font-semibold text-white">EB-1 Consultancy</span>
-                    </div>
                 </div>
             </section>
 
