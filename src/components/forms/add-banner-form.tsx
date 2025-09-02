@@ -22,7 +22,7 @@ import { addBanner } from "@/services/bannerService";
 import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "../ui/scroll-area";
 import { Progress } from "../ui/progress";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   titleLine1: z.string().min(1, "First title line is required."),
@@ -39,10 +39,6 @@ const formSchema = z.object({
     .refine(
       (files) => files?.[0]?.type.startsWith("image/"),
       "Only image files are allowed."
-    )
-    .refine(
-        (files) => files?.[0]?.size <= 2 * 1024 * 1024,
-        "Image size must be less than 2MB."
     ),
 });
 
@@ -55,10 +51,47 @@ const stepFields: (keyof BannerFormData)[][] = [
 
 const totalSteps = stepFields.length;
 
-
 interface AddBannerFormProps {
     onBannerAdded: () => void;
 }
+
+const compressImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1080;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
+      };
+      img.onerror = reject;
+      img.src = event.target?.result as string;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
 
 export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
   const { toast } = useToast();
@@ -81,30 +114,21 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
 
   const imageFileRef = form.register("image");
 
-  const convertFileToBase64 = (file: File): Promise<string> => {
-      return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = (error) => reject(error);
-      });
-  };
-
   async function onSubmit(values: BannerFormData) {
     setIsSubmitting(true);
     
-    let imageSrc = "";
+    let compressedImageSrc = "";
     if (values.image && values.image.length > 0) {
         try {
-            imageSrc = await convertFileToBase64(values.image[0]);
+            compressedImageSrc = await compressImage(values.image[0]);
         } catch (error) {
-             toast({ title: "Error", description: "Failed to read image file.", variant: "destructive" });
+             toast({ title: "Error", description: "Failed to compress the image. Please try another file.", variant: "destructive" });
              setIsSubmitting(false);
              return;
         }
     }
 
-    const payload = { ...values, imageSrc: imageSrc };
+    const payload = { ...values, imageSrc: compressedImageSrc };
     const result = await addBanner(payload);
 
     if (result.success) {
@@ -112,7 +136,7 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
       onBannerAdded();
     } else {
       toast({
-        title: "Error",
+        title: "Error Adding Banner",
         description: result.message,
         variant: "destructive",
       });
@@ -164,11 +188,11 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
                             
                             <div className="grid grid-cols-2 gap-6">
                             <FormField control={form.control} name="button1Text" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Text</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                            <FormField control={form.control} name="button1Link" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Link</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                            <FormField control={form.control} name="button1Link" render={({ field }) => ( <FormItem> <FormLabel>Button 1 Link</FormLabel> <FormControl><Input placeholder="/example-path" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             </div>
                             <div className="grid grid-cols-2 gap-6">
                                 <FormField control={form.control} name="button2Text" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Text</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="button2Link" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Link</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                                <FormField control={form.control} name="button2Link" render={({ field }) => ( <FormItem> <FormLabel>Button 2 Link</FormLabel> <FormControl><Input placeholder="/example-path" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                             </div>
                         </section>
                     )}
@@ -177,7 +201,7 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
                          <section className="space-y-6">
                              <div className="grid grid-cols-2 gap-6">
                                 <FormField control={form.control} name="order" render={({ field }) => ( <FormItem> <FormLabel>Display Order</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormDescription>Lower numbers appear first.</FormDescription> <FormMessage /> </FormItem> )} />
-                                <FormField control={form.control} name="image" render={() => ( <FormItem> <FormLabel>Background Image</FormLabel> <FormControl><Input type="file" accept="image/*" {...imageFileRef} /></FormControl> <FormDescription>Recommended size: 1600x500px. Max 2MB.</FormDescription> <FormMessage /> </FormItem> )} />
+                                <FormField control={form.control} name="image" render={() => ( <FormItem> <FormLabel>Background Image</FormLabel> <FormControl><Input type="file" accept="image/*" {...imageFileRef} /></FormControl> <FormDescription>Will be compressed. Max original size 5MB.</FormDescription> <FormMessage /> </FormItem> )} />
                             </div>
                          </section>
                     )}
@@ -195,6 +219,7 @@ export default function AddBannerForm({ onBannerAdded }: AddBannerFormProps) {
                 </Button>
             ) : (
                 <Button type="submit" size="lg" disabled={isSubmitting}>
+                    {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {isSubmitting ? "Adding Banner..." : "Add Banner"}
                 </Button>
             )}

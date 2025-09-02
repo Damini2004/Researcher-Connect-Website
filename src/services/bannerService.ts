@@ -6,31 +6,42 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
-const bannerSchema = z.object({
-  titleLine1: z.string().min(1, "First title line is required."),
-  titleLine2: z.string().min(1, "Second title line is required."),
-  subtitle: z.string().min(1, "Subtitle is required."),
-  button1Text: z.string().min(1, "Button 1 text is required."),
-  button1Link: z.string().min(1, "Please enter a link for Button 1."),
-  button2Text: z.string().min(1, "Button 2 text is required."),
-  button2Link: z.string().min(1, "Please enter a link for Button 2."),
-  order: z.coerce.number().min(0, "Order must be a positive number."),
-  imageSrc: z.string().min(1, "Image is required."),
+// Schema for data coming from the form
+const bannerFormSchema = z.object({
+  titleLine1: z.string(),
+  titleLine2: z.string(),
+  subtitle: z.string(),
+  button1Text: z.string(),
+  button1Link: z.string(),
+  button2Text: z.string(),
+  button2Link: z.string(),
+  order: z.number(),
+  imageSrc: z.string(),
 });
 
-type BannerFormData = z.infer<typeof bannerSchema>;
+type BannerFormData = z.infer<typeof bannerFormSchema>;
 
-export interface Banner extends BannerFormData {
+export interface Banner {
     id: string;
+    titleLine1: string;
+    titleLine2: string;
+    subtitle: string;
+    button1Text: string;
+    button1Link: string;
+    button2Text: string;
+    button2Link: string;
+    order: number;
+    imageSrc: string;
     createdAt: string; 
 }
 
-export async function addBanner(data: Omit<BannerFormData, 'imageSrc'> & { imageSrc: string }): Promise<{ success: boolean; message: string; }> {
+export async function addBanner(data: BannerFormData): Promise<{ success: boolean; message: string; }> {
   try {
-    const validationResult = bannerSchema.safeParse(data);
+    // Validate the final payload before sending to Firestore
+    const validationResult = bannerFormSchema.safeParse(data);
     if (!validationResult.success) {
         const firstError = validationResult.error.errors[0];
-        return { success: false, message: `${firstError.path.join('.')}: ${firstError.message}` };
+        return { success: false, message: `Validation Error: ${firstError.path.join('.')} - ${firstError.message}` };
     }
     
     await addDoc(collection(db, 'heroBanners'), {
@@ -59,27 +70,29 @@ export async function getBanners(): Promise<Banner[]> {
         querySnapshot.forEach((docSnap: QueryDocumentSnapshot<DocumentData>) => {
             const data = docSnap.data();
 
-            let createdAtString: string;
-            if (data.createdAt instanceof Timestamp) {
+            // Safely handle timestamp conversion
+            let createdAtString = new Date().toISOString(); // Default value
+            if (data.createdAt && typeof data.createdAt.toDate === 'function') {
                 createdAtString = data.createdAt.toDate().toISOString();
             } else if (data.createdAt) {
-                // Fallback for unexpected formats, though less likely
-                createdAtString = new Date(data.createdAt).toISOString();
-            } else {
-                // Failsafe: if createdAt is null or undefined, use current time
-                createdAtString = new Date().toISOString();
+                // Fallback for other potential date formats
+                const d = new Date(data.createdAt);
+                if (!isNaN(d.getTime())) {
+                    createdAtString = d.toISOString();
+                }
             }
 
+            // Construct the banner object with defaults for missing fields
             const banner: Banner = {
                 id: docSnap.id,
                 titleLine1: data.titleLine1 || "",
                 titleLine2: data.titleLine2 || "",
                 subtitle: data.subtitle || "",
-                button1Text: data.button1Text || "",
-                button1Link: data.button1Link || "",
-                button2Text: data.button2Text || "",
-                button2Link: data.button2Link || "",
-                order: data.order || 0,
+                button1Text: data.button1Text || "Learn More",
+                button1Link: data.button1Link || "/",
+                button2Text: data.button2Text || "Contact Us",
+                button2Link: data.button2Link || "/contact-us",
+                order: data.order ?? 0,
                 imageSrc: data.imageSrc || "",
                 createdAt: createdAtString,
             };
@@ -89,6 +102,7 @@ export async function getBanners(): Promise<Banner[]> {
         return banners;
     } catch (error) {
         console.error("Error fetching banners:", error);
+        // In case of an error, return an empty array to prevent the app from crashing.
         return [];
     }
 }

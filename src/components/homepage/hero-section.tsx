@@ -37,13 +37,12 @@ export function HeroSection() {
           return
         }
     
-        setCurrent(api.selectedScrollSnap())
-    
         const onSelect = () => {
           setCurrent(api.selectedScrollSnap())
         }
     
-        api.on("select", onSelect)
+        api.on("select", onSelect);
+        onSelect(); // Set initial slide
     
         return () => {
           api.off("select", onSelect)
@@ -119,7 +118,7 @@ export function HeroSection() {
                             <span className="text-[#3D4C6F]">{currentBanner.titleLine2}</span>
                         </h1>
                         <p className="max-w-xl mt-6 text-lg md:text-xl text-gray-700 drop-shadow-md">
-                        {currentBanner.subtitle.split('\n').map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}
+                        {currentBanner.subtitle.split('\\n').map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}
                         </p>
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}

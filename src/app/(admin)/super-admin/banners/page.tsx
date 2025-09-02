@@ -1,3 +1,4 @@
+
 // src/app/(admin)/super-admin/banners/page.tsx
 "use client";
 
@@ -30,9 +31,10 @@ export default function ManageBannersPage() {
       const data = await getBanners();
       setBanners(data);
     } catch (error) {
+      const message = error instanceof Error ? error.message : "An unexpected error occurred.";
       toast({
-        title: "Error",
-        description: "Could not fetch banners.",
+        title: "Error Fetching Banners",
+        description: `Could not fetch banners: ${message}`,
         variant: "destructive",
       });
     } finally {
@@ -50,7 +52,7 @@ export default function ManageBannersPage() {
       title: "Banner Added!",
       description: "The new banner has been successfully created.",
     });
-    fetchBanners();
+    fetchBanners(); // Refresh the list
   };
   
   const handleBannerDeleted = () => {
@@ -58,7 +60,7 @@ export default function ManageBannersPage() {
         title: "Banner Deleted",
         description: "The banner has been successfully deleted.",
     });
-    fetchBanners();
+    fetchBanners(); // Refresh the list
   }
 
   return (
