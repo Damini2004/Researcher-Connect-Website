@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const services = [
   {
-    title: "Software Solutions (RAMS & SDGMapper)",
+    title: "Software Solutions",
     description:
       "Leverage advanced reliability analysis and sustainable development tracking with our custom-built tools, helping organizations make informed, impactful decisions.",
     imageUrl:
@@ -24,7 +24,7 @@ const services = [
     link: "/conference",
   },
   {
-    title: "Higher Studies (PhD & PostDoc) Proposals",
+    title: "Higher Studies Proposals",
     description:
       "Receive expert guidance to craft competitive PhD and Postdoctoral research proposals, improving your chances of acceptance and funding.",
     imageUrl:

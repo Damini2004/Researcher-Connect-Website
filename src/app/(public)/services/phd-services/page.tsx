@@ -6,11 +6,32 @@ import Image from "next/image";
 import Link from "next/link";
 
 const services = [
-    { title: "Topic Selection", description: "Identifying novel and viable research topics.", icon: Search },
-    { title: "Literature Review", description: "Comprehensive review and synthesis of existing literature.", icon: BookMarked },
-    { title: "Manuscript Writing", description: "From drafting to final polishing of your thesis or papers.", icon: Edit },
-    { title: "Viva Voce Preparation", description: "Coaching and preparation for your thesis defense.", icon: Lightbulb },
-];
+    {
+      title: "Topic Selection",
+      description:
+        "Discover innovative, relevant, and research-worthy topics tailored to your academic goals and future impact.",
+      icon: Search,
+    },
+    {
+      title: "Literature Review",
+      description:
+        "Conduct a thorough, insightful analysis of existing research to identify gaps, trends, and opportunities for contribution.",
+      icon: BookMarked,
+    },
+    {
+      title: "Manuscript Writing",
+      description:
+        "From structured drafting to expert-level refinement, we help craft clear, compelling theses, dissertations, and journal papers.",
+      icon: Edit,
+    },
+    {
+      title: "Viva Voce Preparation",
+      description:
+        "Personalized coaching and strategy sessions to help you confidently present and defend your research with clarity and authority.",
+      icon: Lightbulb,
+    },
+  ];
+  
 
 export default function PhDServicePage() {
     return (
@@ -41,10 +62,9 @@ export default function PhDServicePage() {
                         />
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Your Complete PhD Journey Support</h2>
-                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                   Embarking on a PhD is a monumental task. We provide comprehensive support for every stage of your doctoral journey, from refining your research question to preparing for your final defense. Our team of experienced academics is here to guide you to success.
-                                </p>
+                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Your Complete PhD Journey Support</h2>
+                                <p className="max-w-[600px] text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                Pursuing a PhD is a demanding journey that requires strategic planning, academic precision, and consistent guidance. Researcher Connect offers comprehensive PhD support — from topic selection, proposal development, and literature reviews to publication assistance, thesis structuring, and defense preparation. We ensure research stays focused, methodologically sound, and aligned with institutional expectations. Our services reduce stress, save time, and improve academic outcomes while fostering confidence throughout the doctoral process. Whether students are just beginning or approaching submission, we provide personalized mentoring and technical expertise, enabling scholars to complete their PhDs successfully and make meaningful contributions to their respective fields.                                </p>
                             </div>
                         </div>
                     </div>

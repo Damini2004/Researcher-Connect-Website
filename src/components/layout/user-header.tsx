@@ -26,9 +26,9 @@ const topBarInfo = [
 ]
 
 const servicesLinks = [
-    { href: "/services/software-solutions", label: "Software Solutions (RAMS & SDGMapper)" },
+    { href: "/services/software-solutions", label: "Software Solutions " },
     { href: "/conference", label: "Conference Management" },
-    { href: "/services/higher-studies", label: "Higher Studies (PhD & PostDoc) Proposals" },
+    { href: "/services/higher-studies", label: "Higher Studies Proposals" },
     { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },

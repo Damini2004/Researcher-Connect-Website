@@ -6,10 +6,26 @@ import Image from "next/image";
 import Link from "next/link";
 
 const supportAreas = [
-    { title: "Proposal Writing", description: "Crafting a compelling and fundable research proposal.", icon: FileText },
-    { title: "Research Methodology", description: "Designing robust research frameworks and methodologies.", icon: Microscope },
-    { title: "Collaboration Matching", description: "Connecting you with leading researchers and institutions.", icon: Users },
-]
+    {
+      title: "Proposal Writing",
+      description:
+        "Transforming ideas into clear, persuasive, and fundable research proposals that stand out in competitive review processes.",
+      icon: FileText,
+    },
+    {
+      title: "Research Methodology",
+      description:
+        "Designing rigorous, innovative research frameworks and methodologies to ensure accuracy, credibility, and meaningful results.",
+      icon: Microscope,
+    },
+    {
+      title: "Collaboration Matching",
+      description:
+        "Connecting you with top-tier researchers, institutions, and industry partners to spark impactful, cross-disciplinary collaborations.",
+      icon: Users,
+    },
+  ];
+  
 
 export default function HigherStudiesPage() {
     return (
@@ -40,10 +56,9 @@ export default function HigherStudiesPage() {
                         />
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Unlock Your Academic Future</h2>
-                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    Navigating the path to a PhD or Postdoctoral position requires a meticulously crafted research proposal. We offer specialized guidance to help aspiring academics formulate innovative and impactful research proposals that stand out and secure funding.
-                                </p>
+                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Unlock Your Academic Future</h2>
+                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed  text-justify">
+                                Securing admission or funding for PhD and postdoctoral research depends heavily on strong, well-crafted proposals. Researcher Connect guides aspiring researchers through every step of proposal development, from topic refinement and literature synthesis to methodology design, funding alignment, and impact articulation. We ensure proposals are not only academically rigorous but also competitive and clearly positioned within global research priorities. Our tailored approach helps candidates stand out, increasing the likelihood of approval, scholarships, or institutional partnerships. Whether targeting top universities, research councils, or industry-backed projects, our guidance equips scholars with persuasive, structured, and polished submissions that turn ambitions into opportunities.                                </p>
                             </div>
                         </div>
                     </div>

@@ -19,11 +19,32 @@ import ContactForm from "@/components/forms/contact-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const services = [
-    { title: "Patent Search & Analysis", description: "In-depth prior art searches to assess patentability.", icon: Search },
-    { title: "Patent Drafting", description: "Expertly crafting patent applications to protect your inventions.", icon: Edit },
-    { title: "Journal Publishing", description: "Assistance with manuscript preparation and submission to high-impact journals.", icon: BookOpen },
-    { title: "IP Strategy", description: "Developing a comprehensive strategy to protect your intellectual assets.", icon: ShieldCheck },
-];
+    {
+      title: "Patent Search & Analysis",
+      description:
+        "Comprehensive prior art and market searches to evaluate novelty, assess risks, and strengthen your patent strategy.",
+      icon: Search,
+    },
+    {
+      title: "Patent Drafting & Filing",
+      description:
+        "Professionally crafted patent applications designed to protect your innovations and maximize commercial potential.",
+      icon: Edit,
+    },
+    {
+      title: "Journal Publishing",
+      description:
+        "End-to-end support for preparing, refining, and submitting manuscripts to leading, high-impact academic journals.",
+      icon: BookOpen,
+    },
+    {
+      title: "IP Strategy & Commercialization",
+      description:
+        "Customized IP strategies, technology transfer support, and guidance on commercialization and licensing.",
+      icon: ShieldCheck,
+    },
+  ];
+  
 
 export default function PublicationsPatentPage() {
     const [webinars, setWebinars] = React.useState<Webinar[]>([]);
@@ -86,7 +107,7 @@ export default function PublicationsPatentPage() {
 
     return (
         <div className="bg-secondary/30">
-            <section className="relative w-full h-[300px] bg-gray-800 text-white">
+            <section className="relative w-full h-[500px] bg-gray-800 text-white">
                 <Image
                     src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1600&h=300&auto=format&fit=crop"
                     alt="Team reviewing documents"
@@ -112,10 +133,9 @@ export default function PublicationsPatentPage() {
                         />
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">From Lab to Legacy</h2>
-                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    We bridge the gap between innovation and impact. Our integrated consultancy services guide you through the complexities of securing your intellectual property with patents while strategically positioning your research for publication in high-impact journals.
-                                </p>
+                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">From Lab to Legacy</h2>
+                                <p className="max-w-[600px] text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                Protecting intellectual property is crucial for safeguarding innovation and securing commercial or academic advantages. Researcher Connect provides specialized patent consultancy, assisting researchers and institutions with prior-art searches, drafting, filing strategies, and jurisdictional guidance. We simplify complex legal frameworks, ensuring innovations are adequately protected while meeting regulatory timelines. Our team coordinates with legal experts to strengthen patent claims, improve approval success, and support technology transfer initiatives. Whether securing local or international rights, we help innovators navigate the process with clarity and confidence, ensuring that their intellectual contributions are preserved, valued, and positioned for future development or commercialization.                                </p>
                             </div>
                              <Button asChild size="lg" className="w-fit">
                                 <Link href="/contact-us">

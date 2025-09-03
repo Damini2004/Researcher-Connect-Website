@@ -6,10 +6,26 @@ import Image from "next/image";
 import Link from "next/link";
 
 const features = [
-    { name: "Reliability Analysis", description: "Comprehensive RAMS analysis to ensure system safety and reliability.", icon: Cpu },
-    { name: "GIS Mapping", description: "Advanced SDG mapping with our powerful SDGMapper tool.", icon: Map },
-    { name: "Project Management", description: "Integrated tools for seamless project tracking and management.", icon: GanttChartSquare },
-];
+    {
+      name: "Reliability Analysis",
+      description:
+        "Dive deep into system performance with our advanced RAMS engine — predicting risks, boosting safety, and ensuring rock-solid reliability for even the most complex projects.",
+      icon: Cpu,
+    },
+    {
+      name: "GIS Mapping",
+      description:
+        "Visualize global impact effortlessly. Our SDGMapper turns raw research data into interactive maps aligned with UN Sustainable Development Goals — clear, compelling, and ready to impress funders and collaborators.",
+      icon: Map,
+    },
+    {
+      name: "Project Management",
+      description:
+        "Stay in control from concept to completion. Integrated timelines, milestones, and progress dashboards keep research teams aligned, agile, and always ahead of schedule.",
+      icon: GanttChartSquare,
+    },
+  ];
+  
 
 export default function SoftwareSolutionsPage() {
     return (
@@ -40,11 +56,10 @@ export default function SoftwareSolutionsPage() {
                         />
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">RAMS & SDGMapper</h2>
+                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Software Solutions</h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                   We provide state-of-the-art software solutions tailored for complex engineering and development projects. Our flagship products, RAMS for reliability engineering and SDGMapper for sustainable development goal tracking, empower organizations to achieve excellence and impact.
-                                </p>
-                            </div>
+                                Researcher Connect provides advanced digital tools to accelerate impactful research. RAMS (Reliability, Availability, Maintainability, and Safety) helps teams assess risk, enhance system performance, and meet regulatory standards across complex projects. SDGMapper aligns research with the UN Sustainable Development Goals, simplifying progress tracking, gap analysis, and impact reporting. Together, these platforms deliver data-driven insights, streamlined workflows, and measurable results. Whether optimizing designs or demonstrating societal relevance, our software solutions turn complex research challenges into opportunities for innovation and meaningful progress in today’s fast-moving academic and industrial environments. </p> 
+                                </div>
                         </div>
                     </div>
                 </div>
