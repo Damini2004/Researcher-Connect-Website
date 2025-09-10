@@ -1,103 +1,146 @@
-// src/components/homepage/hero-section.tsx
+
 'use client';
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
-
-const carouselItems = [
-    {
-        imageSrc: "https://t4.ftcdn.net/jpg/03/84/55/29/360_F_384552930_zPoe9zgmCF7qgt8fqSedcyJ6C6Ye3dFs.jpg",
-        imageHint: "researcher in lab",
-        alt: "Researcher in a modern laboratory"
-    },
-    {
-        imageSrc: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&h=900&auto=format&fit=crop",
-        imageHint: "team collaboration",
-        alt: "Team collaborating on a project"
-    },
-    {
-        imageSrc: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&h=900&auto=format&fit=crop",
-        imageHint: "business meeting",
-        alt: "Business meeting"
-    }
-];
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { getBanners, type Banner } from '@/services/bannerService';
+import { Skeleton } from '../ui/skeleton';
 
 export function HeroSection() {
-    const plugin = React.useRef(
-        Autoplay({ delay: 5000, stopOnInteraction: true })
-    );
+    const [banners, setBanners] = React.useState<Banner[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [api, setApi] = React.useState<CarouselApi>()
+    const [current, setCurrent] = React.useState(0)
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const data = await getBanners();
+                setBanners(data);
+            } catch (error) {
+                console.error("Failed to fetch banners:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    React.useEffect(() => {
+        if (!api) {
+          return
+        }
+    
+        const onSelect = () => {
+          setCurrent(api.selectedScrollSnap())
+        }
+    
+        api.on("select", onSelect);
+        onSelect(); // Set initial slide
+    
+        return () => {
+          api.off("select", onSelect)
+        }
+      }, [api])
+
+    if (isLoading) {
+        return (
+            <section className="w-full h-[500px] relative flex items-center justify-start text-left overflow-hidden bg-white">
+                <Skeleton className='w-full h-full' />
+            </section>
+        );
+    }
+    
+    if (banners.length === 0) {
+        return (
+             <section className="w-full h-[500px] relative flex items-center justify-center text-center overflow-hidden bg-muted">
+                <p className="text-muted-foreground">No banners configured. Please add banners in the admin dashboard.</p>
+            </section>
+        )
+    }
+
+    const currentBanner = banners[current];
 
     return (
-        <section className="w-full h-[60vh] md:h-[80vh] relative overflow-hidden">
+        <section className="w-full h-[500px] relative flex items-center justify-start text-left overflow-hidden bg-white">
             <Carousel
-                plugins={[plugin.current]}
-                className="w-full h-full"
-                onMouseEnter={plugin.current.stop}
-                onMouseLeave={plugin.current.reset}
+                setApi={setApi}
+                plugins={[
+                    Autoplay({
+                      delay: 5000,
+                      stopOnInteraction: true,
+                    }),
+                ]}
+                className="absolute inset-0 z-0 w-full h-full"
+                opts={{
+                    loop: true,
+                }}
             >
-                <CarouselContent className="h-full">
-                    {carouselItems.map((item, index) => (
-                        <CarouselItem key={index} className="h-full">
-                            <div className="w-full h-full relative">
+                <CarouselContent>
+                    {banners.map((banner, index) => (
+                        <CarouselItem key={banner.id}>
+                            <div className="w-full h-[500px] relative">
                                 <Image
-                                    src={item.imageSrc}
-                                    alt={item.alt}
+                                    src={banner.imageSrc}
+                                    alt={banner.titleLine1}
+                                    data-ai-hint="banner image"
                                     fill
                                     className="object-cover"
-                                    data-ai-hint={item.imageHint}
+                                    priority={index === 0}
                                 />
-                                <div className="absolute inset-0 bg-white/50" />
                             </div>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
             </Carousel>
+            
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent z-0" />
 
-            <div className="absolute inset-0 flex items-center justify-center text-center text-foreground z-10">
-                 <div className="container px-4 md:px-6">
+            {currentBanner && (
+                <div className="relative z-10 container mx-auto px-4 ml-12 md:ml-24">
                     <motion.div
+                        key={currentBanner.id} // Re-trigger animation on slide change
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="max-w-3xl mx-auto"
+                        className="max-w-3xl"
                     >
-                      <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight">
-                        <span className="block">Streamline Your Research</span>
-                        <span className="block text-primary">with Researcher Connect</span>
-                      </h1>
-                      <p className="max-w-xl mx-auto mt-6 text-lg text-foreground/90 md:text-xl">
-                        The ultimate platform for seamless journal submission, intelligent review, and publication management. Powered by AI.
-                      </p>
-                       <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                        className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
-                       >
-                          <Link href="/submit-journal">
-                            <Button size="lg" className="w-full sm:w-auto bg-black text-white hover:bg-gray-800">
-                              Submit Your Paper
-                              <ArrowRight className="ml-2 h-5 w-5" />
-                            </Button>
-                          </Link>
-                          <Link href="/about">
-                            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background">
-                              Learn More
-                            </Button>
-                          </Link>
+                        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight xl:text-7xl !leading-tight text-gray-900">
+                            <span className="block text-[#3D4C6F]">{currentBanner.titleLine1}</span>
+                            <span className="text-[#3D4C6F]">{currentBanner.titleLine2}</span>
+                        </h1>
+                        <p className="max-w-xl mt-6 text-lg md:text-xl text-gray-700 drop-shadow-md">
+                        {currentBanner.subtitle.split('\\n').map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}
+                        </p>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                            className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-start"
+                        >
+                            <Link href={currentBanner.button1Link}>
+                                <Button size="lg" className="w-full sm:w-auto">
+                                    {currentBanner.button1Text}
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Button>
+                            </Link>
+                            <Link href={currentBanner.button2Link}>
+                                <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/90 text-[#3D4C6F] border-gray-200 hover:bg-white">
+                                    {currentBanner.button2Text}
+                                </Button>
+                            </Link>
                         </motion.div>
                     </motion.div>
                 </div>
-            </div>
+            )}
         </section>
     );
 }

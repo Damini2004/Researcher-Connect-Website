@@ -5,17 +5,6 @@ import { db } from '@/lib/firebase';
 import { collection, query, where, getDocs, DocumentData, addDoc, orderBy, QueryDocumentSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { z } from 'zod';
 
-export interface Enquiry {
-  id: string;
-  subAdminId: string;
-  subAdminName: string;
-  currentEmail: string;
-  requestedName: string;
-  requestedEmail: string;
-  requestDate: string;
-  status: 'Pending' | 'Approved' | 'Denied';
-}
-
 export interface Inquiry {
     id: string;
     name: string;
@@ -63,16 +52,6 @@ const inquirySchema = z.object({
   privacyConsent: z.boolean().optional(),
 });
 
-export async function getPendingEnquiryCount(): Promise<number> {
-    try {
-        const q = query(collection(db, "enquiries"), where("status", "==", "Pending"));
-        const querySnapshot = await getDocs(q);
-        return querySnapshot.size;
-    } catch (error) {
-        console.error("Error fetching pending enquiry count: ", error);
-        return 0;
-    }
-}
 
 export async function addInquiry(data: z.infer<typeof inquirySchema>): Promise<{ success: boolean; message: string }> {
     try {
@@ -141,6 +120,17 @@ export async function getInquiries(): Promise<Inquiry[]> {
     } catch (error) {
         console.error("Error fetching inquiries: ", error);
         return [];
+    }
+}
+
+export async function getNewInquiryCount(): Promise<number> {
+    try {
+        const q = query(collection(db, "inquiries"), where("status", "==", "New"));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.size;
+    } catch (error) {
+        console.error("Error fetching new inquiry count: ", error);
+        return 0;
     }
 }
 

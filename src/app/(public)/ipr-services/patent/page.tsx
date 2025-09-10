@@ -1,7 +1,9 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FileText, Search, Edit, ShieldCheck, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const patentServices = [
     {
@@ -29,15 +31,31 @@ const patentServices = [
 export default function PatentPage() {
     return (
         <div className="bg-secondary/30">
-            <section className="container mx-auto px-4 py-16 md:py-24">
+            <section className="relative h-[400px] bg-gray-800 text-white">
+                <Image 
+                    src="https://images.unsplash.com/photo-1614064548237-02f9d3421475?q=80&w=1600&h=400&auto=format&fit=crop"
+                    alt="Innovation concept"
+                    data-ai-hint="innovation lightbulb"
+                    fill
+                    className="object-cover opacity-20"
+                />
+                <div className="relative container mx-auto px-4 h-full flex flex-col items-center justify-center text-center z-10">
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">Patent Services</h1>
+                    <p className="mt-4 text-lg md:text-xl max-w-3xl">
+                       Secure exclusive rights to your inventions with our comprehensive patent services.
+                    </p>
+                </div>
+            </section>
+            
+            <section className="container mx-auto px-4 py-16 md:py-24 bg-background">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Patent Services</h1>
+                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Protect Your Inventions</h2>
                         <p className="mt-6 text-lg text-muted-foreground">
-                            Secure exclusive rights to your inventions with our comprehensive patent services. From initial search and drafting to filing and prosecution, our experienced team guides you through every step of the complex patenting process to protect your valuable intellectual property.
+                            From initial search and drafting to filing and prosecution, our experienced team guides you through every step of the complex patenting process to protect your valuable intellectual property.
                         </p>
-                        <Button size="lg" className="mt-6">
-                            Consult a Patent Expert <ArrowRight className="ml-2 h-5 w-5" />
+                        <Button size="lg" className="mt-6" asChild>
+                            <Link href="/contact-us">Consult a Patent Expert <ArrowRight className="ml-2 h-5 w-5" /></Link>
                         </Button>
                     </div>
                     <div className="flex justify-center">
@@ -53,7 +71,7 @@ export default function PatentPage() {
                 </div>
             </section>
             
-            <section className="bg-background py-16 md:py-24">
+            <section className="bg-secondary/30 py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold tracking-tight">Our Patent Process</h2>

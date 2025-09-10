@@ -20,15 +20,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const topBarInfo = [
-    { text: "No. 374 Chaurai Nagar, Somatne Phata, Talegaon Dabhade, Maharashtra 410506", icon: MapPin },
-    { text: "+91-7020996341", icon: Phone, isLink: true, href: "tel:+917020996341" },
+    { text: "202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
+    { text: "+91 99702 94396", icon: Phone, isLink: true, href: "tel:+919970294396" },
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
 
 const servicesLinks = [
-    { href: "/services/software-solutions", label: "Software Solutions (RAMS & SDGMapper)" },
+    { href: "/services/software-solutions", label: "Software Solutions " },
     { href: "/conference", label: "Conference Management" },
-    { href: "/services/higher-studies", label: "Higher Studies (PhD & PostDoc) Proposals" },
+    { href: "/services/higher-studies", label: "Higher Studies Proposals" },
     { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },
@@ -39,10 +39,8 @@ const servicesLinks = [
 const mainNavLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/mission-vision", label: "Mission & Vision" },
   { href: "#", label: "Services", dropdown: servicesLinks },
   { href: "/blogs", label: "Blogs" },
-  { href: "/contact-us", label: "Contact" },
 ];
 
 
@@ -145,10 +143,6 @@ export default function UserHeader() {
                     ))}
                 </div>
                 <div className="flex items-center gap-6">
-                    <Link href="/research-support" className="flex items-center gap-2 hover:text-amber-400">
-                        <LifeBuoy className="h-4 w-4" />
-                        <span>Research Support</span>
-                    </Link>
                     <Link href="/login" className="flex items-center gap-2 hover:text-amber-400">
                         <User className="h-4 w-4" />
                         <span>Login</span>
@@ -173,8 +167,8 @@ export default function UserHeader() {
 
         <div className="flex items-center">
           <div className="hidden md:flex items-center">
-            <Button asChild>
-                <Link href="/submit-journal">Submit Paper</Link>
+            <Button asChild variant="outline" className="rounded-full bg-white border-gray-200 hover:bg-gray-50 text-foreground px-6">
+                <Link href="/contact-us">Contact us</Link>
             </Button>
           </div>
         </div>
@@ -211,11 +205,10 @@ export default function UserHeader() {
                                 <MobileNavLink key={link.label} link={link} onLinkClick={() => setMenuOpen(false)} />
                             )
                         )}
-                         <MobileNavLink link={{href: "/research-support", label: "Research Support"}} onLinkClick={() => setMenuOpen(false)} />
                     </Accordion>
                      <div className="p-4 border-t mt-4 space-y-2">
-                         <Button asChild className="w-full">
-                            <Link href="/submit-journal" onClick={() => setMenuOpen(false)}>Submit Paper</Link>
+                         <Button asChild variant="outline" className="w-full rounded-full bg-white border-gray-200 hover:bg-gray-50 text-foreground px-6">
+                            <Link href="/contact-us" onClick={() => setMenuOpen(false)}>Contact us</Link>
                         </Button>
                         <Button asChild variant="outline" className="w-full">
                             <Link href="/login" onClick={() => setMenuOpen(false)}>Login</Link>

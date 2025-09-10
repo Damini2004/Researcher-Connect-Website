@@ -10,9 +10,17 @@ const quickLinks = [
     { href: "/conference/faq", label: "FAQ" },
     { href: "/privacy-policy", label: "Privacy Policy" },
     { href: "#", label: "Terms of Use" },
-    { href: "#", label: "Global Office" },
-    { href: "#", label: "Local Office" },
 ]
+
+const servicesLinks = [
+    { href: "/services/software-solutions", label: "Software Solutions" },
+    { href: "/conference", label: "Conference Management" },
+    { href: "/services/higher-studies", label: "Higher Studies Proposals" },
+    { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
+    { href: "/internship", label: "Internship Services" },
+    { href: "/services/phd-services", label: "PhD Services" },
+    { href: "/services/publications-patent", label: "Publications & Patent" },
+];
 
 const socialLinks = [
     { href: "#", icon: Linkedin, label: "Linkedin" },
@@ -30,39 +38,41 @@ const Footer = () => {
     return (
         <footer className="bg-[#3D4C6F] text-white">
             <div className="container mx-auto px-4 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16">
-                    {/* Column 1: Sign up form */}
-                    <div className="md:col-span-6">
-                        <div className="bg-[#303d5c] p-8 rounded-lg shadow-lg">
-                            <h3 className="text-3xl font-bold mb-2">Sign up for email alerts</h3>
-                            <p className="text-gray-400 mb-6">Stay current with our latest insights</p>
-                            <form className="flex flex-col sm:flex-row gap-2">
-                                <Input 
-                                    type="email" 
-                                    placeholder="Enter Email Here" 
-                                    className="bg-white text-black border-none flex-grow h-12"
-                                />
-                                <Button 
-                                    type="submit" 
-                                    className="bg-[#FFC107] text-black hover:bg-[#ffca2c] h-12 px-8 font-bold"
-                                >
-                                    Submit
-                                </Button>
-                            </form>
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+                    {/* Column 1: Logo & About */}
+                    <div className="md:col-span-4">
+                    <Link href="/" className="inline-block mb-4">
+    <Logo className="h-40 w-40" />
+</Link>
+
+                        <p className="text-gray-300 text-sm max-w-xs">
+                            We look forward to helping you take your company to new heights with our expert consultancy and services.
+                        </p>
                     </div>
-                    
-                    {/* Column 2: Links */}
+
+                    {/* Column 2: Services */}
                     <div className="md:col-span-3">
+                        <h4 className="font-bold text-lg mb-4">Our Services</h4>
                          <ul className="space-y-3 text-gray-300">
-                            {quickLinks.map(link => (
-                                <li key={link.label}><Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link></li>
+                            {servicesLinks.map(link => (
+                                <li key={link.label}><Link href={link.href} className="hover:text-white transition-colors text-sm">{link.label}</Link></li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* Column 3: Social Links */}
+                    {/* Column 3: Quick Links */}
+                    <div className="md:col-span-2">
+                        <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+                         <ul className="space-y-3 text-gray-300">
+                            {quickLinks.map(link => (
+                                <li key={link.label}><Link href={link.href} className="hover:text-white transition-colors text-sm">{link.label}</Link></li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Column 4: Social Links */}
                     <div className="md:col-span-3">
+                        <h4 className="font-bold text-lg mb-4">Connect With Us</h4>
                         <ul className="space-y-3 text-gray-300">
                            {socialLinks.map((link, index) => (
                                 <li key={link.label}>
@@ -70,7 +80,7 @@ const Footer = () => {
                                         <div className="bg-[#303d5c] p-2 rounded-sm">
                                             <link.icon className="h-5 w-5" />
                                         </div>
-                                        <span>{link.label}</span>
+                                        <span className="text-sm">{link.label}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -79,7 +89,7 @@ const Footer = () => {
                                     <div className="bg-[#303d5c] p-2 rounded-sm">
                                         <GooglePlusIcon className="h-5 w-5" />
                                     </div>
-                                    <span>Google+</span>
+                                    <span className="text-sm">Google+</span>
                                 </Link>
                             </li>
                         </ul>
@@ -90,14 +100,8 @@ const Footer = () => {
             {/* Bottom bar */}
             <div className="border-t border-gray-700/50">
                 <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-                    <div className="flex items-center gap-2 mb-4 md:mb-0">
-                         <Logo className="h-8 w-16" />
-                    </div>
                     <div className="mb-4 md:mb-0">
                          <p>&copy; Copyright 2024 Researcher Connect. All Rights Reserved.</p>
-                    </div>
-                    <div>
-                        <p>Designed by <span className="text-white font-semibold">Firebase Studio</span></p>
                     </div>
                 </div>
             </div>

@@ -95,13 +95,18 @@ export default {
         'dance': {
           '0%, 100%': { transform: 'rotate(-6deg)' },
           '50%': { transform: 'rotate(6deg)' },
-        }
+        },
+        'scroll-x': {
+            from: { transform: 'translateX(0)' },
+            to: { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'width-pulse': 'width-pulse 3s ease-in-out infinite',
         'dance': 'dance 0.5s ease-in-out infinite',
+        'scroll-x': 'scroll-x 30s linear infinite',
       },
     },
   },

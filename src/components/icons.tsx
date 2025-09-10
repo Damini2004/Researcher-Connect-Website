@@ -8,12 +8,11 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
   return (
     <div className={props.className}>
       <Image
-        src="/Pure Researc.gif"
+        src="/RC logo.png"
         alt="Researcher Connect Logo"
         width={256} // Original width of the image for aspect ratio
         height={256} // Original height of the image for aspect ratio
         className="h-full w-full object-contain"
-        unoptimized // Necessary for animated GIFs
       />
     </div>
   );

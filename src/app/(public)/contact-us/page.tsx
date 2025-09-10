@@ -8,8 +8,8 @@ import Image from "next/image";
 
 const contactCards = [
     {
-        title: "Melbourne Office",
-        lines: ["121 King Street,", "Melbourne 3000,", "Australia"],
+        title: "Nagpur Office",
+        lines: ["202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027"],
         icon: MapPin,
     },
     {
@@ -40,11 +40,6 @@ export default function ContactUsPage() {
           />
           <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
               <h1 className="text-5xl font-extrabold tracking-tight">Contact</h1>
-              <div className="flex items-center text-sm text-white/80 mt-2">
-                  <Link href="/" className="hover:text-white">Home</Link>
-                  <ChevronRight className="h-4 w-4 mx-1" />
-                  <span className="font-semibold text-white">Contact</span>
-              </div>
           </div>
       </section>
       

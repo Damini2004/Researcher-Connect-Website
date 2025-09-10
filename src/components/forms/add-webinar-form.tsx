@@ -20,11 +20,9 @@ import { useToast } from "@/hooks/use-toast";
 import { addWebinar } from "@/services/webinarService";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
-import { getSubAdmins, SubAdmin } from "@/services/subAdminService";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 
 const formSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters."),
@@ -61,8 +59,6 @@ interface AddWebinarFormProps {
 export default function AddWebinarForm({ onWebinarAdded }: AddWebinarFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [subAdmins, setSubAdmins] = React.useState<SubAdmin[]>([]);
-  const [openCombobox, setOpenCombobox] = React.useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,23 +68,6 @@ export default function AddWebinarForm({ onWebinarAdded }: AddWebinarFormProps) 
       assignedSubAdminId: "none",
     },
   });
-  
-  React.useEffect(() => {
-    async function fetchAdmins() {
-        try {
-            const admins = await getSubAdmins({ approvedOnly: true });
-            setSubAdmins(admins);
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "Could not fetch sub-admins for assignment.",
-                variant: "destructive",
-            });
-        }
-    }
-    fetchAdmins();
-  }, [toast]);
-
 
   const imageFileRef = form.register("image");
   const brochureFileRef = form.register("brochure");
@@ -266,41 +245,6 @@ export default function AddWebinarForm({ onWebinarAdded }: AddWebinarFormProps) 
             </FormItem>
           )}
         />
-         <FormField control={form.control} name="assignedSubAdminId" render={({ field }) => ( 
-            <FormItem className="flex flex-col">
-                <FormLabel>Assign Sub-Admin (Optional)</FormLabel>
-                <FormControl>
-                    <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-                        <PopoverTrigger asChild>
-                            <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")} >
-                                {field.value && field.value !== "none" ? subAdmins.find( (admin) => admin.id === field.value )?.name : "Select Sub-Admin"}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                            <Command>
-                                <CommandInput placeholder="Search sub-admins..." />
-                                <CommandList>
-                                    <CommandEmpty>No approved sub-admins found.</CommandEmpty>
-                                    <CommandGroup>
-                                        <CommandItem value={"none"} onSelect={() => { form.setValue("assignedSubAdminId", "none"); setOpenCombobox(false); }} >
-                                            None
-                                        </CommandItem>
-                                        {subAdmins.map((admin) => (
-                                            <CommandItem value={admin.name} key={admin.id} onSelect={() => { form.setValue("assignedSubAdminId", admin.id); setOpenCombobox(false); }} >
-                                                <Check className={cn("mr-2 h-4 w-4", admin.id === field.value ? "opacity-100" : "opacity-0" )}/>
-                                                {admin.name}
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
-                </FormControl>
-                <FormMessage />
-            </FormItem>
-        )} />
         <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Save Webinar"}
         </Button>

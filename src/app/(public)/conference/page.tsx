@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -29,6 +29,33 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
+const features: { title: string; description: string; icon: LucideIcon }[] = [
+    {
+        title: "End-to-End Planning",
+        description:
+          "From concept design to post-event reporting, every phase is professionally handled.",
+        icon: Handshake,
+      },
+      {
+        title: "Submission & Review Systems",
+        description:
+          "Digital workflows for abstract handling, peer review, and program scheduling.",
+        icon: CheckCircle,
+      },
+      {
+        title: "Hybrid & Virtual Capability",
+        description:
+          "Seamless participation for global audiences through modern online platforms.",
+        icon: ChevronRight,
+      },
+      {
+        title: "Sponsor & Speaker Coordination",
+        description:
+          "Attract high-value sponsors and engage world-class speakers with ease.",
+        icon: Calendar,
+      },
+  ];
+  
 
 export default function ConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
@@ -97,15 +124,68 @@ export default function ConferencesPage() {
             />
             <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
                 <h1 className="text-5xl font-extrabold tracking-tight">Conferences</h1>
-                <div className="flex items-center text-sm text-white/80 mt-2">
-                    <Link href="/" className="hover:text-white">Home</Link>
-                    <ChevronRight className="h-4 w-4 mx-1" />
-                    <span className="font-semibold text-white">Conferences</span>
+            </div>
+        </section>
+
+         <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="relative aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+                        <Image 
+                            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=600&h=800&auto=format&fit=crop"
+                            alt="Team planning a conference"
+                            data-ai-hint="team planning"
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-bold tracking-tight">Comprehensive Conference Management</h2>
+                        <p className="text-lg text-muted-foreground text-justify">
+                        Hosting an academic conference is a defining moment for any institution — a chance to showcase expertise, attract global talent, and spark collaborations that shape the future of research. Our comprehensive conference management service handles every phase with care, precision, and strategic insight.
+
+We assist with conference conceptualization, helping you define impactful themes, structure calls for papers, and create clear submission guidelines. Our team designs modern, responsive websites to attract participants and streamline registration. Abstracts, reviews, and program schedules are handled via intelligent digital workflows, ensuring smooth communication between authors, reviewers, and organizers.
+
+We also coordinate speaker invitations, sponsorship packages, and exhibitor opportunities, giving your event both academic depth and financial sustainability. For virtual and hybrid events, we integrate high-quality streaming platforms with real-time Q&A, networking, and poster sessions — creating a truly global reach. For in-person events, we oversee venue booking, travel support, compliance, and on-site management, so every guest feels welcome and informed.
+
+After the event, we provide professional proceedings preparation, indexing support, and impact reporting, helping your conference leave a measurable footprint in the academic world. Whether you’re hosting a niche symposium or a large-scale international congress, we ensure that every detail — from the first email to the final publication — is handled with world-class professionalism, allowing your team to focus on what matters most: the science, the connections, and the ideas that will drive the future. </p>
+                         <Button size="lg" asChild>
+                            <Link href="/contact-us">
+                                Plan Your Conference <ArrowRight className="ml-2 h-5 w-5" />
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="py-16 md:py-24 bg-secondary/30">
+            <div className="container mx-auto px-4">
+                 <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold tracking-tight">Our Key Features</h2>
+                    <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
+                        We provide a complete suite of services to ensure your conference is a success.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-4 gap-8">
+                    {features.map((feature, index) => (
+                        <Card key={index} className="text-center bg-background transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                            <CardHeader className="items-center">
+                                <div className="p-4 bg-primary/10 rounded-full w-fit mb-3">
+                                  <feature.icon className="h-8 w-8 text-primary" />
+                                </div>
+                                <CardTitle>{feature.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{feature.description}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
             </div>
         </section>
         
-        <div className="py-12 md:py-16">
+        <div className="py-12 md:py-16 bg-background">
            <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Main Content */}
                 <div className="lg:col-span-12">
