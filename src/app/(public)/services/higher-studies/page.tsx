@@ -7,23 +7,29 @@ import Link from "next/link";
 
 const supportAreas = [
     {
-      title: "Proposal Writing",
-      description:
-        "Transforming ideas into clear, persuasive, and fundable research proposals that stand out in competitive review processes.",
-      icon: FileText,
-    },
-    {
-      title: "Research Methodology",
-      description:
-        "Designing rigorous, innovative research frameworks and methodologies to ensure accuracy, credibility, and meaningful results.",
-      icon: Microscope,
-    },
-    {
-      title: "Collaboration Matching",
-      description:
-        "Connecting you with top-tier researchers, institutions, and industry partners to spark impactful, cross-disciplinary collaborations.",
-      icon: Users,
-    },
+        title: "Topic Refinement",
+        description:
+          "Transform broad research interests into well-defined, competitive topics.",
+        icon: ArrowRight,
+      },
+      {
+        title: "Literature Synthesis",
+        description:
+          "Contextualize your research within global academic discourse.",
+        icon: Users,
+      },
+      {
+        title: "Methodology Design",
+        description:
+          "Create feasible, rigorous, and publication-ready research plans.",
+        icon: Microscope,
+      },
+      {
+        title: "Funding Alignment",
+        description:
+          "Tailor proposals to meet grant and institutional requirements.",
+        icon: FileText,
+      },
   ];
   
 
@@ -43,27 +49,39 @@ export default function HigherStudiesPage() {
                 </div>
             </section>
 
-             <section className="w-full py-12 md:py-24 lg:py-32">
-                <div className="container px-4 md:px-6">
-                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-                        <Image
-                            alt="Research Planning"
-                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                            height="310"
-                            src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop"
-                            data-ai-hint="research planning"
-                            width="550"
-                        />
-                        <div className="flex flex-col justify-center space-y-4">
-                            <div className="space-y-2">
-                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Unlock Your Academic Future</h2>
-                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed  text-justify">
-                                Securing admission or funding for PhD and postdoctoral research depends heavily on strong, well-crafted proposals. Researcher Connect guides aspiring researchers through every step of proposal development, from topic refinement and literature synthesis to methodology design, funding alignment, and impact articulation. We ensure proposals are not only academically rigorous but also competitive and clearly positioned within global research priorities. Our tailored approach helps candidates stand out, increasing the likelihood of approval, scholarships, or institutional partnerships. Whether targeting top universities, research councils, or industry-backed projects, our guidance equips scholars with persuasive, structured, and polished submissions that turn ambitions into opportunities.                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <section className="w-full py-12 md:py-24 lg:py-32">
+  <div className="container max-w-7xl mx-auto px-4 md:px-6">
+    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+      <Image
+        alt="Research Planning"
+        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+        height="310"
+        src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop"
+        data-ai-hint="research planning"
+        width="550"
+      />
+      <div className="flex flex-col justify-center space-y-4">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">
+            Unlock Your Academic Future
+          </h2>
+          <p className="max-w-[600px] text-muted-foreground text-justify">
+            Securing admission or funding for PhD and postdoctoral research depends heavily on strong,
+            well-crafted proposals. Researcher Connect guides aspiring researchers through every step of
+            proposal development, from topic refinement and literature synthesis to methodology design,
+            funding alignment, and impact articulation. We ensure proposals are not only academically
+            rigorous but also competitive and clearly positioned within global research priorities. Our
+            tailored approach helps candidates stand out, increasing the likelihood of approval,
+            scholarships, or institutional partnerships. Whether targeting top universities, research
+            councils, or industry-backed projects, our guidance equips scholars with persuasive,
+            structured, and polished submissions that turn ambitions into opportunities.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
             <section className="py-16 md:py-24 bg-secondary/30">
                 <div className="container mx-auto px-4 text-center">
@@ -71,7 +89,7 @@ export default function HigherStudiesPage() {
                     <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
                         We provide end-to-end support to ensure your proposal is compelling, rigorous, and ready for submission.
                     </p>
-                    <div className="grid md:grid-cols-3 gap-8 mt-12">
+                    <div className="grid md:grid-cols-4 gap-8 mt-12">
                         {supportAreas.map(area => (
                             <Card key={area.title} className="text-left transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                 <CardHeader>

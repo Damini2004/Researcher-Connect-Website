@@ -69,7 +69,7 @@ const subServices = [
 
 export function KeyServicesSection() {
     return (
-        <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
+        <section id="services" className="w-full py-10 md:py-20 lg:py-28 bg-background">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center gap-12">
                     <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg">

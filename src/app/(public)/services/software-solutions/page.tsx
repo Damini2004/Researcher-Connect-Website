@@ -7,23 +7,23 @@ import Link from "next/link";
 
 const features = [
     {
-      name: "Reliability Analysis",
-      description:
-        "Dive deep into system performance with our advanced RAMS engine — predicting risks, boosting safety, and ensuring rock-solid reliability for even the most complex projects.",
-      icon: Cpu,
-    },
-    {
-      name: "GIS Mapping",
-      description:
-        "Visualize global impact effortlessly. Our SDGMapper turns raw research data into interactive maps aligned with UN Sustainable Development Goals — clear, compelling, and ready to impress funders and collaborators.",
-      icon: Map,
-    },
-    {
-      name: "Project Management",
-      description:
-        "Stay in control from concept to completion. Integrated timelines, milestones, and progress dashboards keep research teams aligned, agile, and always ahead of schedule.",
-      icon: GanttChartSquare,
-    },
+        name: "Reliability Analysis (RAMS)",
+        description:
+          "Predict system performance, identify risks, and optimize lifecycle costs to ensure safety and compliance.",
+        icon: CheckCircle,
+      },
+      {
+        name: "SDG Mapping (SDGMapper)",
+        description:
+          "Align projects with UN Sustainable Development Goals, track contributions, and visualize global impact.",
+        icon: ChevronRight,
+      },
+      {
+        name: "Scalability",
+        description:
+          "Built to support individual teams or global research collaborations with equal efficiency.",
+        icon: Map,
+      },
   ];
   
 
@@ -44,26 +44,38 @@ export default function SoftwareSolutionsPage() {
             </section>
             
             <section className="w-full py-12 md:py-24 lg:py-32">
-                <div className="container px-4 md:px-6">
-                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-                        <Image
-                            alt="Software Interface"
-                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                            height="310"
-                            src="https://cdn.intuji.com/2023/08/Custom-software-development.jpg"
-                            data-ai-hint="software development"
-                            width="550"
-                        />
-                        <div className="flex flex-col justify-center space-y-4">
-                            <div className="space-y-2">
-                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Software Solutions</h2>
-                                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                Researcher Connect provides advanced digital tools to accelerate impactful research. RAMS (Reliability, Availability, Maintainability, and Safety) helps teams assess risk, enhance system performance, and meet regulatory standards across complex projects. SDGMapper aligns research with the UN Sustainable Development Goals, simplifying progress tracking, gap analysis, and impact reporting. Together, these platforms deliver data-driven insights, streamlined workflows, and measurable results. Whether optimizing designs or demonstrating societal relevance, our software solutions turn complex research challenges into opportunities for innovation and meaningful progress in today’s fast-moving academic and industrial environments. </p> 
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  <div className="container max-w-7xl mx-auto px-4 md:px-6">
+    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+      <Image
+        alt="Software Interface"
+        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+        height="310"
+        src="https://cdn.intuji.com/2023/08/Custom-software-development.jpg"
+        data-ai-hint="software development"
+        width="550"
+      />
+      <div className="flex flex-col justify-center space-y-4">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">
+            Software Solutions
+          </h2>
+          <p className=" text-justify text-muted-foreground ">
+            Researcher Connect provides advanced digital tools to accelerate impactful research.
+            RAMS (Reliability, Availability, Maintainability, and Safety) helps teams assess risk,
+            enhance system performance, and meet regulatory standards across complex projects.
+            SDGMapper aligns research with the UN Sustainable Development Goals, simplifying
+            progress tracking, gap analysis, and impact reporting. Together, these platforms deliver
+            data-driven insights, streamlined workflows, and measurable results. Whether optimizing
+            designs or demonstrating societal relevance, our software solutions turn complex research
+            challenges into opportunities for innovation and meaningful progress in today’s
+            fast-moving academic and industrial environments.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
             <section className="py-16 md:py-24 bg-secondary/30">
                 <div className="container mx-auto px-4">

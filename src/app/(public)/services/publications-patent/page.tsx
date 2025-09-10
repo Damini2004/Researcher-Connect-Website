@@ -20,29 +20,53 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const services = [
     {
-      title: "Patent Search & Analysis",
-      description:
-        "Comprehensive prior art and market searches to evaluate novelty, assess risks, and strengthen your patent strategy.",
-      icon: Search,
-    },
-    {
-      title: "Patent Drafting & Filing",
-      description:
-        "Professionally crafted patent applications designed to protect your innovations and maximize commercial potential.",
-      icon: Edit,
-    },
-    {
-      title: "Journal Publishing",
-      description:
-        "End-to-end support for preparing, refining, and submitting manuscripts to leading, high-impact academic journals.",
-      icon: BookOpen,
-    },
-    {
-      title: "IP Strategy & Commercialization",
-      description:
-        "Customized IP strategies, technology transfer support, and guidance on commercialization and licensing.",
-      icon: ShieldCheck,
-    },
+        title: "Journal Targeting",
+        description:
+          "Identify the most impactful and suitable journals for your work.",
+        icon: Search,
+      },
+      {
+        title: "Manuscript Preparation",
+        description:
+          "Edit for clarity, compliance, and academic impact.",
+        icon: Edit,
+      },
+      {
+        title: "Peer Review Strategy",
+        description:
+          "Manage revisions and responses for smooth acceptance.",
+        icon: FileText,
+      },
+      {
+        title: "Ethical Publishing",
+        description:
+          "Ensure adherence to best practices and global standards.",
+        icon: ShieldCheck,
+      },
+      {
+        title: "Prior-Art Searches",
+        description:
+          "Ensure originality and minimize risk by evaluating existing technologies.",
+        icon: Search,
+      },
+      {
+        title: "Drafting & Filing",
+        description:
+          "Prepare strong, compliant applications for local and global filings.",
+        icon: Edit,
+      },
+      {
+        title: "Jurisdictional Strategy",
+        description:
+          "Plan protection across multiple countries efficiently.",
+        icon: ShieldCheck,
+      },
+      {
+        title: "Tech Transfer Support",
+        description:
+          "Facilitate commercialization and licensing of research innovations.",
+        icon: BookOpen,
+      },
   ];
   
 
@@ -121,31 +145,42 @@ export default function PublicationsPatentPage() {
             </section>
             
             <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
-                <div className="container px-4 md:px-6">
-                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-                        <Image
-                            alt="Innovation and Research"
-                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                            height="310"
-                            src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?q=80&w=800&auto=format&fit=crop"
-                            data-ai-hint="researcher scientist"
-                            width="550"
-                        />
-                        <div className="flex flex-col justify-center space-y-4">
-                            <div className="space-y-2">
-                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">From Lab to Legacy</h2>
-                                <p className="max-w-[600px] text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                Protecting intellectual property is crucial for safeguarding innovation and securing commercial or academic advantages. Researcher Connect provides specialized patent consultancy, assisting researchers and institutions with prior-art searches, drafting, filing strategies, and jurisdictional guidance. We simplify complex legal frameworks, ensuring innovations are adequately protected while meeting regulatory timelines. Our team coordinates with legal experts to strengthen patent claims, improve approval success, and support technology transfer initiatives. Whether securing local or international rights, we help innovators navigate the process with clarity and confidence, ensuring that their intellectual contributions are preserved, valued, and positioned for future development or commercialization.                                </p>
-                            </div>
-                             <Button asChild size="lg" className="w-fit">
-                                <Link href="/contact-us">
-                                    Get a Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  <div className="container max-w-7xl mx-auto px-4 md:px-6">
+    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+      <Image
+        alt="Innovation and Research"
+        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+        height="310"
+        src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?q=80&w=800&auto=format&fit=crop"
+        data-ai-hint="researcher scientist"
+        width="550"
+      />
+      <div className="flex flex-col justify-center space-y-4">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">
+            From Lab to Legacy
+          </h2>
+          <p className="max-w-[600px] text-justify text-muted-foreground">
+            Protecting intellectual property is crucial for safeguarding innovation and securing commercial
+            or academic advantages. Researcher Connect provides specialized patent consultancy, assisting
+            researchers and institutions with prior-art searches, drafting, filing strategies, and
+            jurisdictional guidance. We simplify complex legal frameworks, ensuring innovations are
+            adequately protected while meeting regulatory timelines. Our team coordinates with legal
+            experts to strengthen patent claims, improve approval success, and support technology transfer
+            initiatives. Whether securing local or international rights, we help innovators navigate the
+            process with clarity and confidence, ensuring that their intellectual contributions are
+            preserved, valued, and positioned for future development or commercialization.
+          </p>
+        </div>
+        <Button asChild size="lg" className="w-fit">
+          <Link href="/contact-us">
+            Get a Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
 
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4">

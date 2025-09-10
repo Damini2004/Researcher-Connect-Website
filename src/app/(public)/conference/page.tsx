@@ -31,23 +31,29 @@ import { Input } from "@/components/ui/input";
 
 const features: { title: string; description: string; icon: LucideIcon }[] = [
     {
-      title: "End-to-End Management",
-      description:
-        "From shaping the vision and planning budgets to flawless on-site execution and insightful post-event reporting — we take care of everything, start to finish.",
-      icon: Handshake,
-    },
-    {
-      title: "Global Reach & Promotion",
-      description:
-        "Tap into our worldwide academic and industry network to attract renowned speakers, high-value sponsors, and engaged attendees from across the globe.",
-      icon: CheckCircle,
-    },
-    {
-      title: "Streamlined Submissions",
-      description:
-        "Our powerful digital platform makes paper submissions, peer reviews, scheduling, and proceedings publication effortless, accurate, and stress-free.",
-      icon: CheckCircle,
-    },
+        title: "End-to-End Planning",
+        description:
+          "From concept design to post-event reporting, every phase is professionally handled.",
+        icon: Handshake,
+      },
+      {
+        title: "Submission & Review Systems",
+        description:
+          "Digital workflows for abstract handling, peer review, and program scheduling.",
+        icon: CheckCircle,
+      },
+      {
+        title: "Hybrid & Virtual Capability",
+        description:
+          "Seamless participation for global audiences through modern online platforms.",
+        icon: ChevronRight,
+      },
+      {
+        title: "Sponsor & Speaker Coordination",
+        description:
+          "Attract high-value sponsors and engage world-class speakers with ease.",
+        icon: Calendar,
+      },
   ];
   
 
@@ -161,7 +167,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                         We provide a complete suite of services to ensure your conference is a success.
                     </p>
                 </div>
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-4 gap-8">
                     {features.map((feature, index) => (
                         <Card key={index} className="text-center bg-background transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                             <CardHeader className="items-center">

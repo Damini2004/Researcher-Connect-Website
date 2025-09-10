@@ -8,7 +8,7 @@ const services = [
   {
     title: "Software Solutions",
     description:
-      "Leverage advanced reliability analysis and sustainable development tracking with our custom-built tools, helping organizations make informed, impactful decisions.",
+      "Unlock powerful data-driven tools with RAMS (Reliability, Availability, Maintainability, Safety) and SDGMapper—designed to optimize system performance and align research initiatives with the UN Sustainable Development Goals. These integrated platforms help you analyze risks, ensure compliance, track SDG impact, and present clear visual insights. Streamline workflows, elevate institutional credibility, and support both technical excellence and global responsibility.",
     imageUrl:
       "/software.png",
     imageHint: "data dashboard",
@@ -17,7 +17,7 @@ const services = [
   {
     title: "Conference Management",
     description:
-      "Plan, organize, and execute academic conferences seamlessly — from budgeting and logistics to on-site coordination and post-event reporting.",
+      "Organizing an academic conference is a chance to highlight research leadership, attract talent, and spark collaboration. Researcher Connect offers complete conference management, ensuring every phase runs smoothly and professionally. We assist with theme development, calls for papers, and clear submission guidelines. Our team builds modern, user-friendly websites for registration, updates, and participant engagement. Abstracts, peer reviews, and schedules are handled through secure, efficient systems.",
     imageUrl:
       "/conference.png",
     imageHint: "conference audience",
@@ -26,7 +26,7 @@ const services = [
   {
     title: "Higher Studies Proposals",
     description:
-      "Receive expert guidance to craft competitive PhD and Postdoctoral research proposals, improving your chances of acceptance and funding.",
+      "We guide aspiring researchers through every stage of crafting competitive PhD and postdoctoral proposals. Our team helps refine broad ideas into well-defined topics, synthesize existing literature to establish research context, and design robust methodologies aligned with academic expectations. We ensure funding alignment by tailoring proposals to specific grants, universities, or research councils, while articulating societal and academic impact to enhance visibility and approval rates.",
     imageUrl:
       "/phd.png",
     imageHint: "advisory meeting",
@@ -35,7 +35,7 @@ const services = [
   {
     title: "EB-1 Consultancy",
     description:
-      "Navigate the EB-1 visa process with confidence. Our specialists help showcase your extraordinary ability and prepare a strong application for U.S. immigration.",
+      "We simplify the EB-1 visa process for researchers of extraordinary ability by providing comprehensive, tailored guidance. Our services begin with a thorough eligibility assessment to identify the strongest qualification categories, followed by strategic planning to present achievements effectively. We assist in assembling key evidence, crafting compelling recommendation letters, and structuring portfolios that highlight international recognition, publications, awards, patents, and contributions to the field.",
     imageUrl:
       "/visa.png",
     imageHint: "professional career",
@@ -44,7 +44,7 @@ const services = [
   {
     title: "Internship Services",
     description:
-      "Connect with top research institutions and industry leaders to secure internships that build valuable skills and strengthen your academic profile.",
+      "We connect students and early-career researchers with prestigious, career-shaping internships across academic, industrial, and international environments. Our process begins with understanding the individual’s academic focus, research interests, and long-term career objectives. We then match candidates with institutions, labs, or companies offering meaningful roles that complement both technical and scholarly development. Our team assists with application materials, including CVs, statements, and recommendation letters, ensuring candidates stand out competitively.",
     imageUrl:
       "/internship.png",
     imageHint: "professional career",
@@ -53,7 +53,7 @@ const services = [
   {
     title: "PhD Services",
     description:
-      "Get end-to-end PhD support — from identifying programs and preparing applications to proposal development, publication strategy, and career planning.",
+      "We provide comprehensive, end-to-end support for the entire PhD journey, enabling scholars to progress with confidence, clarity, and academic excellence. Our services include research topic selection, proposal development, literature reviews, and methodology guidance to establish a strong foundation. We assist with thesis structuring, data analysis planning, academic writing refinement, and publication preparation, ensuring compliance with institutional and international standards. For the final stages, we offer defense preparation, presentation coaching, and editing for professional polish.",
     imageUrl:
       "/postdoc.png",
     imageHint: "professional career",
@@ -62,7 +62,7 @@ const services = [
   {
     title: "Publication & Patent Support",
     description:
-      "Turn innovative ideas into impactful publications and secure intellectual property through guided patent application and journal submission processes.",
+      "We help researchers amplify their impact by guiding both academic publishing and intellectual property protection. Our publication services cover journal selection, manuscript structuring, reference formatting, and compliance with editorial standards to improve acceptance in high-impact journals. We provide critical reviews, language polishing, and support for responding to peer feedback, ensuring clarity without altering technical precision. For patents, we conduct prior-art searches, draft and refine applications, and develop jurisdictional strategies for local and international protection.",
     imageUrl:
       "/patent.png",
     imageHint: "tax documents",
@@ -81,7 +81,7 @@ export function DetailedServicesSection() {
   return (
     <section
       id="our-services-detailed"
-      className="w-full py-12 md:py-24 lg:py-32 bg-background"
+      className="w-full bg-background"
     >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -110,7 +110,7 @@ export function DetailedServicesSection() {
               </div>
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold">{service.title}</h3>
-                <p className="text-muted-foreground">{service.description}</p>
+                <p className="text-muted-foreground text-justify">{service.description}</p>
                 <Button variant="link" className="p-0 h-auto" asChild>
                   <Link href={service.link}>
                     Learn More <ArrowRight className="ml-2" />

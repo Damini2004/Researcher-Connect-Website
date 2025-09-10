@@ -41,9 +41,10 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
                     {/* Column 1: Logo & About */}
                     <div className="md:col-span-4">
-                        <Link href="/" className="inline-block mb-4">
-                            <Logo className="h-12 w-24" />
-                        </Link>
+                    <Link href="/" className="inline-block mb-4">
+    <Logo className="h-40 w-40" />
+</Link>
+
                         <p className="text-gray-300 text-sm max-w-xs">
                             We look forward to helping you take your company to new heights with our expert consultancy and services.
                         </p>

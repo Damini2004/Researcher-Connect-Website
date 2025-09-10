@@ -7,23 +7,29 @@ import Link from "next/link";
 
 const criteria = [
     {
-      title: "Extraordinary Ability",
-      description:
-        "Showcase your unmatched expertise, groundbreaking contributions, and sustained national or international acclaim — positioning you among the top professionals in your field.",
-      icon: Award,
-    },
-    {
-      title: "Outstanding Professor / Researcher",
-      description:
-        "Highlight a career of exceptional academic impact, global recognition, and influential publications that establish you as a leader in research and higher education.",
-      icon: BookOpen,
-    },
-    {
-      title: "Multinational Manager / Executive",
-      description:
-        "Demonstrate your executive leadership and global business success as you transition to a U.S. affiliate — proving your strategic value at an international level.",
-      icon: UserCheck,
-    },
+        title: "Eligibility Assessment",
+        description:
+          "Identify the strongest path under EB-1A, EB-1B, or EB-1C categories.",
+        icon: UserCheck,
+      },
+      {
+        title: "Evidence Structuring",
+        description:
+          "Organize your achievements into persuasive, legally compliant packages.",
+        icon: Star,
+      },
+      {
+        title: "Recommendation Strategy",
+        description:
+          "Draft and refine impactful letters from respected experts.",
+        icon: BookOpen,
+      },
+      {
+        title: "Case Coordination",
+        description:
+          "Collaborate with legal teams to ensure complete, timely filing.",
+        icon: Award,
+      },
   ];
   
 
@@ -57,7 +63,7 @@ export default function EB1ConsultancyPage() {
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
                                 <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Navigate the Path to U.S. Residency</h2>
-                                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-justify">
+                                <p className="max-w-[600px] text-muted-foreground text-justify">
                                 The EB-1 visa is a pathway for researchers, academics, and professionals recognized for extraordinary ability — but its application process is complex. Researcher Connect offers specialized EB-1 consultancy to help applicants navigate requirements, compile evidence, and present compelling cases to U.S. immigration authorities. From evaluating eligibility and building strong recommendation portfolios to organizing documentation and legal coordination, we ensure each case highlights the applicant’s achievements and international impact. Our support improves clarity, reduces stress, and enhances approval chances. With expert guidance, exceptional researchers can transition confidently into new opportunities abroad, advancing both their careers and the global scientific community.                                </p>
                             </div>
                         </div>
@@ -73,7 +79,7 @@ export default function EB1ConsultancyPage() {
                             The EB-1 visa is for individuals with extraordinary ability, outstanding professors and researchers, and certain multinational executives. We provide expert consultancy to help you navigate the complex application process.
                         </p>
                     </div>
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-4 gap-8">
                         {criteria.map(item => (
                             <Card key={item.title} className="text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                 <CardHeader className="items-center">
