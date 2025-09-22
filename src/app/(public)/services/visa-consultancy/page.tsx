@@ -154,9 +154,6 @@ export default function VisaConsultancyPage() {
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold tracking-tight">Comparative Criteria by Country (Researcher-Focused)</h2>
-                        <p className="mt-4 max-w-4xl mx-auto text-muted-foreground">
-                            This table provides an at-a-glance guide for researcher-focused evidence. Requirements change; always consult official government pages for current criteria. Researcher Connect offers documentation support—not legal representation.
-                        </p>
                     </div>
                     <Card>
                         <CardContent className="p-0">
@@ -192,6 +189,9 @@ export default function VisaConsultancyPage() {
                             </div>
                         </CardContent>
                     </Card>
+                    <p className="mt-4 text-sm text-center text-muted-foreground">
+                        Note: This table is an at-a-glance guide for researcher-focused evidence. Requirements change; always consult official government pages for current criteria. Researcher Connect offers documentation support—not legal representation.
+                    </p>
                 </div>
             </section>
         </div>
