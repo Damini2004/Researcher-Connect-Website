@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { Logo } from "@/components/icons";
 import { Input } from "@/components/ui/input";
@@ -27,7 +26,7 @@ const socialLinks = [
     { href: "https://www.linkedin.com/company/researcher-connect/", icon: Linkedin, label: "Linkedin" },
     { href: "https://www.instagram.com/researcher_connect/", icon: Instagram, label: "Instagram" },
     { href: "https://www.facebook.com/researcherconnect.net", icon: Facebook, label: "Facebook" },
-    { href: "mailto:support@researcherconnect.com", icon: Mail, label: "Mail" },
+    { href: "mailto:contact@researcherconnect.com", icon: Mail, label: "Mail" },
 ]
 
 const Footer = () => {

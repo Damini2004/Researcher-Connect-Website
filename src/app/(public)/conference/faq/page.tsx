@@ -84,8 +84,8 @@ export default function FaqPage() {
                            <Mail className="h-5 w-5 text-muted-foreground mt-1 flex-shrink-0" />
                             <div>
                                 <h4 className="font-semibold">Email Us</h4>
-                                <a href="mailto:support@researcherconnect.com" className="text-sm text-primary hover:underline">
-                                    support@researcherconnect.com
+                                <a href="mailto:contact@researcherconnect.com" className="text-sm text-primary hover:underline">
+                                    contact@researcherconnect.com
                                 </a>
                             </div>
                         </div>

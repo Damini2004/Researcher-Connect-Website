@@ -1,4 +1,3 @@
-
 // src/components/homepage/detailed-services-section.tsx
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail, MessageSquare, Phone } from "lucide-react";
@@ -139,7 +138,7 @@ export function DetailedServicesSection() {
                     <h4 className="text-lg font-bold">Email Us</h4>
                     <p className="text-sm text-muted-foreground mt-1">
                         Get in touch via email.{" "}
-                        <a href="mailto:support@researcherconnect.com" className="underline text-primary">
+                        <a href="mailto:contact@researcherconnect.com" className="underline text-primary">
                             Send an email
                         </a>
                     </p>

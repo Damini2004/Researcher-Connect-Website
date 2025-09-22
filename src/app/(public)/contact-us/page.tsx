@@ -1,4 +1,3 @@
-
 // src/app/(public)/contact-us/page.tsx
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,7 @@ const socialLinks = [
     { href: "https://www.linkedin.com/company/researcher-connect/", icon: Linkedin },
     { href: "https://www.instagram.com/researcher_connect/", icon: Instagram },
     { href: "https://www.facebook.com/researcherconnect.net", icon: Facebook },
-    { href: "mailto:support@researcherconnect.com", icon: Mail },
+    { href: "mailto:contact@researcherconnect.com", icon: Mail },
 ];
 
 
