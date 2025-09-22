@@ -129,7 +129,7 @@ Our expert team assists in designing strong research proposals, developing metho
                                     <CardTitle>{service.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-muted-foreground">{service.description}</p>
+                                    <p className="text-muted-foreground text-justify">{service.description}</p>
                                 </CardContent>
                             </Card>
                         ))}
