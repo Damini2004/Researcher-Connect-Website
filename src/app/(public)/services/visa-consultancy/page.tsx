@@ -1,35 +1,70 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Star, ChevronRight, Award, BookOpen, UserCheck, ArrowRight } from "lucide-react";
+import { Star, ChevronRight, Award, BookOpen, UserCheck, ArrowRight,Trophy,
+    Users,
+    Book,
+    Building2,
+    Briefcase,
+    Globe2,Microscope,Speaker, } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const criteria = [
     {
-        title: "Eligibility Assessment",
-        description:
-          "Identify the strongest path under EB-1A, EB-1B, or EB-1C categories.",
-        icon: UserCheck,
-      },
-      {
-        title: "Evidence Structuring",
-        description:
-          "Organize your achievements into persuasive, legally compliant packages.",
-        icon: Star,
-      },
-      {
-        title: "Recommendation Strategy",
-        description:
-          "Draft and refine impactful letters from respected experts.",
-        icon: BookOpen,
-      },
-      {
-        title: "Case Coordination",
-        description:
-          "Collaborate with legal teams to ensure complete, timely filing.",
-        icon: Award,
-      },
+      title: "Awards & Honors",
+      description:
+        "National or international prizes, competitive fellowships, or discipline-level distinctions evidencing excellence.\nEvidence: certificates, press, selection criteria",
+      icon: Trophy,
+    },
+    {
+      title: "Publications",
+      description:
+        "Peer-reviewed journal articles, high-impact conference papers, and citation metrics demonstrating scholarly impact.\nEvidence: PDFs, indexing (Scopus/WoS), h-index",
+      icon: BookOpen,
+    },
+    {
+      title: "Judging the Work of Others",
+      description:
+        "Peer-review invitations, editorial board roles, thesis examinations, or jury service at conferences/competitions.\nEvidence: reviewer dashboards, letters, editorial listings",
+      icon: Users,
+    },
+    {
+      title: "Original Contributions",
+      description:
+        "Patents, methods, datasets, or breakthroughs of major significance adopted by labs, industry, or policy.\nEvidence: patents, tech transfer, independent use",
+      icon: Microscope,
+    },
+    {
+      title: "Presentations & Conferences",
+      description:
+        "Keynotes, invited talks, symposium leadership, or organizer roles at recognized international venues.\nEvidence: programs, invites, recordings",
+      icon: Speaker,
+    },
+    {
+      title: "Authorship of Books/Chapters",
+      description:
+        "Monographs, edited volumes, or widely cited chapters from reputable academic publishers.\nEvidence: ISBN pages, publisher contracts",
+      icon: Book,
+    },
+    {
+      title: "Prestigious Memberships",
+      description:
+        "Selective memberships/grades requiring achievement (e.g., senior/fellow status), not open to the general public.\nEvidence: bylaws, eligibility rules, membership letters",
+      icon: Building2,
+    },
+    {
+      title: "Critical Roles",
+      description:
+        "Senior academic, PI, lab head, or leadership on major funded projects demonstrating significant responsibility.\nEvidence: appointment letters, grant summaries",
+      icon: Briefcase,
+    },
+    {
+      title: "International Recognition",
+      description:
+        "Global influence shown via standards, policy inputs, media coverage, rankings, or international collaborations.\nEvidence: media links, policy citations",
+      icon: Globe2,
+    },
   ];
   
 
@@ -62,9 +97,9 @@ export default function VisaConsultancyPage() {
                         />
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
-                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Navigate the Path to U.S. Residency</h2>
+                                <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Visa Support for Global Talent Programs</h2>
                                 <p className="max-w-[600px] text-muted-foreground text-justify">
-                                The EB-1 visa is a pathway for researchers, academics, and professionals recognized for extraordinary ability — but its application process is complex. Researcher Connect offers specialized visa consultancy to help applicants navigate requirements, compile evidence, and present compelling cases to U.S. immigration authorities. From evaluating eligibility and building strong recommendation portfolios to organizing documentation and legal coordination, we ensure each case highlights the applicant’s achievements and international impact. Our support improves clarity, reduces stress, and enhances approval chances. With expert guidance, exceptional researchers can transition confidently into new opportunities abroad, advancing both their careers and the global scientific community.                                </p>
+                                At <b>Researcher Connect</b> , we guide researchers, academics, and innovators to secure extraordinary ability and global talent visas in countries such as the USA (EB-1A), UK (Global Talent), Australia (Global Talent Independent), Canada, France, UAE, and Singapore. We curate and present your evidence—publications, citations, awards, peer-review service, patents, international impact, and leadership—so it maps cleanly to each country’s criteria. From research-focused statements of impact to referee letters, we structure every document for clarity, credibility, and relevance. Our team combines academic insight with precise documentation strategy to position you as a leader in your field and strengthen your case for long-term residency or work pathways. (Information provided is general support content and not legal advice; country criteria evolve—always review official guidance alongside our documentation playbooks.)                            </p>
                             </div>
                         </div>
                     </div>
@@ -79,7 +114,7 @@ export default function VisaConsultancyPage() {
                             The EB-1 visa is for individuals with extraordinary ability, outstanding professors and researchers, and certain multinational executives. We provide expert consultancy to help you navigate the complex application process.
                         </p>
                     </div>
-                    <div className="grid md:grid-cols-4 gap-8">
+                    <div className="grid md:grid-cols-3 gap-8">
                         {criteria.map(item => (
                             <Card key={item.title} className="text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                 <CardHeader className="items-center">
