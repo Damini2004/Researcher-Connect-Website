@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc, getDoc } from 'firebase/firestore';
 import type { AddBlogPostData, BlogPost } from '@/lib/types';
 import { blogPostSchema } from '@/lib/types';
 import { z } from 'zod';
@@ -65,6 +65,37 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         throw error;
     }
 }
+
+export async function getBlogPostById(id: string): Promise<BlogPost | null> {
+    try {
+        const docRef = doc(db, 'blogPosts', id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const createdAt = data.createdAt?.toDate() || new Date();
+             return {
+                id: docSnap.id,
+                title: data.title,
+                category: data.category,
+                author: data.author,
+                content: data.content,
+                excerpt: data.excerpt,
+                imageSrc: data.imageSrc,
+                imageHint: data.imageHint || '',
+                isFeatured: data.isFeatured || false,
+                createdAt: createdAt.toISOString(),
+                date: format(createdAt, "PPP"),
+            }
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching blog post by ID:", error);
+        return null;
+    }
+}
+
 
 export async function updateBlogPost(id: string, data: Partial<AddBlogPostPayload>): Promise<{ success: boolean, message: string }> {
     try {
