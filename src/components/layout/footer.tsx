@@ -29,12 +29,6 @@ const socialLinks = [
     { href: "#", icon: Facebook, label: "Facebook" },
 ]
 
-const GooglePlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7.5 10h1v4h-1v-4zm2 0h1v4h-1v-4zm11-2.5c0-2.84-2.2-5-5.02-5C12.64 2.5 10.5 4.64 10.5 7.5c0 2.86 2.14 5 4.98 5 .6 0 1.18-.1 1.72-.28l.28-.08v-1.14c-.5.22-1.08.36-1.72.36-2.2 0-3.98-1.78-3.98-4s1.78-4 3.98-4 4.02 1.8 4.02 4v.32H16.5v1.18h2.82c.08-.2.12-.42.12-.64zM21 10.5h-1V12h1v-1.5zM17 10.5h1.5v1.5H17v-1.5z"></path>
-    </svg>
-)
-
 const Footer = () => {
     return (
         <footer className="bg-[#3D4C6F] text-white">
@@ -84,14 +78,6 @@ const Footer = () => {
                                     </Link>
                                 </li>
                             ))}
-                             <li>
-                                <Link href="#" className="flex items-center gap-3 hover:text-white transition-colors">
-                                    <div className="bg-[#303d5c] p-2 rounded-sm">
-                                        <GooglePlusIcon className="h-5 w-5" />
-                                    </div>
-                                    <span className="text-sm">Google+</span>
-                                </Link>
-                            </li>
                         </ul>
                     </div>
                 </div>
