@@ -16,7 +16,7 @@ const servicesLinks = [
     { href: "/services/software-solutions", label: "Software Solutions" },
     { href: "/conference", label: "Conference Management" },
     { href: "/services/higher-studies", label: "Higher Studies Proposals" },
-    { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
+    { href: "/services/visa-consultancy", label: "Visa Consultancy" },
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },
     { href: "/services/publications-patent", label: "Publications & Patent" },
