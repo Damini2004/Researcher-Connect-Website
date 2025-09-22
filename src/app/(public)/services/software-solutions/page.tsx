@@ -166,7 +166,7 @@ We go beyond being just a service provider—we act as a partner in progress, ad
                                 </CardHeader>
                                 <CardContent>
                                     {Array.isArray(feature.description) ? (
-                                        <ul className="list-disc list-inside text-left text-muted-foreground space-y-1">
+                                        <ul className="list-disc list-outside text-left text-muted-foreground space-y-1 pl-4">
                                             {feature.description.map((item, index) => <li key={index}>{item}</li>)}
                                         </ul>
                                     ) : (
