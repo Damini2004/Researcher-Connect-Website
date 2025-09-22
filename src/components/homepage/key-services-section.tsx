@@ -52,8 +52,8 @@ const services = [
 const subServices = [
     {
         icon: Users,
-        title: "Awesome Team",
-        description: "Before talking destination, we shine a spotlight across your organization to fully understand it."
+        title: "Experienced Team",
+        description: "Work with expert based experienced team to get best results. "
     },
     {
         icon: Headphones,
@@ -62,8 +62,8 @@ const subServices = [
     },
     {
         icon: Zap,
-        title: "Faster Performance",
-        description: "We develop a systematic well-ordered process of analysis, from concept through implementation."
+        title: "Faster Results",
+        description: "Work with a dedicated client-based approach to deliver quality results with a less turnaround time."
     }
 ]
 
