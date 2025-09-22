@@ -96,7 +96,7 @@ export default function VisaConsultancyPage() {
                     </div>
                     <div className="text-center mt-12">
                         <Button size="lg" asChild>
-                            <Link href="/contact-us">Consult with an Expert <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                            <Link href="/contact-us">Schedule a Call <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
                     </div>
                 </div>
