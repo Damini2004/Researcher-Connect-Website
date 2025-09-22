@@ -155,7 +155,7 @@ We go beyond being just a service provider—we act as a partner in progress, ad
                             Powerful tools to drive your projects forward.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 my-8">
                         {features.map(feature => (
                             <Card key={feature.name} className="text-center">
                                 <CardHeader className="items-center">
