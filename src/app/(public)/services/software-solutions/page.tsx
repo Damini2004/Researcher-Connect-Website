@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   Globe2,ArrowRight,
   Bug,
-  Headset,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -89,14 +88,6 @@ const features = [
     ],
     icon: Bug,
   },
-  {
-    name: "Consulting & Global Support",
-    description: [
-      "Strategic advisory for publishing, indexing, and institutional growth.",
-      "24×7 technical and academic support across regions."
-    ],
-    icon: Headset,
-  },
 ];
   
 
@@ -155,7 +146,7 @@ We go beyond being just a service provider—we act as a partner in progress, ad
                             Powerful tools to drive your projects forward.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 my-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
                         {features.map(feature => (
                             <Card key={feature.name} className="text-center">
                                 <CardHeader className="items-center">
@@ -186,3 +177,4 @@ We go beyond being just a service provider—we act as a partner in progress, ad
         </div>
     );
 }
+
