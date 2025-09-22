@@ -15,7 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { addFaq, faqSchema, type FaqData } from "@/services/faqService";
+import { addFaq } from "@/services/faqService";
+import { faqSchema, type FaqData } from "@/lib/types";
 
 interface AddFaqFormProps {
     onFaqAdded: () => void;

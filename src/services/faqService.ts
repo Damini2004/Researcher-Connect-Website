@@ -3,7 +3,7 @@
 
 import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { z } from 'zod';
+import { faqSchema, type FaqData } from '@/lib/types';
 
 export interface Faq {
     id: string;
@@ -11,13 +11,6 @@ export interface Faq {
     answer: string;
     createdAt: string;
 }
-
-export const faqSchema = z.object({
-  question: z.string().min(10, "Question must be at least 10 characters."),
-  answer: z.string().min(20, "Answer must be at least 20 characters."),
-});
-
-export type FaqData = z.infer<typeof faqSchema>;
 
 export async function addFaq(data: FaqData): Promise<{ success: boolean; message: string; }> {
   try {

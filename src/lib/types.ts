@@ -54,6 +54,13 @@ export const blogPostSchema = z.object({
   isFeatured: z.boolean().default(false),
 });
 
+export const faqSchema = z.object({
+  question: z.string().min(10, "Question must be at least 10 characters."),
+  answer: z.string().min(20, "Answer must be at least 20 characters."),
+});
+
+export type FaqData = z.infer<typeof faqSchema>;
+
 export type BlogPost = {
     id: string;
     title: string;
