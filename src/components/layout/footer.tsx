@@ -19,7 +19,8 @@ const servicesLinks = [
     { href: "/services/visa-consultancy", label: "Visa Consultancy" },
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },
-    { href: "/services/publications-patent", label: "Publications & Patent" },
+    { href: "/services/author-services", label: "Author Services" },
+    { href: "/services/patent-consultancy", label: "Patent Drafting Services" },
 ];
 
 const socialLinks = [
@@ -40,12 +41,11 @@ const Footer = () => {
             <div className="container mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
                     {/* Column 1: Logo & About */}
-                    <div className="md:col-span-4">
-                    <Link href="/" className="inline-block mb-4 mx-auto">
-                        <Logo className="h-40 w-40" />
-                    </Link>
-
-                        <p className="text-gray-300 text-sm max-w-xs">
+                    <div className="md:col-span-4 flex flex-col items-center text-center">
+                        <Link href="/" className="inline-block mb-4">
+                            <Logo className="h-40 w-40" />
+                        </Link>
+                        <p className="text-gray-300 text-sm max-w-xs text-justify">
                             We look forward to helping you take your company to new heights with our expert consultancy and services.
                         </p>
                     </div>
