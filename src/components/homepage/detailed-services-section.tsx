@@ -33,7 +33,7 @@ const services = [
     link: "/services/higher-studies",
   },
   {
-    title: "Visa Consultancy",
+    title: "Foreign Visa Services",
     description:
       "We simplify the EB-1 visa process for researchers of extraordinary ability by providing comprehensive, tailored guidance. Our services begin with a thorough eligibility assessment to identify the strongest qualification categories, followed by strategic planning to present achievements effectively. We assist in assembling key evidence, crafting compelling recommendation letters, and structuring portfolios that highlight international recognition, publications, awards, patents, and contributions to the field.",
     imageUrl:

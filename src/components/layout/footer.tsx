@@ -41,9 +41,9 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
                     {/* Column 1: Logo & About */}
                     <div className="md:col-span-4">
-                    <Link href="/" className="inline-block mb-4">
-    <Logo className="h-40 w-40" />
-</Link>
+                    <Link href="/" className="inline-block mb-4 mx-auto">
+                        <Logo className="h-40 w-40" />
+                    </Link>
 
                         <p className="text-gray-300 text-sm max-w-xs">
                             We look forward to helping you take your company to new heights with our expert consultancy and services.
@@ -101,7 +101,7 @@ const Footer = () => {
             <div className="border-t border-gray-700/50">
                 <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
                     <div className="mb-4 md:mb-0">
-                         <p>&copy; Copyright 2024 Researcher Connect. All Rights Reserved.</p>
+                         <p>&copy; Copyright 2025 Researcher Connect. All Rights Reserved.</p>
                     </div>
                 </div>
             </div>
