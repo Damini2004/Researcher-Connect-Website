@@ -146,7 +146,7 @@ export default function HigherStudiesPage() {
         <CardTitle>{area.title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="list-disc list-inside text-muted-foreground space-y-1">
+        <ul className="list-disc list-outside text-muted-foreground space-y-1 pl-4">
           {area.description
             .split(".")
             .filter(Boolean)
