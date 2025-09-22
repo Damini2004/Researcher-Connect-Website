@@ -161,14 +161,14 @@ export default function VisaConsultancyPage() {
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="bg-muted hover:bg-muted">
-                                            <TableHead className="font-bold">Criteria</TableHead>
-                                            <TableHead>USA (EB-1A)</TableHead>
-                                            <TableHead>UK (Global Talent)</TableHead>
-                                            <TableHead>Australia (GTI)</TableHead>
-                                            <TableHead>Canada (Self-Employed/PNP)</TableHead>
-                                            <TableHead>France (Passeport Talent)</TableHead>
-                                            <TableHead>UAE (Golden Visa)</TableHead>
-                                            <TableHead>Singapore (ONE Pass)</TableHead>
+                                            <TableHead className="font-bold text-black">Criteria</TableHead>
+                                            <TableHead className="font-bold text-black">USA (EB-1A)</TableHead>
+                                            <TableHead className="font-bold text-black">UK (Global Talent)</TableHead>
+                                            <TableHead className="font-bold text-black">Australia (GTI)</TableHead>
+                                            <TableHead className="font-bold text-black">Canada (Self-Employed/PNP)</TableHead>
+                                            <TableHead className="font-bold text-black">France (Passeport Talent)</TableHead>
+                                            <TableHead className="font-bold text-black">UAE (Golden Visa)</TableHead>
+                                            <TableHead className="font-bold text-black">Singapore (ONE Pass)</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
