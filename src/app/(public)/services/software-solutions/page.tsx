@@ -148,7 +148,7 @@ We go beyond being just a service provider—we act as a partner in progress, ad
 
 
             <section className="py-16 md:py-24 bg-secondary/30">
-                <div className="container mx-auto px-4">
+                <div className="container mx-auto px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold tracking-tight">Core Software Features</h2>
                         <p className="mt-4 text-lg text-muted-foreground">
@@ -166,7 +166,7 @@ We go beyond being just a service provider—we act as a partner in progress, ad
                                 </CardHeader>
                                 <CardContent>
                                     {Array.isArray(feature.description) ? (
-                                        <ul className="list-disc list-outside text-left text-muted-foreground space-y-1 pl-4">
+                                        <ul className="list-outside text-left text-muted-foreground space-y-1 pl-4">
                                             {feature.description.map((item, index) => <li key={index}>{item}</li>)}
                                         </ul>
                                     ) : (
