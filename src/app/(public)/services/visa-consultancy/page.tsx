@@ -6,7 +6,8 @@ import { Star, ChevronRight, Award, BookOpen, UserCheck, ArrowRight,Trophy,
     Book,
     Building2,
     Briefcase,
-    Globe2,Microscope,Speaker, } from "lucide-react";
+    Globe2,Microscope,Speaker, Check, AlertTriangle, } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -67,6 +68,18 @@ const criteria = [
     },
   ];
   
+const comparisonData = [
+    { criteria: "Awards", usa: "✅ Major/field awards", uk: "✅ Prestigious prizes", australia: "✅ International recognition", canada: "✅ Significant recognition", france: "✅ National/Int’l awards", uae: "✅ Exceptional talent awards", singapore: "✅ Global track record" },
+    { criteria: "Publications", usa: "✅ High-impact outputs", uk: "✅ Peer-reviewed research", australia: "✅ Recognized outputs", canada: "✅ Notable publications", france: "✅ Recognized research", uae: "✅ Recognized work", singapore: "✅ Academic publications" },
+    { criteria: "Judging (Review/Editorial)", usa: "✅ Reviewer / Editor", uk: "✅ Endorsed review work", australia: "✅ Review roles", canada: "⚠️ Limited weight", france: "✅ Review activity", uae: "⚠️ Indirect", singapore: "⚠️ Indirect" },
+    { criteria: "Original Contributions", usa: "✅ Major significance", uk: "✅ Innovation impact", australia: "✅ Global contributions", canada: "✅ Contribution to field", france: "✅ Original research", uae: "✅ Innovation", singapore: "✅ Innovation" },
+    { criteria: "Presentations / Keynotes", usa: "✅ Intl. conferences", uk: "✅ Invited/keynote talks", australia: "✅ Speaking roles", canada: "⚠️ Limited", france: "✅ Recognized venues", uae: "✅ Recognition events", singapore: "✅ Conferences" },
+    { criteria: "Authorship (Books/Chapters)", usa: "✅ Books/chapters", uk: "✅ Monographs", australia: "✅ Published work", canada: "⚠️ Limited", france: "✅ Books", uae: "⚠️ Limited", singapore: "✅ Publications" },
+    { criteria: "Prestigious Memberships", usa: "✅ Selective bodies", uk: "✅ Endorsements", australia: "✅ Recognized body", canada: "⚠️ Limited", france: "✅ Prestigious bodies", uae: "✅ Recognized orgs", singapore: "✅ Top networks" },
+    { criteria: "Critical Roles / Leadership", usa: "✅ PI / Lab head", uk: "✅ Leadership proof", australia: "✅ Critical talent", canada: "✅ Key roles", france: "✅ Senior researcher", uae: "✅ Senior expert", singapore: "✅ Senior leader" },
+    { criteria: "International Recognition", usa: "✅ Media / global impact", uk: "✅ Endorsement letters", australia: "✅ Global recognition", canada: "✅ Contribution proof", france: "✅ International proof", uae: "✅ Global reputation", singapore: "✅ International track record" },
+];
+
 
 export default function VisaConsultancyPage() {
     return (
@@ -134,6 +147,51 @@ export default function VisaConsultancyPage() {
                             <Link href="/contact-us">Consult with an Expert <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
                     </div>
+                </div>
+            </section>
+
+             <section className="py-16 md:py-24 bg-background">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold tracking-tight">Comparative Criteria by Country (Researcher-Focused)</h2>
+                        <p className="mt-4 max-w-4xl mx-auto text-muted-foreground">
+                            This table provides an at-a-glance guide for researcher-focused evidence. Requirements change; always consult official government pages for current criteria. Researcher Connect offers documentation support—not legal representation.
+                        </p>
+                    </div>
+                    <Card>
+                        <CardContent className="p-0">
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="font-bold">Criteria</TableHead>
+                                            <TableHead>USA (EB-1A)</TableHead>
+                                            <TableHead>UK (Global Talent)</TableHead>
+                                            <TableHead>Australia (GTI)</TableHead>
+                                            <TableHead>Canada (Self-Employed/PNP)</TableHead>
+                                            <TableHead>France (Passeport Talent)</TableHead>
+                                            <TableHead>UAE (Golden Visa)</TableHead>
+                                            <TableHead>Singapore (ONE Pass)</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {comparisonData.map((row) => (
+                                            <TableRow key={row.criteria}>
+                                                <TableCell className="font-semibold">{row.criteria}</TableCell>
+                                                <TableCell>{row.usa}</TableCell>
+                                                <TableCell>{row.uk}</TableCell>
+                                                <TableCell>{row.australia}</TableCell>
+                                                <TableCell>{row.canada}</TableCell>
+                                                <TableCell>{row.france}</TableCell>
+                                                <TableCell>{row.uae}</TableCell>
+                                                <TableCell>{row.singapore}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </section>
         </div>
