@@ -160,7 +160,7 @@ export default function VisaConsultancyPage() {
                             <div className="overflow-x-auto">
                                 <Table>
                                     <TableHeader>
-                                        <TableRow>
+                                        <TableRow className="bg-muted hover:bg-muted">
                                             <TableHead className="font-bold">Criteria</TableHead>
                                             <TableHead>USA (EB-1A)</TableHead>
                                             <TableHead>UK (Global Talent)</TableHead>
@@ -172,8 +172,8 @@ export default function VisaConsultancyPage() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {comparisonData.map((row) => (
-                                            <TableRow key={row.criteria}>
+                                        {comparisonData.map((row, index) => (
+                                            <TableRow key={row.criteria} className={index % 2 === 0 ? '' : 'bg-muted/50'}>
                                                 <TableCell className="font-semibold">{row.criteria}</TableCell>
                                                 <TableCell>{row.usa}</TableCell>
                                                 <TableCell>{row.uk}</TableCell>
@@ -189,7 +189,7 @@ export default function VisaConsultancyPage() {
                             </div>
                         </CardContent>
                     </Card>
-                    <p className="mt-4 text-sm text-center text-muted-foreground">
+                     <p className="mt-4 text-sm text-center text-muted-foreground">
                         Note: This table is an at-a-glance guide for researcher-focused evidence. Requirements change; always consult official government pages for current criteria. Researcher Connect offers documentation support—not legal representation.
                     </p>
                 </div>
