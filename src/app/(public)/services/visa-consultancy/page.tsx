@@ -69,15 +69,15 @@ const criteria = [
   ];
   
 const comparisonData = [
-    { criteria: "Awards", usa: "✅ Major/field awards", uk: "✅ Prestigious prizes", australia: "✅ International recognition", canada: "✅ Significant recognition", france: "✅ National/Int’l awards", uae: "✅ Exceptional talent awards", singapore: "✅ Global track record" },
-    { criteria: "Publications", usa: "✅ High-impact outputs", uk: "✅ Peer-reviewed research", australia: "✅ Recognized outputs", canada: "✅ Notable publications", france: "✅ Recognized research", uae: "✅ Recognized work", singapore: "✅ Academic publications" },
-    { criteria: "Judging (Review/Editorial)", usa: "✅ Reviewer / Editor", uk: "✅ Endorsed review work", australia: "✅ Review roles", canada: "⚠️ Limited weight", france: "✅ Review activity", uae: "⚠️ Indirect", singapore: "⚠️ Indirect" },
-    { criteria: "Original Contributions", usa: "✅ Major significance", uk: "✅ Innovation impact", australia: "✅ Global contributions", canada: "✅ Contribution to field", france: "✅ Original research", uae: "✅ Innovation", singapore: "✅ Innovation" },
-    { criteria: "Presentations / Keynotes", usa: "✅ Intl. conferences", uk: "✅ Invited/keynote talks", australia: "✅ Speaking roles", canada: "⚠️ Limited", france: "✅ Recognized venues", uae: "✅ Recognition events", singapore: "✅ Conferences" },
-    { criteria: "Authorship (Books/Chapters)", usa: "✅ Books/chapters", uk: "✅ Monographs", australia: "✅ Published work", canada: "⚠️ Limited", france: "✅ Books", uae: "⚠️ Limited", singapore: "✅ Publications" },
-    { criteria: "Prestigious Memberships", usa: "✅ Selective bodies", uk: "✅ Endorsements", australia: "✅ Recognized body", canada: "⚠️ Limited", france: "✅ Prestigious bodies", uae: "✅ Recognized orgs", singapore: "✅ Top networks" },
-    { criteria: "Critical Roles / Leadership", usa: "✅ PI / Lab head", uk: "✅ Leadership proof", australia: "✅ Critical talent", canada: "✅ Key roles", france: "✅ Senior researcher", uae: "✅ Senior expert", singapore: "✅ Senior leader" },
-    { criteria: "International Recognition", usa: "✅ Media / global impact", uk: "✅ Endorsement letters", australia: "✅ Global recognition", canada: "✅ Contribution proof", france: "✅ International proof", uae: "✅ Global reputation", singapore: "✅ International track record" },
+    { criteria: "Awards", usa: "Major/field awards", uk: "Prestigious prizes", australia: "International recognition", canada: "Significant recognition", france: "National/Int’l awards", uae: "Exceptional talent awards", singapore: "Global track record" },
+    { criteria: "Publications", usa: "High-impact outputs", uk: "Peer-reviewed research", australia: "Recognized outputs", canada: "Notable publications", france: "Recognized research", uae: "Recognized work", singapore: "Academic publications" },
+    { criteria: "Judging (Review/Editorial)", usa: "Reviewer / Editor", uk: "Endorsed review work", australia: "Review roles", canada: "Limited weight", france: "Review activity", uae: "Indirect", singapore: "Indirect" },
+    { criteria: "Original Contributions", usa: "Major significance", uk: "Innovation impact", australia: "Global contributions", canada: "Contribution to field", france: "Original research", uae: "Innovation", singapore: "Innovation" },
+    { criteria: "Presentations / Keynotes", usa: "Intl. conferences", uk: "Invited/keynote talks", australia: "Speaking roles", canada: "Limited", france: "Recognized venues", uae: "Recognition events", singapore: "Conferences" },
+    { criteria: "Authorship (Books/Chapters)", usa: "Books/chapters", uk: "Monographs", australia: "Published work", canada: "Limited", france: "Books", uae: "Limited", singapore: "Publications" },
+    { criteria: "Prestigious Memberships", usa: "Selective bodies", uk: "Endorsements", australia: "Recognized body", canada: "Limited", france: "Prestigious bodies", uae: "Recognized orgs", singapore: "Top networks" },
+    { criteria: "Critical Roles / Leadership", usa: "PI / Lab head", uk: "Leadership proof", australia: "Critical talent", canada: "Key roles", france: "Senior researcher", uae: "Senior expert", singapore: "Senior leader" },
+    { criteria: "International Recognition", usa: "Media / global impact", uk: "Endorsement letters", australia: "Global recognition", canada: "Contribution proof", france: "International proof", uae: "Global reputation", singapore: "International track record" },
 ];
 
 
