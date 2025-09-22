@@ -23,7 +23,7 @@ const leadershipTeam = [
         description: "Driving technology innovation and building scalable research-focused platforms.",
         imageSrc: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=400&h=400&auto=format&fit=crop",
         imageHint: "cto portrait",
-        linkedinUrl: "#"
+        linkedinUrl: "https://www.linkedin.com/in/vinit-khetani"
     },
     {
         name: "Yogesh Nagargoje",
@@ -31,7 +31,7 @@ const leadershipTeam = [
         description: "Leading marketing strategies to expand global visibility and engagement.",
         imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=400&auto=format&fit=crop",
         imageHint: "cmo portrait",
-        linkedinUrl: "#"
+        linkedinUrl: "https://www.linkedin.com/in/yogesh-nagargoje"
     },
     {
         name: "Sharyu Ikhar",
@@ -39,7 +39,7 @@ const leadershipTeam = [
         description: "Overseeing operations to ensure seamless delivery and organizational excellence.",
         imageSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=400&auto=format=fit=crop",
         imageHint: "ceo portrait",
-        linkedinUrl: "#"
+        linkedinUrl: "https://www.linkedin.com/in/sharyu-ikhar"
     },
    
     
