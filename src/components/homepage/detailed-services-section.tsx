@@ -30,7 +30,7 @@ const services = [
     imageUrl:
       "/phd.png",
     imageHint: "advisory meeting",
-    link: "/services/phd-services",
+    link: "/services/higher-studies",
   },
   {
     title: "Visa Consultancy",
@@ -60,13 +60,22 @@ const services = [
     link: "/services/phd-services",
   },
   {
-    title: "Publication & Patent Support",
+    title: "Author Services",
     description:
-      "We help researchers amplify their impact by guiding both academic publishing and intellectual property protection. Our publication services cover journal selection, manuscript structuring, reference formatting, and compliance with editorial standards to improve acceptance in high-impact journals. We provide critical reviews, language polishing, and support for responding to peer feedback, ensuring clarity without altering technical precision. For patents, we conduct prior-art searches, draft and refine applications, and develop jurisdictional strategies for local and international protection.",
+      "We help researchers amplify their impact by guiding them through the academic publishing landscape. Our publication services cover journal selection, manuscript structuring, reference formatting, and compliance with editorial standards to improve acceptance in high-impact journals. We provide critical reviews, language polishing, and support for responding to peer feedback, ensuring clarity without altering technical precision.",
     imageUrl:
-      "/patent.png",
-    imageHint: "tax documents",
-    link: "/services/publications-patent",
+      "/patent.png", // Consider a more relevant image if available
+    imageHint: "research paper",
+    link: "/services/author-services",
+  },
+  {
+    title: "Patent Consultancy",
+    description:
+      "Protect your innovations with our expert guidance. For patents, we conduct prior-art searches, draft and refine applications, and develop jurisdictional strategies for local and international protection. We help you navigate the complex legal requirements to secure your intellectual property.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&h=600&auto=format&fit=crop",
+    imageHint: "patent documents",
+    link: "/services/patent-consultancy",
   },
 ];
 

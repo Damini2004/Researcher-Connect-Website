@@ -38,7 +38,7 @@ const services = [
     },
     {
         icon: FileText,
-        title: "Publications Consultancy",
+        title: "Author Services",
         description: "Assistance with manuscript preparation and publishing in high-impact journals."
     },
     {

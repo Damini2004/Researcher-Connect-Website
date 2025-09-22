@@ -32,7 +32,8 @@ const servicesLinks = [
     { href: "/services/visa-consultancy", label: "Visa Consultancy" },
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },
-    { href: "/services/publications-patent", label: "Publications and Patent Consultancy" },
+    { href: "/services/author-services", label: "Author Services" },
+    { href: "/services/patent-consultancy", label: "Patent Consultancy" },
 ];
 
 
