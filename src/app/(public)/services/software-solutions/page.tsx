@@ -31,8 +31,10 @@ const features = [
   },
   {
     name: "Cloud-Based Solutions",
-    description:
-      "Secure cloud hosting for journals, conferences, and data. Scalable infrastructure to support global access and collaboration.",
+    description: [
+        "Secure cloud hosting for journals, conferences, and data.",
+        "Scalable infrastructure to support global access and collaboration."
+    ],
     icon: Cloud,
   },
   {
@@ -145,7 +147,13 @@ We go beyond being just a service provider—we act as a partner in progress, ad
                                     <CardTitle>{feature.name}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-muted-foreground">{feature.description}</p>
+                                    {Array.isArray(feature.description) ? (
+                                        <ul className="list-disc list-inside text-left text-muted-foreground space-y-1">
+                                            {feature.description.map((item, index) => <li key={index}>{item}</li>)}
+                                        </ul>
+                                    ) : (
+                                        <p className="text-muted-foreground">{feature.description}</p>
+                                    )}
                                 </CardContent>
                             </Card>
                         ))}
