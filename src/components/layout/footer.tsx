@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Logo } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Linkedin, Instagram, Facebook } from "lucide-react";
+import { Linkedin, Instagram, Facebook, Mail } from "lucide-react";
 
 const quickLinks = [
     { href: "/contact-us", label: "Contact Us" },
     { href: "/conference/faq", label: "FAQ" },
     { href: "/privacy-policy", label: "Privacy Policy" },
-    { href: "#", label: "Terms of Use" },
+    { href: "/#", label: "Terms of Use" },
 ]
 
 const servicesLinks = [
@@ -24,9 +24,10 @@ const servicesLinks = [
 ];
 
 const socialLinks = [
-    { href: "#", icon: Linkedin, label: "Linkedin" },
-    { href: "#", icon: Instagram, label: "Instagram" },
-    { href: "#", icon: Facebook, label: "Facebook" },
+    { href: "https://www.linkedin.com/company/researcher-connect/", icon: Linkedin, label: "Linkedin" },
+    { href: "https://www.instagram.com/researcher_connect/", icon: Instagram, label: "Instagram" },
+    { href: "https://www.facebook.com/researcherconnect.net", icon: Facebook, label: "Facebook" },
+    { href: "mailto:support@researcherconnect.com", icon: Mail, label: "Mail" },
 ]
 
 const Footer = () => {
