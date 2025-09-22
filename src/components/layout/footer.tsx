@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Logo } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Linkedin, Twitter, Facebook } from "lucide-react";
+import { Linkedin, Instagram, Facebook } from "lucide-react";
 
 const quickLinks = [
     { href: "/contact-us", label: "Contact Us" },
@@ -25,7 +25,7 @@ const servicesLinks = [
 
 const socialLinks = [
     { href: "#", icon: Linkedin, label: "Linkedin" },
-    { href: "#", icon: Twitter, label: "Twitter" },
+    { href: "#", icon: Instagram, label: "Instagram" },
     { href: "#", icon: Facebook, label: "Facebook" },
 ]
 

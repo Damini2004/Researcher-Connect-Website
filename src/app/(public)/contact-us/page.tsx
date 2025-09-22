@@ -1,7 +1,8 @@
+
 // src/app/(public)/contact-us/page.tsx
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, ChevronRight, Linkedin, Twitter, Facebook } from "lucide-react";
+import { Mail, Phone, MapPin, ChevronRight, Linkedin, Instagram, Facebook } from "lucide-react";
 import ContactForm from "@/components/forms/contact-form";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,7 +22,7 @@ const contactCards = [
 
 const socialLinks = [
     { href: "#", icon: Linkedin },
-    { href: "#", icon: Twitter },
+    { href: "#", icon: Instagram },
     { href: "#", icon: Facebook },
     { href: "#", icon: Mail },
 ];
