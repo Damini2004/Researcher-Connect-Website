@@ -9,7 +9,7 @@ import Image from "next/image";
 const contactCards = [
     {
         title: "Nagpur Office",
-        lines: ["202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027"],
+        lines: ["201, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027"],
         icon: MapPin,
     },
     {

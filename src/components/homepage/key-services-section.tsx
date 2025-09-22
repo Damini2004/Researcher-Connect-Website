@@ -43,7 +43,7 @@ const services = [
     },
     {
         icon: Shield,
-        title: "Patent Consultancy",
+        title: "Patent Drafting Services",
         description: "Protecting your intellectual property with expert patent filing support."
     }
 ];

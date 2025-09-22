@@ -148,7 +148,7 @@ We assist with conference conceptualization, helping you define impactful themes
 
 We also coordinate speaker invitations, sponsorship packages, and exhibitor opportunities, giving your event both academic depth and financial sustainability. For virtual and hybrid events, we integrate high-quality streaming platforms with real-time Q&A, networking, and poster sessions — creating a truly global reach. For in-person events, we oversee venue booking, travel support, compliance, and on-site management, so every guest feels welcome and informed.
 
-After the event, we provide professional proceedings preparation, indexing support, and impact reporting, helping your conference leave a measurable footprint in the academic world. Whether you’re hosting a niche symposium or a large-scale international congress, we ensure that every detail — from the first email to the final publication — is handled with world-class professionalism, allowing your team to focus on what matters most: the science, the connections, and the ideas that will drive the future. </p>
+After the event, we provide professional proceedings preparation, indexing support, and impact reporting, helping your conference leave a measurable footprint in the academic world.</p>
                          <Button size="lg" asChild>
                             <Link href="/contact-us">
                                 Plan Your Conference <ArrowRight className="ml-2 h-5 w-5" />

@@ -69,7 +69,7 @@ const services = [
     link: "/services/author-services",
   },
   {
-    title: "Patent Consultancy",
+    title: "Patent Drafting Services",
     description:
       "Protect your innovations with our expert guidance. For patents, we conduct prior-art searches, draft and refine applications, and develop jurisdictional strategies for local and international protection. We help you navigate the complex legal requirements to secure your intellectual property.",
     imageUrl:

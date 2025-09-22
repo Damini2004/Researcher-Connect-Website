@@ -4,37 +4,60 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { FileText, ShieldCheck, Edit, Search, ArrowRight } from "lucide-react";
+import {  Edit, Search, ArrowRight,
+  FileText,
+  FileEdit,
+  ShieldCheck,
+  Clipboard,
+  Archive,
+  DollarSign, } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const patentServices = [
-    {
-        title: "Prior-Art Searches",
-        description:
-          "Ensure originality and minimize risk by evaluating existing technologies.",
-        icon: Search,
-      },
-      {
-        title: "Drafting & Filing",
-        description:
-          "Prepare strong, compliant applications for local and global filings.",
-        icon: Edit,
-      },
-      {
-        title: "Jurisdictional Strategy",
-        description:
-          "Plan protection across multiple countries efficiently.",
-        icon: ShieldCheck,
-      },
-      {
-        title: "Tech Transfer Support",
-        description:
-          "Facilitate commercialization and licensing of research innovations.",
-        icon: FileText,
-      },
-  ];
-  
+  {
+    title: "Patentability Assessment",
+    description:
+      "Evaluating novelty and eligibility through prior-art searches.",
+    icon: Search,
+  },
+  {
+    title: "Drafting Patent Applications",
+    description:
+      "Preparing detailed specifications, claims, and technical drawings.",
+    icon: FileEdit,
+  },
+  {
+    title: "Provisional & Complete Patents",
+    description:
+      "Drafting applications for both provisional and full filings.",
+    icon: FileText,
+  },
+  {
+    title: "Filing Support",
+    description:
+      "Guidance on national, international (PCT), and jurisdiction-specific filings.",
+    icon: Clipboard,
+  },
+  {
+    title: "Office Action & Response Support",
+    description:
+      "Preparing responses to examiner objections or queries.",
+    icon: Archive,
+  },
+  {
+    title: "Patent Portfolio Management",
+    description:
+      "Helping institutions and companies manage multiple patent applications.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Tech Transfer & Commercialization Guidance",
+    description:
+      "Advising on licensing and monetizing intellectual property.",
+    icon: DollarSign,
+  },
+];
 
 export default function PatentConsultancyPage() {
     return (
@@ -48,7 +71,7 @@ export default function PatentConsultancyPage() {
                     className="object-cover opacity-20"
                 />
                 <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
-                    <h1 className="text-5xl font-extrabold tracking-tight">Patent Consultancy</h1>
+                    <h1 className="text-5xl font-extrabold tracking-tight">Patent Drafting Services                    </h1>
                 </div>
             </section>
             
@@ -61,12 +84,12 @@ export default function PatentConsultancyPage() {
                         From Lab to Legacy
                       </h2>
                       <p className="max-w-[600px] text-justify text-muted-foreground">
-                        Protecting intellectual property is crucial for safeguarding innovation and securing commercial or academic advantages. Researcher Connect provides specialized patent consultancy, assisting researchers and institutions with prior-art searches, drafting, filing strategies, and jurisdictional guidance. We simplify complex legal frameworks, ensuring innovations are adequately protected while meeting regulatory timelines. Our team coordinates with legal experts to strengthen patent claims, improve approval success, and support technology transfer initiatives. Whether securing local or international rights, we help innovators navigate the process with clarity and confidence, ensuring that their intellectual contributions are preserved, valued, and positioned for future development or commercialization.
+                      Protecting intellectual property is critical to ensuring that research and innovation create long-term impact. At Researcher Connect, we provide Patent Drafting Services to help researchers, inventors, and institutions secure their ideas through clear, precise, and enforceable patent applications. Our team of experts ensures that every application is aligned with global patent office standards, enhancing the chances of approval and protection.
                       </p>
                     </div>
                     <Button asChild size="lg" className="w-fit">
                       <Link href="/contact-us">
-                        Get a Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
+                        Schedule a Call <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
                     </Button>
                   </div>
@@ -74,7 +97,7 @@ export default function PatentConsultancyPage() {
                     alt="Patent illustration"
                     className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
                     height="310"
-                    src="https://images.unsplash.com/photo-1614064548237-02f9d3421475?q=80&w=800&auto=format&fit=crop"
+                    src="/Patent-Drafting-Services-1.jpg"
                     data-ai-hint="patent idea"
                     width="550"
                   />

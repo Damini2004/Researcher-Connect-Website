@@ -3,7 +3,7 @@
 import { getPageContent } from "@/services/cmsService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { ChevronRight, Eye, Goal, Heart, CheckCircle, Linkedin, Twitter } from "lucide-react";
+import { ChevronRight, Eye, Goal, Heart, CheckCircle, Linkedin, } from "lucide-react";
 import Link from "next/link";
 import { RenderHtmlContent } from "@/components/ui/render-html-content";
 
@@ -18,26 +18,31 @@ async function getAboutContent() {
 
 const leadershipTeam = [
     {
-        name: "Renal Scott",
-        title: "Chief Executive Officer",
-        description: "Elixir co-operates with clients in solving the hardest problems they face in their businesses—and the world. We do this by channeling the diversity of our people and their thinking.",
-        imageSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=400&auto=format=fit=crop",
-        imageHint: "ceo portrait"
-    },
-    {
-        name: "Alexia Jordan",
-        title: "Chief Marketing Officer",
-        description: "Alexia leads our global marketing efforts, shaping the Researcher Connect brand and driving growth through innovative strategies and a deep understanding of the academic community.",
-        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=400&auto=format&fit=crop",
-        imageHint: "cmo portrait"
-    },
-    {
-        name: "Ben Carter",
+        name: "Vinit Khetani",
         title: "Chief Technology Officer",
-        description: "Ben oversees our technology stack, ensuring our platform is robust, scalable, and at the forefront of innovation to best serve the needs of researchers worldwide.",
+        description: "Driving technology innovation and building scalable research-focused platforms.",
         imageSrc: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=400&h=400&auto=format&fit=crop",
-        imageHint: "cto portrait"
-    }
+        imageHint: "cto portrait",
+        linkedinUrl: "#"
+    },
+    {
+        name: "Yogesh Nagargoje",
+        title: "Chief Marketing Officer",
+        description: "Leading marketing strategies to expand global visibility and engagement.",
+        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=400&auto=format&fit=crop",
+        imageHint: "cmo portrait",
+        linkedinUrl: "#"
+    },
+    {
+        name: "Sharyu Ikhar",
+        title: "Chief Operating Officer",
+        description: "Overseeing operations to ensure seamless delivery and organizational excellence.",
+        imageSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=400&auto=format=fit=crop",
+        imageHint: "ceo portrait",
+        linkedinUrl: "#"
+    },
+   
+    
 ];
 
 const coreValues = [
@@ -95,8 +100,7 @@ export default async function AboutPage() {
                             <CardContent className="p-6">
                                 <p className="text-muted-foreground mb-4 text-sm">{member.description}</p>
                                 <div className="flex justify-center gap-4">
-                                    <Link href="#" className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
-                                    <Link href="#" className="text-muted-foreground hover:text-primary"><Twitter className="h-5 w-5" /></Link>
+                                    <Link href={member.linkedinUrl} className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
                                 </div>
                             </CardContent>
                         </Card>

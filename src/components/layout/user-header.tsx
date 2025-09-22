@@ -20,7 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const topBarInfo = [
-    { text: "202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
+    { text: "201, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
     { text: "+91 9890917528 | 9960266198", icon: Phone, isLink: true, href: "tel:+9199890917528 | 9960266198" },
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
@@ -33,7 +33,7 @@ const servicesLinks = [
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },
     { href: "/services/author-services", label: "Author Services" },
-    { href: "/services/patent-consultancy", label: "Patent Consultancy" },
+    { href: "/services/patent-consultancy", label: "Patent Drafting Services" },
 ];
 
 
