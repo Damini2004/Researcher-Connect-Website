@@ -137,7 +137,7 @@ export default function VisaConsultancyPage() {
                                     <CardTitle>{item.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-muted-foreground">{item.description}</p>
+                                    <p className="text-muted-foreground text-justify">{item.description}</p>
                                 </CardContent>
                             </Card>
                         ))}
