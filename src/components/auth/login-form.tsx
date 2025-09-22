@@ -67,7 +67,7 @@ export default function LoginForm() {
     <Card className="bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center">
             <Logo className="h-10 w-10 mx-auto mb-4" />
-            <CardTitle className="text-xl font-bold">LOGIN WITH ELIXIR</CardTitle>
+            <CardTitle className="text-xl font-bold">Login to Researcher Connect</CardTitle>
         </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
