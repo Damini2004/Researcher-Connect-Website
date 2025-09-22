@@ -81,8 +81,8 @@ export default function FaqPage() {
                            <Phone className="h-5 w-5 text-muted-foreground mt-1 flex-shrink-0" />
                             <div>
                                 <h4 className="font-semibold">Call Us</h4>
-                                <a href="tel:+917020996341" className="text-sm text-primary hover:underline">
-                                    +91-7020996341
+                                <a href="tel:+919890917528" className="text-sm text-primary hover:underline">
+                                    +91 9890917528 | 9960266198
                                 </a>
                             </div>
                         </div>

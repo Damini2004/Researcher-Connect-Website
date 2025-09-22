@@ -1,3 +1,4 @@
+
 // src/components/homepage/detailed-services-section.tsx
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail, MessageSquare, Phone } from "lucide-react";
@@ -151,7 +152,7 @@ export function DetailedServicesSection() {
                 <div>
                     <h4 className="text-lg font-bold">Call a Specialist</h4>
                     <p className="text-sm text-muted-foreground mt-1">
-                        Our support team is ready for you at <a href="tel:+919890917528 | 9960266198" className="underline text-primary">+91-9890917528 | 9960266198</a>.
+                        Our support team is ready for you at <a href="tel:+919890917528" className="underline text-primary">+91 9890917528 | 9960266198</a>.
                     </p>
                 </div>
             </div>
