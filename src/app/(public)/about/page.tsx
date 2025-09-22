@@ -119,7 +119,7 @@ export default async function AboutPage() {
                         <CardTitle className="mt-4 text-3xl">Our Mission</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center text-muted-foreground text-lg">
-                        <p>To empower researchers and innovators by providing a seamless, transparent, and supportive ecosystem for publishing and protecting their work, fostering global collaboration and accelerating scientific progress.</p>
+                        <p> To empower global research visibility and innovation through technology and collaboration.                        </p>
                     </CardContent>
                 </Card>
                 <Card className="shadow-lg transform hover:scale-105 transition-transform duration-300">
@@ -128,7 +128,8 @@ export default async function AboutPage() {
                         <CardTitle className="mt-4 text-3xl">Our Vision</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center text-muted-foreground text-lg">
-                        <p>To be the world's most trusted and innovative platform for the dissemination and protection of academic research, creating a future where knowledge knows no boundaries.</p>
+                        <p>To be the most trusted partner for research, publishing, and academic software worldwide.
+                        </p>
                     </CardContent>
                 </Card>
             </div>

@@ -66,16 +66,9 @@ export default function HigherStudiesPage() {
             Unlock Your Academic Future
           </h2>
           <p className="max-w-[600px] text-muted-foreground text-justify">
-            Securing admission or funding for PhD and postdoctoral research depends heavily on strong,
-            well-crafted proposals. Researcher Connect guides aspiring researchers through every step of
-            proposal development, from topic refinement and literature synthesis to methodology design,
-            funding alignment, and impact articulation. We ensure proposals are not only academically
-            rigorous but also competitive and clearly positioned within global research priorities. Our
-            tailored approach helps candidates stand out, increasing the likelihood of approval,
-            scholarships, or institutional partnerships. Whether targeting top universities, research
-            councils, or industry-backed projects, our guidance equips scholars with persuasive,
-            structured, and polished submissions that turn ambitions into opportunities.
-          </p>
+          At Researcher Connect, we believe that every researcher deserves the opportunity to pursue their academic dreams on a global stage. We guide scholars, PhD aspirants, and postdoctoral researchers through the process of studying and researching abroad, ensuring they find the right programs, universities, and funding opportunities.
+From selecting the ideal university to preparing strong applications, we provide end-to-end support that makes the journey smoother, transparent, and achievable.
+ </p>
         </div>
       </div>
     </div>

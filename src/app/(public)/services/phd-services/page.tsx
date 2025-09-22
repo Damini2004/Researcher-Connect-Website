@@ -66,18 +66,9 @@ export default function PhDServicePage() {
             Your Complete PhD Journey Support
           </h2>
           <p className="max-w-[600px] text-justify text-muted-foreground ">
-            Pursuing a PhD is a demanding journey that requires strategic planning,
-            academic precision, and consistent guidance. Researcher Connect offers
-            comprehensive PhD support — from topic selection, proposal development,
-            and literature reviews to publication assistance, thesis structuring, and
-            defense preparation. We ensure research stays focused, methodologically
-            sound, and aligned with institutional expectations. Our services reduce
-            stress, save time, and improve academic outcomes while fostering confidence
-            throughout the doctoral process. Whether students are just beginning or
-            approaching submission, we provide personalized mentoring and technical
-            expertise, enabling scholars to complete their PhDs successfully and make
-            meaningful contributions to their respective fields.
-          </p>
+          At Researcher Connect, we understand that a PhD is more than just a degree—it is a journey of research, discovery, and academic contribution. To support scholars at every stage, we provide end-to-end PhD services, ensuring that students, faculty, and researchers receive the right guidance from the very beginning of their doctoral program to the successful defense and publication of their work.
+Our expert team assists in designing strong research proposals, developing methodologies, analyzing data, and preparing manuscripts for international journals. We also provide support for thesis writing, editing, formatting, plagiarism checks, and final submission. By integrating academic mentoring with publication consultancy, we make the doctoral journey smoother, more structured, and globally visible.
+</p>
         </div>
       </div>
     </div>

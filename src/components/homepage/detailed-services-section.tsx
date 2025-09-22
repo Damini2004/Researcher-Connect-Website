@@ -142,7 +142,7 @@ export function DetailedServicesSection() {
                 <div>
                     <h4 className="text-lg font-bold">Call a Specialist</h4>
                     <p className="text-sm text-muted-foreground mt-1">
-                        Our support team is ready for you at <a href="tel:+919970294396" className="underline text-primary">+91-9970294396</a>.
+                        Our support team is ready for you at <a href="tel:+919890917528 | 9960266198" className="underline text-primary">+91-9890917528 | 9960266198</a>.
                     </p>
                 </div>
             </div>
@@ -154,7 +154,7 @@ export function DetailedServicesSection() {
                     <h4 className="text-lg font-bold">Chat on WhatsApp</h4>
                     <p className="text-sm text-muted-foreground mt-1">
                         Connect with us instantly on WhatsApp.{" "}
-                        <a href="https://wa.me/919970294396" target="_blank" rel="noopener noreferrer" className="underline text-primary">
+                        <a href="https://wa.me/919890917528" target="_blank" rel="noopener noreferrer" className="underline text-primary">
                             Start chatting
                         </a>
                     </p>

@@ -1,30 +1,83 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, ChevronRight, Cpu, Map, GanttChartSquare, ArrowRight } from "lucide-react";
+import {
+  Code,
+  MonitorSmartphone,
+  Cloud,
+  Building2,
+  Palette,
+  LineChart,
+  ShieldCheck,
+  Globe2,ArrowRight,
+  Bug,
+  Headset,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const features = [
-    {
-        name: "Reliability Analysis (RAMS)",
-        description:
-          "Predict system performance, identify risks, and optimize lifecycle costs to ensure safety and compliance.",
-        icon: CheckCircle,
-      },
-      {
-        name: "SDG Mapping (SDGMapper)",
-        description:
-          "Align projects with UN Sustainable Development Goals, track contributions, and visualize global impact.",
-        icon: ChevronRight,
-      },
-      {
-        name: "Scalability",
-        description:
-          "Built to support individual teams or global research collaborations with equal efficiency.",
-        icon: Map,
-      },
-  ];
+  {
+    name: "Custom Research Software Development",
+    description:
+      "Tailored digital platforms for universities, publishers, and institutions. End-to-end design, development, and deployment.",
+    icon: Code,
+  },
+  {
+    name: "Web & Mobile Applications",
+    description:
+      "Academic websites, portals, and knowledge repositories. Mobile apps for research collaboration, publishing, and events.",
+    icon: MonitorSmartphone,
+  },
+  {
+    name: "Cloud-Based Solutions",
+    description:
+      "Secure cloud hosting for journals, conferences, and data. Scalable infrastructure to support global access and collaboration.",
+    icon: Cloud,
+  },
+  {
+    name: "Enterprise Academic Solutions",
+    description:
+      "Digital systems for publication management, peer review, and author services. Workflow automation for universities, publishers, and research bodies.",
+    icon: Building2,
+  },
+  {
+    name: "UI/UX & Product Engineering",
+    description:
+      "User-friendly design focused on scholars, editors, and administrators. Complete product lifecycle from prototyping to deployment.",
+    icon: Palette,
+  },
+  {
+    name: "AI & Data Analytics",
+    description:
+      "Research data insights, citation tracking, and predictive trends. Smart automation to support decision-making and academic reporting.",
+    icon: LineChart,
+  },
+  {
+    name: "Cybersecurity & Compliance",
+    description:
+      "Protection of sensitive research data and intellectual property. Adherence to global publishing, academic, and data standards.",
+    icon: ShieldCheck,
+  },
+  {
+    name: "Academic Branding & Digital Visibility",
+    description:
+      "Enhancing institutional and researcher profiles online. Strategies for global reach through web, social, and digital presence.",
+    icon: Globe2,
+  },
+  {
+    name: "Quality Assurance & Testing",
+    description:
+      "Rigorous testing for reliability, security, and usability. Continuous improvements for error-free and smooth operations.",
+    icon: Bug,
+  },
+  {
+    name: "Consulting & Global Support",
+    description:
+      "Strategic advisory for publishing, indexing, and institutional growth. 24×7 technical and academic support across regions.",
+    icon: Headset,
+  },
+];
   
 
 export default function SoftwareSolutionsPage() {
@@ -60,16 +113,13 @@ export default function SoftwareSolutionsPage() {
             Software Solutions
           </h2>
           <p className=" text-justify text-muted-foreground ">
-            Researcher Connect provides advanced digital tools to accelerate impactful research.
-            RAMS (Reliability, Availability, Maintainability, and Safety) helps teams assess risk,
-            enhance system performance, and meet regulatory standards across complex projects.
-            SDGMapper aligns research with the UN Sustainable Development Goals, simplifying
-            progress tracking, gap analysis, and impact reporting. Together, these platforms deliver
-            data-driven insights, streamlined workflows, and measurable results. Whether optimizing
-            designs or demonstrating societal relevance, our software solutions turn complex research
-            challenges into opportunities for innovation and meaningful progress in today’s
-            fast-moving academic and industrial environments.
-          </p>
+          At Researcher Connect, we are a research technology and consulting company committed to transforming the way knowledge is created, published, and shared. We work with universities, researchers, publishers, and institutions to break silos and build integrated ecosystems for research growth, visibility, and global collaboration.
+We go beyond being just a service provider—we act as a partner in progress, addressing challenges in research publication, analytics, institutional rankings, and digital transformation. Our approach combines consultancy, technology, innovation, and collaboration to deliver measurable results.
+ </p>
+ <p className=" text-justify text-muted-foreground " >
+ “How do we do it?” By aligning ideas with execution, ensuring that every research output—whether a manuscript, patent, or dataset—translates into impactful contributions for academia and society.
+ Core Features of Researcher Connect.
+ </p>
         </div>
       </div>
     </div>
@@ -85,7 +135,7 @@ export default function SoftwareSolutionsPage() {
                             Powerful tools to drive your projects forward.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {features.map(feature => (
                             <Card key={feature.name} className="text-center">
                                 <CardHeader className="items-center">
@@ -102,7 +152,7 @@ export default function SoftwareSolutionsPage() {
                     </div>
                      <div className="text-center mt-12">
                         <Button asChild size="lg">
-                            <Link href="/contact-us">Request a Demo <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                            <Link href="/contact-us">Schedule a Call <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
                     </div>
                 </div>
