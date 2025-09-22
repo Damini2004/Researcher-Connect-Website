@@ -137,7 +137,7 @@ export default function VisaConsultancyPage() {
                                     <CardTitle>{item.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-muted-foreground text-justify">
+                                    <div className="text-muted-foreground">
                                         {item.description.split('\n').map((line, index) => (
                                             <p key={index}>{line}</p>
                                         ))}
