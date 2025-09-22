@@ -1,5 +1,8 @@
 
 // src/app/(public)/blogs/page.tsx
+
+export const dynamic = 'force-dynamic';
+
 import React from "react";
 import { getBlogPosts, BlogPost } from "@/services/blogService";
 import { Button } from "@/components/ui/button";
