@@ -19,14 +19,18 @@ import Link from "next/link";
 const features = [
   {
     name: "Custom Research Software Development",
-    description:
-      "Tailored digital platforms for universities, publishers, and institutions. End-to-end design, development, and deployment.",
+    description: [
+      "Tailored digital platforms for universities, publishers, and institutions.",
+      "End-to-end design, development, and deployment."
+    ],
     icon: Code,
   },
   {
     name: "Web & Mobile Applications",
-    description:
-      "Academic websites, portals, and knowledge repositories. Mobile apps for research collaboration, publishing, and events.",
+    description: [
+      "Academic websites, portals, and knowledge repositories.",
+      "Mobile apps for research collaboration, publishing, and events."
+    ],
     icon: MonitorSmartphone,
   },
   {
@@ -39,44 +43,58 @@ const features = [
   },
   {
     name: "Enterprise Academic Solutions",
-    description:
-      "Digital systems for publication management, peer review, and author services. Workflow automation for universities, publishers, and research bodies.",
+    description: [
+      "Digital systems for publication management, peer review, and author services.",
+      "Workflow automation for universities, publishers, and research bodies."
+    ],
     icon: Building2,
   },
   {
     name: "UI/UX & Product Engineering",
-    description:
-      "User-friendly design focused on scholars, editors, and administrators. Complete product lifecycle from prototyping to deployment.",
+    description: [
+      "User-friendly design focused on scholars, editors, and administrators.",
+      "Complete product lifecycle from prototyping to deployment."
+    ],
     icon: Palette,
   },
   {
     name: "AI & Data Analytics",
-    description:
-      "Research data insights, citation tracking, and predictive trends. Smart automation to support decision-making and academic reporting.",
+    description: [
+      "Research data insights, citation tracking, and predictive trends.",
+      "Smart automation to support decision-making and academic reporting."
+    ],
     icon: LineChart,
   },
   {
     name: "Cybersecurity & Compliance",
-    description:
-      "Protection of sensitive research data and intellectual property. Adherence to global publishing, academic, and data standards.",
+    description: [
+      "Protection of sensitive research data and intellectual property.",
+      "Adherence to global publishing, academic, and data standards."
+    ],
     icon: ShieldCheck,
   },
   {
     name: "Academic Branding & Digital Visibility",
-    description:
-      "Enhancing institutional and researcher profiles online. Strategies for global reach through web, social, and digital presence.",
+    description: [
+      "Enhancing institutional and researcher profiles online.",
+      "Strategies for global reach through web, social, and digital presence."
+    ],
     icon: Globe2,
   },
   {
     name: "Quality Assurance & Testing",
-    description:
-      "Rigorous testing for reliability, security, and usability. Continuous improvements for error-free and smooth operations.",
+    description: [
+      "Rigorous testing for reliability, security, and usability.",
+      "Continuous improvements for error-free and smooth operations."
+    ],
     icon: Bug,
   },
   {
     name: "Consulting & Global Support",
-    description:
-      "Strategic advisory for publishing, indexing, and institutional growth. 24×7 technical and academic support across regions.",
+    description: [
+      "Strategic advisory for publishing, indexing, and institutional growth.",
+      "24×7 technical and academic support across regions."
+    ],
     icon: Headset,
   },
 ];
