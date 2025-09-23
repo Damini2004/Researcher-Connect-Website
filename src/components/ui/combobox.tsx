@@ -40,30 +40,26 @@ export function Combobox({
   emptyPlaceholder = "No results found.",
   allowCustomValue = false
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false)
-  const [inputValue, setInputValue] = React.useState("")
-
-  React.useEffect(() => {
-    setInputValue(value || "");
-  }, [value]);
+  const [open, setOpen] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState("");
 
   const handleSelect = (currentValue: string) => {
+    // When an item is selected, update the form's value and the input's displayed value.
     onChange(currentValue);
+    setInputValue(currentValue.toLowerCase() === value?.toLowerCase() ? "" : currentValue);
     setOpen(false);
   }
 
-  const filteredOptions = inputValue
-    ? options.filter((option) =>
-        option.label.toLowerCase().includes(inputValue.toLowerCase())
-      )
-    : options;
-  
-  const showCreateOption =
-    allowCustomValue &&
-    inputValue &&
-    !options.some(
-      (option) => option.label.toLowerCase() === inputValue.toLowerCase()
-    );
+  const handleInputChange = (search: string) => {
+    setInputValue(search);
+    if (allowCustomValue) {
+      onChange(search);
+    }
+  };
+
+  const currentOption = options.find(
+    (option) => option.value.toLowerCase() === value?.toLowerCase()
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,9 +70,7 @@ export function Combobox({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
-            ? options.find((option) => option.value === value)?.label || value
-            : placeholder}
+          {currentOption ? currentOption.label : value || placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -85,12 +79,12 @@ export function Combobox({
           <CommandInput
             placeholder={searchPlaceholder}
             value={inputValue}
-            onValueChange={setInputValue}
+            onValueChange={handleInputChange}
           />
            <CommandList>
             <CommandEmpty>
                 {allowCustomValue && inputValue ? (
-                    <CommandItem
+                     <CommandItem
                         value={inputValue}
                         onSelect={() => handleSelect(inputValue)}
                     >
@@ -102,17 +96,7 @@ export function Combobox({
             </CommandEmpty>
             <CommandGroup>
                 <ScrollArea className="h-48">
-                    {showCreateOption && (
-                        <CommandItem
-                            key="create-custom"
-                            value={inputValue}
-                            onSelect={() => handleSelect(inputValue)}
-                        >
-                            <Check className="mr-2 h-4 w-4 opacity-0" />
-                            Create "{inputValue}"
-                        </CommandItem>
-                    )}
-                    {filteredOptions.map((option) => (
+                    {options.map((option) => (
                     <CommandItem
                         key={option.value}
                         value={option.value}
