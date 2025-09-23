@@ -41,44 +41,41 @@ export function Combobox({
   allowCustomValue = false
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
-  const [inputValue, setInputValue] = React.useState("")
+  const [inputValue, setInputValue] = React.useState(value || "")
 
   const getLabel = (val: string) => {
     return options.find((option) => option.value.toLowerCase() === val.toLowerCase())?.label || val
   }
   
   const handleSelect = (currentValue: string) => {
-    const newValue = currentValue === value ? "" : currentValue
-    onChange(newValue)
-    setInputValue("") // Clear internal input state on selection
-    setOpen(false)
+    const newValue = currentValue === value ? "" : currentValue;
+    onChange(newValue);
+    setInputValue(newValue); // Sync input with selected value
+    setOpen(false);
   }
 
-  // When the user types in the input, update both the internal `inputValue`
-  // and the external form state via `onChange`.
+  // When user types, update internal state. The form state is updated on select/blur.
   const handleInputChange = (search: string) => {
     setInputValue(search);
-    if (allowCustomValue) {
-      onChange(search);
-    }
   };
-
-  // Ensure the input field shows the correct value from the form,
-  // especially when a value is selected.
-  React.useEffect(() => {
-    if (value) {
-      setInputValue(value);
-    } else {
-      setInputValue("");
+  
+  // When the popover closes, if we allow custom values, we commit the currently typed value.
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (!isOpen && allowCustomValue) {
+      onChange(inputValue);
     }
-  }, [value]);
+  }
 
-  const filteredOptions = allowCustomValue && inputValue && !options.some(opt => opt.label.toLowerCase() === inputValue.toLowerCase())
-    ? [{ value: inputValue.toLowerCase(), label: `Create "${inputValue}"` }, ...options]
-    : options;
+  // Effect to sync the internal input value if the external value changes
+  React.useEffect(() => {
+    setInputValue(value || "");
+  }, [value]);
+  
+  const isCustomValue = allowCustomValue && inputValue && !options.some(opt => opt.label.toLowerCase() === inputValue.toLowerCase());
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -98,10 +95,22 @@ export function Combobox({
             onValueChange={handleInputChange}
           />
            <CommandList>
-            <CommandEmpty>{emptyPlaceholder}</CommandEmpty>
+            <CommandEmpty>
+                {isCustomValue ? (
+                    <CommandItem
+                        key={inputValue}
+                        value={inputValue}
+                        onSelect={() => handleSelect(inputValue)}
+                    >
+                      {`Create "${inputValue}"`}
+                    </CommandItem>
+                ) : (
+                    emptyPlaceholder
+                )}
+            </CommandEmpty>
             <CommandGroup>
                 <ScrollArea className="h-48">
-                    {filteredOptions.map((option) => (
+                    {options.map((option) => (
                     <CommandItem
                         key={option.value}
                         value={option.value}
