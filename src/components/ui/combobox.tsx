@@ -44,22 +44,26 @@ export function Combobox({
   const [inputValue, setInputValue] = React.useState("");
 
   const handleSelect = (currentValue: string) => {
-    // When an item is selected, update the form's value and the input's displayed value.
     onChange(currentValue);
-    setInputValue(currentValue.toLowerCase() === value?.toLowerCase() ? "" : currentValue);
     setOpen(false);
   }
-
-  const handleInputChange = (search: string) => {
-    setInputValue(search);
-    if (allowCustomValue) {
-      onChange(search);
-    }
-  };
 
   const currentOption = options.find(
     (option) => option.value.toLowerCase() === value?.toLowerCase()
   );
+
+  const filteredOptions = inputValue
+    ? options.filter((option) =>
+        option.label.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    : options;
+
+  const showCreateOption =
+    allowCustomValue &&
+    inputValue &&
+    !options.some(
+      (option) => option.label.toLowerCase() === inputValue.toLowerCase()
+    );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -79,24 +83,24 @@ export function Combobox({
           <CommandInput
             placeholder={searchPlaceholder}
             value={inputValue}
-            onValueChange={handleInputChange}
+            onValueChange={setInputValue}
           />
            <CommandList>
-            <CommandEmpty>
-                {allowCustomValue && inputValue ? (
-                     <CommandItem
-                        value={inputValue}
-                        onSelect={() => handleSelect(inputValue)}
-                    >
-                        Create "{inputValue}"
-                    </CommandItem>
+              <CommandEmpty>
+                {showCreateOption ? (
+                  <CommandItem
+                    value={inputValue}
+                    onSelect={() => handleSelect(inputValue)}
+                  >
+                    Create "{inputValue}"
+                  </CommandItem>
                 ) : (
-                    emptyPlaceholder
+                  emptyPlaceholder
                 )}
-            </CommandEmpty>
+              </CommandEmpty>
             <CommandGroup>
                 <ScrollArea className="h-48">
-                    {options.map((option) => (
+                    {filteredOptions.map((option) => (
                     <CommandItem
                         key={option.value}
                         value={option.value}
