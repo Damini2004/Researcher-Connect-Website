@@ -235,17 +235,9 @@ function PageContent() {
                     </Card>
 
                     {popularArticles.length > 0 ? (
-                        <Carousel
-                            opts={{
-                                align: "start",
-                                loop: popularArticles.length > 3,
-                            }}
-                            className="w-full"
-                        >
-                            <CarouselContent className="-ml-4">
+                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {popularArticles.map((post) => (
-                                <CarouselItem key={post.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                                    <div className="p-1 cursor-pointer" onClick={() => setSelectedPost(post)}>
+                                <div key={post.id} className="cursor-pointer" onClick={() => setSelectedPost(post)}>
                                     <Card className="flex flex-col h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                         <Image src={post.imageSrc} alt={post.title} width={400} height={300} className="w-full h-48 object-cover" data-ai-hint={post.imageHint} />
                                         <CardHeader>
@@ -266,13 +258,9 @@ function PageContent() {
                                             </button>
                                         </CardFooter>
                                     </Card>
-                                    </div>
-                                </CarouselItem>
+                                </div>
                                 ))}
-                            </CarouselContent>
-                            <CarouselPrevious />
-                            <CarouselNext />
-                        </Carousel>
+                        </div>
                     ) : (
                          <div className="text-center py-16 text-muted-foreground">
                             <p>No popular articles match your criteria.</p>
