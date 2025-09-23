@@ -46,32 +46,30 @@ export function Combobox({
   const getLabel = (val: string) => {
     return options.find((option) => option.value.toLowerCase() === val.toLowerCase())?.label || val
   }
-  
+
   const handleSelect = (currentValue: string) => {
-    onChange(currentValue);
-    setInputValue(currentValue);
+    const newValue = value === currentValue ? "" : currentValue;
+    onChange(newValue);
+    setInputValue(newValue);
     setOpen(false);
   }
 
   const handleInputChange = (search: string) => {
     setInputValue(search);
+    if(allowCustomValue) {
+        onChange(search);
+    }
   };
-  
+
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
-    if (!isOpen) {
-        // When closing, if custom values are allowed and the input value doesn't match any option,
-        // we should treat it as the final value.
-        if (allowCustomValue) {
-            onChange(inputValue);
-        }
+    if (!isOpen && allowCustomValue) {
+        onChange(inputValue);
+    } else if (isOpen) {
+        setInputValue(value || "");
     }
   }
 
-  React.useEffect(() => {
-    setInputValue(value || "");
-  }, [value]);
-  
   const isCustomValue = allowCustomValue && inputValue && !options.some(opt => opt.value.toLowerCase() === inputValue.toLowerCase());
 
   return (
@@ -89,21 +87,19 @@ export function Combobox({
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
         <Command>
-          <CommandInput 
-            placeholder={searchPlaceholder} 
+          <CommandInput
+            placeholder={searchPlaceholder}
             value={inputValue}
             onValueChange={handleInputChange}
           />
            <CommandList>
             <CommandEmpty>
-                {allowCustomValue ? (
+                {isCustomValue ? (
                     <CommandItem
-                        key={inputValue}
                         value={inputValue}
                         onSelect={() => handleSelect(inputValue)}
-                        className="cursor-pointer"
                     >
-                      {`Create "${inputValue}"`}
+                        Create "{inputValue}"
                     </CommandItem>
                 ) : (
                     emptyPlaceholder
