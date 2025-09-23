@@ -68,10 +68,12 @@ function PageContent() {
     const otherLatestArticles = latestArticles.filter(p => p.id !== mainFeaturedArticle?.id).slice(0, 4); 
     
     const popularArticles = allPosts.filter(post => {
+        const searchTermLower = popularSearchTerm.toLowerCase();
         const searchMatch = popularSearchTerm === "" ||
-            post.title.toLowerCase().includes(popularSearchTerm.toLowerCase()) ||
-            post.excerpt.toLowerCase().includes(popularSearchTerm.toLowerCase()) ||
-            post.author.toLowerCase().includes(popularSearchTerm.toLowerCase());
+            post.title.toLowerCase().includes(searchTermLower) ||
+            post.excerpt.toLowerCase().includes(searchTermLower) ||
+            post.author.toLowerCase().includes(searchTermLower) ||
+            (post.keywords && post.keywords.some(kw => kw.toLowerCase().includes(searchTermLower)));
 
         const categoryMatch = popularCategoryFilter === 'all' ||
             (Array.isArray(post.category) 
