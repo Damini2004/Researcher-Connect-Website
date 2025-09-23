@@ -1,3 +1,4 @@
+
 // src/app/(public)/contact-us/page.tsx
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,13 @@ import { Mail, Phone, MapPin, ChevronRight, Linkedin, Instagram, Facebook } from
 import ContactForm from "@/components/forms/contact-form";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact Us',
+  description: 'Get in touch with the Researcher Connect team. Find our office locations, contact details, and use our form to send us a message directly.',
+};
+
 
 const contactCards = [
     {

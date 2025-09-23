@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +17,13 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import ContactForm from "@/components/forms/contact-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getCurrentDateInIndia } from "@/lib/utils";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Publications and Webinars',
+  description: 'Explore our collection of academic journals and stay updated with our upcoming expert-led webinars. Search for publications and register for events.',
+};
+
 
 export default function PublicationsPage() {
   const [journals, setJournals] = useState<Journal[]>([]);

@@ -1,3 +1,4 @@
+
 // src/app/(public)/conference/[id]/page.tsx
 "use client";
 
@@ -19,6 +20,31 @@ import ConferenceCountdown from "@/components/ui/conference-countdown";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { RenderHtmlContent } from "@/components/ui/render-html-content";
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { id: string };
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.id;
+  const { conference } = await getConferenceById(id);
+
+  if (!conference) {
+    return {
+      title: 'Conference Not Found',
+    };
+  }
+
+  return {
+    title: conference.title,
+    description: conference.tagline || `Join the ${conference.title} on ${conference.date} in ${conference.location}.`,
+  };
+}
+
 
 interface ConferenceDetailClientProps {
     conferenceId: string;

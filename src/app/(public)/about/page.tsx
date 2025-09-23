@@ -6,6 +6,12 @@ import Image from "next/image";
 import { ChevronRight, Eye, Goal, Heart, CheckCircle, Linkedin, } from "lucide-react";
 import Link from "next/link";
 import { RenderHtmlContent } from "@/components/ui/render-html-content";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description: 'Learn about the leadership team, mission, and core values of Researcher Connect. Discover how we are revolutionizing academic publishing and research support.',
+};
 
 
 async function getAboutContent() {

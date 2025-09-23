@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Download, ArrowRight, Search, CheckCircle, BrainCircuit, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Internship Program',
+  description: 'Explore internship opportunities at Researcher Connect. Gain hands-on experience, expert mentorship, and career development in fields like AI, marketing, and editorial services.',
+};
 
 
 const internshipFeatures = [

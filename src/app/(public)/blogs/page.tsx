@@ -29,6 +29,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getCategories, BlogCategory } from "@/services/categoryService";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Explore the latest articles, insights, and news from the Researcher Connect team on academic publishing, research trends, and more.',
+};
 
 function PageContent() {
     const [allPosts, setAllPosts] = React.useState<BlogPost[]>([]);
