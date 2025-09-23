@@ -252,7 +252,7 @@ function ConferenceDetailClient({ conferenceId }: ConferenceDetailClientProps) {
     <div className="bg-secondary/30">
        <section className="relative w-full h-[500px] bg-gray-800 text-white">
         <Image
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=500&auto-format&fit=crop"
+          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&h=500&auto=format&fit=crop"
           alt="Conference background"
           fill
           className="object-cover opacity-20"
@@ -438,10 +438,13 @@ export default function ConferenceDetailPage({ params }: ConferenceDetailPagePro
       </div>
     </div>
   );
+  
+  // This is a server component, so we can pass the ID directly.
+  const conferenceId = params.id;
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ConferenceDetailClient conferenceId={React.use(Promise.resolve(params.id))} />
+      <ConferenceDetailClient conferenceId={conferenceId} />
     </Suspense>
   );
 }
