@@ -33,15 +33,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 priority
             />
             <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-16">
-                <div className="flex items-center text-sm text-white/80 mb-4">
-                    <Link href="/" className="hover:text-white">Home</Link>
-                    <ChevronRight className="h-4 w-4 mx-1" />
-                    <Link href="/blogs" className="hover:text-white">Blogs</Link>
-                </div>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {post.category.map((cat) => (
                     <Badge key={cat} variant="secondary" className="w-fit">{cat.toUpperCase()}</Badge>
                   ))}
+                </div>
+                <div className="flex items-center text-sm text-white/80 mb-4">
+                    <Link href="/" className="hover:text-white">Home</Link>
+                    <ChevronRight className="h-4 w-4 mx-1" />
+                    <Link href="/blogs" className="hover:text-white">Blogs</Link>
                 </div>
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight max-w-4xl">{post.title}</h1>
                 <div className="flex items-center gap-6 mt-4 text-white/90">
