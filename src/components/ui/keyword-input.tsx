@@ -56,46 +56,49 @@ export function KeywordInput({
   const isPopoverOpen = !!inputValue && filteredSuggestions.length > 0;
 
   return (
-    <Popover open={isPopoverOpen}>
-      <PopoverTrigger asChild>
-        <div className="flex flex-wrap items-center gap-2 rounded-md border border-input p-2">
-          {value.map((keyword, index) => (
+    <div>
+        <div className="flex flex-wrap items-center gap-2 mb-2 min-h-[20px]">
+            {value.map((keyword, index) => (
             <Badge key={index} variant="secondary">
-              {keyword}
-              <button
+                {keyword}
+                <button
                 type="button"
                 className="ml-2 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onClick={() => removeKeyword(keyword)}
-              >
-                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-              </button>
-            </Badge>
-          ))}
-          <Input
-            ref={inputRef}
-            placeholder={placeholder}
-            value={inputValue}
-            onChange={(e) => onInputChange(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 border-0 shadow-none focus-visible:ring-0 p-0 h-auto"
-          />
-        </div>
-      </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-        <Command>
-          <CommandList>
-            {filteredSuggestions.length > 0 &&
-              filteredSuggestions.map((suggestion) => (
-                <CommandItem
-                  key={suggestion}
-                  onSelect={() => addKeyword(suggestion)}
                 >
-                  {suggestion}
-                </CommandItem>
-              ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                </button>
+            </Badge>
+            ))}
+        </div>
+        <Popover open={isPopoverOpen}>
+            <PopoverTrigger asChild>
+                <div className="relative">
+                    <Input
+                        ref={inputRef}
+                        placeholder={placeholder}
+                        value={inputValue}
+                        onChange={(e) => onInputChange(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+                </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                <Command>
+                <CommandList>
+                    {filteredSuggestions.length > 0 &&
+                    filteredSuggestions.map((suggestion) => (
+                        <CommandItem
+                        key={suggestion}
+                        onSelect={() => addKeyword(suggestion)}
+                        >
+                        {suggestion}
+                        </CommandItem>
+                    ))}
+                </CommandList>
+                </Command>
+            </PopoverContent>
+        </Popover>
+    </div>
   );
 }
