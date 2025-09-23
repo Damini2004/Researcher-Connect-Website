@@ -73,7 +73,7 @@ export type BlogPost = {
     isFeatured: boolean;
     createdAt: string;
     date: string;
-    keywords?: string[];
+    keywords: string[];
 }
 
 export type AddBlogPostData = z.infer<typeof blogPostSchema>;

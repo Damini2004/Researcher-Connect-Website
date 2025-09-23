@@ -23,6 +23,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
 import { getCategories, type BlogCategory } from "@/services/categoryService";
 import { KeywordInput } from "../ui/keyword-input";
+import { getKeywords } from "@/services/keywordService";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -34,17 +35,22 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [categories, setCategories] = React.useState<BlogCategory[]>([]);
+  const [keywordSuggestions, setKeywordSuggestions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchInitialData = async () => {
         try {
-            const data = await getCategories();
-            setCategories(data);
+            const [categoriesData, keywordsData] = await Promise.all([
+                getCategories(),
+                getKeywords()
+            ]);
+            setCategories(categoriesData);
+            setKeywordSuggestions(keywordsData);
         } catch (error) {
-            toast({ title: "Error", description: "Could not fetch categories." });
+            toast({ title: "Error", description: "Could not fetch initial form data." });
         }
     };
-    fetchCategories();
+    fetchInitialData();
   }, [toast]);
 
   const form = useForm<AddBlogPostData>({
@@ -158,6 +164,7 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
                                         placeholder="Add keywords and press Enter"
                                         value={field.value || []}
                                         onChange={field.onChange}
+                                        suggestions={keywordSuggestions}
                                     />
                                 </FormControl>
                                 <FormDescription>
