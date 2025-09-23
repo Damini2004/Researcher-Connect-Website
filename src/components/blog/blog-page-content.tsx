@@ -182,6 +182,7 @@ export default function BlogPageContent() {
                             </div>
 
                             <div className="lg:col-span-1 space-y-8">
+                                <h1>Recommended Articles</h1>
                                 <div className="space-y-6">
                                     {otherLatestArticles.map(article => (
                                         <div key={article.id} className="group flex gap-4 items-start cursor-pointer" onClick={() => handleArticleClick(article)}>
