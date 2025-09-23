@@ -27,8 +27,10 @@ export async function addBlogPost(data: AddBlogPostPayload): Promise<{ success: 
         return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
     }
     
-    // Ensure category exists before adding the post
-    await addCategory(validationResult.data.category);
+    // Ensure categories exist before adding the post
+    for (const cat of validationResult.data.category) {
+      await addCategory(cat);
+    }
 
     await addDoc(collection(db, 'blogPosts'), {
         ...validationResult.data,
@@ -52,7 +54,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
             return {
                 id: doc.id,
                 title: data.title,
-                category: data.category,
+                category: data.category || [],
                 author: data.author,
                 content: data.content,
                 excerpt: data.excerpt,
@@ -81,7 +83,7 @@ export async function getBlogPostById(id: string): Promise<BlogPost | null> {
              return {
                 id: docSnap.id,
                 title: data.title,
-                category: data.category,
+                category: data.category || [],
                 author: data.author,
                 content: data.content,
                 excerpt: data.excerpt,
@@ -117,9 +119,11 @@ export async function updateBlogPost(id: string, data: Partial<AddBlogPostPayloa
         
         const postData = validationResult.data;
 
-        // Ensure category exists if it's being updated
+        // Ensure categories exist if they are being updated
         if (postData.category) {
-            await addCategory(postData.category);
+            for (const cat of postData.category) {
+              await addCategory(cat);
+            }
         }
 
         const postRef = doc(db, 'blogPosts', id);

@@ -38,7 +38,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     <ChevronRight className="h-4 w-4 mx-1" />
                     <Link href="/blogs" className="hover:text-white">Blogs</Link>
                 </div>
-                <Badge variant="secondary" className="mb-4 w-fit">{post.category.toUpperCase()}</Badge>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {post.category.map((cat) => (
+                    <Badge key={cat} variant="secondary" className="w-fit">{cat.toUpperCase()}</Badge>
+                  ))}
+                </div>
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight max-w-4xl">{post.title}</h1>
                 <div className="flex items-center gap-6 mt-4 text-white/90">
                     <div className="flex items-center gap-2">

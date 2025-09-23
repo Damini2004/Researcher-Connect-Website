@@ -66,7 +66,7 @@ async function PageContent() {
                                     <div className="group">
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
-                                            <span>{mainFeaturedArticle.category.toUpperCase()}</span>
+                                            <span>{mainFeaturedArticle.category[0]?.toUpperCase()}</span>
                                             <span>JOURNALS</span>
                                         </div>
                                         <h3 className="text-2xl font-bold hover:text-primary transition-colors">

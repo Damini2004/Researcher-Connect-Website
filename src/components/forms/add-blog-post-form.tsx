@@ -24,8 +24,6 @@ import { Checkbox } from "../ui/checkbox";
 import { getCategories, type BlogCategory } from "@/services/categoryService";
 import { KeywordInput } from "../ui/keyword-input";
 import { getKeywords } from "@/services/keywordService";
-import { Combobox } from "../ui/combobox";
-import { Badge } from "../ui/badge";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -38,6 +36,7 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [categories, setCategories] = React.useState<BlogCategory[]>([]);
   const [keywordSuggestions, setKeywordSuggestions] = React.useState<string[]>([]);
+  const [categoryInputValue, setCategoryInputValue] = React.useState("");
   const [keywordInputValue, setKeywordInputValue] = React.useState("");
 
   React.useEffect(() => {
@@ -60,7 +59,7 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
     resolver: zodResolver(blogPostSchema),
     defaultValues: {
       title: "",
-      category: "",
+      category: [],
       author: "",
       content: "",
       excerpt: "",
@@ -112,6 +111,7 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
     const result = await addBlogPost(payload);
     if (result.success) {
       form.reset();
+      setCategoryInputValue("");
       setKeywordInputValue("");
       onPostAdded();
     } else {
@@ -136,21 +136,18 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
                             control={form.control}
                             name="category"
                             render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Category</FormLabel>
-                                    {field.value ? (
-                                        <div className="flex items-center gap-2">
-                                            <Badge variant="secondary">{field.value}</Badge>
-                                            <Button variant="outline" size="sm" onClick={() => field.onChange("")}>Change</Button>
-                                        </div>
-                                    ) : (
-                                        <Combobox
-                                            options={categories.map(c => ({ value: c.name, label: c.name }))}
-                                            value={field.value}
+                                <FormItem>
+                                    <FormLabel>Categories</FormLabel>
+                                    <FormControl>
+                                        <KeywordInput
+                                            placeholder="Add categories..."
+                                            value={field.value || []}
                                             onChange={field.onChange}
-                                            placeholder="Select or create category..."
+                                            suggestions={categories.map(c => c.name)}
+                                            inputValue={categoryInputValue}
+                                            onInputChange={setCategoryInputValue}
                                         />
-                                    )}
+                                    </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
