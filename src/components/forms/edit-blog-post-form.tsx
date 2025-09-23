@@ -23,7 +23,6 @@ import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
 import { getCategories, type BlogCategory } from "@/services/categoryService";
-import { Combobox } from "../ui/combobox";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -114,8 +113,6 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
     setIsSubmitting(false);
   }
   
-  const categoryOptions = categories.map(c => ({ value: c.name, label: c.name }));
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
@@ -128,17 +125,20 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
                         control={form.control}
                         name="category"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col">
+                            <FormItem>
                                 <FormLabel>Category</FormLabel>
-                                <Combobox
-                                    options={categoryOptions}
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    placeholder="Select or create category..."
-                                    searchPlaceholder="Search categories..."
-                                    emptyPlaceholder="No categories found."
-                                    allowCustomValue={true}
-                                />
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="Select or create a category"
+                                        list="category-options-edit"
+                                    />
+                                </FormControl>
+                                <datalist id="category-options-edit">
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.name} />
+                                    ))}
+                                </datalist>
                                 <FormMessage />
                             </FormItem>
                         )}
