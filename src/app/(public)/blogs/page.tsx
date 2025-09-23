@@ -118,21 +118,18 @@ function PageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
-                                    <div className="group cursor-pointer" onClick={() => handlePostClick(mainFeaturedArticle)}>
-                                        <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity" data-ai-hint={mainFeaturedArticle.imageHint} />
+                                    <div className="group">
+                                        <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                                             <span>{(mainFeaturedArticle.category[0] || '').toUpperCase()}</span>
                                             <span>JOURNALS</span>
                                         </div>
-                                        <h3 className="text-2xl font-bold hover:text-primary transition-colors">
+                                        <h3 className="text-2xl font-bold">
                                             {mainFeaturedArticle.title}
                                         </h3>
-                                        <div className="mt-4 prose prose-sm max-w-none line-clamp-5">
+                                        <div className="mt-4 prose prose-sm max-w-none">
                                             <RenderHtmlContent htmlContent={mainFeaturedArticle.content} />
                                         </div>
-                                         <button className="text-sm font-semibold text-primary inline-flex items-center mt-2">
-                                            Read more <ArrowRight className="ml-2 h-4 w-4" />
-                                        </button>
                                     </div>
                                 )}
                             </div>
