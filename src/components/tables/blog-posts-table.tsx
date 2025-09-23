@@ -75,7 +75,7 @@ export default function BlogPostsTable({ posts, isLoading, onEdit, onPostDeleted
     (post) =>
       post.title.toLowerCase().includes(filter.toLowerCase()) ||
       post.author.toLowerCase().includes(filter.toLowerCase()) ||
-      post.category.some(cat => cat.toLowerCase().includes(filter.toLowerCase()))
+      (Array.isArray(post.category) && post.category.some(cat => cat.toLowerCase().includes(filter.toLowerCase())))
   );
 
   return (
@@ -139,7 +139,7 @@ export default function BlogPostsTable({ posts, isLoading, onEdit, onPostDeleted
                     <TableCell>{post.author}</TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
-                        {post.category.map(cat => <Badge key={cat} variant="outline">{cat}</Badge>)}
+                        {Array.isArray(post.category) ? post.category.map(cat => <Badge key={cat} variant="outline">{cat}</Badge>) : <Badge variant="outline">{post.category}</Badge>}
                       </div>
                     </TableCell>
                     <TableCell>{post.date}</TableCell>
