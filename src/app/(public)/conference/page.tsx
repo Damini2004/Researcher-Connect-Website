@@ -247,7 +247,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                                         <span>{conference.location}</span>
                                                     </p>
                                                     <p className="pt-2 text-muted-foreground line-clamp-3">
-                                                        {conference.description}
+                                                        {conference.aboutConference}
                                                     </p>
                                                 </CardContent>
                                             </div>
