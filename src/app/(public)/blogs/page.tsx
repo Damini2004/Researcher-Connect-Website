@@ -118,7 +118,7 @@ function PageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
-                                    <div className="group">
+                                    <div className="group cursor-pointer" onClick={() => handlePostClick(mainFeaturedArticle)}>
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                                             <span>{(mainFeaturedArticle.category[0] || '').toUpperCase()}</span>
