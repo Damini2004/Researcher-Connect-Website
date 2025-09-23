@@ -29,11 +29,11 @@ async function PageContent() {
     const latestArticles = [...featuredArticles, ...regularArticles];
 
     const mainFeaturedArticle = latestArticles.length > 0 ? latestArticles[0] : null;
-    const bottomArticles = latestArticles.slice(1, 5);
+    const otherLatestArticles = latestArticles.slice(1, 5); // Articles for the right column
     const popularArticles = allPosts.slice(0, 8);
     
     // --- Recommendation Logic ---
-    const articlesOnLeft = [mainFeaturedArticle, ...bottomArticles].filter(Boolean) as BlogPost[];
+    const articlesOnLeft = [mainFeaturedArticle].filter(Boolean) as BlogPost[];
     const idsOnLeft = new Set(articlesOnLeft.map(a => a.id));
     const keywordsOnLeft = new Set(articlesOnLeft.flatMap(a => a.keywords || []));
 
@@ -45,7 +45,7 @@ async function PageContent() {
       })
       .filter(item => item.score > 0) // Only include posts with at least one common keyword
       .sort((a, b) => b.score - a.score) // Sort by most common keywords
-      .slice(0, 6) // Take top 6 recommendations
+      .slice(0, 3) // Take top 3 recommendations
       .map(item => item.post);
     // --- End Recommendation Logic ---
 
@@ -75,8 +75,8 @@ async function PageContent() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Left Column (Main Article & Bottom Articles) */}
-                            <div className="lg:col-span-2 space-y-6">
+                            {/* Left Column (Main Article) */}
+                            <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
                                     <div className="group">
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity" data-ai-hint={mainFeaturedArticle.imageHint} />
@@ -93,8 +93,12 @@ async function PageContent() {
                                         </Link>
                                     </div>
                                 )}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
-                                    {bottomArticles.map(article => (
+                            </div>
+
+                            {/* Right Column (Other Latest & Recommendations) */}
+                            <div className="lg:col-span-1 space-y-8">
+                                <div className="space-y-6">
+                                    {otherLatestArticles.map(article => (
                                         <div key={article.id} className="group flex gap-4 items-start">
                                             <div className="w-24 h-24 relative flex-shrink-0">
                                                 <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
@@ -108,27 +112,26 @@ async function PageContent() {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
 
-                            {/* Right Column (Recommendations) */}
-                             {recommendedArticles.length > 0 && (
-                                <div className="lg:col-span-1 space-y-6">
-                                    <h3 className="text-xl font-bold flex items-center gap-2"><Lightbulb className="text-primary"/> Recommended For You</h3>
-                                    {recommendedArticles.map(article => (
-                                        <div key={article.id} className="group flex gap-4 items-center">
-                                            <div className="w-32 h-24 relative flex-shrink-0">
-                                                <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
+                                {recommendedArticles.length > 0 && (
+                                    <div className="pt-8 border-t space-y-6">
+                                        <h3 className="text-xl font-bold flex items-center gap-2"><Lightbulb className="text-primary"/> Recommended For You</h3>
+                                        {recommendedArticles.map(article => (
+                                            <div key={article.id} className="group flex gap-4 items-start">
+                                                <div className="w-24 h-24 relative flex-shrink-0">
+                                                    <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-semibold leading-tight group-hover:text-primary transition-colors">
+                                                        <Link href={`/blogs/${article.id}`}>{article.title}</Link>
+                                                    </h4>
+                                                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{article.excerpt}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h4 className="font-semibold leading-tight group-hover:text-primary transition-colors">
-                                                    <Link href={`/blogs/${article.id}`}>{article.title}</Link>
-                                                </h4>
-                                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{article.excerpt}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
