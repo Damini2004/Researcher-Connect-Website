@@ -48,29 +48,31 @@ export function Combobox({
   }
   
   const handleSelect = (currentValue: string) => {
-    const newValue = currentValue === value ? "" : currentValue;
-    onChange(newValue);
-    setInputValue(newValue); // Sync input with selected value
+    onChange(currentValue);
+    setInputValue(currentValue);
     setOpen(false);
   }
 
   const handleInputChange = (search: string) => {
     setInputValue(search);
-    if (allowCustomValue) {
-      onChange(search); // Update form value as user types when custom values are allowed
-    }
   };
   
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
+    if (!isOpen) {
+        // When closing, if custom values are allowed and the input value doesn't match any option,
+        // we should treat it as the final value.
+        if (allowCustomValue) {
+            onChange(inputValue);
+        }
+    }
   }
 
-  // Effect to sync the internal input value if the external value changes
   React.useEffect(() => {
     setInputValue(value || "");
   }, [value]);
   
-  const isCustomValue = allowCustomValue && inputValue && !options.some(opt => opt.label.toLowerCase() === inputValue.toLowerCase());
+  const isCustomValue = allowCustomValue && inputValue && !options.some(opt => opt.value.toLowerCase() === inputValue.toLowerCase());
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -94,24 +96,26 @@ export function Combobox({
           />
            <CommandList>
             <CommandEmpty>
-                {emptyPlaceholder}
+                {allowCustomValue ? (
+                    <CommandItem
+                        key={inputValue}
+                        value={inputValue}
+                        onSelect={() => handleSelect(inputValue)}
+                        className="cursor-pointer"
+                    >
+                      {`Create "${inputValue}"`}
+                    </CommandItem>
+                ) : (
+                    emptyPlaceholder
+                )}
             </CommandEmpty>
             <CommandGroup>
                 <ScrollArea className="h-48">
-                    {isCustomValue && (
-                        <CommandItem
-                            key={inputValue}
-                            value={inputValue}
-                            onSelect={() => handleSelect(inputValue)}
-                        >
-                        {`Create "${inputValue}"`}
-                        </CommandItem>
-                    )}
                     {options.map((option) => (
                     <CommandItem
                         key={option.value}
                         value={option.value}
-                        onSelect={handleSelect}
+                        onSelect={() => handleSelect(option.value)}
                     >
                         <Check
                         className={cn(
