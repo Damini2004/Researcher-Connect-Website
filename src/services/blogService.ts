@@ -61,6 +61,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
                 isFeatured: data.isFeatured || false,
                 createdAt: createdAt.toISOString(),
                 date: format(createdAt, "PPP"),
+                keywords: data.keywords || [],
             }
         });
     } catch (error) {
@@ -89,6 +90,7 @@ export async function getBlogPostById(id: string): Promise<BlogPost | null> {
                 isFeatured: data.isFeatured || false,
                 createdAt: createdAt.toISOString(),
                 date: format(createdAt, "PPP"),
+                keywords: data.keywords || [],
             }
         } else {
             return null;

@@ -1,4 +1,3 @@
-
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -52,6 +51,7 @@ export const blogPostSchema = z.object({
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters.").max(200, "Excerpt cannot exceed 200 characters."),
   image: z.any().refine((files) => files?.length > 0, "An image is required.").or(z.any().optional()),
   isFeatured: z.boolean().default(false),
+  keywords: z.array(z.string()).optional(),
 });
 
 export const faqSchema = z.object({
@@ -73,6 +73,7 @@ export type BlogPost = {
     isFeatured: boolean;
     createdAt: string;
     date: string;
+    keywords?: string[];
 }
 
 export type AddBlogPostData = z.infer<typeof blogPostSchema>;

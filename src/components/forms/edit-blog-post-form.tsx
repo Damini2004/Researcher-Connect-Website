@@ -23,6 +23,7 @@ import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
 import { getCategories, type BlogCategory } from "@/services/categoryService";
+import { KeywordInput } from "../ui/keyword-input";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -62,6 +63,7 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
       content: post.content || "",
       excerpt: post.excerpt || "",
       isFeatured: post.isFeatured || false,
+      keywords: post.keywords || [],
     },
   });
 
@@ -146,6 +148,26 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
                     <FormField control={form.control} name="author" render={({ field }) => ( <FormItem> <FormLabel>Author</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 </div>
                 <FormField control={form.control} name="excerpt" render={({ field }) => ( <FormItem> <FormLabel>Excerpt</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormDescription>Max 200 characters.</FormDescription> <FormMessage /> </FormItem> )} />
+                 <FormField
+                    control={form.control}
+                    name="keywords"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Keywords</FormLabel>
+                            <FormControl>
+                                <KeywordInput
+                                    placeholder="Add keywords and press Enter"
+                                    value={field.value || []}
+                                    onChange={field.onChange}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                These keywords help with search engine optimization.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                    />
                 <FormField control={form.control} name="content" render={({ field }) => (
                     <FormItem>
                         <FormLabel>Full Content</FormLabel>
