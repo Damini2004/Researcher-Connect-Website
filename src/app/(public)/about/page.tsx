@@ -21,7 +21,7 @@ const leadershipTeam = [
         name: "Vinit Khetani",
         title: "Chief Technology Officer",
         description: "Driving technology innovation and building scalable research-focused platforms.",
-        imageSrc: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=400&h=400&auto=format&fit=crop",
+        imageSrc: "/Vinit.jpeg",
         imageHint: "cto portrait",
         linkedinUrl: "https://www.linkedin.com/in/vinit-khetani"
     },
@@ -29,7 +29,7 @@ const leadershipTeam = [
         name: "Yogesh Nagargoje",
         title: "Chief Marketing Officer",
         description: "Leading marketing strategies to expand global visibility and engagement.",
-        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=400&auto=format&fit=crop",
+        imageSrc: "/yogesh.jpeg",
         imageHint: "cmo portrait",
         linkedinUrl: "https://www.linkedin.com/in/yogesh-nagargoje"
     },
@@ -37,12 +37,10 @@ const leadershipTeam = [
         name: "Sharyu Ikhar",
         title: "Chief Operating Officer",
         description: "Overseeing operations to ensure seamless delivery and organizational excellence.",
-        imageSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=400&auto=format=fit=crop",
+        imageSrc: "/sharyu.jpeg",
         imageHint: "ceo portrait",
-        linkedinUrl: "https://www.linkedin.com/in/sharyu-ikhar"
+        linkedinUrl: "https://www.linkedin.com/in/sharayu-ikhar?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
     },
-   
-    
 ];
 
 const coreValues = [
@@ -91,10 +89,10 @@ export default async function AboutPage() {
                                     fill
                                     className="object-cover object-top group-hover:scale-110 transition-transform duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
                                 <div className="absolute bottom-4 left-4 text-left">
                                     <h3 className="text-2xl font-bold text-white tracking-tight">{member.name}</h3>
-                                    <p className="text-primary-foreground/80 font-medium">{member.title}</p>
+                                    <p className="text-primary-foreground/90 font-medium">{member.title}</p>
                                 </div>
                             </div>
                             <CardContent className="p-6">

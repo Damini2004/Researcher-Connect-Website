@@ -23,8 +23,8 @@ const servicesLinks = [
 ];
 
 const socialLinks = [
-    { href: "https://www.linkedin.com/company/researcher-connect/", icon: Linkedin, label: "Linkedin" },
-    { href: "https://www.instagram.com/researcher_connect/", icon: Instagram, label: "Instagram" },
+    { href: "https://www.linkedin.com/company/researcherconnect/", icon: Linkedin, label: "Linkedin" },
+    { href: "https://www.instagram.com/researcher_connect?igsh=MTRhbjZ4dHczcHBrbw==", icon: Instagram, label: "Instagram" },
     { href: "https://www.facebook.com/researcherconnect.net", icon: Facebook, label: "Facebook" },
     { href: "mailto:contact@researcherconnect.com", icon: Mail, label: "Mail" },
 ]
