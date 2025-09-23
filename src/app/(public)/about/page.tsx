@@ -21,9 +21,9 @@ const leadershipTeam = [
         name: "Vinit Khetani",
         title: "Chief Technology Officer",
         description: "Driving technology innovation and building scalable research-focused platforms.",
-        imageSrc: "/Vinit.jpeg",
+        imageSrc: "/Vinit.jpg",
         imageHint: "cto portrait",
-        linkedinUrl: "https://www.linkedin.com/in/vinit-khetani"
+        linkedinUrl: "https://www.linkedin.com/in/vinit-khetani-6a973474/"
     },
     {
         name: "Yogesh Nagargoje",
