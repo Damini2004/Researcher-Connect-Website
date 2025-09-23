@@ -143,12 +143,6 @@ export default function UserHeader() {
                         </div>
                     ))}
                 </div>
-                <div className="flex items-center gap-6">
-                    <Link href="/login" className="flex items-center gap-2 hover:text-amber-400">
-                        <User className="h-4 w-4" />
-                        <span>Login</span>
-                    </Link>
-                </div>
             </div>
         </div>
       </div>

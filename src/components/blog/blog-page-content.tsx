@@ -200,7 +200,7 @@ export default function BlogPageContent() {
 
                                 {recommendedArticles.length > 0 && (
                                     <div className="pt-8 border-t space-y-6">
-                                        <h3 className="text-xl font-bold flex items-center gap-2"><Lightbulb className="text-primary"/> Recommended For You</h3>
+                                        <h3 className="text-xl font-bold flex items-center gap-2"><Lightbulb className="text-primary"/> Recommended Blogs</h3>
                                         {recommendedArticles.map(article => (
                                             <div key={article.id} className="group flex gap-4 items-start cursor-pointer" onClick={() => handleArticleClick(article)}>
                                                 <div className="w-24 h-24 relative flex-shrink-0">

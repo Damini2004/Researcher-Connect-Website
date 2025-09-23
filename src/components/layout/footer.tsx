@@ -40,7 +40,7 @@ const Footer = () => {
                             <Logo className="h-40 w-40" />
                         </Link>
                         <p className="text-gray-300 text-sm max-w-xs text-justify">
-                            We look forward to helping you take your company to new heights with our expert consultancy and services.
+                            We look forward to helping you take your profile to new heights with our expert consultancy and services.
                         </p>
                     </div>
 
