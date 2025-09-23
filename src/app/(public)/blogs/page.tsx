@@ -38,6 +38,9 @@ function PageContent() {
     const [mainFeaturedArticle, setMainFeaturedArticle] = React.useState<BlogPost | null>(null);
     const [popularSearchTerm, setPopularSearchTerm] = React.useState("");
     const [popularCategoryFilter, setPopularCategoryFilter] = React.useState("all");
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const ITEMS_PER_PAGE = 6;
+
 
     React.useEffect(() => {
         const fetchPosts = async () => {
@@ -82,6 +85,18 @@ function PageContent() {
 
         return searchMatch && categoryMatch;
     });
+
+    const totalPages = Math.ceil(popularArticles.length / ITEMS_PER_PAGE);
+    const paginatedPopularArticles = popularArticles.slice(
+      (currentPage - 1) * ITEMS_PER_PAGE,
+      currentPage * ITEMS_PER_PAGE
+    );
+  
+    const handlePageChange = (page: number) => {
+      if (page >= 1 && page <= totalPages) {
+        setCurrentPage(page);
+      }
+    };
     
     const articlesOnLeft = [mainFeaturedArticle].filter(Boolean) as BlogPost[];
     const idsOnLeft = new Set(articlesOnLeft.map(a => a.id));
@@ -234,9 +249,10 @@ function PageContent() {
                         </CardContent>
                     </Card>
 
-                    {popularArticles.length > 0 ? (
-                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {popularArticles.map((post) => (
+                    {paginatedPopularArticles.length > 0 ? (
+                       <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {paginatedPopularArticles.map((post) => (
                                 <div key={post.id} className="cursor-pointer" onClick={() => setSelectedPost(post)}>
                                     <Card className="flex flex-col h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                         <Image src={post.imageSrc} alt={post.title} width={400} height={300} className="w-full h-48 object-cover" data-ai-hint={post.imageHint} />
@@ -261,6 +277,39 @@ function PageContent() {
                                 </div>
                                 ))}
                         </div>
+                        {totalPages > 1 && (
+                            <div className="flex justify-center mt-8">
+                                <nav className="flex rounded-md shadow-sm">
+                                <Button
+                                    variant="outline"
+                                    className="rounded-r-none"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                {[...Array(totalPages)].map((_, i) => (
+                                    <Button
+                                    key={i + 1}
+                                    variant={currentPage === i + 1 ? "default" : "outline"}
+                                    className="rounded-none"
+                                    onClick={() => handlePageChange(i + 1)}
+                                    >
+                                    {i + 1}
+                                    </Button>
+                                ))}
+                                <Button
+                                    variant="outline"
+                                    className="rounded-l-none"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                >
+                                    Next
+                                </Button>
+                                </nav>
+                            </div>
+                        )}
+                       </>
                     ) : (
                          <div className="text-center py-16 text-muted-foreground">
                             <p>No popular articles match your criteria.</p>
