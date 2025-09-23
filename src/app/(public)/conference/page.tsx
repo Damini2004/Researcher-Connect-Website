@@ -246,9 +246,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                                         <MapPin className="h-4 w-4 text-primary"/>
                                                         <span>{conference.location}</span>
                                                     </p>
-                                                    <p className="pt-2 text-muted-foreground line-clamp-3">
-                                                        {conference.aboutConference}
-                                                    </p>
                                                 </CardContent>
                                             </div>
                                         </Card>
