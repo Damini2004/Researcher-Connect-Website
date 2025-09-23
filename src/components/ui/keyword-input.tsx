@@ -13,6 +13,8 @@ interface KeywordInputProps {
   value: string[];
   onChange: (keywords: string[]) => void;
   suggestions?: string[];
+  inputValue: string;
+  onInputChange: (value: string) => void;
 }
 
 export function KeywordInput({
@@ -20,31 +22,25 @@ export function KeywordInput({
   value,
   onChange,
   suggestions = [],
+  inputValue,
+  onInputChange,
 }: KeywordInputProps) {
-  const [inputValue, setInputValue] = React.useState("");
-  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newInputValue = e.target.value;
-    setInputValue(newInputValue);
-    setIsPopoverOpen(!!newInputValue);
-  };
-  
   const addKeyword = (keyword: string) => {
-    if (keyword && !value.includes(keyword)) {
-      const newKeywords = [...value, keyword];
+    const trimmedKeyword = keyword.trim();
+    if (trimmedKeyword && !value.includes(trimmedKeyword)) {
+      const newKeywords = [...value, trimmedKeyword];
       onChange(newKeywords);
     }
-    setInputValue("");
-    setIsPopoverOpen(false);
+    onInputChange(""); // Clear input in parent form
     inputRef.current?.focus();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim()) {
       e.preventDefault();
-      addKeyword(inputValue.trim());
+      addKeyword(inputValue);
     }
   };
 
@@ -57,8 +53,10 @@ export function KeywordInput({
     (s) => s.toLowerCase().includes(inputValue.toLowerCase()) && !value.includes(s)
   );
 
+  const isPopoverOpen = !!inputValue && filteredSuggestions.length > 0;
+
   return (
-    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+    <Popover open={isPopoverOpen}>
       <PopoverTrigger asChild>
         <div className="flex flex-wrap items-center gap-2 rounded-md border border-input p-2">
           {value.map((keyword, index) => (
@@ -77,7 +75,7 @@ export function KeywordInput({
             ref={inputRef}
             placeholder={placeholder}
             value={inputValue}
-            onChange={handleInputChange}
+            onChange={(e) => onInputChange(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1 border-0 shadow-none focus-visible:ring-0 p-0 h-auto"
           />

@@ -38,6 +38,7 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [categories, setCategories] = React.useState<BlogCategory[]>([]);
   const [keywordSuggestions, setKeywordSuggestions] = React.useState<string[]>([]);
+  const [keywordInputValue, setKeywordInputValue] = React.useState("");
   
   React.useEffect(() => {
     const fetchInitialData = async () => {
@@ -166,6 +167,8 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
                                     value={field.value || []}
                                     onChange={field.onChange}
                                     suggestions={keywordSuggestions}
+                                    inputValue={keywordInputValue}
+                                    onInputChange={setKeywordInputValue}
                                 />
                             </FormControl>
                             <FormDescription>
