@@ -7,7 +7,7 @@ import React from "react";
 import { getBlogPosts, BlogPost } from "@/services/blogService";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, ChevronRight, UserCircle } from "lucide-react";
+import { ArrowRight, ChevronRight, UserCircle, Lightbulb } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -29,11 +29,26 @@ async function PageContent() {
     const latestArticles = [...featuredArticles, ...regularArticles];
 
     const mainFeaturedArticle = latestArticles.length > 0 ? latestArticles[0] : null;
-    const sideArticles = latestArticles.slice(1, 7);
-    const bottomArticles = latestArticles.slice(7,11);
-
-    // Using all posts for the "Popular" section for now, can be changed later
+    const bottomArticles = latestArticles.slice(1, 5);
     const popularArticles = allPosts.slice(0, 8);
+    
+    // --- Recommendation Logic ---
+    const articlesOnLeft = [mainFeaturedArticle, ...bottomArticles].filter(Boolean) as BlogPost[];
+    const idsOnLeft = new Set(articlesOnLeft.map(a => a.id));
+    const keywordsOnLeft = new Set(articlesOnLeft.flatMap(a => a.keywords || []));
+
+    const recommendedArticles = allPosts
+      .filter(post => !idsOnLeft.has(post.id)) // Exclude articles already shown
+      .map(post => {
+        const commonKeywords = (post.keywords || []).filter(kw => keywordsOnLeft.has(kw));
+        return { post, score: commonKeywords.length };
+      })
+      .filter(item => item.score > 0) // Only include posts with at least one common keyword
+      .sort((a, b) => b.score - a.score) // Sort by most common keywords
+      .slice(0, 6) // Take top 6 recommendations
+      .map(item => item.post);
+    // --- End Recommendation Logic ---
+
 
     return (
         <div className="bg-background">
@@ -60,13 +75,13 @@ async function PageContent() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Left Column (Main Article) */}
+                            {/* Left Column (Main Article & Bottom Articles) */}
                             <div className="lg:col-span-2 space-y-6">
                                 {mainFeaturedArticle && (
                                     <div className="group">
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
-                                            <span>{mainFeaturedArticle.category[0]?.toUpperCase()}</span>
+                                            <span>{(mainFeaturedArticle.category[0] || '').toUpperCase()}</span>
                                             <span>JOURNALS</span>
                                         </div>
                                         <h3 className="text-2xl font-bold hover:text-primary transition-colors">
@@ -95,10 +110,11 @@ async function PageContent() {
                                 </div>
                             </div>
 
-                            {/* Right Column */}
-                            {sideArticles.length > 0 && (
+                            {/* Right Column (Recommendations) */}
+                             {recommendedArticles.length > 0 && (
                                 <div className="lg:col-span-1 space-y-6">
-                                {sideArticles.map(article => (
+                                    <h3 className="text-xl font-bold flex items-center gap-2"><Lightbulb className="text-primary"/> Recommended For You</h3>
+                                    {recommendedArticles.map(article => (
                                         <div key={article.id} className="group flex gap-4 items-center">
                                             <div className="w-32 h-24 relative flex-shrink-0">
                                                 <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
