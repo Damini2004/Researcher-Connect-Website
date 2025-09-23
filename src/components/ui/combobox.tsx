@@ -54,17 +54,15 @@ export function Combobox({
     setOpen(false);
   }
 
-  // When user types, update internal state. The form state is updated on select/blur.
   const handleInputChange = (search: string) => {
     setInputValue(search);
+    if (allowCustomValue) {
+      onChange(search); // Update form value as user types when custom values are allowed
+    }
   };
   
-  // When the popover closes, if we allow custom values, we commit the currently typed value.
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
-    if (!isOpen && allowCustomValue) {
-      onChange(inputValue);
-    }
   }
 
   // Effect to sync the internal input value if the external value changes
@@ -96,20 +94,19 @@ export function Combobox({
           />
            <CommandList>
             <CommandEmpty>
-                {isCustomValue ? (
-                    <CommandItem
-                        key={inputValue}
-                        value={inputValue}
-                        onSelect={() => handleSelect(inputValue)}
-                    >
-                      {`Create "${inputValue}"`}
-                    </CommandItem>
-                ) : (
-                    emptyPlaceholder
-                )}
+                {emptyPlaceholder}
             </CommandEmpty>
             <CommandGroup>
                 <ScrollArea className="h-48">
+                    {isCustomValue && (
+                        <CommandItem
+                            key={inputValue}
+                            value={inputValue}
+                            onSelect={() => handleSelect(inputValue)}
+                        >
+                        {`Create "${inputValue}"`}
+                        </CommandItem>
+                    )}
                     {options.map((option) => (
                     <CommandItem
                         key={option.value}
