@@ -10,7 +10,7 @@ import { Command, CommandList, CommandItem } from "./command";
 
 interface KeywordInputProps {
   placeholder?: string;
-  value: string[];
+  value: string | string[]; // Allow both string and array
   onChange: (keywords: string[]) => void;
   suggestions?: string[];
   inputValue: string;
@@ -26,11 +26,14 @@ export function KeywordInput({
   onInputChange,
 }: KeywordInputProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  
+  // Ensure `currentKeywords` is always an array
+  const currentKeywords = Array.isArray(value) ? value : (value ? [value] : []);
 
   const addKeyword = (keyword: string) => {
     const trimmedKeyword = keyword.trim();
-    if (trimmedKeyword && !value.includes(trimmedKeyword)) {
-      const newKeywords = [...value, trimmedKeyword];
+    if (trimmedKeyword && !currentKeywords.includes(trimmedKeyword)) {
+      const newKeywords = [...currentKeywords, trimmedKeyword];
       onChange(newKeywords);
     }
     onInputChange(""); // Clear input in parent form
@@ -45,12 +48,12 @@ export function KeywordInput({
   };
 
   const removeKeyword = (keywordToRemove: string) => {
-    const newKeywords = value.filter((keyword) => keyword !== keywordToRemove);
+    const newKeywords = currentKeywords.filter((keyword) => keyword !== keywordToRemove);
     onChange(newKeywords);
   };
   
   const filteredSuggestions = suggestions.filter(
-    (s) => s.toLowerCase().includes(inputValue.toLowerCase()) && !value.includes(s)
+    (s) => s.toLowerCase().includes(inputValue.toLowerCase()) && !currentKeywords.includes(s)
   );
 
   const isPopoverOpen = !!inputValue && filteredSuggestions.length > 0;
@@ -58,7 +61,7 @@ export function KeywordInput({
   return (
     <div>
         <div className="flex flex-wrap items-center gap-2 mb-2 min-h-[20px]">
-            {value.map((keyword, index) => (
+            {currentKeywords.map((keyword, index) => (
             <Badge key={index} variant="secondary">
                 {keyword}
                 <button

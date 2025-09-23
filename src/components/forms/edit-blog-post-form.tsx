@@ -108,6 +108,12 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
     }
     
     delete payload.image;
+    
+    // Ensure category is an array
+    if (typeof payload.category === 'string') {
+        payload.category = [payload.category];
+    }
+
 
     const result = await updateBlogPost(post.id, payload);
 

@@ -45,7 +45,9 @@ export const conferenceSchema = z.object({
 
 export const blogPostSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters."),
-  category: z.array(z.string()).min(1, "At least one category is required."),
+  category: z.union([z.string(), z.array(z.string())]).refine(val => (Array.isArray(val) && val.length > 0) || (typeof val === 'string' && val.length > 0), {
+    message: "At least one category is required.",
+  }),
   author: z.string().min(3, "Author name is required."),
   content: z.string().min(100, "Content must be at least 100 characters."),
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters.").max(200, "Excerpt cannot exceed 200 characters."),
@@ -64,7 +66,7 @@ export type FaqData = z.infer<typeof faqSchema>;
 export type BlogPost = {
     id: string;
     title: string;
-    category: string[];
+    category: string | string[];
     author: string;
     content: string;
     excerpt: string;
