@@ -88,9 +88,12 @@ async function PageContent() {
                                         <h3 className="text-2xl font-bold hover:text-primary transition-colors">
                                             <Link href={`/blogs/${mainFeaturedArticle.id}`}>{mainFeaturedArticle.title}</Link>
                                         </h3>
-                                        <div className="mt-4">
+                                        <div className="mt-4 prose prose-sm max-w-none line-clamp-5">
                                             <RenderHtmlContent htmlContent={mainFeaturedArticle.content} />
                                         </div>
+                                         <Link href={`/blogs/${mainFeaturedArticle.id}`} className="text-sm font-semibold text-primary inline-flex items-center mt-2">
+                                            Read more <ArrowRight className="ml-2 h-4 w-4" />
+                                        </Link>
                                     </div>
                                 )}
                             </div>
