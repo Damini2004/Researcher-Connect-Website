@@ -1,3 +1,4 @@
+// src/components/ui/combobox.tsx
 "use client"
 
 import * as React from "react"
@@ -49,16 +50,28 @@ export function Combobox({
   const handleSelect = (currentValue: string) => {
     const newValue = currentValue === value ? "" : currentValue
     onChange(newValue)
-    setInputValue("")
+    setInputValue("") // Clear internal input state on selection
     setOpen(false)
   }
 
+  // When the user types in the input, update both the internal `inputValue`
+  // and the external form state via `onChange`.
   const handleInputChange = (search: string) => {
-    setInputValue(search)
+    setInputValue(search);
     if (allowCustomValue) {
-        onChange(search);
+      onChange(search);
     }
-  }
+  };
+
+  // Ensure the input field shows the correct value from the form,
+  // especially when a value is selected.
+  React.useEffect(() => {
+    if (value) {
+      setInputValue(value);
+    } else {
+      setInputValue("");
+    }
+  }, [value]);
 
   const filteredOptions = allowCustomValue && inputValue && !options.some(opt => opt.label.toLowerCase() === inputValue.toLowerCase())
     ? [{ value: inputValue.toLowerCase(), label: `Create "${inputValue}"` }, ...options]
