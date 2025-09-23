@@ -1,4 +1,3 @@
-
 // src/services/blogService.ts
 'use server';
 
@@ -28,7 +27,7 @@ export async function addBlogPost(data: AddBlogPostPayload): Promise<{ success: 
         return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
     }
     
-    // Ensure category exists
+    // Ensure category exists before adding the post
     await addCategory(validationResult.data.category);
 
     await addDoc(collection(db, 'blogPosts'), {
