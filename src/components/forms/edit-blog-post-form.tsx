@@ -22,6 +22,8 @@ import { blogPostSchema, type BlogPost, type AddBlogPostData } from '@/lib/types
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
+import { getCategories, type BlogCategory } from "@/services/categoryService";
+import { Combobox } from "../ui/combobox";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -33,6 +35,19 @@ interface EditBlogPostFormProps {
 export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [categories, setCategories] = React.useState<BlogCategory[]>([]);
+  
+  React.useEffect(() => {
+    const fetchCategories = async () => {
+        try {
+            const data = await getCategories();
+            setCategories(data);
+        } catch (error) {
+            toast({ title: "Error", description: "Could not fetch categories." });
+        }
+    };
+    fetchCategories();
+  }, [toast]);
   
   // We make `image` optional for the edit form validation schema
   const editSchema = blogPostSchema.extend({
@@ -98,6 +113,8 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
     }
     setIsSubmitting(false);
   }
+  
+  const categoryOptions = categories.map(c => ({ value: c.name, label: c.name }));
 
   return (
     <Form {...form}>
@@ -107,7 +124,25 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
             <div className="p-4 space-y-6">
                 <FormField control={form.control} name="title" render={({ field }) => ( <FormItem> <FormLabel>Post Title</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField control={form.control} name="category" render={({ field }) => ( <FormItem> <FormLabel>Category</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                    <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Category</FormLabel>
+                                <Combobox
+                                    options={categoryOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Select or create category..."
+                                    searchPlaceholder="Search categories..."
+                                    emptyPlaceholder="No categories found."
+                                    allowCustomValue={true}
+                                />
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField control={form.control} name="author" render={({ field }) => ( <FormItem> <FormLabel>Author</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 </div>
                 <FormField control={form.control} name="excerpt" render={({ field }) => ( <FormItem> <FormLabel>Excerpt</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormDescription>Max 200 characters.</FormDescription> <FormMessage /> </FormItem> )} />

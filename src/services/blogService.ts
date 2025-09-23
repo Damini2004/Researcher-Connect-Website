@@ -8,6 +8,7 @@ import type { AddBlogPostData, BlogPost } from '@/lib/types';
 import { blogPostSchema } from '@/lib/types';
 import { z } from 'zod';
 import { format } from 'date-fns';
+import { addCategory } from './categoryService';
 
 interface AddBlogPostPayload extends Omit<AddBlogPostData, 'image'> {
     imageSrc: string;
@@ -27,6 +28,9 @@ export async function addBlogPost(data: AddBlogPostPayload): Promise<{ success: 
         return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
     }
     
+    // Ensure category exists
+    await addCategory(validationResult.data.category);
+
     await addDoc(collection(db, 'blogPosts'), {
         ...validationResult.data,
         createdAt: serverTimestamp(),
@@ -109,10 +113,17 @@ export async function updateBlogPost(id: string, data: Partial<AddBlogPostPayloa
             const firstError = validationResult.error.errors[0];
             return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
         }
+        
+        const postData = validationResult.data;
+
+        // Ensure category exists if it's being updated
+        if (postData.category) {
+            await addCategory(postData.category);
+        }
 
         const postRef = doc(db, 'blogPosts', id);
         await updateDoc(postRef, {
-            ...validationResult.data,
+            ...postData,
             updatedAt: serverTimestamp()
         });
         
