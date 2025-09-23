@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { getBlogPosts, BlogPost } from "@/services/blogService";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, ChevronRight, UserCircle, Lightbulb, User, Calendar } from "lucide-react";
+import { ArrowRight, ChevronRight, UserCircle, Lightbulb, User, Calendar, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -26,34 +26,60 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getCategories, BlogCategory } from "@/services/categoryService";
 
 function PageContent() {
     const [allPosts, setAllPosts] = React.useState<BlogPost[]>([]);
+    const [categories, setCategories] = React.useState<BlogCategory[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
     const [mainFeaturedArticle, setMainFeaturedArticle] = React.useState<BlogPost | null>(null);
+    const [popularSearchTerm, setPopularSearchTerm] = React.useState("");
+    const [popularCategoryFilter, setPopularCategoryFilter] = React.useState("all");
 
     React.useEffect(() => {
         const fetchPosts = async () => {
             setIsLoading(true);
-            const posts = await getBlogPosts();
-            setAllPosts(posts);
-            if (posts.length > 0) {
-              setMainFeaturedArticle(posts[0]);
+            try {
+                const [posts, cats] = await Promise.all([getBlogPosts(), getCategories()]);
+                setAllPosts(posts);
+                setCategories(cats);
+                if (posts.length > 0) {
+                  setMainFeaturedArticle(posts[0]);
+                }
+            } catch (error) {
+                console.error("Failed to fetch posts or categories", error);
+            } finally {
+                setIsLoading(false);
             }
-            setIsLoading(false);
         };
         fetchPosts();
     }, []);
 
     const handleArticleClick = (post: BlogPost) => {
         setMainFeaturedArticle(post);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const latestArticles = allPosts;
     
     const otherLatestArticles = latestArticles.filter(p => p.id !== mainFeaturedArticle?.id).slice(0, 4); 
-    const popularArticles = allPosts.slice(0, 8);
+    
+    const popularArticles = allPosts.filter(post => {
+        const searchMatch = popularSearchTerm === "" ||
+            post.title.toLowerCase().includes(popularSearchTerm.toLowerCase()) ||
+            post.excerpt.toLowerCase().includes(popularSearchTerm.toLowerCase()) ||
+            post.author.toLowerCase().includes(popularSearchTerm.toLowerCase());
+
+        const categoryMatch = popularCategoryFilter === 'all' ||
+            (Array.isArray(post.category) 
+                ? post.category.some(c => c.toLowerCase() === popularCategoryFilter.toLowerCase())
+                : post.category.toLowerCase() === popularCategoryFilter.toLowerCase());
+
+        return searchMatch && categoryMatch;
+    });
     
     const articlesOnLeft = [mainFeaturedArticle].filter(Boolean) as BlogPost[];
     const idsOnLeft = new Set(articlesOnLeft.map(a => a.id));
@@ -118,7 +144,7 @@ function PageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
-                                    <div className="group">
+                                    <div className="group space-y-4">
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                                             <span>{(Array.isArray(mainFeaturedArticle.category) ? mainFeaturedArticle.category[0] || '' : mainFeaturedArticle.category).toUpperCase()}</span>
@@ -127,7 +153,7 @@ function PageContent() {
                                         <h3 className="text-2xl font-bold">
                                             {mainFeaturedArticle.title}
                                         </h3>
-                                        <div className="mt-4 prose prose-sm max-w-none text-justify">
+                                        <div className="prose prose-sm max-w-none text-justify">
                                             <RenderHtmlContent htmlContent={mainFeaturedArticle.content} />
                                         </div>
                                     </div>
@@ -175,14 +201,42 @@ function PageContent() {
                 </div>
             </section>
             
-            {popularArticles.length > 0 && (
-                <section className="py-16 md:py-24 bg-secondary/50">
-                    <div className="container mx-auto px-4">
-                        <h2 className="text-3xl font-bold mb-8">Popular Articles</h2>
+            <section className="py-16 md:py-24 bg-secondary/50">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-3xl font-bold mb-8">Popular Articles</h2>
+                     <Card className="mb-8 bg-gradient-to-br from-background via-background to-primary/5 border-none shadow-sm">
+                        <CardContent className="p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                <div className="relative md:col-span-2">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Search by title, author, or keyword..."
+                                        className="w-full h-12 pl-12"
+                                        value={popularSearchTerm}
+                                        onChange={(e) => setPopularSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                                <Select value={popularCategoryFilter} onValueChange={setPopularCategoryFilter}>
+                                    <SelectTrigger className="h-12">
+                                        <SelectValue placeholder="Filter by category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Categories</SelectItem>
+                                        {categories.map(cat => (
+                                            <SelectItem key={cat.id} value={cat.name}>{cat.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {popularArticles.length > 0 ? (
                         <Carousel
                             opts={{
                                 align: "start",
-                                loop: true,
+                                loop: popularArticles.length > 3,
                             }}
                             className="w-full"
                         >
@@ -217,9 +271,13 @@ function PageContent() {
                             <CarouselPrevious />
                             <CarouselNext />
                         </Carousel>
-                    </div>
-                </section>
-            )}
+                    ) : (
+                         <div className="text-center py-16 text-muted-foreground">
+                            <p>No popular articles match your criteria.</p>
+                        </div>
+                    )}
+                </div>
+            </section>
 
             <Dialog open={!!selectedPost} onOpenChange={(isOpen) => !isOpen && setSelectedPost(null)}>
                 <DialogContent className="sm:max-w-4xl h-[90vh] flex flex-col">
