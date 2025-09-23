@@ -88,9 +88,7 @@ async function PageContent() {
                                                 <h4 className="font-semibold leading-tight group-hover:text-primary transition-colors">
                                                     <Link href={`/blogs/${article.id}`}>{article.title}</Link>
                                                 </h4>
-                                                <Link href={`/blogs/${article.id}`} className="text-xs font-semibold text-primary/80 inline-flex items-center mt-1">
-                                                    Read more
-                                                </Link>
+                                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{article.excerpt}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -109,9 +107,7 @@ async function PageContent() {
                                                 <h4 className="font-semibold leading-tight group-hover:text-primary transition-colors">
                                                     <Link href={`/blogs/${article.id}`}>{article.title}</Link>
                                                 </h4>
-                                                <Link href={`/blogs/${article.id}`} className="text-sm font-semibold text-primary/80 inline-flex items-center mt-1">
-                                                    Read more <ArrowRight className="ml-1 h-3 w-3" />
-                                                </Link>
+                                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{article.excerpt}</p>
                                             </div>
                                         </div>
                                     ))}
