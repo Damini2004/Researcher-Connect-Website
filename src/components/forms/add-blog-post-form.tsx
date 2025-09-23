@@ -25,6 +25,7 @@ import { getCategories, type BlogCategory } from "@/services/categoryService";
 import { KeywordInput } from "../ui/keyword-input";
 import { getKeywords } from "@/services/keywordService";
 import { Combobox } from "../ui/combobox";
+import { Badge } from "../ui/badge";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -137,12 +138,19 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                     <FormLabel>Category</FormLabel>
-                                    <Combobox
-                                        options={categories.map(c => ({ value: c.name.toLowerCase(), label: c.name }))}
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        placeholder="Select or create category..."
-                                    />
+                                    {field.value ? (
+                                        <div className="flex items-center gap-2">
+                                            <Badge variant="secondary">{field.value}</Badge>
+                                            <Button variant="outline" size="sm" onClick={() => field.onChange("")}>Change</Button>
+                                        </div>
+                                    ) : (
+                                        <Combobox
+                                            options={categories.map(c => ({ value: c.name, label: c.name }))}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder="Select or create category..."
+                                        />
+                                    )}
                                     <FormMessage />
                                 </FormItem>
                             )}
