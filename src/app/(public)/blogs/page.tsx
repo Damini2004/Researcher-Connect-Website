@@ -31,28 +31,28 @@ function PageContent() {
     const [allPosts, setAllPosts] = React.useState<BlogPost[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+    const [mainFeaturedArticle, setMainFeaturedArticle] = React.useState<BlogPost | null>(null);
 
     React.useEffect(() => {
         const fetchPosts = async () => {
             setIsLoading(true);
             const posts = await getBlogPosts();
             setAllPosts(posts);
+            if (posts.length > 0) {
+              setMainFeaturedArticle(posts[0]);
+            }
             setIsLoading(false);
         };
         fetchPosts();
     }, []);
 
-    const handlePostClick = (post: BlogPost) => {
-        setSelectedPost(post);
+    const handleArticleClick = (post: BlogPost) => {
+        setMainFeaturedArticle(post);
     };
 
-    const featuredArticles = allPosts.filter(p => p.isFeatured);
-    const regularArticles = allPosts.filter(p => !p.isFeatured);
+    const latestArticles = allPosts;
     
-    const latestArticles = [...featuredArticles, ...regularArticles];
-
-    const mainFeaturedArticle = latestArticles.length > 0 ? latestArticles[0] : null;
-    const otherLatestArticles = latestArticles.slice(1, 5); 
+    const otherLatestArticles = latestArticles.filter(p => p.id !== mainFeaturedArticle?.id).slice(0, 4); 
     const popularArticles = allPosts.slice(0, 8);
     
     const articlesOnLeft = [mainFeaturedArticle].filter(Boolean) as BlogPost[];
@@ -118,16 +118,16 @@ function PageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
-                                    <div className="group cursor-pointer" onClick={() => handlePostClick(mainFeaturedArticle)}>
+                                    <div className="group">
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
-                                            <span>{(mainFeaturedArticle.category[0] || '').toUpperCase()}</span>
+                                            <span>{(Array.isArray(mainFeaturedArticle.category) ? mainFeaturedArticle.category[0] || '' : mainFeaturedArticle.category).toUpperCase()}</span>
                                             <span>JOURNALS</span>
                                         </div>
                                         <h3 className="text-2xl font-bold">
                                             {mainFeaturedArticle.title}
                                         </h3>
-                                        <div className="mt-4 prose prose-sm max-w-none">
+                                        <div className="mt-4 prose prose-sm max-w-none text-justify">
                                             <RenderHtmlContent htmlContent={mainFeaturedArticle.content} />
                                         </div>
                                     </div>
@@ -137,7 +137,7 @@ function PageContent() {
                             <div className="lg:col-span-1 space-y-8">
                                 <div className="space-y-6">
                                     {otherLatestArticles.map(article => (
-                                        <div key={article.id} className="group flex gap-4 items-start cursor-pointer" onClick={() => handlePostClick(article)}>
+                                        <div key={article.id} className="group flex gap-4 items-start cursor-pointer" onClick={() => handleArticleClick(article)}>
                                             <div className="w-24 h-24 relative flex-shrink-0">
                                                 <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
                                             </div>
@@ -155,7 +155,7 @@ function PageContent() {
                                     <div className="pt-8 border-t space-y-6">
                                         <h3 className="text-xl font-bold flex items-center gap-2"><Lightbulb className="text-primary"/> Recommended For You</h3>
                                         {recommendedArticles.map(article => (
-                                            <div key={article.id} className="group flex gap-4 items-start cursor-pointer" onClick={() => handlePostClick(article)}>
+                                            <div key={article.id} className="group flex gap-4 items-start cursor-pointer" onClick={() => handleArticleClick(article)}>
                                                 <div className="w-24 h-24 relative flex-shrink-0">
                                                     <Image src={article.imageSrc} alt={article.title} fill className="object-cover rounded-md" data-ai-hint={article.imageHint} />
                                                 </div>
@@ -189,7 +189,7 @@ function PageContent() {
                             <CarouselContent className="-ml-4">
                                 {popularArticles.map((post) => (
                                 <CarouselItem key={post.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                                    <div className="p-1 cursor-pointer" onClick={() => handlePostClick(post)}>
+                                    <div className="p-1 cursor-pointer" onClick={() => setSelectedPost(post)}>
                                     <Card className="flex flex-col h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                         <Image src={post.imageSrc} alt={post.title} width={400} height={300} className="w-full h-48 object-cover" data-ai-hint={post.imageHint} />
                                         <CardHeader>
