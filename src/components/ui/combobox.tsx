@@ -41,39 +41,32 @@ export function Combobox({
   allowCustomValue = false
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
-  const [inputValue, setInputValue] = React.useState(value || "")
+  const [inputValue, setInputValue] = React.useState("")
 
-  const getLabel = (val: string) => {
-    return options.find((option) => option.value.toLowerCase() === val.toLowerCase())?.label || val
-  }
+  React.useEffect(() => {
+    setInputValue(value || "");
+  }, [value]);
 
   const handleSelect = (currentValue: string) => {
-    const newValue = value === currentValue ? "" : currentValue;
-    onChange(newValue);
-    setInputValue(newValue);
+    onChange(currentValue);
     setOpen(false);
   }
 
-  const handleInputChange = (search: string) => {
-    setInputValue(search);
-    if(allowCustomValue) {
-        onChange(search);
-    }
-  };
-
-  const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
-    if (!isOpen && allowCustomValue) {
-        onChange(inputValue);
-    } else if (isOpen) {
-        setInputValue(value || "");
-    }
-  }
-
-  const isCustomValue = allowCustomValue && inputValue && !options.some(opt => opt.value.toLowerCase() === inputValue.toLowerCase());
+  const filteredOptions = inputValue
+    ? options.filter((option) =>
+        option.label.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    : options;
+  
+  const showCreateOption =
+    allowCustomValue &&
+    inputValue &&
+    !options.some(
+      (option) => option.label.toLowerCase() === inputValue.toLowerCase()
+    );
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -81,7 +74,9 @@ export function Combobox({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value ? getLabel(value) : placeholder}
+          {value
+            ? options.find((option) => option.value === value)?.label || value
+            : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -90,11 +85,11 @@ export function Combobox({
           <CommandInput
             placeholder={searchPlaceholder}
             value={inputValue}
-            onValueChange={handleInputChange}
+            onValueChange={setInputValue}
           />
            <CommandList>
             <CommandEmpty>
-                {isCustomValue ? (
+                {allowCustomValue && inputValue ? (
                     <CommandItem
                         value={inputValue}
                         onSelect={() => handleSelect(inputValue)}
@@ -107,7 +102,17 @@ export function Combobox({
             </CommandEmpty>
             <CommandGroup>
                 <ScrollArea className="h-48">
-                    {options.map((option) => (
+                    {showCreateOption && (
+                        <CommandItem
+                            key="create-custom"
+                            value={inputValue}
+                            onSelect={() => handleSelect(inputValue)}
+                        >
+                            <Check className="mr-2 h-4 w-4 opacity-0" />
+                            Create "{inputValue}"
+                        </CommandItem>
+                    )}
+                    {filteredOptions.map((option) => (
                     <CommandItem
                         key={option.value}
                         value={option.value}
@@ -116,7 +121,7 @@ export function Combobox({
                         <Check
                         className={cn(
                             "mr-2 h-4 w-4",
-                            value && value.toLowerCase() === option.value.toLowerCase() ? "opacity-100" : "opacity-0"
+                            value === option.value ? "opacity-100" : "opacity-0"
                         )}
                         />
                         {option.label}
