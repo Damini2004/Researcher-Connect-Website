@@ -18,6 +18,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Skeleton } from "@/components/ui/skeleton";
+import { RenderHtmlContent } from "@/components/ui/render-html-content";
 
 async function PageContent() {
     const allPosts: BlogPost[] = await getBlogPosts();
@@ -87,10 +88,9 @@ async function PageContent() {
                                         <h3 className="text-2xl font-bold hover:text-primary transition-colors">
                                             <Link href={`/blogs/${mainFeaturedArticle.id}`}>{mainFeaturedArticle.title}</Link>
                                         </h3>
-                                        <p className="text-muted-foreground mt-2">{mainFeaturedArticle.excerpt}</p>
-                                        <Link href={`/blogs/${mainFeaturedArticle.id}`} className="text-sm font-semibold text-primary inline-flex items-center mt-2">
-                                            Read more <ArrowRight className="ml-1 h-4 w-4" />
-                                        </Link>
+                                        <div className="mt-4">
+                                            <RenderHtmlContent htmlContent={mainFeaturedArticle.content} />
+                                        </div>
                                     </div>
                                 )}
                             </div>
