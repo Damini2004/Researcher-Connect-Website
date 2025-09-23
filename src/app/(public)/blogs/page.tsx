@@ -227,7 +227,7 @@ function PageContent() {
                         <>
                             <DialogHeader>
                                 <div className="flex flex-wrap gap-2 mb-4">
-                                  {selectedPost.category.map((cat) => (
+                                  {(Array.isArray(selectedPost.category) ? selectedPost.category : [selectedPost.category]).map((cat) => (
                                     <Badge key={cat} variant="secondary" className="w-fit">{cat.toUpperCase()}</Badge>
                                   ))}
                                 </div>
