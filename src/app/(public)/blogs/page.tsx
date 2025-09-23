@@ -100,7 +100,8 @@ function PageContent() {
     
     const articlesOnLeft = [mainFeaturedArticle].filter(Boolean) as BlogPost[];
     const idsOnLeft = new Set(articlesOnLeft.map(a => a.id));
-    const keywordsOnLeft = new Set(articlesOnLeft.flatMap(a => a.keywords || []));
+    const keywordsOnLeft = React.useMemo(() => new Set(articlesOnLeft.flatMap(a => a.keywords || [])), [articlesOnLeft]);
+
 
     const recommendedArticles = allPosts
       .filter(post => !idsOnLeft.has(post.id))
