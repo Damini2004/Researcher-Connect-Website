@@ -21,8 +21,8 @@ const contactCards = [
         icon: MapPin,
     },
     {
-        title: "Sydney Office",
-        lines: ["62 Collins Street West,", "Sydney 3000,", "Australia"],
+        title: "Pune Office",
+        lines: ["Yashwin Society Pune India."],
         icon: MapPin,
     },
 ];
