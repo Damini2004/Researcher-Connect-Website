@@ -89,7 +89,6 @@ export default async function AboutPage() {
                                     fill
                                     className="object-cover object-top group-hover:scale-110 transition-transform duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
                                 <div className="absolute bottom-4 left-4 text-left">
                                     <h3 className="text-2xl font-bold text-white tracking-tight">{member.name}</h3>
                                     <p className="text-primary-foreground/90 font-medium">{member.title}</p>
@@ -98,7 +97,7 @@ export default async function AboutPage() {
                             <CardContent className="p-6">
                                 <p className="text-muted-foreground mb-4 text-sm">{member.description}</p>
                                 <div className="flex justify-center gap-4">
-                                    <Link href={member.linkedinUrl} className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
+                                    <Link href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
                                 </div>
                             </CardContent>
                         </Card>
