@@ -51,6 +51,18 @@ const features: { title: string; description: string; icon: LucideIcon }[] = [
   { title: "Session and Presentation", description: "Facilitate session creation for accepted papers", icon: Presentation },
   { title: "Audit Log", description: "submission activities and file upload/download", icon: GitCommit },
 ];
+
+const usageStats = [
+    { value: "12,000", label: "Papers Submitted" },
+    { value: "8,500", label: "People on Program Committee" },
+    { value: "60,000,000", label: "TPMS Scores Requested" },
+    { value: "3,000,000", label: "Reviewer Suggestions" },
+    { value: "6,000,000", label: "Reviewer Conflicts" },
+    { value: "1,800,000", label: "Reviewer Bids" },
+    { value: "1,000,000", label: "Emails Sent" },
+    { value: "80,000", label: "Files Uploaded" },
+    { value: "30,000", label: "Discussion Posts" },
+];
   
 
 export default function ConferencesPage() {
@@ -246,6 +258,24 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                 </div>
                             </CardContent>
                         </Card>
+
+                        <section className="py-16 md:py-24 bg-background">
+                            <div className="container mx-auto px-4 text-center">
+                                <h2 className="text-3xl font-bold tracking-tight">Usage</h2>
+                                <div className="max-w-4xl mx-auto mt-4">
+                                    <p className="text-muted-foreground">The CMT service was first developed for ACM SIGKDD 1999. Since then, it has undergone several major improvements and extensions and has been used in well over ten thousands of conferences to date. CMT3 is the latest and the most popular version. It is built on Microsoft Azure platform and fully utilizes the best cloud technologies to provide scalability, availability and reliability not matched by any other conference management services. HTML5, Bootstrap and JQuery are used in creating responsive, mobile-first and modern CMT3 web interface.</p>
+                                    <p className="text-muted-foreground mt-4">CMT3 has hosted over 12,000 conferences. It has over one million users from 240 countries and regions. The following numbers show the usage of a <span className="text-primary">typical large CMT conference.</span></p>
+                                </div>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mt-12 max-w-5xl mx-auto">
+                                    {usageStats.map((stat, index) => (
+                                        <div key={index} className="flex flex-col">
+                                            <span className="text-2xl font-bold text-primary">{stat.value}</span>
+                                            <span className="text-sm text-muted-foreground mt-1">{stat.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {isLoading ? (
