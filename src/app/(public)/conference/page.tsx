@@ -192,10 +192,10 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                     <Card className="text-center">
                         <CardHeader>
-                            <CardTitle>Conference Management Guide</CardTitle>
+                            <CardTitle>Running a Conference in CMT</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">A comprehensive guide from requesting a CMT site to sending author notifications.</p>
+                            <p className="text-muted-foreground">An informal guide to running a large or small conference in CMT (Conference Management Toolkit).</p>
                         </CardContent>
                         <CardFooter className="justify-center">
                             <Button asChild>
@@ -286,9 +286,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                                     <p className="flex items-center gap-2">
                                                         <MapPin className="h-4 w-4 text-primary"/>
                                                         <span>{conference.location}</span>
-                                                    </p>
-                                                     <p className="pt-2 text-muted-foreground line-clamp-3">
-                                                       
                                                     </p>
                                                 </CardContent>
                                             </div>
