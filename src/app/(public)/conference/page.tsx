@@ -304,12 +304,60 @@ After the event, we provide professional proceedings preparation, indexing suppo
             </div>
         </div>
         <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4 text-center">
+                <h2 className="text-3xl font-bold tracking-tight">Usage</h2>
+                <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
+                    The CMT service was first developed for ACM SIGKDD 1999. Since then, it has undergone several major improvements and extensions and has been used in well over ten thousands of conferences to date. CMT3 is the latest and the most popular version. It is built on Microsoft Azure platform and fully utilizes the best cloud technologies to provide scalability, availability and reliability not matched by any other conference management services. HTML5, Bootstrap and JQuery are used in creating responsive, mobile-first and modern CMT3 web interface.
+                </p>
+                <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
+                    CMT3 has hosted over 12,000 conferences. It has over one million users from 240 countries and regions. The following numbers show the usage of a typical large CMT conference.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mt-12">
+                    {usageStats.map(stat => (
+                        <div key={stat.label} className="text-center">
+                            <h3 className="text-4xl font-bold text-primary">{stat.value}</h3>
+                            <p className="text-sm text-muted-foreground mt-2">{stat.label}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+        <section className="py-16 md:py-24 bg-secondary/50">
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-primary">Support</h2>
+                    <h2 className="text-3xl font-bold tracking-tight">eBooks</h2>
                     <p className="mt-4 text-muted-foreground">
-                        For conference-specific questions, such as the status of a paper, please <a href="/contact-us" className="text-primary underline">contact the chairs directly</a>. For other questions, please check <a href="/conference/faq" className="text-primary underline">FAQ</a> and <a href="#" className="text-primary underline">Docs</a>. For conference chairs, we prefer if you can arrange abstract submission, paper submission and reviewer submission deadlines to fall on Tuesday, Wednesday or Thursday in order to ensure quick response from the CMT team.
+                        No matter the size of the conference and how much chair experience you have, the guides help you navigate the process of managing conference with ease, from requesting CMT site to sending author notification.
                     </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                        <Link href="#">
+                            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                                <Image src="https://kmeducationhub.de/wp-content/uploads/2021/10/Running-a-Conference-in-CMT-An-Informal-Guide.png" alt="CMT Guide" width={400} height={500} className="w-full h-auto object-cover" data-ai-hint="book cover" />
+                            </Card>
+                        </Link>
+                        <Link href="#">
+                            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                                <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_p-F26MP_2oY5tW-28j3sSj-3j-aYJ_S2hA&s" alt="Peer Review Guide" width={400} height={500} className="w-full h-auto object-cover" data-ai-hint="book cover" />
+                            </Card>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto text-center p-8 bg-secondary/50 rounded-lg">
+                    <h2 className="text-3xl font-bold tracking-tight text-primary">Call For Papers</h2>
+                    <p className="mt-4 text-muted-foreground">
+                        All accepted papers will be published in conference proceedings, and selected papers will be published in Scopus, Web of Science, and UGC CARE listed journals.
+                    </p>
+                    <div className="mt-6">
+                        <Button size="lg" asChild>
+                            <Link href="/submit-journal">
+                                Submit Your Paper
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </section>
