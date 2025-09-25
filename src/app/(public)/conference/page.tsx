@@ -17,39 +17,32 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, MessagesSquare, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion, Download } from "lucide-react";
+import { Calendar, Search as SearchIcon, MapPin, ArrowRight, Workflow, FileSignature, Presentation, Handshake, LucideIcon } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const features: { title: string; description: string; icon: LucideIcon }[] = [
-  { title: "Multiple Roles", description: "Chair, senior meta-reviewer, meta-reviewer, reviewer, author, proceedings editor", icon: Users },
-  { title: "Multi-Track Support", description: "No limit on number of tracks in a conference with each track independently configured", icon: Layers },
-  { title: "Customizable Form", description: "All forms are customizable with ability to configure question visibility independently", icon: FileSignature },
-  { title: "Full Submission Life Cycle", description: "Abstract, full paper, supplementary material, revision, camera-ready, presentation", icon: Workflow },
-  { title: "Instruction Message", description: "Welcome message for authors, reviewers and meta-reviewers in rich format", icon: MessageSquare },
-  { title: "File and Media", description: "Unlimited file upload. Max file size 100MB. Support pdf, docx, audio, video and other file types.", icon: Paperclip },
-  { title: "Conflicts Management", description: "Domain conflict, submission conflict, person to person conflict, dblp conflict and chairs conflict", icon: Shield },
-  { title: "Program Committee Invite", description: "Bulk invite senior meta-reviewers, meta-reviewers, and reviewers and track invite status", icon: UserCheck },
-  { title: "Bidding", description: "Allow meta-reviewers and reviewers to bid on papers and allow senior meta-reviewers to bid on meta-reviewers", icon: VenetianMask },
-  { title: "Reviewer Suggestion", description: "Meta-reviewers suggest reviewers for papers", icon: ThumbsUp },
-  { title: "Assignment", description: "Support both manual and automatic assignment, integrated with TPMS (Toronto Paper Matching System)", icon: GitPullRequest },
-  { title: "Discussion", description: "Threaded discussion and virtual PC meeting", icon: MessagesSquare },
-  { title: "Rebuttal", description: "Authors provide feedback to reviews online or via file upload", icon: FileQuestion },
-  { title: "Author Notification", description: "Quick steps to notify authors using Author Notification Wizard and custom templates", icon: Mail },
-  { title: "Copyright", description: "Streamlined IEEE eCopyright submission", icon: Copyright },
-  { title: "Export", description: "Export conference data to Excel/XML/CSV", icon: UploadCloud },
-  { title: "Download", description: "Download submission files, supplementary material, camera-ready files, presentations", icon: DownloadCloud },
-  { title: "Note", description: "Allow chairs, senior meta-reviewers, meta-reviewers and reviewers to create note", icon: Files },
-  { title: "Session and Presentation", description: "Facilitate session creation for accepted papers", icon: Presentation },
-  { title: "Audit Log", description: "submission activities and file upload/download", icon: GitCommit },
+    { 
+        title: "End-to-End Planning", 
+        description: "From concept design to post-event reporting, every phase is professionally handled.", 
+        icon: Workflow 
+    },
+    { 
+        title: "Submission & Review Systems", 
+        description: "Digital workflows for abstract handling, peer review, and program scheduling.", 
+        icon: FileSignature 
+    },
+    { 
+        title: "Hybrid & Virtual Capability", 
+        description: "Seamless participation for global audiences through modern online platforms.", 
+        icon: Presentation 
+    },
+    { 
+        title: "Sponsor & Speaker Coordination", 
+        description: "Attract high-value sponsors and engage world-class speakers with ease.", 
+        icon: Handshake 
+    },
 ];
 
 const usageStats = [
@@ -175,7 +168,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                         We provide a complete suite of services to ensure your conference is a success.
                     </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {features.map((feature, index) => (
                         <Card key={index} className="text-center bg-background transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                             <CardHeader className="items-center">
@@ -189,45 +182,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                             </CardContent>
                         </Card>
                     ))}
-                </div>
-            </div>
-        </section>
-
-        <section className="py-16 md:py-24 bg-background">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight">eBooks</h2>
-                    <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-                        No matter the size of the conference and how much chair experience you have, the guides help you navigate the process of managing conference with ease, from requesting CMT site to sending author notification.
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <Link href="#" target="_blank" rel="noopener noreferrer">
-                        <Card className="flex flex-col overflow-hidden">
-                            <div className="relative h-64 w-full">
-                                <Image
-                                    src="https://kmeducationhub.de/wp-content/uploads/2021/10/How-to-run-a-large-small-conference-in-CMT-An-informal-guide-scaled.jpg"
-                                    alt="Running a conference in CMT eBook"
-                                    fill
-                                    data-ai-hint="ebook cover"
-                                    className="object-cover"
-                                />
-                            </div>
-                        </Card>
-                    </Link>
-                    <Link href="#" target="_blank" rel="noopener noreferrer">
-                        <Card className="flex flex-col overflow-hidden">
-                            <div className="relative h-64 w-full">
-                                <Image
-                                    src="https://bmmagazine.co.uk/wp-content/uploads/2020/02/shutterstock_1184332999-scaled.jpg"
-                                    alt="Peer Review Excellence eBook"
-                                    fill
-                                    data-ai-hint="research review"
-                                    className="object-cover"
-                                />
-                            </div>
-                        </Card>
-                    </Link>
                 </div>
             </div>
         </section>
@@ -338,37 +292,10 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                 </nav>
                             </div>
                         )}
-                        <section className="py-16 md:py-24 bg-background">
-                            <div className="container mx-auto px-4 text-center">
-                                <h2 className="text-3xl font-bold tracking-tight">Usage</h2>
-                                <div className="max-w-4xl mx-auto mt-4">
-                                    <p className="text-muted-foreground">The CMT service was first developed for ACM SIGKDD 1999. Since then, it has undergone several major improvements and extensions and has been used in well over ten thousands of conferences to date. CMT3 is the latest and the most popular version. It is built on Microsoft Azure platform and fully utilizes the best cloud technologies to provide scalability, availability and reliability not matched by any other conference management services. HTML5, Bootstrap and JQuery are used in creating responsive, mobile-first and modern CMT3 web interface.</p>
-                                    <p className="text-muted-foreground mt-4">CMT3 has hosted over 12,000 conferences. It has over one million users from 240 countries and regions. The following numbers show the usage of a <span className="text-primary">typical large CMT conference.</span></p>
-                                </div>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mt-12 max-w-5xl mx-auto">
-                                    {usageStats.map((stat, index) => (
-                                        <div key={index} className="flex flex-col">
-                                            <span className="text-2xl font-bold text-primary">{stat.value}</span>
-                                            <span className="text-sm text-muted-foreground mt-1">{stat.label}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </section>
                     </section>
                 </div>
             </div>
         </div>
-        <section className="py-16 md:py-24 bg-background">
-            <div className="container mx-auto px-4">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-primary">Support</h2>
-                    <p className="mt-4 text-muted-foreground">
-                        For conference-specific questions, such as the status of a paper, please <a href="/contact-us" className="text-primary underline">contact the chairs directly</a>. For other questions, please check <a href="/conference/faq" className="text-primary underline">FAQ</a> and <a href="#" className="text-primary underline">Docs</a>. For conference chairs, we prefer if you can arrange abstract submission, paper submission and reviewer submission deadlines to fall on Tuesday, Wednesday or Thursday in order to ensure quick response from the CMT team.
-                    </p>
-                </div>
-            </div>
-        </section>
     </div>
   );
 }
