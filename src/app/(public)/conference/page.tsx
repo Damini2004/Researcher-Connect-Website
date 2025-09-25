@@ -17,40 +17,33 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, MessagesSquare, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion, Download } from "lucide-react";
+import { Calendar, Search as SearchIcon, MapPin, ArrowRight, Workflow, FileSignature, Presentation, Handshake, LucideIcon } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const features: { title: string; description: string; icon: LucideIcon }[] = [
-    { title: "Multiple Roles", description: "Chair, senior meta-reviewer, meta-reviewer, reviewer, author, proceedings editor", icon: Users },
-    { title: "Multi-Track Support", description: "No limit on number of tracks in a conference with each track independently configured", icon: Layers },
-    { title: "Customizable Form", description: "All forms are customizable with ability to configure question visibility independently", icon: FileSignature },
-    { title: "Full Submission Life Cycle", description: "Abstract, full paper, supplementary material, revision, camera-ready, presentation", icon: Workflow },
-    { title: "Instruction Message", description: "Welcome message for authors, reviewers and meta-reviewers in rich format", icon: MessageSquare },
-    { title: "File and Media", description: "Unlimited file upload. Max file size 100MB. Support pdf, docx, audio, video and other file types.", icon: Paperclip },
-    { title: "Conflicts Management", description: "Domain conflict, submission conflict, person to person conflict, dblp conflict and chairs conflict", icon: Shield },
-    { title: "Program Committee Invite", description: "Bulk invite senior meta-reviewers, meta-reviewers, and reviewers and track invite status", icon: UserCheck },
-    { title: "Bidding", description: "Allow meta-reviewers and reviewers to bid on papers and allow senior meta-reviewers to bid on meta-reviewers", icon: VenetianMask },
-    { title: "Reviewer Suggestion", description: "Meta-reviewers suggest reviewers for papers", icon: ThumbsUp },
-    { title: "Assignment", description: "Support both manual and automatic assignment, integrated with TPMS (Toronto Paper Matching System)", icon: GitPullRequest },
-    { title: "Discussion", description: "Threaded discussion and virtual PC meeting", icon: MessagesSquare },
-    { title: "Rebuttal", description: "Authors provide feedback to reviews online or via file upload", icon: FileQuestion },
-    { title: "Author Notification", description: "Quick steps to notify authors using Author Notification Wizard and custom templates", icon: Mail },
-    { title: "Copyright", description: "Streamlined IEEE eCopyright submission", icon: Copyright },
-    { title: "Export", description: "Export conference data to Excel/XML/CSV", icon: UploadCloud },
-    { title: "Download", description: "Download submission files, supplementary material, camera-ready files, presentations", icon: DownloadCloud },
-    { title: "Note", description: "Allow chairs, senior meta-reviewers, meta-reviewers and reviewers to create note", icon: Files },
-    { title: "Session and Presentation", description: "Facilitate session creation for accepted papers", icon: Presentation },
-    { title: "Audit Log", description: "submission activities and file upload/download", icon: GitCommit },
-  ];
+    { 
+        title: "End-to-End Planning", 
+        description: "From concept design to post-event reporting, every phase is professionally handled.", 
+        icon: Workflow 
+    },
+    { 
+        title: "Submission & Review Systems", 
+        description: "Digital workflows for abstract handling, peer review, and program scheduling.", 
+        icon: FileSignature 
+    },
+    { 
+        title: "Hybrid & Virtual Capability", 
+        description: "Seamless participation for global audiences through modern online platforms.", 
+        icon: Presentation 
+    },
+    { 
+        title: "Sponsor & Speaker Coordination", 
+        description: "Attract high-value sponsors and engage world-class speakers with ease.", 
+        icon: Handshake 
+    },
+];
 
 const usageStats = [
     { value: "12,000", label: "Papers Submitted" },
@@ -175,7 +168,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                         We provide a complete suite of services to ensure your conference is a success.
                     </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {features.map((feature, index) => (
                         <Card key={index} className="text-center bg-background transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                             <CardHeader className="items-center">
@@ -219,6 +212,22 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                 </div>
                             </CardContent>
                         </Card>
+                         <div className="container mx-auto px-4 text-center">
+                            <div className="max-w-4xl mx-auto mb-16">
+                                <h2 className="text-3xl font-bold tracking-tight mb-2">Usage</h2>
+                                <p className="text-muted-foreground mb-12 text-center max-w-3xl mx-auto">
+                                The CMT service was first developed for ACM SIGKDD 1999. Since then, it has undergone several major improvements and extensions and has been used in well over ten thousands of conferences to date. CMT3 is the latest and the most popular version. It is built on Microsoft Azure platform and fully utilizes the best cloud technologies to provide scalability, availability and reliability not matched by any other conference management services. HTML5, Bootstrap and JQuery are used in creating responsive, mobile-first and modern CMT3 web interface.CMT3 has hosted over 12,000 conferences. It has over one million users from 240 countries and regions. The following numbers show the usage of a typical large CMT conference.
+                                </p>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                                    {usageStats.map((stat, index) => (
+                                        <div key={index} className="text-center">
+                                            <p className="text-3xl font-bold text-primary">{stat.value}</p>
+                                            <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {isLoading ? (
@@ -327,18 +336,11 @@ After the event, we provide professional proceedings preparation, indexing suppo
         </section>
         <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
-                <div className="max-w-4xl mx-auto text-center p-8 bg-secondary/50 rounded-lg">
-                    <h2 className="text-3xl font-bold tracking-tight text-primary">Call For Papers</h2>
+                <div className="text-center p-8 bg-secondary/50 rounded-lg">
+                    <h2 className="text-3xl font-bold tracking-tight text-primary">Support</h2>
                     <p className="mt-4 text-muted-foreground">
-                        All accepted papers will be published in conference proceedings, and selected papers will be published in Scopus, Web of Science, and UGC CARE listed journals.
+                       For conference-specific questions, such as the status of a paper, please contact the chairs directly. For other questions, please check FAQ and Docs. For conference chairs, we prefer if you can arrange abstract submission, paper submission and reviewer submission deadlines to fall on Tuesday, Wednesday or Thursday in order to ensure quick response from the CMT team.
                     </p>
-                    <div className="mt-6">
-                        <Button size="lg" asChild>
-                            <Link href="/submit-journal">
-                                Submit Your Paper
-                            </Link>
-                        </Button>
-                    </div>
                 </div>
             </div>
         </section>
