@@ -192,45 +192,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 </div>
             </div>
         </section>
-
-        <section className="py-16 md:py-24 bg-background">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight">eBooks</h2>
-                    <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-                        No matter the size of the conference and how much chair experience you have, the guides help you navigate the process of managing conference with ease, from requesting CMT site to sending author notification.
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <Link href="#" target="_blank" rel="noopener noreferrer">
-                        <Card className="flex flex-col overflow-hidden">
-                            <div className="relative h-64 w-full">
-                                <Image
-                                    src="https://kmeducationhub.de/wp-content/uploads/2021/10/How-to-run-a-large-small-conference-in-CMT-An-informal-guide-scaled.jpg"
-                                    alt="Running a conference in CMT eBook"
-                                    fill
-                                    data-ai-hint="ebook cover"
-                                    className="object-cover"
-                                />
-                            </div>
-                        </Card>
-                    </Link>
-                    <Link href="#" target="_blank" rel="noopener noreferrer">
-                        <Card className="flex flex-col overflow-hidden">
-                            <div className="relative h-64 w-full">
-                                <Image
-                                    src="https://bmmagazine.co.uk/wp-content/uploads/2020/02/shutterstock_1184332999-scaled.jpg"
-                                    alt="Peer Review Excellence eBook"
-                                    fill
-                                    data-ai-hint="research review"
-                                    className="object-cover"
-                                />
-                            </div>
-                        </Card>
-                    </Link>
-                </div>
-            </div>
-        </section>
         
         <div className="py-12 md:py-16 bg-background">
            <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
