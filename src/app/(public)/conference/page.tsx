@@ -200,20 +200,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                 className="object-cover"
                             />
                         </div>
-                        <div className="p-6 flex flex-col flex-grow">
-                            <CardTitle>Running a Conference in CMT</CardTitle>
-                            <CardContent className="p-0 pt-2 flex-grow">
-                                
-                            </CardContent>
-                            <CardFooter className="p-0 pt-4 justify-start">
-                                <Button asChild>
-                                    <a href="https://kmeducationhub.de/wp-content/uploads/2021/10/How-to-run-a-large-small-conference-in-CMT-An-informal-guide-scaled.jpg" target="_blank" rel="noopener noreferrer">
-                                        <Download className="mr-2 h-4 w-4" />
-                                        Download PDF
-                                    </a>
-                                </Button>
-                            </CardFooter>
-                        </div>
                     </Card>
                     <Card className="flex flex-col overflow-hidden">
                         <div className="relative h-64 w-full">
@@ -224,19 +210,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                 data-ai-hint="research review"
                                 className="object-cover"
                             />
-                        </div>
-                        <div className="p-6 flex flex-col flex-grow">
-                            <CardContent className="p-0 pt-2 flex-grow">
-                                
-                            </CardContent>
-                            <CardFooter className="p-0 pt-4 justify-start">
-                                <Button asChild>
-                                    <a href="/path-to-your-second-ebook.pdf" target="_blank" rel="noopener noreferrer">
-                                        <Download className="mr-2 h-4 w-4" />
-                                        Download PDF
-                                    </a>
-                                </Button>
-                            </CardFooter>
                         </div>
                     </Card>
                 </div>
