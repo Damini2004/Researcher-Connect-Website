@@ -296,16 +296,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 </div>
             </div>
         </div>
-        <section className="py-16 md:py-24 bg-background">
-            <div className="container mx-auto px-4">
-                <div className="text-center p-8 bg-secondary/50 rounded-lg">
-                    <h2 className="text-3xl font-bold tracking-tight text-primary">Support</h2>
-                    <p className="mt-4 text-muted-foreground">
-                       For conference-specific questions, such as the status of a paper, please contact the chairs directly. For other questions, please check FAQ and Docs. For conference chairs, we prefer if you can arrange abstract submission, paper submission and reviewer submission deadlines to fall on Tuesday, Wednesday or Thursday in order to ensure quick response from the CMT team.
-                    </p>
-                </div>
-            </div>
-        </section>
     </div>
   );
 }
