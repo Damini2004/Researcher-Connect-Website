@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, MessagesSquare, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, MessagesSquare, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion, Download } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -183,14 +183,46 @@ After the event, we provide professional proceedings preparation, indexing suppo
 
         <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
-                <Card className="max-w-4xl mx-auto text-center shadow-lg bg-secondary/50 border-primary/10">
-                    <CardHeader>
-                        <CardTitle className="text-3xl">eBooks</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">No matter the size of the conference and how much chair experience you have, the guides help you navigate the process of managing conference with ease, from requesting CMT site to sending author notification.</p>
-                    </CardContent>
-                </Card>
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold tracking-tight">eBooks</h2>
+                    <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+                        Download our guides to help you navigate the process of managing your conference with ease.
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <Card className="text-center">
+                        <CardHeader>
+                            <CardTitle>Conference Management Guide</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">A comprehensive guide from requesting a CMT site to sending author notifications.</p>
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                            <Button asChild>
+                                <a href="/path-to-your-first-ebook.pdf" target="_blank" rel="noopener noreferrer">
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download PDF
+                                </a>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                    <Card className="text-center">
+                        <CardHeader>
+                            <CardTitle>Peer Review Excellence</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Best practices for conducting an effective and ethical peer review process for your conference.</p>
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                            <Button asChild>
+                                <a href="/path-to-your-second-ebook.pdf" target="_blank" rel="noopener noreferrer">
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download PDF
+                                </a>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </div>
             </div>
         </section>
         
@@ -254,6 +286,9 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                                     <p className="flex items-center gap-2">
                                                         <MapPin className="h-4 w-4 text-primary"/>
                                                         <span>{conference.location}</span>
+                                                    </p>
+                                                     <p className="pt-2 text-muted-foreground line-clamp-3">
+                                                       
                                                     </p>
                                                 </CardContent>
                                             </div>
