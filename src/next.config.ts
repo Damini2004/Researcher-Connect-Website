@@ -30,8 +30,22 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'kmeducationhub.de',
+        port: '',
+        pathname: '/**',
+      },
+       {
+        protocol: 'https',
+        hostname: 'bmmagazine.co.uk',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
 
 export default nextConfig;
+
+    
