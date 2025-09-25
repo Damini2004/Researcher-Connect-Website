@@ -190,28 +190,32 @@ After the event, we provide professional proceedings preparation, indexing suppo
                     </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                   <Card className="flex flex-col overflow-hidden">
-                        <div className="relative h-64 w-full">
-                            <Image
-                                src="https://kmeducationhub.de/wp-content/uploads/2021/10/How-to-run-a-large-small-conference-in-CMT-An-informal-guide-scaled.jpg"
-                                alt="Running a conference in CMT eBook"
-                                fill
-                                data-ai-hint="ebook cover"
-                                className="object-cover"
-                            />
-                        </div>
-                    </Card>
-                    <Card className="flex flex-col overflow-hidden">
-                        <div className="relative h-64 w-full">
-                            <Image
-                                src="https://bmmagazine.co.uk/wp-content/uploads/2020/02/shutterstock_1184332999-scaled.jpg"
-                                alt="Peer Review Excellence eBook"
-                                fill
-                                data-ai-hint="research review"
-                                className="object-cover"
-                            />
-                        </div>
-                    </Card>
+                    <Link href="#" target="_blank" rel="noopener noreferrer">
+                        <Card className="flex flex-col overflow-hidden">
+                            <div className="relative h-64 w-full">
+                                <Image
+                                    src="https://kmeducationhub.de/wp-content/uploads/2021/10/How-to-run-a-large-small-conference-in-CMT-An-informal-guide-scaled.jpg"
+                                    alt="Running a conference in CMT eBook"
+                                    fill
+                                    data-ai-hint="ebook cover"
+                                    className="object-cover"
+                                />
+                            </div>
+                        </Card>
+                    </Link>
+                    <Link href="#" target="_blank" rel="noopener noreferrer">
+                        <Card className="flex flex-col overflow-hidden">
+                            <div className="relative h-64 w-full">
+                                <Image
+                                    src="https://bmmagazine.co.uk/wp-content/uploads/2020/02/shutterstock_1184332999-scaled.jpg"
+                                    alt="Peer Review Excellence eBook"
+                                    fill
+                                    data-ai-hint="research review"
+                                    className="object-cover"
+                                />
+                            </div>
+                        </Card>
+                    </Link>
                 </div>
             </div>
         </section>
