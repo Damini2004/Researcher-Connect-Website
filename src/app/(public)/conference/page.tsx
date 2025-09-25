@@ -360,26 +360,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 </div>
             </div>
         </div>
-         <section className="py-16 md:py-24 bg-secondary/50">
-            <div className="container mx-auto px-4">
-                <div className="bg-background rounded-lg shadow-lg p-8 md:p-12 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight">Call For Papers</h2>
-                    <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
-                        All accepted papers will be published in conference proceedings, and selected papers will be published in <span className="font-semibold text-primary">Scopus, Web of Science, and UGC CARE</span> listed journals.
-                    </p>
-                    <div className="mt-8 flex justify-center items-center gap-8">
-                        <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNeWh4bxj-5iG_a2gX5lu-rI-wSoS4rP9pZg&s" alt="Scopus" data-ai-hint="logo" width={120} height={40} className="object-contain" />
-                        <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu-a_i-2yVb_s-jB2FwzL9pQx2wJ0U5qRjA&s" alt="Web of Science" data-ai-hint="logo" width={140} height={40} className="object-contain" />
-                        <Image src="https://img.freepik.com/premium-vector/ugc-care-logo-ugc-care-icon-free-vector_2024_110681-18.jpg" alt="UGC CARE" data-ai-hint="logo" width={100} height={40} className="object-contain" />
-                    </div>
-                    <Button size="lg" className="mt-8" asChild>
-                        <Link href="/submit-journal">
-                            Submit Your Paper
-                        </Link>
-                    </Button>
-                </div>
-            </div>
-        </section>
         <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center">
