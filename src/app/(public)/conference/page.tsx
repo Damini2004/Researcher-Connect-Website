@@ -203,7 +203,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                         <div className="p-6 flex flex-col flex-grow">
                             <CardTitle>Running a Conference in CMT</CardTitle>
                             <CardContent className="p-0 pt-2 flex-grow">
-                                <p className="text-muted-foreground text-sm">An informal guide to running a large or small conference in CMT (Conference Management Toolkit).</p>
+                                
                             </CardContent>
                             <CardFooter className="p-0 pt-4 justify-start">
                                 <Button asChild>
@@ -227,7 +227,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                         </div>
                         <div className="p-6 flex flex-col flex-grow">
                             <CardContent className="p-0 pt-2 flex-grow">
-                                <p className="text-muted-foreground text-sm">Best practices for conducting an effective and ethical peer review process for your conference.</p>
+                                
                             </CardContent>
                             <CardFooter className="p-0 pt-4 justify-start">
                                 <Button asChild>
