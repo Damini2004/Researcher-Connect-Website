@@ -338,23 +338,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                                 </nav>
                             </div>
                         )}
-                        <section className="py-16 md:py-24 bg-background">
-                            <div className="container mx-auto px-4 text-center">
-                                <h2 className="text-3xl font-bold tracking-tight">Usage</h2>
-                                <div className="max-w-4xl mx-auto mt-4">
-                                    <p className="text-muted-foreground">The CMT service was first developed for ACM SIGKDD 1999. Since then, it has undergone several major improvements and extensions and has been used in well over ten thousands of conferences to date. CMT3 is the latest and the most popular version. It is built on Microsoft Azure platform and fully utilizes the best cloud technologies to provide scalability, availability and reliability not matched by any other conference management services. HTML5, Bootstrap and JQuery are used in creating responsive, mobile-first and modern CMT3 web interface.</p>
-                                    <p className="text-muted-foreground mt-4">CMT3 has hosted over 12,000 conferences. It has over one million users from 240 countries and regions. The following numbers show the usage of a <span className="text-primary">typical large CMT conference.</span></p>
-                                </div>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mt-12 max-w-5xl mx-auto">
-                                    {usageStats.map((stat, index) => (
-                                        <div key={index} className="flex flex-col">
-                                            <span className="text-2xl font-bold text-primary">{stat.value}</span>
-                                            <span className="text-sm text-muted-foreground mt-1">{stat.label}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </section>
                     </section>
                 </div>
             </div>
