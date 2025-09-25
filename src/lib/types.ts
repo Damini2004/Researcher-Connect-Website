@@ -1,4 +1,3 @@
-
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -46,18 +45,28 @@ export const conferenceSchema = z.object({
 
 export const blogPostSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters."),
-  category: z.string().min(3, "Category is required."),
+  category: z.union([z.string(), z.array(z.string())]).refine(val => (Array.isArray(val) && val.length > 0) || (typeof val === 'string' && val.length > 0), {
+    message: "At least one category is required.",
+  }),
   author: z.string().min(3, "Author name is required."),
   content: z.string().min(100, "Content must be at least 100 characters."),
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters.").max(200, "Excerpt cannot exceed 200 characters."),
   image: z.any().refine((files) => files?.length > 0, "An image is required.").or(z.any().optional()),
   isFeatured: z.boolean().default(false),
+  keywords: z.array(z.string()).optional(),
 });
+
+export const faqSchema = z.object({
+  question: z.string().min(10, "Question must be at least 10 characters."),
+  answer: z.string().min(20, "Answer must be at least 20 characters."),
+});
+
+export type FaqData = z.infer<typeof faqSchema>;
 
 export type BlogPost = {
     id: string;
     title: string;
-    category: string;
+    category: string | string[];
     author: string;
     content: string;
     excerpt: string;
@@ -66,6 +75,7 @@ export type BlogPost = {
     isFeatured: boolean;
     createdAt: string;
     date: string;
+    keywords: string[];
 }
 
 export type AddBlogPostData = z.infer<typeof blogPostSchema>;

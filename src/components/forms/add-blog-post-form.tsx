@@ -21,6 +21,9 @@ import { blogPostSchema, type AddBlogPostData } from '@/lib/types';
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
+import { getCategories, type BlogCategory } from "@/services/categoryService";
+import { KeywordInput } from "../ui/keyword-input";
+import { getKeywords } from "@/services/keywordService";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -31,16 +34,37 @@ interface AddBlogPostFormProps {
 export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [categories, setCategories] = React.useState<BlogCategory[]>([]);
+  const [keywordSuggestions, setKeywordSuggestions] = React.useState<string[]>([]);
+  const [categoryInputValue, setCategoryInputValue] = React.useState("");
+  const [keywordInputValue, setKeywordInputValue] = React.useState("");
+
+  React.useEffect(() => {
+    const fetchInitialData = async () => {
+        try {
+            const [categoriesData, keywordsData] = await Promise.all([
+                getCategories(),
+                getKeywords()
+            ]);
+            setCategories(categoriesData);
+            setKeywordSuggestions(keywordsData);
+        } catch (error) {
+            toast({ title: "Error", description: "Could not fetch initial form data." });
+        }
+    };
+    fetchInitialData();
+  }, [toast]);
 
   const form = useForm<AddBlogPostData>({
     resolver: zodResolver(blogPostSchema),
     defaultValues: {
       title: "",
-      category: "",
+      category: [],
       author: "",
       content: "",
       excerpt: "",
       isFeatured: false,
+      keywords: [],
     },
   });
 
@@ -87,6 +111,8 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
     const result = await addBlogPost(payload);
     if (result.success) {
       form.reset();
+      setCategoryInputValue("");
+      setKeywordInputValue("");
       onPostAdded();
     } else {
       toast({
@@ -106,10 +132,52 @@ export default function AddBlogPostForm({ onPostAdded }: AddBlogPostFormProps) {
                 <div className="p-6 space-y-6">
                     <FormField control={form.control} name="title" render={({ field }) => ( <FormItem> <FormLabel>Post Title</FormLabel> <FormControl><Input placeholder="e.g., The Future of AI in Academic Publishing" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField control={form.control} name="category" render={({ field }) => ( <FormItem> <FormLabel>Category</FormLabel> <FormControl><Input placeholder="e.g., Technology" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                        <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Categories</FormLabel>
+                                    <FormControl>
+                                        <KeywordInput
+                                            placeholder="Add categories..."
+                                            value={field.value || []}
+                                            onChange={field.onChange}
+                                            suggestions={categories.map(c => c.name)}
+                                            inputValue={categoryInputValue}
+                                            onInputChange={setCategoryInputValue}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <FormField control={form.control} name="author" render={({ field }) => ( <FormItem> <FormLabel>Author</FormLabel> <FormControl><Input placeholder="e.g., Dr. Jane Doe" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                     </div>
                     <FormField control={form.control} name="excerpt" render={({ field }) => ( <FormItem> <FormLabel>Excerpt</FormLabel> <FormControl><Textarea placeholder="A short summary of the post..." {...field} /></FormControl> <FormDescription>This will be shown on the blog listing page. Max 200 characters.</FormDescription> <FormMessage /> </FormItem> )} />
+                     <FormField
+                        control={form.control}
+                        name="keywords"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Keywords</FormLabel>
+                                <FormControl>
+                                    <KeywordInput
+                                        placeholder="Add keywords and press Enter"
+                                        value={field.value || []}
+                                        onChange={field.onChange}
+                                        suggestions={keywordSuggestions}
+                                        inputValue={keywordInputValue}
+                                        onInputChange={setKeywordInputValue}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    These keywords help with search engine optimization.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                        />
                     <FormField control={form.control} name="content" render={({ field }) => (
                         <FormItem>
                             <FormLabel>Full Content</FormLabel>

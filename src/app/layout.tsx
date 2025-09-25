@@ -3,8 +3,32 @@ import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Researcher Connect',
-  description: 'The leading platform for academic journal submissions and management.',
+  title: {
+    template: '%s | Researcher Connect',
+    default: 'Researcher Connect',
+  },
+  description: 'The leading platform for academic journal submissions, conference management, and research support services.',
+  openGraph: {
+    title: 'Researcher Connect',
+    description: 'The leading platform for academic journal submissions, conference management, and research support services.',
+    url: 'https://researcherconnect.com', // Replace with your actual domain
+    siteName: 'Researcher Connect',
+    images: [
+      {
+        url: '/og-image.png', // It's a good practice to have a default social sharing image
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Researcher Connect',
+    description: 'The leading platform for academic journal submissions, conference management, and research support services.',
+    images: ['/og-image.png'], // Replace with your actual domain and image
+  },
 };
 
 export default function RootLayout({
@@ -15,6 +39,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
         {children}

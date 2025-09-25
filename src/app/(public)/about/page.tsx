@@ -3,8 +3,16 @@
 import { getPageContent } from "@/services/cmsService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { ChevronRight, Eye, Goal, Heart, CheckCircle, Linkedin, Twitter } from "lucide-react";
+import { ChevronRight, Eye, Goal, Heart, CheckCircle, Linkedin, } from "lucide-react";
 import Link from "next/link";
+import { RenderHtmlContent } from "@/components/ui/render-html-content";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description: 'Learn about the leadership team, mission, and core values of Researcher Connect. Discover how we are revolutionizing academic publishing and research support.',
+};
+
 
 async function getAboutContent() {
     const result = await getPageContent("about");
@@ -16,26 +24,29 @@ async function getAboutContent() {
 
 const leadershipTeam = [
     {
-        name: "Renal Scott",
-        title: "Chief Executive Officer",
-        description: "Elixir co-operates with clients in solving the hardest problems they face in their businesses—and the world. We do this by channeling the diversity of our people and their thinking.",
-        imageSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&h=400&auto=format=fit=crop",
-        imageHint: "ceo portrait"
-    },
-    {
-        name: "Alexia Jordan",
-        title: "Chief Marketing Officer",
-        description: "Alexia leads our global marketing efforts, shaping the Researcher Connect brand and driving growth through innovative strategies and a deep understanding of the academic community.",
-        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=400&auto=format&fit=crop",
-        imageHint: "cmo portrait"
-    },
-    {
-        name: "Ben Carter",
+        name: "Vinit Khetani",
         title: "Chief Technology Officer",
-        description: "Ben oversees our technology stack, ensuring our platform is robust, scalable, and at the forefront of innovation to best serve the needs of researchers worldwide.",
-        imageSrc: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=400&h=400&auto=format&fit=crop",
-        imageHint: "cto portrait"
-    }
+        description: "Driving technology innovation and building scalable research-focused platforms.",
+        imageSrc: "/Vinit.jpg",
+        imageHint: "cto portrait",
+        linkedinUrl: "https://www.linkedin.com/in/vinit-khetani-6a973474/"
+    },
+    {
+        name: "Yogesh Nagargoje",
+        title: "Chief Marketing Officer",
+        description: "Leading marketing strategies to expand global visibility and engagement.",
+        imageSrc: "/yogesh.jpeg",
+        imageHint: "cmo portrait",
+        linkedinUrl: "https://www.linkedin.com/in/yogesh-nagargoje"
+    },
+    {
+        name: "Sharyu Ikhar",
+        title: "Chief Operating Officer",
+        description: "Overseeing operations to ensure seamless delivery and organizational excellence.",
+        imageSrc: "/sharyu.jpeg",
+        imageHint: "ceo portrait",
+        linkedinUrl: "https://www.linkedin.com/in/sharayu-ikhar?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+    },
 ];
 
 const coreValues = [
@@ -84,17 +95,15 @@ export default async function AboutPage() {
                                     fill
                                     className="object-cover object-top group-hover:scale-110 transition-transform duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                                 <div className="absolute bottom-4 left-4 text-left">
                                     <h3 className="text-2xl font-bold text-white tracking-tight">{member.name}</h3>
-                                    <p className="text-primary-foreground/80 font-medium">{member.title}</p>
+                                    <p className="text-primary-foreground/90 font-medium">{member.title}</p>
                                 </div>
                             </div>
                             <CardContent className="p-6">
                                 <p className="text-muted-foreground mb-4 text-sm">{member.description}</p>
                                 <div className="flex justify-center gap-4">
-                                    <Link href="#" className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
-                                    <Link href="#" className="text-muted-foreground hover:text-primary"><Twitter className="h-5 w-5" /></Link>
+                                    <Link href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
                                 </div>
                             </CardContent>
                         </Card>
@@ -107,29 +116,7 @@ export default async function AboutPage() {
                     <h2 className="text-3xl font-bold tracking-tight">Company Overview</h2>
                     <div className="mt-2 w-24 h-1 bg-primary mx-auto animate-width-pulse" />
                 </div>
-                <div className="space-y-8 text-muted-foreground">
-                    <div>
-                        <h3 className="text-2xl font-semibold text-foreground mb-3">Earning the right</h3>
-                        <p className="text-justify">
-                            As a first-order business consulting firm, we help companies, foundations and individuals make a difference. Our work gets to the heart of the matter. We break silos because it takes more than any one check or policy or letter to tackle big issues like economic security, human rights or climate sustainability. We prescribe a custom formula of advocacy, collaboration, investment, philanthropy, policy and new ways of doing business in order to help you make progress.
-                        </p>
-                    </div>
-
-                    <div className="relative border-l-4 border-primary pl-10 py-4 bg-background rounded-r-lg">
-                        <svg className="absolute left-2 top-4 h-8 w-8 text-muted" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
-                            <path d="M9.981 3c-2.9 0-5.58 1.9-5.58 4.7 0 1.9 1.1 3.5 2.7 4.1.1.1.2.1.2.2v.1l-.1.1c-1.3.4-2.8 1.5-2.8 3.5 0 2.2 1.9 3.6 4.1 3.6h.1V22h-3v3h3v2h3v-2h5v-3h-5v-5.2c0-2.4-1.6-4.1-4-4.5.3-.3.5-.7.5-1.1 0-1-1-1.9-2.1-1.9zM23.981 3c-2.9 0-5.58 1.9-5.58 4.7 0 1.9 1.1 3.5 2.7 4.1.1.1.2.1.2.2v.1l-.1.1c-1.3.4-2.8 1.5-2.8 3.5 0 2.2 1.9 3.6 4.1 3.6h.1V22h-3v3h3v2h3v-2h5v-3h-5v-5.2c0-2.4-1.6-4.1-4-4.5.3-.3.5-.7.5-1.1 0-1-1-1.9-2.1-1.9z"></path>
-                        </svg>
-                        <blockquote className="text-xl italic text-foreground font-semibold text-center">
-                            "But how do we do it? We like to call it earning the right, walking the talk and playing the game..."
-                        </blockquote>
-                    </div>
-
-                    <div className="grid grid-cols-1">
-                        <p className="md:columns-2 gap-8 text-justify">
-                            <span className="float-left text-7xl font-bold text-primary mr-3 -mt-2 leading-none">E</span>lixir serves to help people with creative ideas succeed. Our platform empowers millions of people — from individuals and local artists to entrepreneurs shaping the world’s most iconic businesses — to share their stories and create an impactful, stylish, and easy-to-manage online presence. The Cambridge office is the home of the Risk management practice. We work to assure the safe performance of complex critical systems; develop safety leadership and culture; manage safety and risk in high-hazard industries; understand complex project risks, measure and report risk performance. We work across a wide range of industries and public sector organizations that include upstream and downstream oil and gas; rail and road transportation; construction; and gas utilities and distribution. We work worldwide in Europe, Middle East and Asia, Africa and South America based out of our offices in Cambridge, UK and Milan, Italy.
-                        </p>
-                    </div>
-                </div>
+                <RenderHtmlContent htmlContent={content} />
             </div>
             
             <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -139,7 +126,7 @@ export default async function AboutPage() {
                         <CardTitle className="mt-4 text-3xl">Our Mission</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center text-muted-foreground text-lg">
-                        <p>To empower researchers and innovators by providing a seamless, transparent, and supportive ecosystem for publishing and protecting their work, fostering global collaboration and accelerating scientific progress.</p>
+                        <p> To empower global research visibility and innovation through technology and collaboration.                        </p>
                     </CardContent>
                 </Card>
                 <Card className="shadow-lg transform hover:scale-105 transition-transform duration-300">
@@ -148,7 +135,8 @@ export default async function AboutPage() {
                         <CardTitle className="mt-4 text-3xl">Our Vision</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center text-muted-foreground text-lg">
-                        <p>To be the world's most trusted and innovative platform for the dissemination and protection of academic research, creating a future where knowledge knows no boundaries.</p>
+                        <p>To be the most trusted partner for research, publishing, and academic software worldwide.
+                        </p>
                     </CardContent>
                 </Card>
             </div>

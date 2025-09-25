@@ -1,29 +1,37 @@
+
 // src/app/(public)/contact-us/page.tsx
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, ChevronRight, Linkedin, Twitter, Facebook } from "lucide-react";
+import { Mail, Phone, MapPin, ChevronRight, Linkedin, Instagram, Facebook } from "lucide-react";
 import ContactForm from "@/components/forms/contact-form";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact Us',
+  description: 'Get in touch with the Researcher Connect team. Find our office locations, contact details, and use our form to send us a message directly.',
+};
+
 
 const contactCards = [
     {
         title: "Nagpur Office",
-        lines: ["202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027"],
+        lines: ["201, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027"],
         icon: MapPin,
     },
     {
-        title: "Sydney Office",
-        lines: ["62 Collins Street West,", "Sydney 3000,", "Australia"],
+        title: "Pune Office",
+        lines: ["Yashwin Society Pune India."],
         icon: MapPin,
     },
 ];
 
 const socialLinks = [
-    { href: "#", icon: Linkedin },
-    { href: "#", icon: Twitter },
-    { href: "#", icon: Facebook },
-    { href: "#", icon: Mail },
+    { href: "https://www.linkedin.com/company/researcher-connect/", icon: Linkedin },
+    { href: "https://www.instagram.com/researcher_connect?igsh=MTRhbjZ4dHczcHBrbw==", icon: Instagram },
+    { href: "https://www.facebook.com/researcherconnect.net", icon: Facebook },
+    { href: "mailto:contact@researcherconnect.com", icon: Mail },
 ];
 
 

@@ -1,13 +1,13 @@
-
 // src/services/blogService.ts
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, updateDoc, getDoc } from 'firebase/firestore';
 import type { AddBlogPostData, BlogPost } from '@/lib/types';
 import { blogPostSchema } from '@/lib/types';
 import { z } from 'zod';
 import { format } from 'date-fns';
+import { addCategory } from './categoryService';
 
 interface AddBlogPostPayload extends Omit<AddBlogPostData, 'image'> {
     imageSrc: string;
@@ -27,6 +27,11 @@ export async function addBlogPost(data: AddBlogPostPayload): Promise<{ success: 
         return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
     }
     
+    // Ensure categories exist before adding the post
+    for (const cat of validationResult.data.category) {
+      await addCategory(cat);
+    }
+
     await addDoc(collection(db, 'blogPosts'), {
         ...validationResult.data,
         createdAt: serverTimestamp(),
@@ -49,7 +54,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
             return {
                 id: doc.id,
                 title: data.title,
-                category: data.category,
+                category: data.category || [],
                 author: data.author,
                 content: data.content,
                 excerpt: data.excerpt,
@@ -58,6 +63,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
                 isFeatured: data.isFeatured || false,
                 createdAt: createdAt.toISOString(),
                 date: format(createdAt, "PPP"),
+                keywords: data.keywords || [],
             }
         });
     } catch (error) {
@@ -65,6 +71,38 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         throw error;
     }
 }
+
+export async function getBlogPostById(id: string): Promise<BlogPost | null> {
+    try {
+        const docRef = doc(db, 'blogPosts', id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const createdAt = data.createdAt?.toDate() || new Date();
+             return {
+                id: docSnap.id,
+                title: data.title,
+                category: data.category || [],
+                author: data.author,
+                content: data.content,
+                excerpt: data.excerpt,
+                imageSrc: data.imageSrc,
+                imageHint: data.imageHint || '',
+                isFeatured: data.isFeatured || false,
+                createdAt: createdAt.toISOString(),
+                date: format(createdAt, "PPP"),
+                keywords: data.keywords || [],
+            }
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching blog post by ID:", error);
+        return null;
+    }
+}
+
 
 export async function updateBlogPost(id: string, data: Partial<AddBlogPostPayload>): Promise<{ success: boolean, message: string }> {
     try {
@@ -78,10 +116,19 @@ export async function updateBlogPost(id: string, data: Partial<AddBlogPostPayloa
             const firstError = validationResult.error.errors[0];
             return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
         }
+        
+        const postData = validationResult.data;
+
+        // Ensure categories exist if they are being updated
+        if (postData.category) {
+            for (const cat of postData.category) {
+              await addCategory(cat);
+            }
+        }
 
         const postRef = doc(db, 'blogPosts', id);
         await updateDoc(postRef, {
-            ...validationResult.data,
+            ...postData,
             updatedAt: serverTimestamp()
         });
         

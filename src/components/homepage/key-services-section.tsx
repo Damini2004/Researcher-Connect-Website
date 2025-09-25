@@ -23,7 +23,7 @@ const services = [
     },
     {
         icon: Award,
-        title: "EB-1 Consultancy",
+        title: "Visa Consultancy",
         description: "Expert assistance for navigating the EB-1 visa application process."
     },
     {
@@ -38,12 +38,12 @@ const services = [
     },
     {
         icon: FileText,
-        title: "Publications Consultancy",
+        title: "Author Services",
         description: "Assistance with manuscript preparation and publishing in high-impact journals."
     },
     {
         icon: Shield,
-        title: "Patent Consultancy",
+        title: "Patent Drafting Services",
         description: "Protecting your intellectual property with expert patent filing support."
     }
 ];
@@ -52,8 +52,8 @@ const services = [
 const subServices = [
     {
         icon: Users,
-        title: "Awesome Team",
-        description: "Before talking destination, we shine a spotlight across your organization to fully understand it."
+        title: "Experienced Team",
+        description: "Work with expert based experienced team to get best results. "
     },
     {
         icon: Headphones,
@@ -62,8 +62,8 @@ const subServices = [
     },
     {
         icon: Zap,
-        title: "Faster Performance",
-        description: "We develop a systematic well-ordered process of analysis, from concept through implementation."
+        title: "Faster Results",
+        description: "Work with a dedicated client-based approach to deliver quality results with a less turnaround time."
     }
 ]
 

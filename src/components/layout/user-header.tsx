@@ -20,8 +20,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const topBarInfo = [
-    { text: "202, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
-    { text: "+91 99702 94396", icon: Phone, isLink: true, href: "tel:+919970294396" },
+    { text: "201, Planet Apartment, Jaywant Nagar, Omkar Nagar, Nagpur, Maharashtra 440027", icon: MapPin },
+    { text: "+91 9890917528 | 9960266198", icon: Phone, isLink: true, href: "tel:+919890917528" },
     { text: "Mon-Sat, 8.00-18.00. Sunday CLOSED", icon: Clock }
 ]
 
@@ -29,10 +29,11 @@ const servicesLinks = [
     { href: "/services/software-solutions", label: "Software Solutions " },
     { href: "/conference", label: "Conference Management" },
     { href: "/services/higher-studies", label: "Higher Studies Proposals" },
-    { href: "/services/eb1-consultancy", label: "EB-1 Consultancy" },
+    { href: "/services/visa-consultancy", label: "Visa Consultancy" },
     { href: "/internship", label: "Internship Services" },
     { href: "/services/phd-services", label: "PhD Services" },
-    { href: "/services/publications-patent", label: "Publications and Patent Consultancy" },
+    { href: "/services/author-services", label: "Author Services" },
+    { href: "/services/patent-consultancy", label: "Patent Drafting Services" },
 ];
 
 
@@ -141,12 +142,6 @@ export default function UserHeader() {
                             )}
                         </div>
                     ))}
-                </div>
-                <div className="flex items-center gap-6">
-                    <Link href="/login" className="flex items-center gap-2 hover:text-amber-400">
-                        <User className="h-4 w-4" />
-                        <span>Login</span>
-                    </Link>
                 </div>
             </div>
         </div>

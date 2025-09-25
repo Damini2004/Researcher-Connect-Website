@@ -22,6 +22,9 @@ import { blogPostSchema, type BlogPost, type AddBlogPostData } from '@/lib/types
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
+import { getCategories, type BlogCategory } from "@/services/categoryService";
+import { KeywordInput } from "../ui/keyword-input";
+import { getKeywords } from "@/services/keywordService";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -33,6 +36,26 @@ interface EditBlogPostFormProps {
 export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [categories, setCategories] = React.useState<BlogCategory[]>([]);
+  const [keywordSuggestions, setKeywordSuggestions] = React.useState<string[]>([]);
+  const [categoryInputValue, setCategoryInputValue] = React.useState("");
+  const [keywordInputValue, setKeywordInputValue] = React.useState("");
+  
+  React.useEffect(() => {
+    const fetchInitialData = async () => {
+        try {
+            const [categoriesData, keywordsData] = await Promise.all([
+                getCategories(),
+                getKeywords()
+            ]);
+            setCategories(categoriesData);
+            setKeywordSuggestions(keywordsData);
+        } catch (error) {
+            toast({ title: "Error", description: "Could not fetch initial form data." });
+        }
+    };
+    fetchInitialData();
+  }, [toast]);
   
   // We make `image` optional for the edit form validation schema
   const editSchema = blogPostSchema.extend({
@@ -43,11 +66,12 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
     resolver: zodResolver(editSchema),
     defaultValues: {
       title: post.title || "",
-      category: post.category || "",
+      category: post.category || [],
       author: post.author || "",
       content: post.content || "",
       excerpt: post.excerpt || "",
       isFeatured: post.isFeatured || false,
+      keywords: post.keywords || [],
     },
   });
 
@@ -84,6 +108,12 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
     }
     
     delete payload.image;
+    
+    // Ensure category is an array
+    if (typeof payload.category === 'string') {
+        payload.category = [payload.category];
+    }
+
 
     const result = await updateBlogPost(post.id, payload);
 
@@ -98,7 +128,7 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
     }
     setIsSubmitting(false);
   }
-
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
@@ -107,10 +137,52 @@ export default function EditBlogPostForm({ post, onPostUpdated }: EditBlogPostFo
             <div className="p-4 space-y-6">
                 <FormField control={form.control} name="title" render={({ field }) => ( <FormItem> <FormLabel>Post Title</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField control={form.control} name="category" render={({ field }) => ( <FormItem> <FormLabel>Category</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                    <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Categories</FormLabel>
+                                <FormControl>
+                                    <KeywordInput
+                                        placeholder="Add categories..."
+                                        value={field.value || []}
+                                        onChange={field.onChange}
+                                        suggestions={categories.map(c => c.name)}
+                                        inputValue={categoryInputValue}
+                                        onInputChange={setCategoryInputValue}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField control={form.control} name="author" render={({ field }) => ( <FormItem> <FormLabel>Author</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 </div>
                 <FormField control={form.control} name="excerpt" render={({ field }) => ( <FormItem> <FormLabel>Excerpt</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormDescription>Max 200 characters.</FormDescription> <FormMessage /> </FormItem> )} />
+                 <FormField
+                    control={form.control}
+                    name="keywords"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Keywords</FormLabel>
+                            <FormControl>
+                                <KeywordInput
+                                    placeholder="Add keywords and press Enter"
+                                    value={field.value || []}
+                                    onChange={field.onChange}
+                                    suggestions={keywordSuggestions}
+                                    inputValue={keywordInputValue}
+                                    onInputChange={setKeywordInputValue}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                These keywords help with search engine optimization.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                    />
                 <FormField control={form.control} name="content" render={({ field }) => (
                     <FormItem>
                         <FormLabel>Full Content</FormLabel>

@@ -25,7 +25,7 @@ export function RenderHtmlContent({ htmlContent }: RenderHtmlContentProps) {
   // Use dangerouslySetInnerHTML to render the HTML from the CMS
   return (
     <div
-      className="prose prose-sm max-w-none text-muted-foreground"
+      className="prose prose-sm max-w-none text-muted-foreground text-justify"
       dangerouslySetInnerHTML={{ __html: htmlContent }}
     />
   );

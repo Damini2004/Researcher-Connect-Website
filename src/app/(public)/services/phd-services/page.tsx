@@ -2,35 +2,70 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookMarked, ChevronRight, Edit, Search, Lightbulb, ArrowRight } from "lucide-react";
+import {
+  FileText,
+  BookOpen,
+  Microscope,
+  BarChart3,
+  FileEdit,
+  Newspaper,
+  Presentation,
+  Handshake,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+
 const services = [
-    {
-        title: "Proposal Development",
-        description:
-          "Define research questions aligned with current academic trends.",
-        icon: BookMarked,
-      },
-      {
-        title: "Thesis Structuring",
-        description:
-          "Organize chapters, references, and data with clarity and precision.",
-        icon: ChevronRight,
-      },
-      {
-        title: "Defense Preparation",
-        description:
-          "Get coached to present and defend confidently during viva voce.",
-        icon: Search,
-      },
-      {
-        title: "Publication Guidance",
-        description:
-          "Turn your findings into publishable papers in reputable journals.",
-        icon: Edit,
-      },
-  ];
+  {
+    title: "Topic Selection & Proposal Writing",
+    description:
+      "Guidance in identifying impactful research areas and drafting high-quality proposals.",
+    icon: FileText,
+  },
+  {
+    title: "Literature Review Support",
+    description:
+      "Comprehensive review of scholarly sources to build a strong research foundation.",
+    icon: BookOpen,
+  },
+  {
+    title: "Research Methodology & Design",
+    description:
+      "Assistance with qualitative, quantitative, or mixed-method approaches.",
+    icon: Microscope,
+  },
+  {
+    title: "Data Collection & Analysis",
+    description:
+      "Support with datasets, statistical tools (SPSS, R, Python, MATLAB), and interpretation.",
+    icon: BarChart3,
+  },
+  {
+    title: "Thesis Writing & Editing",
+    description:
+      "Structuring, drafting, proofreading, and plagiarism control to meet academic standards.",
+    icon: FileEdit,
+  },
+  {
+    title: "Journal Publications",
+    description:
+      "Manuscript preparation and submission in Scopus, Web of Science, and credible indexed journals.",
+    icon: Newspaper,
+  },
+  {
+    title: "Defense Preparation",
+    description:
+      "Mock viva sessions, presentation design, and answering strategies for a confident defense.",
+    icon: Presentation,
+  },
+  {
+    title: "End-to-End Mentorship",
+    description:
+      "Continuous guidance from proposal approval to thesis submission and publication.",
+    icon: Handshake,
+  },
+];
   
 
 export default function PhDServicePage() {
@@ -66,18 +101,9 @@ export default function PhDServicePage() {
             Your Complete PhD Journey Support
           </h2>
           <p className="max-w-[600px] text-justify text-muted-foreground ">
-            Pursuing a PhD is a demanding journey that requires strategic planning,
-            academic precision, and consistent guidance. Researcher Connect offers
-            comprehensive PhD support — from topic selection, proposal development,
-            and literature reviews to publication assistance, thesis structuring, and
-            defense preparation. We ensure research stays focused, methodologically
-            sound, and aligned with institutional expectations. Our services reduce
-            stress, save time, and improve academic outcomes while fostering confidence
-            throughout the doctoral process. Whether students are just beginning or
-            approaching submission, we provide personalized mentoring and technical
-            expertise, enabling scholars to complete their PhDs successfully and make
-            meaningful contributions to their respective fields.
-          </p>
+          At Researcher Connect, we understand that a PhD is more than just a degree—it is a journey of research, discovery, and academic contribution. To support scholars at every stage, we provide end-to-end PhD services, ensuring that students, faculty, and researchers receive the right guidance from the very beginning of their doctoral program to the successful defense and publication of their work.
+Our expert team assists in designing strong research proposals, developing methodologies, analyzing data, and preparing manuscripts for international journals. We also provide support for thesis writing, editing, formatting, plagiarism checks, and final submission. By integrating academic mentoring with publication consultancy, we make the doctoral journey smoother, more structured, and globally visible.
+</p>
         </div>
       </div>
     </div>
@@ -103,14 +129,14 @@ export default function PhDServicePage() {
                                     <CardTitle>{service.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-muted-foreground">{service.description}</p>
+                                    <p className="text-muted-foreground text-justify">{service.description}</p>
                                 </CardContent>
                             </Card>
                         ))}
                     </div>
                      <div className="text-center mt-12">
                         <Button size="lg" asChild>
-                            <Link href="/contact-us">Get PhD Support <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                            <Link href="/contact-us">Request Service <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
                     </div>
                 </div>

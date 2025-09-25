@@ -30,16 +30,16 @@ const services = [
     imageUrl:
       "/phd.png",
     imageHint: "advisory meeting",
-    link: "/services/phd-services",
+    link: "/services/higher-studies",
   },
   {
-    title: "EB-1 Consultancy",
+    title: "Foreign Visa Services",
     description:
       "We simplify the EB-1 visa process for researchers of extraordinary ability by providing comprehensive, tailored guidance. Our services begin with a thorough eligibility assessment to identify the strongest qualification categories, followed by strategic planning to present achievements effectively. We assist in assembling key evidence, crafting compelling recommendation letters, and structuring portfolios that highlight international recognition, publications, awards, patents, and contributions to the field.",
     imageUrl:
       "/visa.png",
     imageHint: "professional career",
-    link: "/services/eb1-consultancy",
+    link: "/services/visa-consultancy",
   },
   {
     title: "Internship Services",
@@ -60,13 +60,22 @@ const services = [
     link: "/services/phd-services",
   },
   {
-    title: "Publication & Patent Support",
+    title: "Author Services",
     description:
-      "We help researchers amplify their impact by guiding both academic publishing and intellectual property protection. Our publication services cover journal selection, manuscript structuring, reference formatting, and compliance with editorial standards to improve acceptance in high-impact journals. We provide critical reviews, language polishing, and support for responding to peer feedback, ensuring clarity without altering technical precision. For patents, we conduct prior-art searches, draft and refine applications, and develop jurisdictional strategies for local and international protection.",
+      "We help researchers amplify their impact by guiding them through the academic publishing landscape. Our publication services cover journal selection, manuscript structuring, reference formatting, and compliance with editorial standards to improve acceptance in high-impact journals. We provide critical reviews, language polishing, and support for responding to peer feedback, ensuring clarity without altering technical precision.",
     imageUrl:
-      "/patent.png",
-    imageHint: "tax documents",
-    link: "/services/publications-patent",
+      "/patent.png", // Consider a more relevant image if available
+    imageHint: "research paper",
+    link: "/services/author-services",
+  },
+  {
+    title: "Patent Drafting Services",
+    description:
+      "Protect your innovations with our expert guidance. For patents, we conduct prior-art searches, draft and refine applications, and develop jurisdictional strategies for local and international protection. We help you navigate the complex legal requirements to secure your intellectual property.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&h=600&auto=format&fit=crop",
+    imageHint: "patent documents",
+    link: "/services/patent-consultancy",
   },
 ];
 
@@ -129,7 +138,7 @@ export function DetailedServicesSection() {
                     <h4 className="text-lg font-bold">Email Us</h4>
                     <p className="text-sm text-muted-foreground mt-1">
                         Get in touch via email.{" "}
-                        <a href="mailto:support@researcherconnect.com" className="underline text-primary">
+                        <a href="mailto:contact@researcherconnect.com" className="underline text-primary">
                             Send an email
                         </a>
                     </p>
@@ -142,7 +151,7 @@ export function DetailedServicesSection() {
                 <div>
                     <h4 className="text-lg font-bold">Call a Specialist</h4>
                     <p className="text-sm text-muted-foreground mt-1">
-                        Our support team is ready for you at <a href="tel:+919970294396" className="underline text-primary">+91-9970294396</a>.
+                        Our support team is ready for you at <a href="tel:+919890917528" className="underline text-primary">+91 9890917528 | 9960266198</a>.
                     </p>
                 </div>
             </div>
@@ -154,7 +163,7 @@ export function DetailedServicesSection() {
                     <h4 className="text-lg font-bold">Chat on WhatsApp</h4>
                     <p className="text-sm text-muted-foreground mt-1">
                         Connect with us instantly on WhatsApp.{" "}
-                        <a href="https://wa.me/919970294396" target="_blank" rel="noopener noreferrer" className="underline text-primary">
+                        <a href="https://wa.me/919890917528" target="_blank" rel="noopener noreferrer" className="underline text-primary">
                             Start chatting
                         </a>
                     </p>

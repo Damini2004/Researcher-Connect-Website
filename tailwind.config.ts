@@ -12,7 +12,6 @@ export default {
       fontFamily: {
         body: ['"PT Sans"', 'sans-serif'],
         headline: ['Poppins', 'sans-serif'],
-        code: ['monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -89,7 +88,7 @@ export default {
           },
         },
         'width-pulse': {
-          '0%, 100%': { width: '10%' },
+          '0%, 100%': { width: '40%' },
           '50%': { width: '100%' },
         },
         'dance': {

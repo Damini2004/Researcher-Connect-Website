@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -13,12 +14,6 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
@@ -37,18 +32,20 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'encrypted-tbn0.gstatic.com',
+        hostname: 'kmeducationhub.de',
         port: '',
         pathname: '/**',
       },
-      {
+       {
         protocol: 'https',
-        hostname: 'img.freepik.com',
+        hostname: 'bmmagazine.co.uk',
         port: '',
         pathname: '/**',
-      }
+      },
     ],
   },
 };
 
 export default nextConfig;
+
+    

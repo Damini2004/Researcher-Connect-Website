@@ -9,7 +9,7 @@ export default function NotFound() {
   return (
     <div className="relative flex h-screen w-full items-center justify-center bg-gray-900 text-white">
       <Image
-        src="https://images.unsplash.com/photo-1505761671935-60b3a742750f?q=80&w=1600&auto=format&fit=crop"
+        src="/background404.jpg"
         alt="Cityscape background"
         data-ai-hint="cityscape background"
         fill
