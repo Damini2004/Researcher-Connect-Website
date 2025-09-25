@@ -180,6 +180,19 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 </div>
             </div>
         </section>
+
+        <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4">
+                <Card className="max-w-4xl mx-auto text-center shadow-lg bg-secondary/50 border-primary/10">
+                    <CardHeader>
+                        <CardTitle className="text-3xl">eBooks</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">No matter the size of the conference and how much chair experience you have, the guides help you navigate the process of managing conference with ease, from requesting CMT site to sending author notification.</p>
+                    </CardContent>
+                </Card>
+            </div>
+        </section>
         
         <div className="py-12 md:py-16 bg-background">
            <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
