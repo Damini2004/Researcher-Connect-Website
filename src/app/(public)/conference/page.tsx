@@ -226,8 +226,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                             />
                         </div>
                         <div className="p-6 flex flex-col flex-grow">
-                            <CardTitle>Peer Review Excellence</CardTitle>
-                             <CardContent className="p-0 pt-2 flex-grow">
+                            <CardContent className="p-0 pt-2 flex-grow">
                                 <p className="text-muted-foreground text-sm">Best practices for conducting an effective and ethical peer review process for your conference.</p>
                             </CardContent>
                             <CardFooter className="p-0 pt-4 justify-start">
@@ -357,5 +356,3 @@ After the event, we provide professional proceedings preparation, indexing suppo
     </div>
   );
 }
-
-    
