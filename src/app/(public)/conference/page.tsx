@@ -296,28 +296,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 </div>
             </div>
         </div>
-        <section className="py-16 md:py-24 bg-secondary/50">
-            <div className="container mx-auto px-4">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold tracking-tight">eBooks</h2>
-                    <p className="mt-4 text-muted-foreground">
-                        No matter the size of the conference and how much chair experience you have, the guides help you navigate the process of managing conference with ease, from requesting CMT site to sending author notification.
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                        <Link href="#">
-                            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                                <Image src="https://kmeducationhub.de/wp-content/uploads/2021/10/Running-a-Conference-in-CMT-An-Informal-Guide.png" alt="CMT Guide" width={400} height={500} className="w-full h-auto object-cover" data-ai-hint="book cover" />
-                            </Card>
-                        </Link>
-                        <Link href="#">
-                            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                                <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_p-F26MP_2oY5tW-28j3sSj-3j-aYJ_S2hA&s" alt="Peer Review Guide" width={400} height={500} className="w-full h-auto object-cover" data-ai-hint="book cover" />
-                            </Card>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </section>
         <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
                 <div className="text-center p-8 bg-secondary/50 rounded-lg">
