@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, Discussion, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -30,31 +30,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 
 const features: { title: string; description: string; icon: LucideIcon }[] = [
-    {
-        title: "End-to-End Planning",
-        description:
-          "From concept design to post-event reporting, every phase is professionally handled.",
-        icon: Handshake,
-      },
-      {
-        title: "Submission & Review Systems",
-        description:
-          "Digital workflows for abstract handling, peer review, and program scheduling.",
-        icon: CheckCircle,
-      },
-      {
-        title: "Hybrid & Virtual Capability",
-        description:
-          "Seamless participation for global audiences through modern online platforms.",
-        icon: ChevronRight,
-      },
-      {
-        title: "Sponsor & Speaker Coordination",
-        description:
-          "Attract high-value sponsors and engage world-class speakers with ease.",
-        icon: Calendar,
-      },
-  ];
+  { title: "Multiple Roles", description: "Chair, senior meta-reviewer, meta-reviewer, reviewer, author, proceedings editor", icon: Users },
+  { title: "Multi-Track Support", description: "No limit on number of tracks in a conference with each track independently configured", icon: Layers },
+  { title: "Customizable Form", description: "All forms are customizable with ability to configure question visibility independently", icon: FileSignature },
+  { title: "Full Submission Life Cycle", description: "Abstract, full paper, supplementary material, revision, camera-ready, presentation", icon: Workflow },
+  { title: "Instruction Message", description: "Welcome message for authors, reviewers and meta-reviewers in rich format", icon: MessageSquare },
+  { title: "File and Media", description: "Unlimited file upload. Max file size 100MB. Support pdf, docx, audio, video and other file types.", icon: Paperclip },
+  { title: "Conflicts Management", description: "Domain conflict, submission conflict, person to person conflict, dblp conflict and chairs conflict", icon: Shield },
+  { title: "Program Committee Invite", description: "Bulk invite senior meta-reviewers, meta-reviewers, and reviewers and track invite status", icon: UserCheck },
+  { title: "Bidding", description: "Allow meta-reviewers and reviewers to bid on papers and allow senior meta-reviewers to bid on meta-reviewers", icon: VenetianMask },
+  { title: "Reviewer Suggestion", description: "Meta-reviewers suggest reviewers for papers", icon: ThumbsUp },
+  { title: "Assignment", description: "Support both manual and automatic assignment, integrated with TPMS (Toronto Paper Matching System)", icon: GitPullRequest },
+  { title: "Discussion", description: "Threaded discussion and virtual PC meeting", icon: Discussion },
+  { title: "Rebuttal", description: "Authors provide feedback to reviews online or via file upload", icon: FileQuestion },
+  { title: "Author Notification", description: "Quick steps to notify authors using Author Notification Wizard and custom templates", icon: Mail },
+  { title: "Copyright", description: "Streamlined IEEE eCopyright submission", icon: Copyright },
+  { title: "Export", description: "Export conference data to Excel/XML/CSV", icon: UploadCloud },
+  { title: "Download", description: "Download submission files, supplementary material, camera-ready files, presentations", icon: DownloadCloud },
+  { title: "Note", description: "Allow chairs, senior meta-reviewers, meta-reviewers and reviewers to create note", icon: Files },
+  { title: "Session and Presentation", description: "Facilitate session creation for accepted papers", icon: Presentation },
+  { title: "Audit Log", description: "submission activities and file upload/download", icon: GitCommit },
+];
   
 
 export default function ConferencesPage() {
@@ -167,17 +163,17 @@ After the event, we provide professional proceedings preparation, indexing suppo
                         We provide a complete suite of services to ensure your conference is a success.
                     </p>
                 </div>
-                <div className="grid md:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {features.map((feature, index) => (
                         <Card key={index} className="text-center bg-background transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                             <CardHeader className="items-center">
-                                <div className="p-4 bg-primary/10 rounded-full w-fit mb-3">
-                                  <feature.icon className="h-8 w-8 text-primary" />
+                                <div className="p-3 bg-primary/10 rounded-full w-fit mb-2">
+                                  <feature.icon className="h-6 w-6 text-primary" />
                                 </div>
-                                <CardTitle>{feature.title}</CardTitle>
+                                <CardTitle className="text-base">{feature.title}</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground">{feature.description}</p>
+                            <CardContent className="p-4 pt-0">
+                                <p className="text-muted-foreground text-xs">{feature.description}</p>
                             </CardContent>
                         </Card>
                     ))}
