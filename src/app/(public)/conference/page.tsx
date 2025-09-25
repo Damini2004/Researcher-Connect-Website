@@ -303,25 +303,6 @@ After the event, we provide professional proceedings preparation, indexing suppo
                 </div>
             </div>
         </div>
-        <section className="py-16 md:py-24 bg-background">
-            <div className="container mx-auto px-4 text-center">
-                <h2 className="text-3xl font-bold tracking-tight">Usage</h2>
-                <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
-                    The CMT service was first developed for ACM SIGKDD 1999. Since then, it has undergone several major improvements and extensions and has been used in well over ten thousands of conferences to date. CMT3 is the latest and the most popular version. It is built on Microsoft Azure platform and fully utilizes the best cloud technologies to provide scalability, availability and reliability not matched by any other conference management services. HTML5, Bootstrap and JQuery are used in creating responsive, mobile-first and modern CMT3 web interface.
-                </p>
-                <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
-                    CMT3 has hosted over 12,000 conferences. It has over one million users from 240 countries and regions. The following numbers show the usage of a typical large CMT conference.
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mt-12">
-                    {usageStats.map(stat => (
-                        <div key={stat.label} className="text-center">
-                            <h3 className="text-4xl font-bold text-primary">{stat.value}</h3>
-                            <p className="text-sm text-muted-foreground mt-2">{stat.label}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
         <section className="py-16 md:py-24 bg-secondary/50">
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center">
