@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, Discussion, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion } from "lucide-react";
+import { Calendar, Search as SearchIcon, Eye, MapPin, ArrowRight, ChevronRight, CheckCircle, Handshake, LucideIcon, Users, SlidersHorizontal, Workflow, MessageSquare, Files, GitPullRequest, ThumbsUp, VenetianMask, UserCheck, Paperclip, MessagesSquare, Milestone, Copyright, UploadCloud, DownloadCloud, Mail, GitCommit, Presentation, Briefcase, FileSignature, Layers, Shield, FileQuestion } from "lucide-react";
 import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
@@ -41,7 +41,7 @@ const features: { title: string; description: string; icon: LucideIcon }[] = [
   { title: "Bidding", description: "Allow meta-reviewers and reviewers to bid on papers and allow senior meta-reviewers to bid on meta-reviewers", icon: VenetianMask },
   { title: "Reviewer Suggestion", description: "Meta-reviewers suggest reviewers for papers", icon: ThumbsUp },
   { title: "Assignment", description: "Support both manual and automatic assignment, integrated with TPMS (Toronto Paper Matching System)", icon: GitPullRequest },
-  { title: "Discussion", description: "Threaded discussion and virtual PC meeting", icon: Discussion },
+  { title: "Discussion", description: "Threaded discussion and virtual PC meeting", icon: MessagesSquare },
   { title: "Rebuttal", description: "Authors provide feedback to reviews online or via file upload", icon: FileQuestion },
   { title: "Author Notification", description: "Quick steps to notify authors using Author Notification Wizard and custom templates", icon: Mail },
   { title: "Copyright", description: "Streamlined IEEE eCopyright submission", icon: Copyright },
