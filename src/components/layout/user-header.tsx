@@ -114,7 +114,7 @@ export default function UserHeader() {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "px-3 py-2 rounded-md flex items-center gap-1 text-base text-foreground"
+                "px-3 rounded-md flex items-center gap-1 text-base text-foreground"
               )}
               aria-haspopup="menu"
             >
@@ -228,7 +228,7 @@ export default function UserHeader() {
           <nav className="hidden md:flex items-center space-x-1" aria-label="Main navigation">
             <ul className="flex space-x-1">
               {mainNavLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.label} className="" >
                   <NavLink link={link} />
                 </li>
               ))}
