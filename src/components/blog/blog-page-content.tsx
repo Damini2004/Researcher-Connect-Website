@@ -1,4 +1,3 @@
-
 // src/components/blog/blog-page-content.tsx
 "use client";
 
@@ -165,7 +164,7 @@ export default function BlogPageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
-                                    <div className="group space-y-4">
+                                    <div className="group space-y-4 cursor-pointer" onClick={() => setSelectedPost(mainFeaturedArticle)}>
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                                             <span>{(Array.isArray(mainFeaturedArticle.category) ? mainFeaturedArticle.category[0] || '' : mainFeaturedArticle.category).toUpperCase()}</span>
@@ -258,7 +257,7 @@ export default function BlogPageContent() {
                        <>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {paginatedPopularArticles.map((post) => (
-                                <div key={post.id} className="cursor-pointer" onClick={() => handleArticleClick(post)}>
+                                <div key={post.id} className="cursor-pointer" onClick={() => setSelectedPost(post)}>
                                     <Card className="flex flex-col h-full overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                         <Image src={post.imageSrc} alt={post.title} width={400} height={300} className="w-full h-48 object-cover" data-ai-hint={post.imageHint} />
                                         <CardHeader>
