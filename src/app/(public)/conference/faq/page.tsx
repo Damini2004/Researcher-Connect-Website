@@ -94,7 +94,7 @@ export default function FaqPage() {
                             <div>
                                 <h4 className="font-semibold">Call Us</h4>
                                 <a href="tel:+919890917528" className="text-sm text-primary hover:underline">
-                                    +91 9890917528 | 9960266198
+                                    +91 9890917528 | 9960266198 | 7887755544
                                 </a>
                             </div>
                         </div>
