@@ -1,23 +1,29 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Researcher Connect',
-    default: 'Researcher Connect',
+    template: '%s | Researcher Connect Innovation & Impact Pvt Ltd',
+    default: 'Researcher Connect Innovation & Impact Pvt Ltd',
   },
-  description: 'The leading platform for academic journal submissions, conference management, and research support services.',
+  description:
+    'Researcher Connect Innovation & Impact Pvt Ltd empowers scholars and professionals with complete research support – from thesis writing and publication to conferences, project implementation, and academic success.',
+  alternates: {
+    canonical: 'https://researcherconnect.com', // ✅ Canonical tag
+  },
   openGraph: {
-    title: 'Researcher Connect',
-    description: 'The leading platform for academic journal submissions, conference management, and research support services.',
-    url: 'https://researcherconnect.com', // Replace with your actual domain
-    siteName: 'Researcher Connect',
+    title: 'Researcher Connect Innovation & Impact Pvt Ltd',
+    description:
+      'Researcher Connect Innovation & Impact Pvt Ltd empowers scholars and professionals with complete research support – from thesis writing and publication to conferences, project implementation, and academic success.',
+    url: 'https://researcherconnect.com',
+    siteName: 'Researcher Connect Innovation & Impact Pvt Ltd',
     images: [
       {
-        url: '/og-image.png', // It's a good practice to have a default social sharing image
+        url: '/og-image.png', // ✅ Update with actual domain if hosted externally
         width: 1200,
         height: 630,
+        alt: 'Researcher Connect',
       },
     ],
     locale: 'en_US',
@@ -25,9 +31,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Researcher Connect',
-    description: 'The leading platform for academic journal submissions, conference management, and research support services.',
-    images: ['/og-image.png'], // Replace with your actual domain and image
+    title: 'Researcher Connect Innovation & Impact Pvt Ltd',
+    description:
+      'Researcher Connect Innovation & Impact Pvt Ltd empowers scholars and professionals with complete research support – from thesis writing and publication to conferences, project implementation, and academic success.',
+    images: ['/og-image.png'],
   },
 };
 
@@ -39,9 +46,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* ✅ Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=PT+Sans:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="font-body antialiased">
         {children}
