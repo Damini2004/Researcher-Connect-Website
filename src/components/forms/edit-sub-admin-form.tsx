@@ -132,7 +132,7 @@ export default function EditSubAdminForm({ admin, onAdminUpdated, onClose }: Edi
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input placeholder="+1 234 567 890" {...field} />
+                <Input placeholder="+91 234 567 890" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
