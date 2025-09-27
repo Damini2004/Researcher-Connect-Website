@@ -1,0 +1,290 @@
+
+.
+├── README.md
+├── apphosting.yaml
+├── components.json
+├── next.config.mjs
+├── next.config.ts
+├── package.json
+├── public
+│   ├── Bharti vidyapith.png
+│   ├── NUS.png
+│   ├── Nus.png
+│   ├── RC logo.png
+│   ├── Vinit.jpg
+│   ├── Vnit.jpeg
+│   ├── army institute.png
+│   ├── background404.jpg
+│   ├── city university punjab.jpeg
+│   ├── conference.png
+│   ├── csmss.jpeg
+│   ├── data meghe wardha.png
+│   ├── deogiri aurangabad.jpeg
+│   ├── dypatil.jpeg
+│   ├── iiit.jpeg
+│   ├── internship.png
+│   ├── kkr guntur.png
+│   ├── krishana.png
+│   ├── lovely university.png
+│   ├── manipal.png
+│   ├── modern institute.jpeg
+│   ├── nitwarangal.png
+│   ├── noida.png
+│   ├── og-image.png
+│   ├── patent.png
+│   ├── phd.png
+│   ├── postdoc.png
+│   ├── priyadarshani.png
+│   ├── ramdeobaba.jpeg
+│   ├── rl jalapa.png
+│   ├── sanjevini kopargoa.png
+│   ├── sharyu.jpeg
+│   ├── software.png
+│   ├── ssvps.png
+│   ├── suryodaya.jpeg
+│   ├── syboisis.png
+│   ├── vincentpalloti.jpeg
+│   ├── visa.png
+│   └── yogesh.jpeg
+├── src
+│   ├── ai
+│   │   ├── dev.ts
+│   │   ├── flows
+│   │   │   └── suggest-submission-tags.ts
+│   │   └── genkit.ts
+│   ├── app
+│   │   ├── (admin)
+│   │   │   ├── layout.tsx
+│   │   │   └── super-admin
+│   │   │       ├── banners
+│   │   │       │   └── page.tsx
+│   │   │       ├── blogs
+│   │   │       │   └── page.tsx
+│   │   │       ├── cms-pages
+│   │   │       │   └── page.tsx
+│   │   │       ├── conferences
+│   │   │       │   └── page.tsx
+│   │   │       ├── faqs
+│   │   │       │   └── page.tsx
+│   │   │       ├── inbox
+│   │   │       │   └── page.tsx
+│   │   │       ├── internships
+│   │   │       │   └── page.tsx
+│   │   │       ├── layout.tsx
+│   │   │       ├── page.tsx
+│   │   │       ├── settings
+│   │   │       │   └── page.tsx
+│   │   │       └── webinars
+│   │   │           └── page.tsx
+│   │   ├── (auth)
+│   │   │   └── login
+│   │   │       └── page.tsx
+│   │   ├── (public)
+│   │   │   ├── about
+│   │   │   │   └── page.tsx
+│   │   │   ├── blogs
+│   │   │   │   └── page.tsx
+│   │   │   ├── conference
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── about-conference
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── awards
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── conference-videos
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── faq
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── past-conferences
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── past-webinars
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── plan-conference
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── scientific-gallery
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── sponsors
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── upcoming-conferences
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── upcoming-webinars
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── workshops
+│   │   │   │       └── page.tsx
+│   │   │   ├── contact-us
+│   │   │   │   └── page.tsx
+│   │   │   ├── internship
+│   │   │   │   └── page.tsx
+│   │   │   ├── ipr-services
+│   │   │   │   ├── copyright
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── global-ip
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── industrial-design
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── patent
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── trademark
+│   │   │   │       └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── privacy-policy
+│   │   │   │   └── page.tsx
+│   │   │   ├── publications
+│   │   │   │   ├── conference-proceedings
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── digital-library
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── journal-selection
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── journal-support
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── overview
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── peer-review
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── response-to-reviewers
+│   │   │   │       └── page.tsx
+│   │   │   ├── research-support
+│   │   │   │   └── page.tsx
+│   │   │   ├── services
+│   │   │   │   ├── author-services
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── eb1-consultancy
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── higher-studies
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── patent-consultancy
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── phd-services
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── publications-patent
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── software-solutions
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── visa-consultancy
+│   │   │   │       └── page.tsx
+│   │   │   └── submit-journal
+│   │   │       └── page.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   ├── loading.tsx
+│   │   └── not-found.tsx
+│   ├── components
+│   │   ├── auth
+│   │   │   └── login-form.tsx
+│   │   ├── blog
+│   │   │   └── blog-page-content.tsx
+│   │   ├── conference
+│   │   │   └── conference-detail-client.tsx
+│   │   ├── forms
+│   │   │   ├── add-banner-form.tsx
+│   │   │   ├── add-blog-post-form.tsx
+│   │   │   ├── add-conference-form.tsx
+│   │   │   ├── add-faq-form.tsx
+│   │   │   ├── add-internship-form.tsx
+│   │   │   ├── add-journal-form.tsx
+│   │   │   ├── add-sub-admin-form.tsx
+│   │   │   ├── add-webinar-form.tsx
+│   │   │   ├── alert-author-form.tsx
+│   │   │   ├── contact-form.tsx
+│   │   │   ├── edit-banner-form.tsx
+│   │   │   ├── edit-blog-post-form.tsx
+│   │   │   ├── edit-cms-page-form.tsx
+│   │   │   ├── edit-conference-form.tsx
+│   │   │   ├── edit-faq-form.tsx
+│   │   │   ├── edit-journal-form.tsx
+│   │   │   ├── edit-sub-admin-form.tsx
+│   │   │   ├── edit-submission-form.tsx
+│   │   │   ├── journal-submission-form.tsx
+│   │   │   └── payment-settings-form.tsx
+│   │   ├── homepage
+│   │   │   ├── detailed-services-section.tsx
+│   │   │   ├── features-section.tsx
+│   │   │   ├── hero-section.tsx
+│   │   │   ├── key-services-section.tsx
+│   │   │   └── partners-section.tsx
+│   │   ├── icons.tsx
+│   │   ├── internship
+│   │   │   ├── internship-page-content.tsx
+│   │   │   └── internship-page.tsx
+│   │   ├── layout
+│   │   │   ├── admin-header.tsx
+│   │   │   ├── footer.tsx
+│   │   │   ├── super-admin-sidebar.tsx
+│   │   │   ├── user-header.tsx
+│   │   │   └── whatsapp-fab.tsx
+│   │   ├── publications
+│   │   │   └── publications-page-content.tsx
+│   │   ├── tables
+│   │   │   ├── admin-enquiry-table.tsx
+│   │   │   ├── all-journals-table.tsx
+│   │   │   ├── all-submissions-table.tsx
+│   │   │   ├── approved-papers-table.tsx
+│   │   │   ├── banners-table.tsx
+│   │   │   ├── blog-posts-table.tsx
+│   │   │   ├── cms-pages-table.tsx
+│   │   │   ├── conference-submissions-table.tsx
+│   │   │   ├── conferences-table.tsx
+│   │   │   ├── faqs-table.tsx
+│   │   │   ├── inquiries-table.tsx
+│   │   │   ├── internships-table.tsx
+│   │   │   ├── journal-submissions-table.tsx
+│   │   │   ├── sub-admin-table.tsx
+│   │   │   └── webinars-table.tsx
+│   │   └── ui
+│   │       ├── accordion.tsx
+│   │       ├── alert-dialog.tsx
+│   │       ├── alert.tsx
+│   │       ├── avatar.tsx
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── calendar.tsx
+│   │       ├── card.tsx
+│   │       ├── carousel.tsx
+│   │       ├── chart.tsx
+│   │       ├── checkbox.tsx
+│   │       ├── collapsible.tsx
+│   │       ├── combobox.tsx
+│   │       ├── command.tsx
+│   │       ├── conference-countdown.tsx
+│   │       ├── dialog.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── form.tsx
+│   │       ├── input.tsx
+│   │       ├── keyword-input.tsx
+│   │       ├── label.tsx
+│   │       ├── menubar.tsx
+│   │       ├── popover.tsx
+│   │       ├── progress.tsx
+│   │       ├── radio-group.tsx
+│   │       ├── render-html-content.tsx
+│   │       ├── rich-text-editor.tsx
+│   │       ├── scroll-area.tsx
+│   │       ├── select.tsx
+│   │       ├── separator.tsx
+│   │       ├── sheet.tsx
+│   │       ├── sidebar.tsx
+│   │       ├── skeleton.tsx
+│   │       ├── slider.tsx
+│   │       ├── switch.tsx
+│   │       ├── table.tsx
+│   │       ├── tabs.tsx
+│   │       ├── textarea.tsx
+│   │       ├── toast.tsx
+│   │       ├── toaster.tsx
+│   │       └── tooltip.tsx
+│   ├── hooks
+│   │   ├── use-mobile.tsx
+│   │   └── use-toast.ts
+│   └── lib
+│       ├── countries.ts
+│       ├── firebase.ts
+│       ├── mock-data.ts
+│       ├── types.ts
+│       └── utils.ts
+├── tailwind.config.ts
+└── tsconfig.json
