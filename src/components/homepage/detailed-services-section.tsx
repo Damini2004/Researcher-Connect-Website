@@ -135,7 +135,7 @@ export function DetailedServicesSection() {
                     <Mail className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                    <h4 className="text-lg font-bold">Email Us</h4>
+                    <h3 className="text-lg font-bold">Email Us</h3>
                     <p className="text-sm text-muted-foreground mt-1">
                         Get in touch via email.{" "}
                         <a href="mailto:contact@researcherconnect.com" className="underline text-primary">
@@ -149,9 +149,9 @@ export function DetailedServicesSection() {
                     <Phone className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                    <h4 className="text-lg font-bold">Call a Specialist</h4>
+                    <h3 className="text-lg font-bold">Call a Specialist</h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                        Our support team is ready for you at <a href="tel:+919890917528" className="underline text-primary">+91 9890917528 | 9960266198</a>.
+                        Our support team is ready for you at <a href="tel:+919890917528" className="underline text-primary">+91 9890917528 | 9960266198 | 7887755544</a>.
                     </p>
                 </div>
             </div>
@@ -160,7 +160,7 @@ export function DetailedServicesSection() {
                     <WhatsAppIcon className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                    <h4 className="text-lg font-bold">Chat on WhatsApp</h4>
+                    <h3 className="text-lg font-bold">Chat on WhatsApp</h3>
                     <p className="text-sm text-muted-foreground mt-1">
                         Connect with us instantly on WhatsApp.{" "}
                         <a href="https://wa.me/919890917528" target="_blank" rel="noopener noreferrer" className="underline text-primary">

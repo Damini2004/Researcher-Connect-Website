@@ -114,7 +114,7 @@ export default function SoftwareSolutionsPage() {
         alt="Software Interface"
         className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
         height="310"
-        src="https://cdn.intuji.com/2023/08/Custom-software-development.jpg"
+        src="/software.png"
         data-ai-hint="software development"
         width="550"
       />

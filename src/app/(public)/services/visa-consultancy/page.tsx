@@ -104,7 +104,7 @@ export default function VisaConsultancyPage() {
                             alt="Visa Application"
                             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
                             height="310"
-                            src="https://greencard.writewing.in/wp-content/uploads/2025/01/eb1-free-evaluation4.jpg"
+                            src="/visa.png"
                             data-ai-hint="visa documents"
                             width="550"
                         />

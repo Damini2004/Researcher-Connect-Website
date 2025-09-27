@@ -87,7 +87,7 @@ export function KeyServicesSection() {
                            <div key={service.title} className="flex flex-col text-left">
                                 <div className="flex items-center gap-3">
                                     <service.icon className="h-6 w-6 text-primary flex-shrink-0" />
-                                    <h4 className="text-lg font-bold">{service.title}</h4>
+                                    <h3 className="text-lg font-bold">{service.title}</h3>
                                 </div>
                                 <p className="text-muted-foreground mt-2">
                                     {service.description}
