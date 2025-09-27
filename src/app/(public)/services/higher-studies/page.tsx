@@ -139,7 +139,7 @@ export default function HigherStudiesPage() {
       key={area.title}
       className="text-left transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
     >
-      <CardHeader>
+      <CardHeader className="items-center">
         <div className="p-3 bg-primary/10 rounded-full w-fit mb-3">
           <area.icon className="h-6 w-6 text-primary" />
         </div>
