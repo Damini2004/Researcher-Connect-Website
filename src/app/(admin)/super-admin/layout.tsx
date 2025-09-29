@@ -2,6 +2,7 @@ import AdminHeader from "@/components/layout/admin-header";
 import SuperAdminSidebar from "@/components/layout/super-admin-sidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { getNewInquiryCount } from "@/services/inquiryService";
+import { getPendingEnquiryCount } from "@/services/enquiryService";
 
 
 export default async function SuperAdminLayout({
@@ -10,10 +11,11 @@ export default async function SuperAdminLayout({
   children: React.ReactNode;
 }) {
   const newInquiries = await getNewInquiryCount();
+  const newEnquiries = await getPendingEnquiryCount();
 
   return (
     <>
-      <SuperAdminSidebar pendingEnquiriesCount={newInquiries} />
+      <SuperAdminSidebar pendingInquiriesCount={newInquiries} pendingEnquiriesCount={newEnquiries} />
       <div className="flex flex-col w-full">
         <AdminHeader role="super-admin" />
         <SidebarInset>

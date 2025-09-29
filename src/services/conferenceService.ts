@@ -1,4 +1,3 @@
-
 // src/services/conferenceService.ts
 'use server';
 
@@ -84,6 +83,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         title: data.title || "N/A",
         shortTitle: data.shortTitle || "N/A",
         tagline: data.tagline,
+        status: data.status || 'active',
         date: dateRange,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
@@ -133,11 +133,17 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
     };
 }
 
-export async function getConferences(): Promise<Conference[]> {
+export async function getConferences(options: { activeOnly?: boolean } = {}): Promise<Conference[]> {
     try {
         const q = query(collection(db, "conferences"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(mapDocToConference);
+        let conferences = querySnapshot.docs.map(mapDocToConference);
+
+        if (options.activeOnly) {
+            conferences = conferences.filter(c => c.status === 'active');
+        }
+
+        return conferences;
     } catch (error) {
         console.error("Error fetching conferences from service: ", error);
         throw error;
@@ -212,4 +218,17 @@ export async function deleteConference(id: string): Promise<{ success: boolean; 
         const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
         return { success: false, message: `Failed to delete conference: ${message}` };
     }
+}
+
+
+export async function updateConferenceStatus(id: string, status: 'active' | 'inactive'): Promise<{ success: boolean; message: string }> {
+  try {
+    const conferenceRef = doc(db, "conferences", id);
+    await updateDoc(conferenceRef, { status });
+    return { success: true, message: "Conference status updated." };
+  } catch (error) {
+    console.error("Error updating conference status:", error);
+    const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { success: false, message: `Failed to update status: ${message}` };
+  }
 }

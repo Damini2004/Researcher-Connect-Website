@@ -1,3 +1,4 @@
+
 // src/app/(public)/services/patent-consultancy/page.tsx
 "use client";
 
@@ -117,7 +118,7 @@ export default function PatentConsultancyPage() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {patentServices.map((service) => (
                             <Card key={service.title}>
-                                <CardHeader className="flex flex-row items-center gap-4">
+                                <CardHeader className="items-center">
                                     <service.icon className="h-6 w-6 text-primary" />
                                     <CardTitle className="text-lg">{service.title}</CardTitle>
                                 </CardHeader>

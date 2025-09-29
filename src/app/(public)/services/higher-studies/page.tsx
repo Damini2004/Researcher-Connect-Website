@@ -59,7 +59,7 @@ export default function HigherStudiesPage() {
         <div>
             <section className="relative w-full h-[300px] bg-gray-800 text-white">
                 <Image
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1600&h=300&auto=format&fit=crop"
+                    src="/Temp.jpg"
                     alt="Graduation caps in the air"
                     data-ai-hint="graduation ceremony"
                     fill
@@ -139,7 +139,7 @@ export default function HigherStudiesPage() {
       key={area.title}
       className="text-left transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
     >
-      <CardHeader>
+      <CardHeader className="items-center">
         <div className="p-3 bg-primary/10 rounded-full w-fit mb-3">
           <area.icon className="h-6 w-6 text-primary" />
         </div>

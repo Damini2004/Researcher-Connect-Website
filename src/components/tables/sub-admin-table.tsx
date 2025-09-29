@@ -114,7 +114,6 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Password</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Address</TableHead>
                 <TableHead>Status</TableHead>
@@ -127,7 +126,7 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-24 text-center">Loading...</TableCell>
+                  <TableCell colSpan={7} className="h-24 text-center">Loading...</TableCell>
                 </TableRow>
               ) : filteredAdmins.length > 0 ? (
                 filteredAdmins.map((admin) => {
@@ -136,7 +135,6 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
                     <TableRow key={admin.id}>
                       <TableCell className="font-medium">{admin.name}</TableCell>
                       <TableCell>{admin.email}</TableCell>
-                      <TableCell>{admin.password}</TableCell>
                       <TableCell>{admin.phone}</TableCell>
                       <TableCell className="max-w-xs truncate">{admin.address}</TableCell>
                       <TableCell>
@@ -185,7 +183,7 @@ export default function SubAdminTable({ subAdmins, isLoading, onAdminChange, onA
                 })
               ) : (
                   <TableRow>
-                      <TableCell colSpan={8} className="h-24 text-center">
+                      <TableCell colSpan={7} className="h-24 text-center">
                           No sub-admins found.
                       </TableCell>
                   </TableRow>

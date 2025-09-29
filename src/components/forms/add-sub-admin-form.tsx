@@ -23,7 +23,6 @@ const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   phone: z.string().min(10, "Please enter a valid phone number."),
-  password: z.string().min(6, "Password must be at least 6 characters."),
   address: z.string().min(5, "Address is required."),
 });
 
@@ -41,7 +40,6 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
       name: "",
       email: "",
       phone: "",
-      password: "",
       address: "",
     },
   });
@@ -54,17 +52,18 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
       name: values.name,
       email: values.email,
       phone: values.phone,
-      password: values.password,
       address: values.address,
     };
 
     try {
+      // Note: User creation should now be done in the Firebase Console.
+      // This function just creates the record in Firestore.
       const result = await addSubAdmin(plainData);
 
       if (result.success) {
         toast({
-          title: "Sub Admin Added",
-          description: `An invitation has been sent to ${values.name}.`,
+          title: "Sub Admin Record Created",
+          description: `A record for ${values.name} has been added. Please create their account in the Firebase Authentication console.`,
         });
         form.reset();
         
@@ -136,19 +135,6 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
         />
         <FormField
           control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="address"
           render={({ field }) => (
             <FormItem>
@@ -161,7 +147,7 @@ export default function AddSubAdminForm({ onAdminAdded }: AddSubAdminFormProps) 
           )}
         />
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Adding..." : "Add Sub Admin"}
+          {isSubmitting ? "Adding..." : "Add Sub Admin Record"}
         </Button>
       </form>
     </Form>

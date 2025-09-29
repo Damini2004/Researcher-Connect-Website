@@ -10,7 +10,7 @@ const sponsorLogos = [
   { src: "/deogiri aurangabad.jpeg", alt: "deogiri aurangabad", hint: "logo brand" },
   { src: "/dypatil.jpeg", alt: "Partner Logo 3", hint: "logo business" },
   { src: "/iiit.jpeg", alt: "Partner Logo 4", hint: "logo tech" },
-  { src: "/kkr guntur.png", alt: "Partner Logo 5", hint: "logo education" },
+  { src: "/kkrguntur.png", alt: "Partner Logo 5", hint: "logo education" },
   { src: "/krishana.png", alt: "deogiri aurangabad", hint: "logo brand" },
   { src: "/lovely university.png", alt: "Partner Logo 3", hint: "logo business" },
   { src: "/Mahsa Malaysiaya.png", alt: "Partner Logo 4", hint: "logo tech" },
@@ -29,7 +29,6 @@ const sponsorLogos = [
   { src: "/syboisis.png", alt: "deogiri aurangabad", hint: "logo brand" },
   { src: "/sanjevini kopargoa.png", alt: "Partner Logo 3", hint: "logo business" },
   { src: "/vincentpalloti.jpeg", alt: "Partner Logo 4", hint: "logo tech" },
-  { src: "/Vnit.jpeg", alt: "Partner Logo 5", hint: "logo education" },
   ]
 
 export function PartnersSection() {

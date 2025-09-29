@@ -15,6 +15,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
 } from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
@@ -28,12 +30,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Search, MoreHorizontal, Trash2, Edit } from "lucide-react";
-import { deleteConference } from "@/services/conferenceService";
+import { Search, MoreHorizontal, Trash2, Edit, CheckCircle, XCircle } from "lucide-react";
+import { deleteConference, updateConferenceStatus } from "@/services/conferenceService";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import type { Conference } from "@/lib/types";
+import { Badge } from "../ui/badge";
 
 interface ConferencesTableProps {
   conferences: Conference[];
@@ -70,6 +73,24 @@ export default function ConferencesTable({ conferences, isLoading, onEdit, onCon
     setSelectedConference(null);
   }
 
+  const handleStatusToggle = async (conference: Conference) => {
+    const newStatus = conference.status === 'active' ? 'inactive' : 'active';
+    const result = await updateConferenceStatus(conference.id, newStatus);
+    if (result.success) {
+      toast({
+        title: "Status Updated",
+        description: `Conference "${conference.title}" is now ${newStatus}.`,
+      });
+      onConferenceDeleted(); // This re-fetches data
+    } else {
+       toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
+  }
+
   const filteredConferences = conferences.filter(
     (conference) =>
       conference.title.toLowerCase().includes(filter.toLowerCase()) ||
@@ -100,6 +121,7 @@ export default function ConferencesTable({ conferences, isLoading, onEdit, onCon
                 <TableHead>Image</TableHead>
                 <TableHead>Title</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Location</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -107,13 +129,13 @@ export default function ConferencesTable({ conferences, isLoading, onEdit, onCon
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center h-24">
+                  <TableCell colSpan={6} className="text-center h-24">
                     Loading conferences...
                   </TableCell>
                 </TableRow>
               ) : filteredConferences.length === 0 ? (
                   <TableRow>
-                      <TableCell colSpan={5} className="text-center h-24">
+                      <TableCell colSpan={6} className="text-center h-24">
                           No conferences found.
                       </TableCell>
                   </TableRow>
@@ -132,6 +154,11 @@ export default function ConferencesTable({ conferences, isLoading, onEdit, onCon
                     </TableCell>
                     <TableCell className="font-medium">{conference.title}</TableCell>
                     <TableCell>{conference.date}</TableCell>
+                    <TableCell>
+                      <Badge variant={conference.status === 'active' ? 'default' : 'secondary'} className={conference.status === 'active' ? 'bg-green-500' : ''}>
+                        {conference.status === 'active' ? 'Active' : 'Inactive'}
+                      </Badge>
+                    </TableCell>
                     <TableCell>{conference.location}</TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -146,10 +173,20 @@ export default function ConferencesTable({ conferences, isLoading, onEdit, onCon
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                            <DropdownMenuItem onSelect={() => onEdit(conference)}>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
+                           <DropdownMenuItem onSelect={() => handleStatusToggle(conference)}>
+                            {conference.status === 'active' ? (
+                                <XCircle className="mr-2 h-4 w-4" />
+                            ) : (
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                            )}
+                            Set to {conference.status === 'active' ? 'Inactive' : 'Active'}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
                           <DropdownMenuItem 
                             className="text-destructive"
                             onSelect={() => handleDeleteClick(conference)}
