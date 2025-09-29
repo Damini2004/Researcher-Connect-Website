@@ -37,12 +37,6 @@ export const metadata: Metadata = {
       'Researcher Connect Innovation & Impact Pvt Ltd empowers scholars and professionals with complete research support – from thesis writing and publication to conferences, project implementation, and academic success.',
     images: ['/og-image.png'],
   },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
-  
 };
 
 export default function RootLayout({
