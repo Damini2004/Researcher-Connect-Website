@@ -23,6 +23,7 @@ import { Label } from "../ui/label";
 import { Logo } from "../icons";
 import { getAuth, signInWithEmailAndPassword, AuthErrorCodes } from "firebase/auth";
 import { app } from "@/lib/firebase";
+import { getSubAdminByEmail } from "@/services/subAdminService";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email."),
@@ -53,22 +54,40 @@ export default function LoginForm() {
         const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
         const user = userCredential.user;
 
-        if (user && user.email === 'superadmin@researcherconnect.com') {
+        if (!user || !user.email) {
+            throw new Error("User information not found after login.");
+        }
+
+        // Check for super-admin first
+        if (user.email === 'superadmin@researcherconnect.com') {
             toast({
               title: "Login Successful",
               description: "Redirecting to super-admin dashboard...",
             });
             router.push(`/super-admin`);
+            return;
+        }
+
+        // If not super-admin, check if they are an approved sub-admin
+        const subAdminResult = await getSubAdminByEmail(user.email);
+
+        if (subAdminResult.success && subAdminResult.subAdmin?.status === 'approved') {
+             toast({
+              title: "Login Successful",
+              description: "Redirecting to your dashboard...",
+            });
+            // This will be the redirect for sub-admins in the future.
+            // For now, it also goes to super-admin for demonstration.
+            router.push(`/super-admin`);
         } else {
-            // This case might be for other approved users, like sub-admins in the future.
-            // For now, we deny access if not super-admin.
              toast({
               title: "Access Denied",
-              description: "You do not have permission to access this dashboard.",
+              description: "You do not have permission to access this dashboard. Please contact an administrator.",
               variant: "destructive",
             });
              await auth.signOut();
         }
+
     } catch (error: any) {
         let description = "An unexpected error occurred. Please try again.";
         if (error.code) {
