@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createEnquiry } from "@/services/enquiryService";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -60,40 +61,65 @@ export default function EditSubAdminForm({ admin, onAdminUpdated, onClose }: Edi
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
-    const plainData = {
-      name: values.name,
-      email: values.email,
-      phone: values.phone,
-      address: values.address,
-      status: values.status,
-    };
+    // If email or name is changed, create an enquiry instead of direct update.
+    if (values.email !== admin.email || values.name !== admin.name) {
+        const enquiryResult = await createEnquiry({
+            subAdminId: admin.id,
+            subAdminName: admin.name, // Use original name for the enquiry log
+            currentEmail: admin.email,
+            requestedName: values.name,
+            requestedEmail: values.email,
+        });
 
-    try {
-      const result = await updateSubAdmin(admin.id, plainData);
+        if (enquiryResult.success) {
+            toast({
+                title: "Update Request Submitted",
+                description: "Your profile changes have been submitted for super-admin approval.",
+            });
+            onClose();
+        } else {
+             toast({
+                title: "Request Failed",
+                description: enquiryResult.message,
+                variant: "destructive",
+            });
+        }
+    } else {
+        // For other fields, update directly
+        const plainData = {
+          name: values.name,
+          email: values.email,
+          phone: values.phone,
+          address: values.address,
+          status: values.status,
+        };
 
-      if (result.success && result.updatedAdmin) {
-        toast({
-          title: "Update Successful",
-          description: `Profile for ${values.name} has been updated.`,
-        });
-        onAdminUpdated(result.updatedAdmin);
-        onClose();
-      } else {
-        toast({
-          title: "Error",
-          description: result.message,
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-       toast({
-          title: "Error",
-          description: "An unexpected error occurred.",
-          variant: "destructive",
-        });
-    } finally {
-      setIsSubmitting(false);
+        try {
+          const result = await updateSubAdmin(admin.id, plainData);
+
+          if (result.success && result.updatedAdmin) {
+            toast({
+              title: "Update Successful",
+              description: `Profile for ${values.name} has been updated.`,
+            });
+            onAdminUpdated(result.updatedAdmin);
+            onClose();
+          } else {
+            toast({
+              title: "Error",
+              description: result.message,
+              variant: "destructive",
+            });
+          }
+        } catch (error) {
+           toast({
+              title: "Error",
+              description: "An unexpected error occurred.",
+              variant: "destructive",
+            });
+        }
     }
+    setIsSubmitting(false);
   }
 
   return (
