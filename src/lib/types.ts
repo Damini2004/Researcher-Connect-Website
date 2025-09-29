@@ -7,6 +7,7 @@ export const conferenceSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters long."),
   shortTitle: z.string().min(3, "Short title/acronym is required."),
   tagline: z.string().optional(),
+  status: z.enum(['active', 'inactive']).default('active'),
 
   // --- Schedule & Location ---
   startDate: z.date({ required_error: "Start date is required." }),
@@ -86,6 +87,7 @@ export interface Conference {
   title: string;
   shortTitle: string;
   tagline?: string;
+  status: 'active' | 'inactive';
   date: string; // Formatted date range for display
   startDate: string; // ISO String
   endDate: string; // ISO String

@@ -29,6 +29,7 @@ import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
+import { Switch } from "../ui/switch";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -69,6 +70,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
       title: "",
       shortTitle: "",
       tagline: "",
+      status: "active",
       venueName: "",
       country: "",
       aboutConference: "",
@@ -257,6 +259,26 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                         ))}
                                         </div>
                                         <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                        <div className="space-y-0.5">
+                                            <FormLabel className="text-base">Conference Status</FormLabel>
+                                            <FormDescription>
+                                                Inactive conferences will not be shown on the public site.
+                                            </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                                checked={field.value === 'active'}
+                                                onCheckedChange={(checked) => field.onChange(checked ? 'active' : 'inactive')}
+                                            />
+                                        </FormControl>
                                     </FormItem>
                                     )}
                                 />

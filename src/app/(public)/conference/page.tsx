@@ -76,7 +76,7 @@ export default function ConferencesPage() {
 
     setIsLoading(true);
     try {
-      const data = await getConferences();
+      const data = await getConferences({ activeOnly: true });
       const upcoming = data
         .filter(
           (conf) => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
