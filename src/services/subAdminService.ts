@@ -1,3 +1,4 @@
+
 // src/services/subAdminService.ts
 'use server';
 
@@ -13,14 +14,13 @@ export interface SubAdmin {
   address: string;
   status: "pending" | "approved" | "denied";
   joinDate: string; 
-  password?: string;
+  password?: string; // Keep for data model consistency, but won't be used for login
 }
 
 const addSubAdminSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
   phone: z.string().min(10, "Please enter a valid phone number."),
-  password: z.string().min(6, "Password must be at least 6 characters."),
   address: z.string().min(5, "Address is required."),
 });
 
@@ -68,7 +68,7 @@ export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminRes
       joinDate: new Date().toISOString(),
     });
     
-    return { success: true, message: 'Sub-admin added successfully.' };
+    return { success: true, message: 'Sub-admin record created successfully.' };
   } catch (error) {
     console.error("Error adding sub-admin:", error);
     const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
@@ -104,7 +104,6 @@ export async function getSubAdmins(options: { approvedOnly?: boolean } = {}): Pr
                 address: data.address,
                 status: data.status,
                 joinDate: joinDate,
-                password: data.password,
             });
         });
         
@@ -146,7 +145,6 @@ export async function getSubAdminByEmail(email: string): Promise<{ success: bool
       address: data.address,
       status: data.status,
       joinDate: joinDate,
-      password: data.password,
     };
     
     return { success: true, message: 'Sub-admin found.', subAdmin };
@@ -179,42 +177,12 @@ export async function getSubAdminById(id: string): Promise<{ success: boolean; m
       address: data.address,
       status: data.status,
       joinDate: joinDate,
-      password: data.password,
     };
     
     return { success: true, message: 'Sub-admin found.', subAdmin };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
     return { success: false, message: `Failed to fetch sub-admin: ${errorMessage}` };
-  }
-}
-
-
-
-export async function verifySubAdminCredentials(email: string, password_provided: string): Promise<{ success: boolean; message: string }> {
-  try {
-    const q = query(collection(db, 'subAdmins'), where('email', '==', email), limit(1));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-      return { success: false, message: 'Invalid email or password.' };
-    }
-
-    const subAdminDoc = querySnapshot.docs[0];
-    const subAdminData = subAdminDoc.data() as SubAdmin;
-
-    if (subAdminData.status !== 'approved') {
-        return { success: false, message: 'Your account is not approved yet. Please contact the super admin.' };
-    }
-    
-    if (subAdminData.password !== password_provided) {
-      return { success: false, message: 'Invalid email or password.' };
-    }
-
-    return { success: true, message: 'Login successful!' };
-  } catch (error) {
-    console.error("Error verifying sub-admin credentials:", error);
-    return { success: false, message: 'An unexpected error occurred during login.' };
   }
 }
 
