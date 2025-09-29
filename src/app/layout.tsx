@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   icons: {
-    icon: '/RC logo.png',
-    shortcut: '/RC logo.png',
-    apple: '/RC logo.png',
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
   },
   
 };
