@@ -36,6 +36,9 @@ export const metadata: Metadata = {
       'Researcher Connect Innovation & Impact Pvt Ltd empowers scholars and professionals with complete research support – from thesis writing and publication to conferences, project implementation, and academic success.',
     images: ['/og-image.png'],
   },
+  icons: {
+    icon: '/RC logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -46,7 +49,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/RC logo.png" sizes="any" />
         {/* ✅ Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
