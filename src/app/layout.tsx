@@ -46,6 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/RC logo.png" sizes="any" />
         {/* ✅ Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
