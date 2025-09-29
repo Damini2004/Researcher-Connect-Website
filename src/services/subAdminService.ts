@@ -1,4 +1,3 @@
-
 // src/services/subAdminService.ts
 'use server';
 
@@ -17,13 +16,6 @@ export interface SubAdmin {
   password?: string; // Keep for data model consistency, but won't be used for login
 }
 
-const addSubAdminSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  email: z.string().email("Please enter a valid email address."),
-  phone: z.string().min(10, "Please enter a valid phone number."),
-  address: z.string().min(5, "Address is required."),
-});
-
 const updateSubAdminSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
@@ -32,48 +24,12 @@ const updateSubAdminSchema = z.object({
   status: z.enum(["pending", "approved", "denied"]),
 });
 
-
-type AddSubAdminData = z.infer<typeof addSubAdminSchema>;
 type UpdateSubAdminData = z.infer<typeof updateSubAdminSchema>;
-
-type AddSubAdminResult = {
-  success: boolean;
-  message: string;
-}
 
 type UpdateSubAdminResult = {
   success: boolean;
   message: string;
   updatedAdmin?: SubAdmin;
-}
-
-export async function addSubAdmin(data: AddSubAdminData): Promise<AddSubAdminResult> {
-  try {
-    const validationResult = addSubAdminSchema.safeParse(data);
-    if (!validationResult.success) {
-      return { success: false, message: validationResult.error.errors[0].message };
-    }
-
-    const { ...subAdminData } = validationResult.data;
-
-    const q = query(collection(db, 'subAdmins'), where('email', '==', subAdminData.email), limit(1));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-        return { success: false, message: 'A user with this email already exists.' };
-    }
-    
-    await addDoc(collection(db, 'subAdmins'), {
-      ...subAdminData,
-      status: 'pending',
-      joinDate: new Date().toISOString(),
-    });
-    
-    return { success: true, message: 'Sub-admin record created successfully.' };
-  } catch (error) {
-    console.error("Error adding sub-admin:", error);
-    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
-    return { success: false, message: `Failed to add sub-admin: ${errorMessage}` };
-  }
 }
 
 export async function getSubAdmins(options: { approvedOnly?: boolean } = {}): Promise<SubAdmin[]> {
