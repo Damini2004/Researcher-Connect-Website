@@ -115,6 +115,7 @@ export function DetailedServicesSection() {
                   height={600}
                   className="rounded-lg object-cover"
                   data-ai-hint={service.imageHint}
+                  loading="lazy"
                 />
               </div>
               <div className="space-y-4">
