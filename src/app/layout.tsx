@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description:
     'Researcher Connect Innovation & Impact Pvt Ltd empowers scholars and professionals with complete research support – from thesis writing and publication to conferences, project implementation, and academic success.',
   alternates: {
-    canonical: 'https://researcherconnect.com', // ✅ Canonical tag
+    canonical: 'https://researcherconnect.com',
   },
   openGraph: {
     title: 'Researcher Connect Innovation & Impact Pvt Ltd',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: 'Researcher Connect Innovation & Impact Pvt Ltd',
     images: [
       {
-        url: '/og-image.png', // ✅ Update with actual domain if hosted externally
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Researcher Connect',
@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* ✅ Google Fonts */}
+        {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
