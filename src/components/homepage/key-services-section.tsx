@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones, PlayCircle } from "lucide-react";
+import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones, CirclePlay } from "lucide-react";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -90,7 +90,10 @@ export function KeyServicesSection() {
                                     className="absolute inset-0 w-full h-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
-                                    <PlayCircle className="h-20 w-20 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                                    <div className="relative flex items-center justify-center">
+                                        <div className="absolute h-24 w-24 rounded-full bg-white/20 animate-ping" />
+                                        <CirclePlay className="h-20 w-20 text-white/70 backdrop-blur-sm bg-white/10 rounded-full p-2 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                                    </div>
                                 </div>
                             </div>
                         </DialogTrigger>
