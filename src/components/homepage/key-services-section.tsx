@@ -1,9 +1,13 @@
 // src/components/homepage/key-services-section.tsx
+'use client';
+
+import * as React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones } from "lucide-react";
-import Image from "next/image";
+import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones, PlayCircle } from "lucide-react";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
 
 const services = [
     {
@@ -68,20 +72,41 @@ const subServices = [
 ]
 
 export function KeyServicesSection() {
+    const [isPlayerOpen, setIsPlayerOpen] = React.useState(false);
+
     return (
         <section id="services" className="w-full py-10 md:py-20 lg:py-28 bg-background">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center gap-12">
-                    <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg">
-                        <video 
-                            src="/RC Video 3 (Video) FN.mp4" 
-                            autoPlay 
-                            loop 
-                            muted 
-                            playsInline
-                            className="absolute inset-0 w-full h-full object-cover"
-                        />
-                    </div>
+                    <Dialog open={isPlayerOpen} onOpenChange={setIsPlayerOpen}>
+                        <DialogTrigger asChild>
+                            <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+                                <video 
+                                    src="/RC Video 3 (Video) FN.mp4" 
+                                    autoPlay 
+                                    loop 
+                                    muted 
+                                    playsInline
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
+                                    <PlayCircle className="h-20 w-20 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                                </div>
+                            </div>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-4xl p-0 border-0">
+                            {isPlayerOpen && (
+                                <video 
+                                    src="/RC Video 3 (Video) FN.mp4" 
+                                    autoPlay 
+                                    controls
+                                    className="w-full h-full rounded-lg"
+                                >
+                                    Your browser does not support the video tag.
+                                </video>
+                            )}
+                        </DialogContent>
+                    </Dialog>
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mt-8">
                         {subServices.map((service) => (
                            <div key={service.title} className="flex flex-col text-left">
