@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones, PlayCircle } from "lucide-react";
 import Link from "next/link";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 
 const services = [
@@ -95,6 +95,9 @@ export function KeyServicesSection() {
                             </div>
                         </DialogTrigger>
                         <DialogContent className="max-w-4xl p-0 border-0">
+                             <DialogHeader>
+                                <DialogTitle className="sr-only">Company promotional video</DialogTitle>
+                             </DialogHeader>
                             {isPlayerOpen && (
                                 <video 
                                     src="/RC Video 3 (Video) FN.mp4" 
