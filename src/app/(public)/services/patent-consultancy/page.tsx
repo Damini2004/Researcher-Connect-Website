@@ -98,7 +98,7 @@ export default function PatentConsultancyPage() {
                     alt="Patent illustration"
                     className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
                     height="310"
-                    src="/Patent-Drafting-Services-1.jpg"
+                    src="/patent.png"
                     data-ai-hint="patent idea"
                     width="550"
                   />
