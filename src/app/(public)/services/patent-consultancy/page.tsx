@@ -63,9 +63,9 @@ const patentServices = [
 export default function PatentConsultancyPage() {
     return (
         <div className="bg-secondary/30">
-            <section className="relative w-full h-[500px] bg-gray-800 text-white">
+            <section className="relative w-full h-[300px] bg-gray-800 text-white">
                 <Image
-                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&h=500&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&h=300&auto=format&fit=crop"
                     alt="Patent documents"
                     data-ai-hint="legal documents"
                     fill
