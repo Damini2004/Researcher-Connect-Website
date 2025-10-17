@@ -322,11 +322,11 @@ export default function BlogPageContent() {
                 </div>
             </section>
 
-            <Dialog open={!!selectedPost} onOpenChange={(isOpen) => !isOpen && setSelectedPost(null)}>
-                <DialogContent className="sm:max-w-4xl h-[90vh] flex flex-col">
+             <Dialog open={!!selectedPost} onOpenChange={(isOpen) => !isOpen && setSelectedPost(null)}>
+                <DialogContent className="sm:max-w-4xl h-[90vh] flex flex-col p-0">
                     {selectedPost && (
                         <>
-                            <DialogHeader>
+                            <DialogHeader className="p-6 pb-0">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                   {(Array.isArray(selectedPost.category) ? selectedPost.category : [selectedPost.category]).map((cat) => (
                                     <Badge key={cat} variant="secondary" className="w-fit">{cat.toUpperCase()}</Badge>
@@ -344,19 +344,21 @@ export default function BlogPageContent() {
                                     </div>
                                 </div>
                             </DialogHeader>
-                             <div className="relative w-full h-64 rounded-lg overflow-hidden my-4">
-                                <Image
-                                    src={selectedPost.imageSrc}
-                                    alt={selectedPost.title}
-                                    fill
-                                    className="object-cover"
-                                />
+                            <div className="flex-grow min-h-0 overflow-hidden">
+                                <ScrollArea className="h-full">
+                                    <div className="px-6 py-4 space-y-4">
+                                        <div className="relative w-full h-64 rounded-lg overflow-hidden my-4">
+                                            <Image
+                                                src={selectedPost.imageSrc}
+                                                alt={selectedPost.title}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <RenderHtmlContent htmlContent={selectedPost.content} />
+                                    </div>
+                                </ScrollArea>
                             </div>
-                            <ScrollArea className="flex-grow">
-                                <div className="pr-6">
-                                  <RenderHtmlContent htmlContent={selectedPost.content} />
-                                </div>
-                            </ScrollArea>
                         </>
                     )}
                 </DialogContent>
