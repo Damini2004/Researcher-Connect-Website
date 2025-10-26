@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: {
@@ -70,6 +71,18 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {children}
         <Toaster />
+         {/* Zoho SalesIQ Script */}
+        <Script id="zoho-init" strategy="beforeInteractive">
+            {`
+            window.$zoho = window.$zoho || {};
+            $zoho.salesiq = $zoho.salesiq || { ready: function(){} };
+            `}
+        </Script>
+        <Script
+            id="zoho-widget"
+            strategy="beforeInteractive"
+            src="https://salesiq.zohopublic.in/widget?wc=siq4436c8aa6872c023cdf8463d73d9c039b2078ef2282c1899f64e36fef57cf282"
+        />
       </body>
     </html>
   );
