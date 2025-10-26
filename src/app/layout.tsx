@@ -72,7 +72,7 @@ export default function RootLayout({
         {children}
         <Toaster />
          {/* Zoho SalesIQ Script */}
-        <Script id="zoho-init" strategy="beforeInteractive">
+        <Script id="zoho-init" strategy="lazyOnload">
             {`
             window.$zoho = window.$zoho || {};
             $zoho.salesiq = $zoho.salesiq || { ready: function(){} };
@@ -80,7 +80,7 @@ export default function RootLayout({
         </Script>
         <Script
             id="zoho-widget"
-            strategy="beforeInteractive"
+            strategy="lazyOnload"
             src="https://salesiq.zohopublic.in/widget?wc=siq4436c8aa6872c023cdf8463d73d9c039b2078ef2282c1899f64e36fef57cf282"
         />
       </body>
