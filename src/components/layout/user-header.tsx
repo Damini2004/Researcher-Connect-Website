@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -66,11 +67,11 @@ const servicesLinks = [
     label: "Internship Services",
     learnMore: "Learn more about Internship Services",
   },
-  {
-    href: "/services/phd-services",
-    label: "PhD Services",
-    learnMore: "Learn more about PhD Services",
-  },
+  // {
+  //   href: "/services/phd-services",
+  //   label: "PhD Services",
+  //   learnMore: "Learn more about PhD Services",
+  // },
   {
     href: "/services/author-services",
     label: "Author Services",
