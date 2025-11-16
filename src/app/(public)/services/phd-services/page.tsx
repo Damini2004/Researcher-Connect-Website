@@ -1,10 +1,9 @@
-
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function PhDServicePage() {
-    // This function will immediately trigger a 404 Not Found page,
-    // effectively hiding this page from users while keeping the code.
-    notFound();
+    // This function will redirect to a non-existent page,
+    // which will in turn trigger the custom not-found.tsx component.
+    redirect('/404-page-not-found');
 
     /*
     // Original Page Code - Preserved for future use
