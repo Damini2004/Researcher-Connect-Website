@@ -28,12 +28,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getCategories, BlogCategory } from "@/services/categoryService";
+import { Logo } from "../icons";
 
 export default function BlogPageContent() {
     const [allPosts, setAllPosts] = React.useState<BlogPost[]>([]);
     const [categories, setCategories] = React.useState<BlogCategory[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
     const [mainFeaturedArticle, setMainFeaturedArticle] = React.useState<BlogPost | null>(null);
     const [popularSearchTerm, setPopularSearchTerm] = React.useState("");
     const [popularCategoryFilter, setPopularCategoryFilter] = React.useState("all");
@@ -118,21 +118,8 @@ export default function BlogPageContent() {
 
     if (isLoading) {
         return (
-             <div className="h-screen w-full flex items-center justify-center">
-                <div className="space-y-4">
-                    <Skeleton className="h-8 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-8">
-                        <div className="lg:col-span-2 space-y-6">
-                            <Skeleton className="h-[400px] w-full" />
-                        </div>
-                        <div className="space-y-6">
-                            <Skeleton className="h-24 w-full" />
-                            <Skeleton className="h-24 w-full" />
-                            <Skeleton className="h-24 w-full" />
-                        </div>
-                    </div>
-                </div>
+             <div className="h-screen w-full flex items-center justify-center bg-background">
+                <Logo className="h-40 w-40 animate-pulse" />
             </div>
         );
     }
