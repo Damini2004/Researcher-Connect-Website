@@ -23,6 +23,7 @@ const services = [
     imageHint: "conference audience",
     link: "/conference",
   },
+  /*
   {
     title: "Higher Studies Proposals",
     description:
@@ -32,6 +33,7 @@ const services = [
     imageHint: "advisory meeting",
     link: "/services/higher-studies",
   },
+  */
   {
     title: "Foreign Visa Services",
     description:
