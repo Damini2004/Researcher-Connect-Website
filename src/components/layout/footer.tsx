@@ -17,7 +17,7 @@ const servicesLinks = [
     { href: "/services/higher-studies", label: "Higher Studies Proposals" },
     { href: "/services/visa-consultancy", label: "Visa Consultancy" },
     { href: "/internship", label: "Internship Services" },
-    { href: "/services/phd-services", label: "PhD Services" },
+    // { href: "/services/phd-services", label: "PhD Services" },
     { href: "/services/author-services", label: "Author Services" },
     { href: "/services/patent-consultancy", label: "Patent Drafting Services" },
 ];

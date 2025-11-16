@@ -50,15 +50,15 @@ const services = [
     imageHint: "professional career",
     link: "/internship",
   },
-  {
-    title: "PhD Services",
-    description:
-      "We provide comprehensive, end-to-end support for the entire PhD journey, enabling scholars to progress with confidence, clarity, and academic excellence. Our services include research topic selection, proposal development, literature reviews, and methodology guidance to establish a strong foundation. We assist with thesis structuring, data analysis planning, academic writing refinement, and publication preparation, ensuring compliance with institutional and international standards. For the final stages, we offer defense preparation, presentation coaching, and editing for professional polish.",
-    imageUrl:
-      "/postdoc.png",
-    imageHint: "professional career",
-    link: "/services/phd-services",
-  },
+  // {
+  //   title: "PhD Services",
+  //   description:
+  //     "We provide comprehensive, end-to-end support for the entire PhD journey, enabling scholars to progress with confidence, clarity, and academic excellence. Our services include research topic selection, proposal development, literature reviews, and methodology guidance to establish a strong foundation. We assist with thesis structuring, data analysis planning, academic writing refinement, and publication preparation, ensuring compliance with institutional and international standards. For the final stages, we offer defense preparation, presentation coaching, and editing for professional polish.",
+  //   imageUrl:
+  //     "/postdoc.png",
+  //   imageHint: "professional career",
+  //   link: "/services/phd-services",
+  // },
   {
     title: "Author Services",
     description:

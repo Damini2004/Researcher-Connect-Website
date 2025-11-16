@@ -35,11 +35,11 @@ const services = [
         title: "Internship Services",
         description: "Connecting talented students with valuable research internship opportunities."
     },
-    {
-        icon: BookMarked,
-        title: "PhD Services",
-        description: "Comprehensive support throughout your entire PhD journey."
-    },
+    // {
+    //     icon: BookMarked,
+    //     title: "PhD Services",
+    //     description: "Comprehensive support throughout your entire PhD journey."
+    // },
     {
         icon: FileText,
         title: "Author Services",
