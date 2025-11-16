@@ -52,11 +52,13 @@ const servicesLinks = [
     label: "Conference Management",
     learnMore: "Learn more about Conference Management",
   },
+  /*
   {
     href: "/services/higher-studies",
     label: "Higher Studies Proposals",
     learnMore: "Learn more about Higher Studies",
   },
+  */
   {
     href: "/services/visa-consultancy",
     label: "Visa Consultancy",
