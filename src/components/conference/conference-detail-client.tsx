@@ -1,4 +1,3 @@
-
 // src/components/conference/conference-detail-client.tsx
 "use client";
 
@@ -63,7 +62,15 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
   }, [conferenceId, toast]);
 
   const handleDownloadBrochure = (brochureUrl: string, conferenceName: string) => {
-    if (!brochureUrl) return;
+    // Ensure brochureUrl is a string and is a data URI before proceeding
+    if (typeof brochureUrl !== 'string' || !brochureUrl.startsWith('data:')) {
+        toast({
+            title: 'Download Failed',
+            description: 'The brochure for this conference is not available for download.',
+            variant: 'destructive',
+        });
+        return;
+    }
 
     const link = document.createElement('a');
     link.href = brochureUrl;
@@ -71,9 +78,10 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
     const mimeTypeMatch = brochureUrl.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
     let fileExtension = 'file';
     if (mimeTypeMatch && mimeTypeMatch.length > 1) {
-        if (mimeTypeMatch[1] === 'application/pdf') fileExtension = 'pdf';
-        else if (mimeTypeMatch[1] === 'application/msword') fileExtension = 'doc';
-        else if (mimeTypeMatch[1] === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') fileExtension = 'docx';
+        const mimeType = mimeTypeMatch[1];
+        if (mimeType === 'application/pdf') fileExtension = 'pdf';
+        else if (mimeType === 'application/msword') fileExtension = 'doc';
+        else if (mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') fileExtension = 'docx';
     }
 
     link.download = `Brochure-${conferenceName.replace(/\s/g, '_')}.${fileExtension}`;
