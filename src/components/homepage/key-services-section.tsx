@@ -20,11 +20,13 @@ const services = [
         title: "Conference Management",
         description: "End-to-end support for organizing successful academic conferences."
     },
-    // {
-    //     icon: GraduationCap,
-    //     title: "Higher Studies Proposals",
-    //     description: "Guidance for crafting impactful PhD and Postdoctoral research proposals."
-    // },
+    /*
+    {
+        icon: GraduationCap,
+        title: "Higher Studies Proposals",
+        description: "Guidance for crafting impactful PhD and Postdoctoral research proposals."
+    },
+    */
     {
         icon: Award,
         title: "Visa Consultancy",
@@ -72,47 +74,53 @@ const subServices = [
 ]
 
 export function KeyServicesSection() {
-    const [isPlayerOpen, setIsPlayerOpen] = React.useState(false);
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    React.useEffect(() => {
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    // Play video when it comes into view
+                    videoElement.play().catch(error => {
+                        console.error("Video autoplay failed:", error);
+                        // Autoplay was prevented, we can't do much here without user interaction.
+                    });
+                } else {
+                    // Pause video when it goes out of view
+                    videoElement.pause();
+                }
+            },
+            {
+                threshold: 0.5, // Trigger when 50% of the video is visible
+            }
+        );
+
+        observer.observe(videoElement);
+
+        return () => {
+            if (videoElement) {
+                observer.unobserve(videoElement);
+            }
+        };
+    }, []);
 
     return (
         <section id="services" className="w-full py-10 md:py-20 lg:py-28 bg-background">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center gap-12">
-                    <Dialog open={isPlayerOpen} onOpenChange={setIsPlayerOpen}>
-                        <DialogTrigger asChild>
-                            <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg group cursor-pointer">
-                                <video 
-                                    src="/RC Video 3 (Video) FN.mp4" 
-                                    autoPlay 
-                                    loop 
-                                    muted 
-                                    playsInline
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
-                                    <div className="relative flex items-center justify-center">
-                                        <div className="absolute h-24 w-24 rounded-full bg-white/20 animate-ping" />
-                                        <CirclePlay className="h-20 w-20 text-white/70 backdrop-blur-sm bg-white/10 rounded-full p-2 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
-                                    </div>
-                                </div>
-                            </div>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-4xl p-0 border-0">
-                             <DialogHeader>
-                                <DialogTitle className="sr-only">Company promotional video</DialogTitle>
-                             </DialogHeader>
-                            {isPlayerOpen && (
-                                <video 
-                                    src="/RC Video 3 (Video) FN.mp4" 
-                                    autoPlay 
-                                    controls
-                                    className="w-full h-full rounded-lg"
-                                >
-                                    Your browser does not support the video tag.
-                                </video>
-                            )}
-                        </DialogContent>
-                    </Dialog>
+                    <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg group">
+                        <video 
+                            ref={videoRef}
+                            src="/RC Video 3 (Video) FN.mp4" 
+                            loop 
+                            muted // Start muted, unmute on interaction or autoplay policy
+                            playsInline
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                    </div>
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mt-8">
                         {subServices.map((service) => (
                            <div key={service.title} className="flex flex-col text-left">
