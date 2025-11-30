@@ -34,6 +34,7 @@ export const conferenceSchema = z.object({
   tracks: z.string().optional(),
   keywords: z.string().optional(),
   submissionInstructions: z.string().optional(),
+  paperTemplateUrl: z.any().optional(),
   submissionStartDate: z.date({ required_error: "Submission start date is required." }),
   submissionEndDate: z.date({ required_error: "Abstract submission deadline is required." }),
   fullPaperSubmissionDeadline: z.date().optional(),

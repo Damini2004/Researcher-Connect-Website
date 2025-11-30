@@ -90,6 +90,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   });
 
   const logoFileRef = form.register("conferenceLogo");
+  const brochureFileRef = form.register("paperTemplateUrl");
 
   const convertFileToBase64 = (file: File): Promise<string> => {
       return new Promise((resolve, reject) => {
@@ -144,9 +145,21 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         return;
     }
 
+    let brochureBase64: string | undefined = undefined;
+    if (values.paperTemplateUrl && values.paperTemplateUrl.length > 0) {
+      try {
+        brochureBase64 = await convertFileToBase64(values.paperTemplateUrl[0]);
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to read brochure file.", variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     const payload = {
         ...values,
         conferenceLogo: logoBase64,
+        paperTemplateUrl: brochureBase64
     };
 
     const result = await addConference(payload);
@@ -362,6 +375,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                         </FormItem>
                                     )}
                                 />
+                                 <FormField control={form.control} name="paperTemplateUrl" render={() => ( <FormItem> <FormLabel>Brochure / Paper Template (Optional)</FormLabel> <FormControl><Input type="file" accept=".pdf,.doc,.docx" {...brochureFileRef} /></FormControl> <FormDescription>Upload a brochure or paper template (PDF/DOC/DOCX).</FormDescription> <FormMessage /> </FormItem> )} />
                                 <FormField control={form.control} name="keywords" render={({ field }) => ( <FormItem> <FormLabel>Keywords or SDG Tags (Optional)</FormLabel> <FormControl><Input placeholder="AI, Machine Learning, SDG 9, ..." {...field} /></FormControl> <FormDescription>Comma-separated values.</FormDescription> <FormMessage /> </FormItem> )} />
                                 <FormField control={form.control} name="submissionInstructions" render={({ field }) => ( <FormItem> <FormLabel>Submission Instructions (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the submission guidelines..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                                 
