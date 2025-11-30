@@ -30,6 +30,7 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     // Use the validated data, but ensure we use the correct file URLs
     const dataToSave: { [key: string]: any } = {
         ...validationResult.data,
+        status: data.status, // Ensure status is explicitly included
         imageSrc: data.conferenceLogo, // The base64 string for the logo
         paperTemplateUrl: data.paperTemplateUrl, // The base64 string for the brochure
         createdAt: new Date(),
