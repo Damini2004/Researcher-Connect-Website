@@ -49,6 +49,8 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     const auth = getAuth(app);
+    
+    const superAdminEmails = ['superadmin@researcherconnect.com', 'researcher.connect@gmail.com'];
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
@@ -59,7 +61,7 @@ export default function LoginForm() {
         }
 
         // Check for super-admin first
-        if (user.email === 'superadmin@researcherconnect.com') {
+        if (superAdminEmails.includes(user.email)) {
             toast({
               title: "Login Successful",
               description: "Redirecting to super-admin dashboard...",
