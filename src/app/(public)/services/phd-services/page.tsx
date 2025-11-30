@@ -1,74 +1,82 @@
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookMarked, ChevronRight, Edit, Search, Lightbulb, ArrowRight } from "lucide-react";
-import {
-  FileText,
-  BookOpen,
-  Microscope,
-  BarChart3,
-  FileEdit,
-  Newspaper,
-  Presentation,
-  Handshake,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-
-
-const services = [
-  {
-    title: "Topic Selection & Proposal Writing",
-    description:
-      "Guidance in identifying impactful research areas and drafting high-quality proposals.",
-    icon: FileText,
-  },
-  {
-    title: "Literature Review Support",
-    description:
-      "Comprehensive review of scholarly sources to build a strong research foundation.",
-    icon: BookOpen,
-  },
-  {
-    title: "Research Methodology & Design",
-    description:
-      "Assistance with qualitative, quantitative, or mixed-method approaches.",
-    icon: Microscope,
-  },
-  {
-    title: "Data Collection & Analysis",
-    description:
-      "Support with datasets, statistical tools (SPSS, R, Python, MATLAB), and interpretation.",
-    icon: BarChart3,
-  },
-  {
-    title: "Thesis Writing & Editing",
-    description:
-      "Structuring, drafting, proofreading, and plagiarism control to meet academic standards.",
-    icon: FileEdit,
-  },
-  {
-    title: "Journal Publications",
-    description:
-      "Manuscript preparation and submission in Scopus, Web of Science, and credible indexed journals.",
-    icon: Newspaper,
-  },
-  {
-    title: "Defense Preparation",
-    description:
-      "Mock viva sessions, presentation design, and answering strategies for a confident defense.",
-    icon: Presentation,
-  },
-  {
-    title: "End-to-End Mentorship",
-    description:
-      "Continuous guidance from proposal approval to thesis submission and publication.",
-    icon: Handshake,
-  },
-];
-  
+import { redirect } from 'next/navigation';
 
 export default function PhDServicePage() {
+    // This function will redirect to a non-existent page,
+    // which will in turn trigger the custom not-found.tsx component.
+    redirect('/404-page-not-found');
+
+    /*
+    // Original Page Code - Preserved for future use
+
+    import { Button } from "@/components/ui/button";
+    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+    import { BookMarked, ChevronRight, Edit, Search, Lightbulb, ArrowRight } from "lucide-react";
+    import {
+      FileText,
+      BookOpen,
+      Microscope,
+      BarChart3,
+      FileEdit,
+      Newspaper,
+      Presentation,
+      Handshake,
+    } from "lucide-react";
+    import Image from "next/image";
+    import Link from "next/link";
+
+
+    const services = [
+      {
+        title: "Topic Selection & Proposal Writing",
+        description:
+          "Guidance in identifying impactful research areas and drafting high-quality proposals.",
+        icon: FileText,
+      },
+      {
+        title: "Literature Review Support",
+        description:
+          "Comprehensive review of scholarly sources to build a strong research foundation.",
+        icon: BookOpen,
+      },
+      {
+        title: "Research Methodology & Design",
+        description:
+          "Assistance with qualitative, quantitative, or mixed-method approaches.",
+        icon: Microscope,
+      },
+      {
+        title: "Data Collection & Analysis",
+        description:
+          "Support with datasets, statistical tools (SPSS, R, Python, MATLAB), and interpretation.",
+        icon: BarChart3,
+      },
+      {
+        title: "Thesis Writing & Editing",
+        description:
+          "Structuring, drafting, proofreading, and plagiarism control to meet academic standards.",
+        icon: FileEdit,
+      },
+      {
+        title: "Journal Publications",
+        description:
+          "Manuscript preparation and submission in Scopus, Web of Science, and credible indexed journals.",
+        icon: Newspaper,
+      },
+      {
+        title: "Defense Preparation",
+        description:
+          "Mock viva sessions, presentation design, and answering strategies for a confident defense.",
+        icon: Presentation,
+      },
+      {
+        title: "End-to-End Mentorship",
+        description:
+          "Continuous guidance from proposal approval to thesis submission and publication.",
+        icon: Handshake,
+      },
+    ];
+      
+
     return (
         <div className="bg-background">
             <section className="relative w-full h-[300px] bg-gray-800 text-white">
@@ -85,30 +93,30 @@ export default function PhDServicePage() {
             </section>
             
             <section className="w-full py-12 md:py-24 lg:py-32">
-  <div className="container max-w-7xl mx-auto px-4 md:px-6">
-    <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-      <Image
-        alt="PhD Journey"
-        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-        height="310"
-        src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?q=80&w=800&auto=format&fit=crop"
-        data-ai-hint="phd study"
-        width="550"
-      />
-      <div className="flex flex-col justify-center space-y-4">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">
-            Your Complete PhD Journey Support
-          </h2>
-          <p className="max-w-[600px] text-justify text-muted-foreground ">
-          At Researcher Connect, we understand that a PhD is more than just a degree—it is a journey of research, discovery, and academic contribution. To support scholars at every stage, we provide end-to-end PhD services, ensuring that students, faculty, and researchers receive the right guidance from the very beginning of their doctoral program to the successful defense and publication of their work.
-Our expert team assists in designing strong research proposals, developing methodologies, analyzing data, and preparing manuscripts for international journals. We also provide support for thesis writing, editing, formatting, plagiarism checks, and final submission. By integrating academic mentoring with publication consultancy, we make the doctoral journey smoother, more structured, and globally visible.
-</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+              <div className="container mx-auto px-4 md:px-6">
+                <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+                  <Image
+                    alt="PhD Journey"
+                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                    height="310"
+                    src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?q=80&w=800&auto=format&fit=crop"
+                    data-ai-hint="phd study"
+                    width="550"
+                  />
+                  <div className="flex flex-col justify-center space-y-4">
+                    <div className="space-y-2">
+                      <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">
+                        Your Complete PhD Journey Support
+                      </h2>
+                      <p className="max-w-[600px] text-justify text-muted-foreground ">
+                      At Researcher Connect, we understand that a PhD is more than just a degree—it is a journey of research, discovery, and academic contribution. To support scholars at every stage, we provide end-to-end PhD services, ensuring that students, faculty, and researchers receive the right guidance from the very beginning of their doctoral program to the successful defense and publication of their work.
+                    Our expert team assists in designing strong research proposals, developing methodologies, analyzing data, and preparing manuscripts for international journals. We also provide support for thesis writing, editing, formatting, plagiarism checks, and final submission. By integrating academic mentoring with publication consultancy, we make the doctoral journey smoother, more structured, and globally visible.
+                    </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
 
             <section className="py-16 md:py-24 bg-secondary/30">
@@ -121,7 +129,7 @@ Our expert team assists in designing strong research proposals, developing metho
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {services.map(service => (
-                            <Card key={service.title} className="text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <Card key={service.title} className="text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                                 <CardHeader className="items-center">
                                     <div className="p-4 bg-primary/10 rounded-full w-fit mb-3">
                                       <service.icon className="h-8 w-8 text-primary" />
@@ -143,4 +151,5 @@ Our expert team assists in designing strong research proposals, developing metho
             </section>
         </div>
     );
+    */
 }

@@ -1,3 +1,4 @@
+
 // src/app/(public)/services/author-services/page.tsx
 "use client";
 
@@ -130,9 +131,9 @@ export default function AuthorServicesPage() {
 
     return (
         <div className="bg-secondary/30">
-            <section className="relative w-full h-[500px] bg-gray-800 text-white">
+            <section className="relative w-full h-[300px] bg-gray-800 text-white">
                 <Image
-                    src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600&h=500&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600&h=300&auto=format&fit=crop"
                     alt="Team reviewing documents"
                     data-ai-hint="writing research"
                     fill

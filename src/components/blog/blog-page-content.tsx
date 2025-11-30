@@ -1,4 +1,3 @@
-
 // src/components/blog/blog-page-content.tsx
 "use client";
 
@@ -29,12 +28,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getCategories, BlogCategory } from "@/services/categoryService";
+import { Logo } from "../icons";
 
 export default function BlogPageContent() {
     const [allPosts, setAllPosts] = React.useState<BlogPost[]>([]);
     const [categories, setCategories] = React.useState<BlogCategory[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
     const [mainFeaturedArticle, setMainFeaturedArticle] = React.useState<BlogPost | null>(null);
     const [popularSearchTerm, setPopularSearchTerm] = React.useState("");
     const [popularCategoryFilter, setPopularCategoryFilter] = React.useState("all");
@@ -119,21 +118,8 @@ export default function BlogPageContent() {
 
     if (isLoading) {
         return (
-             <div className="h-screen w-full flex items-center justify-center">
-                <div className="space-y-4">
-                    <Skeleton className="h-8 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-8">
-                        <div className="lg:col-span-2 space-y-6">
-                            <Skeleton className="h-[400px] w-full" />
-                        </div>
-                        <div className="space-y-6">
-                            <Skeleton className="h-24 w-full" />
-                            <Skeleton className="h-24 w-full" />
-                            <Skeleton className="h-24 w-full" />
-                        </div>
-                    </div>
-                </div>
+             <div className="h-screen w-full flex items-center justify-center bg-background">
+                <Logo className="h-40 w-40 animate-pulse" />
             </div>
         );
     }
@@ -165,7 +151,7 @@ export default function BlogPageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2">
                                 {mainFeaturedArticle && (
-                                    <div className="group space-y-4">
+                                    <div className="group space-y-4 cursor-pointer" onClick={() => handleArticleClick(mainFeaturedArticle)}>
                                         <Image src={mainFeaturedArticle.imageSrc} alt={mainFeaturedArticle.title} width={800} height={450} className="w-full object-cover rounded-lg mb-4" data-ai-hint={mainFeaturedArticle.imageHint} />
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                                             <span>{(Array.isArray(mainFeaturedArticle.category) ? mainFeaturedArticle.category[0] || '' : mainFeaturedArticle.category).toUpperCase()}</span>
@@ -322,46 +308,6 @@ export default function BlogPageContent() {
                     )}
                 </div>
             </section>
-
-            <Dialog open={!!selectedPost} onOpenChange={(isOpen) => !isOpen && setSelectedPost(null)}>
-                <DialogContent className="sm:max-w-4xl h-[90vh] flex flex-col">
-                    {selectedPost && (
-                        <>
-                            <DialogHeader>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                  {(Array.isArray(selectedPost.category) ? selectedPost.category : [selectedPost.category]).map((cat) => (
-                                    <Badge key={cat} variant="secondary" className="w-fit">{cat.toUpperCase()}</Badge>
-                                  ))}
-                                </div>
-                                <DialogTitle className="text-2xl md:text-3xl font-extrabold tracking-tight">{selectedPost.title}</DialogTitle>
-                                <div className="flex items-center gap-6 pt-2 text-muted-foreground">
-                                    <div className="flex items-center gap-2">
-                                        <User className="h-4 w-4" />
-                                        <span className="text-sm">{selectedPost.author}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="h-4 w-4" />
-                                        <span className="text-sm">{selectedPost.date}</span>
-                                    </div>
-                                </div>
-                            </DialogHeader>
-                             <div className="relative w-full h-64 rounded-lg overflow-hidden my-4">
-                                <Image
-                                    src={selectedPost.imageSrc}
-                                    alt={selectedPost.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                            <ScrollArea className="flex-grow">
-                                <div className="pr-6">
-                                  <RenderHtmlContent htmlContent={selectedPost.content} />
-                                </div>
-                            </ScrollArea>
-                        </>
-                    )}
-                </DialogContent>
-            </Dialog>
         </div>
     );
 }

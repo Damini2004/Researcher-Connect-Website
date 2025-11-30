@@ -1,4 +1,3 @@
-// src/app/(public)/page.tsx
 'use client';
 
 import * as React from 'react';

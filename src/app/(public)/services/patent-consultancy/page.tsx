@@ -1,3 +1,4 @@
+
 // src/app/(public)/services/patent-consultancy/page.tsx
 "use client";
 
@@ -62,9 +63,9 @@ const patentServices = [
 export default function PatentConsultancyPage() {
     return (
         <div className="bg-secondary/30">
-            <section className="relative w-full h-[500px] bg-gray-800 text-white">
+            <section className="relative w-full h-[300px] bg-gray-800 text-white">
                 <Image
-                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&h=500&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&h=300&auto=format&fit=crop"
                     alt="Patent documents"
                     data-ai-hint="legal documents"
                     fill
@@ -97,7 +98,7 @@ export default function PatentConsultancyPage() {
                     alt="Patent illustration"
                     className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
                     height="310"
-                    src="/Patent-Drafting-Services-1.jpg"
+                    src="/patent.png"
                     data-ai-hint="patent idea"
                     width="550"
                   />
@@ -117,7 +118,7 @@ export default function PatentConsultancyPage() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {patentServices.map((service) => (
                             <Card key={service.title}>
-                                <CardHeader className="flex flex-row items-center gap-4">
+                                <CardHeader className="items-center">
                                     <service.icon className="h-6 w-6 text-primary" />
                                     <CardTitle className="text-lg">{service.title}</CardTitle>
                                 </CardHeader>

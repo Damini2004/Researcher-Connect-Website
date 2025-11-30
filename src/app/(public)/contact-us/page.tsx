@@ -22,7 +22,7 @@ const contactCards = [
     },
     {
         title: "Pune Office",
-        lines: ["Yashwin Society Pune India."],
+        lines: ["702, Westport Baner Pune Maharashtra India."],
         icon: MapPin,
     },
 ];

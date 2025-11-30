@@ -106,6 +106,7 @@ export default {
         'width-pulse': 'width-pulse 3s ease-in-out infinite',
         'dance': 'dance 0.5s ease-in-out infinite',
         'scroll-x': 'scroll-x 30s linear infinite',
+        'ping': 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
     },
   },

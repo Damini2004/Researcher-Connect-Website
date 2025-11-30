@@ -13,18 +13,20 @@ import {
   SidebarMenuBadge
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { LogOut, Settings, LayoutTemplate, Presentation, Tv, Newspaper, Briefcase, Inbox, Image as ImageIcon, HelpCircle } from "lucide-react";
+import { LogOut, Settings, LayoutTemplate, Presentation, Tv, Newspaper, Briefcase, Inbox, Image as ImageIcon, HelpCircle, UserCheck } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface SuperAdminSidebarProps {
+  pendingInquiriesCount?: number;
   pendingEnquiriesCount?: number;
 }
 
 const menuItems = [
   { href: "/super-admin/cms-pages", label: "CMS Pages", icon: LayoutTemplate },
   { href: "/super-admin/banners", label: "Banners", icon: ImageIcon },
-  { href: "/super-admin/inbox", label: "Inbox", icon: Inbox, badgeId: 'enquiries' },
+  { href: "/super-admin/inbox", label: "Inbox", icon: Inbox, badgeId: 'inquiries' },
+  { href: "/super-admin/profile-requests", label: "Profile Requests", icon: UserCheck, badgeId: 'enquiries' },
   { href: "/super-admin/conferences", label: "Conferences", icon: Presentation },
   { href: "/super-admin/webinars", label: "Webinars", icon: Tv },
   { href: "/super-admin/blogs", label: "Blogs", icon: Newspaper },
@@ -33,9 +35,10 @@ const menuItems = [
   { href: "/super-admin/settings", label: "Settings", icon: Settings },
 ];
 
-export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAdminSidebarProps) {
+export default function SuperAdminSidebar({ pendingInquiriesCount = 0, pendingEnquiriesCount = 0 }: SuperAdminSidebarProps) {
   const pathname = usePathname();
   const badgeClass = "bg-red-500 text-white";
+  const totalPending = pendingInquiriesCount + pendingEnquiriesCount;
 
   return (
     <Sidebar>
@@ -57,7 +60,10 @@ export default function SuperAdminSidebar({ pendingEnquiriesCount = 0 }: SuperAd
                   tooltip={item.label}
                 >
                   {item.label}
-                  {item.badgeId === 'enquiries' && pendingEnquiriesCount > 0 && (
+                  {item.badgeId === 'inquiries' && pendingInquiriesCount > 0 && (
+                    <SidebarMenuBadge className={badgeClass}>{pendingInquiriesCount}</SidebarMenuBadge>
+                  )}
+                   {item.badgeId === 'enquiries' && pendingEnquiriesCount > 0 && (
                     <SidebarMenuBadge className={badgeClass}>{pendingEnquiriesCount}</SidebarMenuBadge>
                   )}
                 </SidebarMenuButton>

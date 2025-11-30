@@ -29,6 +29,7 @@ import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import dynamic from 'next/dynamic';
 import { ScrollArea } from "../ui/scroll-area";
+import { Switch } from "../ui/switch";
 
 const RichTextEditorDynamic = dynamic(() => import('../ui/rich-text-editor'), { ssr: false });
 
@@ -69,6 +70,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
       title: "",
       shortTitle: "",
       tagline: "",
+      status: "active",
       venueName: "",
       country: "",
       aboutConference: "",
@@ -88,6 +90,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
   });
 
   const logoFileRef = form.register("conferenceLogo");
+  const brochureFileRef = form.register("paperTemplateUrl");
 
   const convertFileToBase64 = (file: File): Promise<string> => {
       return new Promise((resolve, reject) => {
@@ -142,9 +145,21 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
         return;
     }
 
+    let brochureBase64: string | undefined = undefined;
+    if (values.paperTemplateUrl && values.paperTemplateUrl.length > 0) {
+      try {
+        brochureBase64 = await convertFileToBase64(values.paperTemplateUrl[0]);
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to read brochure file.", variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     const payload = {
         ...values,
         conferenceLogo: logoBase64,
+        paperTemplateUrl: brochureBase64
     };
 
     const result = await addConference(payload);
@@ -260,6 +275,26 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                     </FormItem>
                                     )}
                                 />
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                        <div className="space-y-0.5">
+                                            <FormLabel className="text-base">Conference Status</FormLabel>
+                                            <FormDescription>
+                                                Inactive conferences will not be shown on the public site.
+                                            </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                                checked={field.value === 'active'}
+                                                onCheckedChange={(checked) => field.onChange(checked ? 'active' : 'inactive')}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                    )}
+                                />
                             </div>
                         </section>
                     )}
@@ -340,6 +375,7 @@ export default function AddConferenceForm({ onConferenceAdded }: AddConferenceFo
                                         </FormItem>
                                     )}
                                 />
+                                 <FormField control={form.control} name="paperTemplateUrl" render={() => ( <FormItem> <FormLabel>Brochure / Paper Template (Optional)</FormLabel> <FormControl><Input type="file" accept=".pdf,.doc,.docx" {...brochureFileRef} /></FormControl> <FormDescription>Upload a brochure or paper template (PDF/DOC/DOCX).</FormDescription> <FormMessage /> </FormItem> )} />
                                 <FormField control={form.control} name="keywords" render={({ field }) => ( <FormItem> <FormLabel>Keywords or SDG Tags (Optional)</FormLabel> <FormControl><Input placeholder="AI, Machine Learning, SDG 9, ..." {...field} /></FormControl> <FormDescription>Comma-separated values.</FormDescription> <FormMessage /> </FormItem> )} />
                                 <FormField control={form.control} name="submissionInstructions" render={({ field }) => ( <FormItem> <FormLabel>Submission Instructions (Optional)</FormLabel> <FormControl><Textarea placeholder="Detail the submission guidelines..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                                 

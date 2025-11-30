@@ -21,6 +21,9 @@ import { User, Lock, Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { Logo } from "../icons";
+import { getAuth, signInWithEmailAndPassword, AuthErrorCodes } from "firebase/auth";
+import { app } from "@/lib/firebase";
+import { getSubAdminByEmail } from "@/services/subAdminService";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email."),
@@ -45,22 +48,72 @@ export default function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
+    const auth = getAuth(app);
+    
+    const superAdminEmails = ['superadmin@researcherconnect.com', 'researcher.connect@gmail.com'];
 
-    if (values.email === 'superadmin@researcherconnect.com' && values.password === 'password') {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+        const user = userCredential.user;
+
+        if (!user || !user.email) {
+            throw new Error("User information not found after login.");
+        }
+
+        // Check for super-admin first
+        if (superAdminEmails.includes(user.email)) {
+            toast({
+              title: "Login Successful",
+              description: "Redirecting to super-admin dashboard...",
+            });
+            router.push(`/super-admin`);
+            return;
+        }
+
+        // If not super-admin, check if they are an approved sub-admin
+        const subAdminResult = await getSubAdminByEmail(user.email);
+
+        if (subAdminResult.success && subAdminResult.subAdmin?.status === 'approved') {
+             toast({
+              title: "Login Successful",
+              description: "Redirecting to your dashboard...",
+            });
+            // This will be the redirect for sub-admins in the future.
+            // For now, it also goes to super-admin for demonstration.
+            router.push(`/super-admin`);
+        } else {
+             toast({
+              title: "Access Denied",
+              description: "You do not have permission to access this dashboard. Please contact an administrator.",
+              variant: "destructive",
+            });
+             await auth.signOut();
+        }
+
+    } catch (error: any) {
+        let description = "An unexpected error occurred. Please try again.";
+        if (error.code) {
+            switch(error.code) {
+                case AuthErrorCodes.INVALID_PASSWORD:
+                case AuthErrorCodes.USER_DELETED:
+                case 'auth/invalid-credential':
+                    description = "Invalid email or password.";
+                    break;
+                case AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER:
+                    description = "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.";
+                    break;
+                default:
+                    description = error.message;
+            }
+        }
         toast({
-          title: "Login Successful",
-          description: "Redirecting to super-admin dashboard...",
-        });
-        router.push(`/super-admin`);
-    } else {
-         toast({
           title: "Login Failed",
-          description: "Invalid credentials for super admin.",
+          description: description,
           variant: "destructive",
         });
+    } finally {
+        setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   }
 
   return (

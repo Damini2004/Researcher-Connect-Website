@@ -1,9 +1,13 @@
 // src/components/homepage/key-services-section.tsx
+'use client';
+
+import * as React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones } from "lucide-react";
-import Image from "next/image";
+import { Cpu, Presentation, GraduationCap, Award, Briefcase, BookMarked, FileText, Shield, Users, Zap, Headphones, CirclePlay } from "lucide-react";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 
 const services = [
     {
@@ -16,11 +20,13 @@ const services = [
         title: "Conference Management",
         description: "End-to-end support for organizing successful academic conferences."
     },
+    /*
     {
         icon: GraduationCap,
         title: "Higher Studies Proposals",
         description: "Guidance for crafting impactful PhD and Postdoctoral research proposals."
     },
+    */
     {
         icon: Award,
         title: "Visa Consultancy",
@@ -31,11 +37,11 @@ const services = [
         title: "Internship Services",
         description: "Connecting talented students with valuable research internship opportunities."
     },
-    {
-        icon: BookMarked,
-        title: "PhD Services",
-        description: "Comprehensive support throughout your entire PhD journey."
-    },
+    // {
+    //     icon: BookMarked,
+    //     title: "PhD Services",
+    //     description: "Comprehensive support throughout your entire PhD journey."
+    // },
     {
         icon: FileText,
         title: "Author Services",
@@ -68,19 +74,52 @@ const subServices = [
 ]
 
 export function KeyServicesSection() {
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    React.useEffect(() => {
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    // Play video when it comes into view
+                    videoElement.play().catch(error => {
+                        console.error("Video autoplay failed:", error);
+                        // Autoplay was prevented, we can't do much here without user interaction.
+                    });
+                } else {
+                    // Pause video when it goes out of view
+                    videoElement.pause();
+                }
+            },
+            {
+                threshold: 0.5, // Trigger when 50% of the video is visible
+            }
+        );
+
+        observer.observe(videoElement);
+
+        return () => {
+            if (videoElement) {
+                observer.unobserve(videoElement);
+            }
+        };
+    }, []);
+
     return (
         <section id="services" className="w-full py-10 md:py-20 lg:py-28 bg-background">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center gap-12">
-                    <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg">
-                        <Image src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200&h=675&auto=format&fit=crop" alt="Business Meeting" fill className="object-cover" data-ai-hint="business meeting" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-                                <Button variant="outline" size="icon" className="h-20 w-20 rounded-full bg-white/30 backdrop-blur-sm border-white/50 text-white hover:bg-white/50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                </Button>
-                            </Link>
-                        </div>
+                    <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-lg group">
+                        <video 
+                            ref={videoRef}
+                            src="/RC Video 3 (Video) FN.mp4" 
+                            loop 
+                            muted // Start muted, unmute on interaction or autoplay policy
+                            playsInline
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
                     </div>
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mt-8">
                         {subServices.map((service) => (
@@ -109,7 +148,7 @@ export function KeyServicesSection() {
 
                 <Card className="mt-12">
                   <CardContent className="p-10">
-                    <div className="mx-auto grid items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4">
+                    <div className="mx-auto grid items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3">
                         {services.map((service) => (
                             <div key={service.title} className="flex flex-col items-center text-center space-y-3">
                                 <div className="p-4 rounded-full border-2 border-gray-200 w-fit">

@@ -1,4 +1,3 @@
-
 // src/services/conferenceService.ts
 'use server';
 
@@ -10,6 +9,7 @@ import { z } from 'zod';
 
 interface AddConferencePayload extends AddConferenceData {
     conferenceLogo: string;
+    paperTemplateUrl?: string; // Can be a base64 string
 }
 
 export async function addConference(data: AddConferencePayload): Promise<{ success: boolean; message: string; }> {
@@ -17,6 +17,7 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     // We don't validate file objects here, just the string URLs
     const schemaForService = conferenceSchema.extend({
         conferenceLogo: z.string(),
+        paperTemplateUrl: z.string().optional(),
     });
     
     const validationResult = schemaForService.safeParse(data);
@@ -29,7 +30,9 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     // Use the validated data, but ensure we use the correct file URLs
     const dataToSave: { [key: string]: any } = {
         ...validationResult.data,
-        imageSrc: data.conferenceLogo, // The base64 string
+        status: data.status, // Ensure status is explicitly included
+        imageSrc: data.conferenceLogo, // The base64 string for the logo
+        paperTemplateUrl: data.paperTemplateUrl, // The base64 string for the brochure
         createdAt: new Date(),
     };
     
@@ -84,6 +87,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         title: data.title || "N/A",
         shortTitle: data.shortTitle || "N/A",
         tagline: data.tagline,
+        status: data.status || 'active',
         date: dateRange,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
@@ -133,11 +137,17 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
     };
 }
 
-export async function getConferences(): Promise<Conference[]> {
+export async function getConferences(options: { activeOnly?: boolean } = {}): Promise<Conference[]> {
     try {
         const q = query(collection(db, "conferences"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(mapDocToConference);
+        let conferences = querySnapshot.docs.map(mapDocToConference);
+
+        if (options.activeOnly) {
+            conferences = conferences.filter(c => c.status === 'active');
+        }
+
+        return conferences;
     } catch (error) {
         console.error("Error fetching conferences from service: ", error);
         throw error;
@@ -167,7 +177,7 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
     }
 }
 
-export async function updateConference(id: string, data: Partial<AddConferenceData> & { imageSrc?: string }): Promise<{ success: boolean; message: string }> {
+export async function updateConference(id: string, data: Partial<AddConferenceData> & { imageSrc?: string, paperTemplateUrl?: string }): Promise<{ success: boolean; message: string }> {
     try {
         const validationResult = conferenceSchema.partial().safeParse(data);
         if (!validationResult.success) {
@@ -184,6 +194,11 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
         if (data.imageSrc) {
             dataToSave.imageSrc = data.imageSrc;
         }
+
+        if (data.paperTemplateUrl) {
+            dataToSave.paperTemplateUrl = data.paperTemplateUrl;
+        }
+
 
         // Remove file objects if they exist
         delete dataToSave.conferenceLogo;
@@ -212,4 +227,17 @@ export async function deleteConference(id: string): Promise<{ success: boolean; 
         const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
         return { success: false, message: `Failed to delete conference: ${message}` };
     }
+}
+
+
+export async function updateConferenceStatus(id: string, status: 'active' | 'inactive'): Promise<{ success: boolean; message: string }> {
+  try {
+    const conferenceRef = doc(db, "conferences", id);
+    await updateDoc(conferenceRef, { status });
+    return { success: true, message: "Conference status updated." };
+  } catch (error) {
+    console.error("Error updating conference status:", error);
+    const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { success: false, message: `Failed to update status: ${message}` };
+  }
 }
