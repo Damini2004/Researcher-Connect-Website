@@ -102,7 +102,7 @@ export default function CollaborationServicesPage() {
             {/* Hero Section */}
             <section className="relative w-full h-[400px] bg-primary/10 flex items-center justify-center text-center px-4">
                 <Image
-                    src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1600&h=400&auto=format&fit=crop"
+                    src="/Collaboration.jpg"
                     alt="International students collaborating"
                     data-ai-hint="collaboration students"
                     fill
@@ -124,7 +124,7 @@ export default function CollaborationServicesPage() {
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="relative aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                             <Image
-                                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&h=800&auto=format&fit=crop"
+                                src="/centralcollab.jpg"
                                 alt="Team working together"
                                 data-ai-hint="teamwork project"
                                 fill
@@ -194,7 +194,7 @@ export default function CollaborationServicesPage() {
                         </div>
                          <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
                              <Image
-                                src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=500&h=500&auto=format&fit=crop"
+                                src="/partnerwithus.png"
                                 alt="Team planning"
                                 data-ai-hint="team planning"
                                 fill
