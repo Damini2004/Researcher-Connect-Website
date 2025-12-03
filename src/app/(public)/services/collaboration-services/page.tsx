@@ -18,32 +18,32 @@ const partnershipServices = [
         title: "Faculty Exchange & Visiting Fellowships",
         description: "We coordinate MoUs, visiting-faculty placements, joint supervision, and short-term/long-term teaching & research assignments."
     },
-    {
+    { 
         icon: Handshake,
         title: "Student Exchange & Mobility Programs",
         description: "Facilitate semester/year exchange, summer-school placements, joint supervision, and cross-institution mentorship."
     },
-    {
+    { 
         icon: Microscope,
         title: "Joint Research & Co-Authored Publications",
         description: "Assist in forming research consortia, identifying funding, co-author matching, and collaborative manuscript development."
     },
-    {
+    { 
         icon: Book,
         title: "Publication & Editorial Support",
         description: "Guidance on journal selection, manuscript structuring, formatting, and compliance for Scopus & WoS indexing."
     },
-    {
+    { 
         icon: Zap,
         title: "Grant Writing & Funding Collaboration",
         description: "Help draft proposals for national/international grants and coordinate multi-institution submissions."
     },
-    {
+    { 
         icon: Speaker,
         title: "Conference & Workshop Collaboration",
         description: "Organize inter-university conferences, workshops, webinars, and joint academic events to foster collaboration."
     },
-    {
+    { 
         icon: Building2,
         title: "Institutional Partnership & MoU Facilitation",
         description: "Help universities set up formal agreements (MoUs), define scope, and handle legal/administrative formalities."
@@ -247,28 +247,24 @@ export default function CollaborationServicesPage() {
                         </p>
                     </div>
                     <div className="max-w-5xl mx-auto">
-                        <Card>
-                            <CardContent className="p-0">
-                                <div className="overflow-x-auto">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead className="font-bold w-[30%]">Service Category</TableHead>
-                                                <TableHead className="font-bold">What We Offer</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {portfolioData.map((item, index) => (
-                                                <TableRow key={index} className={index % 2 === 0 ? '' : 'bg-muted/50'}>
-                                                    <TableCell className="font-semibold">{item.category}</TableCell>
-                                                    <TableCell>{item.offerings}</TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <div className="border rounded-lg overflow-hidden">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="font-bold w-[30%]">Service Category</TableHead>
+                                        <TableHead className="font-bold">What We Offer</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {portfolioData.map((item, index) => (
+                                        <TableRow key={index} className={index % 2 === 0 ? '' : 'bg-muted/50'}>
+                                            <TableCell className="font-semibold">{item.category}</TableCell>
+                                            <TableCell>{item.offerings}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
                     </div>
                 </div>
             </section>
