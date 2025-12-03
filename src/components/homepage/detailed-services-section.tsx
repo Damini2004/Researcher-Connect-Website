@@ -35,11 +35,11 @@ const services = [
   },
   */
   {
-    title: "Foreign Visa Services",
+    title: "Collaboration Services",
     description:
       "We simplify the EB-1 visa process for researchers of extraordinary ability by providing comprehensive, tailored guidance. Our services begin with a thorough eligibility assessment to identify the strongest qualification categories, followed by strategic planning to present achievements effectively. We assist in assembling key evidence, crafting compelling recommendation letters, and structuring portfolios that highlight international recognition, publications, awards, patents, and contributions to the field.",
     imageUrl:
-      "/visa.png",
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "professional career",
     link: "/services/visa-consultancy",
   },

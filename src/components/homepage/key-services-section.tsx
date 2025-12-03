@@ -29,7 +29,7 @@ const services = [
     */
     {
         icon: Award,
-        title: "Visa Consultancy",
+        title: "Collaboration Services",
         description: "Expert assistance for navigating the EB-1 visa application process."
     },
     {
