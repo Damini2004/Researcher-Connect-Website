@@ -107,7 +107,7 @@ export default function CollaborationServicesPage() {
                     alt="International students collaborating"
                     data-ai-hint="collaboration students"
                     fill
-                    className="object-cover opacity-30"
+                    className="object-cover"
                 />
                 <div className="relative z-10 text-white">
                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
