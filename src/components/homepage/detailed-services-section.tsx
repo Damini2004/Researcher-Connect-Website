@@ -122,6 +122,9 @@ export function DetailedServicesSection() {
               </div>
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold">{service.title}</h3>
+                 {service.title === "Collaboration Services" && (
+                  <h4 className="text-lg font-medium text-muted-foreground">Easy Collaboration with other International Universities</h4>
+                )}
                 <p className="text-muted-foreground text-justify">{service.description}</p>
                 <Button variant="link" className="p-0 h-auto" asChild>
                   <Link href={service.link}>
