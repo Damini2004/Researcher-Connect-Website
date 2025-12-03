@@ -177,7 +177,7 @@ export default function AuthorServicesPage() {
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold tracking-tight">Our Publication Support Services</h2>
+                        <h2 className="text-3xl font-bold tracking-tight">Author Services</h2>
                         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
                             We provide a focused consultancy to help you disseminate your research through high-impact publications.
                         </p>
