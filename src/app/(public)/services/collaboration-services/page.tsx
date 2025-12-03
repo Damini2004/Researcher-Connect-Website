@@ -61,7 +61,7 @@ const whyPartnerPoints = [
 const workflowSteps = [
     { number: "01", title: "Consultation & Needs Assessment", description: "Understand university/researcher goals (faculty/student exchange, research collaboration, etc.)." },
     { number: "02", title: "Partner Matching & MoU Drafting", description: "Identify potential partner institutions; draft and finalize Memoranda of Understanding (MoUs)." },
-    { number: "03, title: "Coordination & Logistics", description: "Handle administrative tasks, documentation, exchange scheduling, and supervision assignment." },
+    { number: "03", title: "Coordination & Logistics", description: "Handle administrative tasks, documentation, exchange scheduling, and supervision assignment." },
     { number: "04", title: "Research & Collaboration Execution", description: "Support planning and execution of joint research, co-supervised theses, and exchanges." },
     { number: "05", title: "Manuscript & Publication Support", description: "Assist with writing, editing, journal selection, submission, and peer-review responses." },
     { number: "06", title: "Reporting & Future Planning", description: "Provide summary reports, evaluate outcomes, and plan further collaborations." }
