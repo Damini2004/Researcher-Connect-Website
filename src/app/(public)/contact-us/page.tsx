@@ -30,7 +30,7 @@ const contactCards = [
 const socialLinks = [
     { href: "https://www.linkedin.com/company/researcher-connect/", icon: Linkedin },
     { href: "https://www.instagram.com/researcher_connect?igsh=MTRhbjZ4dHczcHBrbw==", icon: Instagram },
-    { href: "https://www.facebook.com/researcherconnect.net", icon: Facebook },
+    { href: "https://www.facebook.com/profile.php?id=61583580994300", icon: Facebook },
     { href: "mailto:contact@researcherconnect.com", icon: Mail },
 ];
 
