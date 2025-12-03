@@ -1,6 +1,7 @@
 // src/app/(public)/services/collaboration-services/page.tsx
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Check, ArrowRight, Book, Building2, Briefcase, Globe2, Microscope, Speaker, Handshake, Users, Zap, FileText } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,6 +66,33 @@ const workflowSteps = [
     { number: "04", title: "Research & Collaboration Execution", description: "Support planning and execution of joint research, co-supervised theses, and exchanges." },
     { number: "05", title: "Manuscript & Publication Support", description: "Assist with writing, editing, journal selection, submission, and peer-review responses." },
     { number: "06", title: "Reporting & Future Planning", description: "Provide summary reports, evaluate outcomes, and plan further collaborations." }
+];
+
+const portfolioData = [
+    {
+        category: "Faculty & Student Exchange",
+        offerings: "Visiting fellowships, semester/year exchange, guest lectures, joint supervision"
+    },
+    {
+        category: "Joint Research & Publications",
+        offerings: "Co-authored papers, multi-centre research projects, grant consortium support"
+    },
+    {
+        category: "Editorial & Publication Support",
+        offerings: "Journal selection, manuscript prep, formatting, peer-review support, indexing consultancy"
+    },
+    {
+        category: "Events & Workshops",
+        offerings: "Inter-university conferences, seminars, webinars, summer schools, guest lectures"
+    },
+    {
+        category: "Institutional Partnerships",
+        offerings: "MoU drafting, legal-administrative support, collaboration agreement facilitation"
+    },
+    {
+        category: "Funding & Grant Support",
+        offerings: "Proposal writing, multi-institution grant coordination, budget & compliance support"
+    }
 ];
 
 
@@ -207,6 +235,40 @@ export default function CollaborationServicesPage() {
                         </div>
                     </div>
                  </div>
+            </section>
+            
+            {/* New Portfolio Table Section */}
+            <section className="w-full py-16 md:py-24">
+                <div className="container px-4 md:px-6">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold tracking-tight">Our Services Portfolio</h2>
+                        <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                           A summary of our comprehensive collaboration services.
+                        </p>
+                    </div>
+                    <Card>
+                        <CardContent className="p-0">
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="font-bold w-[30%]">Service Category</TableHead>
+                                            <TableHead className="font-bold">What We Offer</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {portfolioData.map((item, index) => (
+                                            <TableRow key={index} className={index % 2 === 0 ? '' : 'bg-muted/50'}>
+                                                <TableCell className="font-semibold">{item.category}</TableCell>
+                                                <TableCell>{item.offerings}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
             </section>
         </div>
     );
