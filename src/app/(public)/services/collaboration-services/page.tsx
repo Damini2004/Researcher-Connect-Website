@@ -1,3 +1,4 @@
+
 // src/app/(public)/services/collaboration-services/page.tsx
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -106,13 +107,13 @@ export default function CollaborationServicesPage() {
                     alt="International students collaborating"
                     data-ai-hint="collaboration students"
                     fill
-                    className="object-cover"
+                    className="object-cover opacity-30"
                 />
-                <div className="relative z-10">
+                <div className="relative z-10 text-white">
                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                        Inter-University Collaboration
                     </h1>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                    <p className="mt-4 text-lg text-white/80 max-w-3xl mx-auto">
                         From Connection to Collaboration
                     </p>
                 </div>
