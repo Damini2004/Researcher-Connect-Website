@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, ChevronRight, Award, BookOpen, UserCheck, ArrowRight,Trophy,
@@ -81,7 +80,7 @@ const comparisonData = [
 ];
 
 
-export default function VisaConsultancyPage() {
+export default function CollaborationServicesPage() {
     return (
         <div>
             <section className="relative w-full h-[300px] bg-gray-800 text-white">
@@ -93,7 +92,7 @@ export default function VisaConsultancyPage() {
                     className="object-cover opacity-20"
                 />
                 <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
-                    <h1 className="text-5xl font-extrabold tracking-tight">Visa Consultancy</h1>
+                    <h1 className="text-5xl font-extrabold tracking-tight">Collaboration Services</h1>
                 </div>
             </section>
 
@@ -111,6 +110,7 @@ export default function VisaConsultancyPage() {
                         <div className="flex flex-col justify-center space-y-4">
                             <div className="space-y-2">
                                 <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl">Visa Support for Global Talent Programs</h2>
+                                <h3 className="text-lg font-medium text-muted-foreground">Easy Collaboration with other International Universities</h3>
                                 <p className="max-w-[600px] text-muted-foreground text-justify">
                                 At <b>Researcher Connect</b> , we guide researchers, academics, and innovators to secure extraordinary ability and global talent visas in countries such as the USA (EB-1A), UK (Global Talent), Australia (Global Talent Independent), Canada, France, UAE, and Singapore. We curate and present your evidence—publications, citations, awards, peer-review service, patents, international impact, and leadership—so it maps cleanly to each country’s criteria. From research-focused statements of impact to referee letters, we structure every document for clarity, credibility, and relevance. Our team combines academic insight with precise documentation strategy to position you as a leader in your field and strengthen your case for long-term residency or work pathways. (Information provided is general support content and not legal advice; country criteria evolve—always review official guidance alongside our documentation playbooks.)                            </p>
                             </div>

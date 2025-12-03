@@ -52,15 +52,8 @@ const servicesLinks = [
     label: "Conference Management",
     learnMore: "Learn more about Conference Management",
   },
-  /*
   {
-    href: "/services/higher-studies",
-    label: "Higher Studies Proposals",
-    learnMore: "Learn more about Higher Studies",
-  },
-  */
-  {
-    href: "/services/visa-consultancy",
+    href: "/services/collaboration-services",
     label: "Collaboration Services",
     learnMore: "Learn more about Collaboration Services",
   },
@@ -69,11 +62,6 @@ const servicesLinks = [
     label: "Internship Services",
     learnMore: "Learn more about Internship Services",
   },
-  // {
-  //   href: "/services/phd-services",
-  //   label: "PhD Services",
-  //   learnMore: "Learn more about PhD Services",
-  // },
   {
     href: "/services/author-services",
     label: "Author Services",
