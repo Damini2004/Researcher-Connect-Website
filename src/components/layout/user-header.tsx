@@ -61,8 +61,8 @@ const servicesLinks = [
   */
   {
     href: "/services/visa-consultancy",
-    label: "Visa Consultancy",
-    learnMore: "Learn more about Visa Consultancy",
+    label: "Collaboration Services",
+    learnMore: "Learn more about Collaboration Services",
   },
   {
     href: "/internship",

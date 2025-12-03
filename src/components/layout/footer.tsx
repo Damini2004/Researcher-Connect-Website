@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Logo } from "@/components/icons";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,7 @@ const servicesLinks = [
     /*
     { href: "/services/higher-studies", label: "Higher Studies Proposals" },
     */
-    { href: "/services/visa-consultancy", label: "Visa Consultancy" },
+    { href: "/services/visa-consultancy", label: "Collaboration Services" },
     { href: "/internship", label: "Internship Services" },
     // { href: "/services/phd-services", label: "PhD Services" },
     { href: "/services/author-services", label: "Author Services" },
