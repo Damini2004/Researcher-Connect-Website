@@ -246,28 +246,30 @@ export default function CollaborationServicesPage() {
                            A summary of our comprehensive collaboration services.
                         </p>
                     </div>
-                    <Card>
-                        <CardContent className="p-0">
-                            <div className="overflow-x-auto">
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead className="font-bold w-[30%]">Service Category</TableHead>
-                                            <TableHead className="font-bold">What We Offer</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {portfolioData.map((item, index) => (
-                                            <TableRow key={index} className={index % 2 === 0 ? '' : 'bg-muted/50'}>
-                                                <TableCell className="font-semibold">{item.category}</TableCell>
-                                                <TableCell>{item.offerings}</TableCell>
+                    <div className="max-w-5xl mx-auto">
+                        <Card>
+                            <CardContent className="p-0">
+                                <div className="overflow-x-auto">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead className="font-bold w-[30%]">Service Category</TableHead>
+                                                <TableHead className="font-bold">What We Offer</TableHead>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </div>
-                        </CardContent>
-                    </Card>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {portfolioData.map((item, index) => (
+                                                <TableRow key={index} className={index % 2 === 0 ? '' : 'bg-muted/50'}>
+                                                    <TableCell className="font-semibold">{item.category}</TableCell>
+                                                    <TableCell>{item.offerings}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </section>
         </div>
