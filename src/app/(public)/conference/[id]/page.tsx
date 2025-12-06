@@ -1,4 +1,3 @@
-
 // src/app/(public)/conference/[id]/page.tsx
 import * as React from "react";
 import { getConferenceById } from "@/services/conferenceService";

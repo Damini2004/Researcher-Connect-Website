@@ -1,4 +1,3 @@
-
 // src/components/conference/conference-detail-client.tsx
 "use client";
 
