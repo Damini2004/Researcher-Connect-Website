@@ -13,22 +13,22 @@ export function cn(...inputs: ClassValue[]) {
 export function getCurrentDateInIndia(): Date {
   const now = new Date();
   
-  // Get the current date parts in the Indian timezone
-  const formatter = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kolkata',
+  const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-  });
-
-  const parts = formatter.formatToParts(now);
-  const year = parseInt(parts.find(p => p.type === 'year')!.value, 10);
-  const month = parseInt(parts.find(p => p.type === 'month')!.value, 10);
-  const day = parseInt(parts.find(p => p.type === 'day')!.value, 10);
-
-  // Construct a new Date object representing midnight on that day in the local timezone of the server,
-  // then create the correct IST date string. This avoids UTC conversion issues.
-  const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T00:00:00.000+05:30`;
+    timeZone: 'Asia/Kolkata',
+    hour12: false,
+  };
   
-  return new Date(dateString);
+  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const parts = formatter.formatToParts(now);
+  
+  const year = parseInt(parts.find(p => p.type === 'year')?.value || '1970', 10);
+  const month = parseInt(parts.find(p => p.type === 'month')?.value || '1', 10);
+  const day = parseInt(parts.find(p => p.type === 'day')?.value || '1', 10);
+
+  // Return a new Date object in UTC at midnight for that specific date in India.
+  // This avoids timezone complexities when querying Firestore, which stores Timestamps in UTC.
+  return new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
 }
