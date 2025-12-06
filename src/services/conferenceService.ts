@@ -1,3 +1,4 @@
+
 // src/services/conferenceService.ts
 'use server';
 
@@ -7,6 +8,11 @@ import { z } from 'zod';
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
 import { format } from 'date-fns';
 
+/**
+ * Safely converts various date-like fields from Firestore into a JavaScript Date object.
+ * Handles Timestamps, ISO strings, and existing Date objects.
+ * Returns null if the field is invalid or cannot be parsed.
+ */
 const getJSDate = (field: any): Date | null => {
     if (!field) return null;
     if (field instanceof Timestamp) return field.toDate();
@@ -15,14 +21,19 @@ const getJSDate = (field: any): Date | null => {
       const d = new Date(field);
       if (!isNaN(d.getTime())) return d;
     }
+    // Handle Firestore Timestamps that have been serialized to objects
     if (typeof field === 'object' && field.seconds !== undefined && field.nanoseconds !== undefined) {
       return new Timestamp(field.seconds, field.nanoseconds).toDate();
     }
     return null;
 };
 
-const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData, id: string): Conference => {
-  const data = typeof docSnap.data === 'function' ? docSnap.data() : docSnap;
+/**
+ * A centralized and robust function to map a Firestore document to the Conference type.
+ * This handles all date parsing and formatting in one place to ensure consistency.
+ */
+const mapDocToConference = (docData: DocumentData, id: string): Conference => {
+  const data = docData;
 
   const startDate = getJSDate(data.startDate);
   const endDate = getJSDate(data.endDate);
@@ -98,20 +109,21 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
   try {
     const validatedData = conferenceSchema.parse(data);
 
+    // Convert all date objects to Firestore Timestamps before saving
     const dataToSave: { [key: string]: any } = {
         ...validatedData,
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
-        createdAt: new Date().toISOString(),
-        startDate: validatedData.startDate?.toISOString() || null,
-        endDate: validatedData.endDate?.toISOString() || null,
-        submissionStartDate: validatedData.submissionStartDate?.toISOString() || null,
-        submissionEndDate: validatedData.submissionEndDate?.toISOString() || null,
-        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline?.toISOString() || null,
-        registrationDeadline: validatedData.registrationDeadline?.toISOString() || null,
+        createdAt: serverTimestamp(),
+        startDate: validatedData.startDate ? Timestamp.fromDate(validatedData.startDate) : null,
+        endDate: validatedData.endDate ? Timestamp.fromDate(validatedData.endDate) : null,
+        submissionStartDate: validatedData.submissionStartDate ? Timestamp.fromDate(validatedData.submissionStartDate) : null,
+        submissionEndDate: validatedData.submissionEndDate ? Timestamp.fromDate(validatedData.submissionEndDate) : null,
+        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? Timestamp.fromDate(validatedData.fullPaperSubmissionDeadline) : null,
+        registrationDeadline: validatedData.registrationDeadline ? Timestamp.fromDate(validatedData.registrationDeadline) : null,
     };
     
-    delete dataToSave.conferenceLogo;
+    delete dataToSave.conferenceLogo; // Remove the file object
 
     await addDoc(collection(db, 'conferences'), dataToSave);
     return { success: true, message: 'Conference added successfully!' };
@@ -159,6 +171,7 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : "An unexpected error occurred.";
+    console.error(`Error fetching conference by ID (${id}):`, message);
     return { success: false, message: `Failed to fetch conference: ${message}` };
   }
 }
@@ -170,15 +183,17 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
         
         const dataToUpdate: { [key: string]: any } = {
             ...validatedData,
+            updatedAt: serverTimestamp(),
         };
+        
+        // Convert dates to Timestamps before updating
+        if (validatedData.startDate) dataToUpdate.startDate = Timestamp.fromDate(validatedData.startDate);
+        if (validatedData.endDate) dataToUpdate.endDate = Timestamp.fromDate(validatedData.endDate);
+        if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = Timestamp.fromDate(validatedData.submissionStartDate);
+        if (validatedData.submissionEndDate) dataToUpdate.submissionEndDate = Timestamp.fromDate(validatedData.submissionEndDate);
+        if (validatedData.fullPaperSubmissionDeadline) dataToUpdate.fullPaperSubmissionDeadline = Timestamp.fromDate(validatedData.fullPaperSubmissionDeadline);
+        if (validatedData.registrationDeadline) dataToUpdate.registrationDeadline = Timestamp.fromDate(validatedData.registrationDeadline);
 
-        if (validatedData.startDate) dataToUpdate.startDate = validatedData.startDate.toISOString();
-        if (validatedData.endDate) dataToUpdate.endDate = validatedData.endDate.toISOString();
-        if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = validatedData.submissionStartDate.toISOString();
-        if (validatedData.submissionEndDate) dataToUpdate.submissionEndDate = validatedData.submissionEndDate.toISOString();
-        if (validatedData.fullPaperSubmissionDeadline) dataToUpdate.fullPaperSubmissionDeadline = validatedData.fullPaperSubmissionDeadline.toISOString();
-        if (validatedData.registrationDeadline) dataToUpdate.registrationDeadline = validatedData.registrationDeadline.toISOString();
-        dataToUpdate.updatedAt = new Date().toISOString();
 
         if (data.imageSrc) {
             dataToUpdate.imageSrc = data.imageSrc;
@@ -222,3 +237,5 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
         return { success: false, message: `Failed to update status: ${message}` };
     }
 }
+
+    
