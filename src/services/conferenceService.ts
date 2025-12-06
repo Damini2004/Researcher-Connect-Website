@@ -29,19 +29,19 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
 
     const validatedData = validationResult.data;
     
+    // Convert all dates to ISO strings before saving
     const dataToSave: { [key: string]: any } = {
         ...validatedData,
         status: validatedData.status,
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
-        createdAt: new Date(),
-        // Ensure all dates are standard JS Date objects before sending to Firestore
-        startDate: new Date(validatedData.startDate),
-        endDate: new Date(validatedData.endDate),
-        submissionStartDate: new Date(validatedData.submissionStartDate),
-        submissionEndDate: new Date(validatedData.submissionEndDate),
-        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? new Date(validatedData.fullPaperSubmissionDeadline) : null,
-        registrationDeadline: validatedData.registrationDeadline ? new Date(validatedData.registrationDeadline) : null,
+        createdAt: new Date().toISOString(),
+        startDate: validatedData.startDate.toISOString(),
+        endDate: validatedData.endDate.toISOString(),
+        submissionStartDate: validatedData.submissionStartDate.toISOString(),
+        submissionEndDate: validatedData.submissionEndDate.toISOString(),
+        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? validatedData.fullPaperSubmissionDeadline.toISOString() : null,
+        registrationDeadline: validatedData.registrationDeadline ? validatedData.registrationDeadline.toISOString() : null,
     };
     
     delete dataToSave.conferenceLogo;
@@ -62,28 +62,16 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
 const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
     const data = docSnap.data();
 
-    // A more robust date parsing function
-    const getJSDate = (field: any): Date | undefined => {
-        if (!field) return undefined;
-        if (typeof field.toDate === 'function') {
+    const getJSDate = (field: any): Date | null => {
+        if (!field) return null;
+        if (typeof field.toDate === 'function') { // Firestore Timestamp
             return field.toDate();
         }
-        if (field instanceof Date) {
-            return field;
-        }
-        if (typeof field === 'string') {
-            const date = new Date(field);
-            if (!isNaN(date.getTime())) {
-                return date;
-            }
-        }
-        if (typeof field === 'object' && field.seconds) {
-            return new Date(field.seconds * 1000 + (field.nanoseconds || 0) / 1000000);
-        }
-        return undefined;
+        const date = new Date(field); // Handles ISO strings and JS Date objects
+        return isNaN(date.getTime()) ? null : date;
     };
 
-    const startDate = getJSDate(data.startDate) || new Date(0); // Use epoch as fallback
+    const startDate = getJSDate(data.startDate) || new Date(0);
     const endDate = getJSDate(data.endDate) || new Date(0);
     const submissionStartDate = getJSDate(data.submissionStartDate) || new Date(0);
     const submissionEndDate = getJSDate(data.submissionEndDate) || new Date(0);
@@ -136,7 +124,6 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         createdAt: createdAt.toISOString(),
         dateObject: startDate,
         location,
-        // Deprecated fields, kept for compatibility with old data if needed
         description: data.description || data.aboutConference || "",
         fullDescription: data.fullDescription || "",
         venueAddress: data.venueAddress || "",
@@ -205,7 +192,7 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
         const validatedData = validationResult.data;
         const dataToSave: { [key: string]: any } = {
             ...validatedData,
-            updatedAt: new Date(),
+            updatedAt: new Date().toISOString(),
         };
 
         if (data.imageSrc) {
@@ -216,13 +203,13 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             dataToSave.paperTemplateUrl = data.paperTemplateUrl;
         }
         
-        // Ensure dates are correctly formatted
-        if(validatedData.startDate) dataToSave.startDate = new Date(validatedData.startDate);
-        if(validatedData.endDate) dataToSave.endDate = new Date(validatedData.endDate);
-        if(validatedData.submissionStartDate) dataToSave.submissionStartDate = new Date(validatedData.submissionStartDate);
-        if(validatedData.submissionEndDate) dataToSave.submissionEndDate = new Date(validatedData.submissionEndDate);
-        if(validatedData.fullPaperSubmissionDeadline) dataToSave.fullPaperSubmissionDeadline = new Date(validatedData.fullPaperSubmissionDeadline);
-        if(validatedData.registrationDeadline) dataToSave.registrationDeadline = new Date(validatedData.registrationDeadline);
+        // Ensure dates are correctly formatted as ISO strings
+        if(validatedData.startDate) dataToSave.startDate = validatedData.startDate.toISOString();
+        if(validatedData.endDate) dataToSave.endDate = validatedData.endDate.toISOString();
+        if(validatedData.submissionStartDate) dataToSave.submissionStartDate = validatedData.submissionStartDate.toISOString();
+        if(validatedData.submissionEndDate) dataToSave.submissionEndDate = validatedData.submissionEndDate.toISOString();
+        if(validatedData.fullPaperSubmissionDeadline) dataToSave.fullPaperSubmissionDeadline = validatedData.fullPaperSubmissionDeadline.toISOString();
+        if(validatedData.registrationDeadline) dataToSave.registrationDeadline = validatedData.registrationDeadline.toISOString();
 
 
         delete dataToSave.conferenceLogo;
@@ -265,7 +252,3 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
     return { success: false, message: `Failed to update status: ${message}` };
   }
 }
-
-    
-
-    
