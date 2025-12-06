@@ -1,3 +1,4 @@
+
 // src/lib/types.ts
 import { z } from 'zod';
 
@@ -90,8 +91,8 @@ export interface Conference {
   tagline?: string;
   status: 'active' | 'inactive';
   date: string; // Formatted date range for display
-  startDate: string; // ISO String
-  endDate: string; // ISO String
+  startDate: string | null; // ISO String
+  endDate: string | null; // ISO String
   venueName: string;
   country: string;
   modeOfConference: string[];
@@ -107,10 +108,10 @@ export interface Conference {
   keywords?: string;
   submissionInstructions?: string;
   paperTemplateUrl?: string; // Kept for display if old data has it
-  submissionStartDate: string; // ISO String
-  submissionEndDate: string; // ISO String for Abstract deadline
-  fullPaperSubmissionDeadline?: string; // ISO String
-  registrationDeadline?: string; // ISO String
+  submissionStartDate: string | null; // ISO String
+  submissionEndDate: string | null; // ISO String for Abstract deadline
+  fullPaperSubmissionDeadline?: string | null; // ISO String
+  registrationDeadline?: string | null; // ISO String
   paperCategories: string[];
   peerReviewMethod?: string;
   registrationFees?: string; // Kept for display if old data has it
@@ -118,7 +119,7 @@ export interface Conference {
   faqs?: string; // Kept for display if old data has it
   editorChoice?: string; // Kept for display if old data has it
   createdAt: string;
-  dateObject: Date; // For sorting
+  dateObject?: Date; // For sorting
   location: string; // For display
   // Deprecated fields, kept for compatibility with old data if needed
   description: string;

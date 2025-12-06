@@ -1,3 +1,4 @@
+
 // src/components/conference/conference-detail-client.tsx
 "use client";
 
@@ -163,7 +164,7 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
   }
 
   const today = new Date();
-  const submissionEndDate = new Date(conference.submissionEndDate);
+  const submissionEndDate = conference.submissionEndDate ? new Date(conference.submissionEndDate) : new Date(0);
   const isCallForPapersOpen = submissionEndDate >= today;
 
   const EyecatchyCard = ({ icon: Icon, title, children, className }: { icon: React.ElementType, title?: string, children: React.ReactNode, className?: string }) => (
@@ -268,7 +269,7 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
             </div>
 
             <div className="flex justify-center md:justify-start lg:justify-end pt-4">
-                <ConferenceCountdown targetDate={conference.startDate} />
+                {conference.startDate && <ConferenceCountdown targetDate={conference.startDate} />}
             </div>
         </div>
       </section>
@@ -317,7 +318,7 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
                              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><FileText className="h-5 w-5 text-primary/80 transition-transform duration-300 group-hover:animate-dance"/>Submission Guidelines</h3>
                               <Separator className="my-2 bg-primary/20 animate-width-pulse" />
                              <div className="space-y-4 pt-4">
-                               {isCallForPapersOpen ? (
+                               {isCallForPapersOpen && conference.submissionEndDate ? (
                                     <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-md">
                                         <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
                                         <div>
@@ -329,7 +330,9 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
                                    <p className="text-muted-foreground">The call for papers for this conference has closed.</p>
                                )}
                                <div className="text-sm text-muted-foreground space-y-3">
-                                    <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
+                                    {conference.submissionStartDate && conference.submissionEndDate && (
+                                      <p><strong>Submission Dates:</strong> {format(new Date(conference.submissionStartDate), "PPP")} to {format(new Date(conference.submissionEndDate), "PPP")}</p>
+                                    )}
                                     <div><strong>Accepted Categories:</strong> <div className="flex flex-wrap gap-2 mt-1">{conference.paperCategories.map(cat => <Badge key={cat} variant="outline">{getPaperCategoryLabel(cat)}</Badge>)}</div></div>
                                     {conference.peerReviewMethod && <p><strong>Review Method:</strong> {conference.peerReviewMethod}</p>}
                                     {conference.submissionInstructions && <div><strong className="text-foreground">Instructions:</strong>{renderRichContent(conference.submissionInstructions)}</div>}

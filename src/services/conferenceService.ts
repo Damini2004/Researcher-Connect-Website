@@ -58,97 +58,94 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
   }
 }
 
-const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
-    const data = docSnap.data();
+const mapDocToConference = (docSnap: any): Conference => {
+  // Support either a Firestore snapshot (has .data()) or a plain object
+  const data = (typeof docSnap?.data === 'function') ? docSnap.data() : (docSnap || {});
+  const id = docSnap?.id ?? data?.id ?? 'unknown-id';
 
-    // Robust date parsing function that correctly handles Timestamps, ISO strings, and Date objects.
-    const getJSDate = (field: any): Date | null => {
-        if (!field) return null;
-        if (typeof field.toDate === 'function') { // Firestore Timestamp
-            return field.toDate();
-        }
-        if (field instanceof Date) { // JavaScript Date object
-            return field;
-        }
-        if (typeof field === 'string') { // ISO 8601 String or other valid date strings
-            const date = new Date(field);
-            if (!isNaN(date.getTime())) {
-                return date;
-            }
-        }
-        return null;
-    };
-
-
-    const startDate = getJSDate(data.startDate) || new Date(0);
-    const endDate = getJSDate(data.endDate) || new Date(0);
-    const submissionStartDate = getJSDate(data.submissionStartDate) || new Date(0);
-    const submissionEndDate = getJSDate(data.submissionEndDate) || new Date(0);
-    const fullPaperSubmissionDeadline = getJSDate(data.fullPaperSubmissionDeadline);
-    const registrationDeadline = getJSDate(data.registrationDeadline);
-    const createdAt = getJSDate(data.createdAt) || new Date(0);
-
-
-    let dateRange = format(startDate, "PPP");
-    if (startDate.getTime() !== endDate.getTime()) {
-        dateRange = `${format(startDate, "MMM d")} - ${format(endDate, "d, yyyy")}`;
+  // Robust date parsing: handles Firestore Timestamp, ISO strings, Date objects
+  const getJSDate = (field: any): Date | null => {
+    if (!field) return null;
+    // Firestore Timestamp check (works if imported Timestamp is same runtime class)
+    if (field?.toDate && typeof field.toDate === 'function') {
+      return field.toDate();
     }
+    if (typeof field === 'string') {
+      const d = new Date(field);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    if (field instanceof Date) return field;
+    return null;
+  };
 
-    const location = data.country || data.venueAddress || "Online";
+  const startDate = getJSDate(data.startDate) || null;
+  const endDate = getJSDate(data.endDate) || null;
+  const submissionStartDate = getJSDate(data.submissionStartDate) || null;
+  const submissionEndDate = getJSDate(data.submissionEndDate) || null;
+  const fullPaperSubmissionDeadline = getJSDate(data.fullPaperSubmissionDeadline);
+  const registrationDeadline = getJSDate(data.registrationDeadline);
+  const createdAt = getJSDate(data.createdAt) || new Date();
 
-    return {
-        id: docSnap.id,
-        title: data.title || "N/A",
-        shortTitle: data.shortTitle || "N/A",
-        tagline: data.tagline,
-        status: data.status || 'active',
-        date: dateRange,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        venueName: data.venueName,
-        country: data.country,
-        modeOfConference: data.modeOfConference || [],
-        aboutConference: data.aboutConference,
-        conferenceWebsite: data.conferenceWebsite,
-        imageSrc: data.imageSrc,
-        conferenceEmail: data.conferenceEmail,
-        organizingCommittee: data.organizingCommittee,
-        keynoteSpeakers: data.keynoteSpeakers,
-        editorialBoard: data.editorialBoard,
-        teamBios: data.teamBios,
-        tracks: data.tracks,
-        keywords: data.keywords,
-        submissionInstructions: data.submissionInstructions,
-        paperTemplateUrl: data.paperTemplateUrl,
-        submissionStartDate: submissionStartDate.toISOString(),
-        submissionEndDate: submissionEndDate.toISOString(),
-        fullPaperSubmissionDeadline: fullPaperSubmissionDeadline?.toISOString(),
-        registrationDeadline: registrationDeadline?.toISOString(),
-        paperCategories: data.paperCategories || [],
-        peerReviewMethod: data.peerReviewMethod,
-        registrationFees: data.registrationFees,
-        accommodationDetails: data.accommodationDetails,
-        faqs: data.faqs,
-        editorChoice: data.editorChoice,
-        createdAt: createdAt.toISOString(),
-        dateObject: startDate,
-        location,
-        // Deprecated fields, kept for compatibility with old data if needed
-        description: data.description || data.aboutConference || "",
-        fullDescription: data.fullDescription || "",
-        venueAddress: data.venueAddress || "",
-        conferenceType: data.conferenceType || "",
-        organizerName: data.organizerName || "",
-        organizerEmail: data.organizerEmail || "",
-        organizerPhone: data.organizerPhone || "",
-        submissionDeadline: "N/A",
-        locationType: data.locationType || "Offline",
-        audienceType: data.audienceType || "",
-        callForPapers: data.callForPapers || false,
-        enableAbstractSubmission: data.enableAbstractSubmission || false,
-        enableFullPaperSubmission: data.enableFullPaperSubmission || false,
-    };
-}
+  // Build dateRange only if startDate exists
+  let dateRange = startDate ? format(startDate, "PPP") : "Date not set";
+  if (startDate && endDate && startDate.getTime() !== endDate.getTime()) {
+    dateRange = `${format(startDate, "MMM d")} - ${format(endDate, "d, yyyy")}`;
+  }
+
+  const location = data.country || data.venueAddress || "Online";
+
+  return {
+    id,
+    title: data.title || "N/A",
+    shortTitle: data.shortTitle || "N/A",
+    tagline: data.tagline,
+    status: data.status || 'active',
+    date: dateRange,
+    startDate: startDate ? startDate.toISOString() : null,
+    endDate: endDate ? endDate.toISOString() : null,
+    venueName: data.venueName,
+    country: data.country,
+    modeOfConference: data.modeOfConference || [],
+    aboutConference: data.aboutConference,
+    conferenceWebsite: data.conferenceWebsite,
+    imageSrc: data.imageSrc,
+    conferenceEmail: data.conferenceEmail,
+    organizingCommittee: data.organizingCommittee,
+    keynoteSpeakers: data.keynoteSpeakers,
+    editorialBoard: data.editorialBoard,
+    teamBios: data.teamBios,
+    tracks: data.tracks,
+    keywords: data.keywords,
+    submissionInstructions: data.submissionInstructions,
+    paperTemplateUrl: data.paperTemplateUrl,
+    submissionStartDate: submissionStartDate ? submissionStartDate.toISOString() : null,
+    submissionEndDate: submissionEndDate ? submissionEndDate.toISOString() : null,
+    fullPaperSubmissionDeadline: fullPaperSubmissionDeadline?.toISOString() ?? null,
+    registrationDeadline: registrationDeadline?.toISOString() ?? null,
+    paperCategories: data.paperCategories || [],
+    peerReviewMethod: data.peerReviewMethod,
+    registrationFees: data.registrationFees,
+    accommodationDetails: data.accommodationDetails,
+    faqs: data.faqs,
+    editorChoice: data.editorChoice,
+    createdAt: createdAt.toISOString(),
+    dateObject: startDate ?? undefined,
+    location,
+    description: data.description || data.aboutConference || "",
+    fullDescription: data.fullDescription || "",
+    venueAddress: data.venueAddress || "",
+    conferenceType: data.conferenceType || "",
+    organizerName: data.organizerName || "",
+    organizerEmail: data.organizerEmail || "",
+    organizerPhone: data.organizerPhone || "",
+    submissionDeadline: "N/A",
+    locationType: data.locationType || "Offline",
+    audienceType: data.audienceType || "",
+    callForPapers: data.callForPapers || false,
+    enableAbstractSubmission: data.enableAbstractSubmission || false,
+    enableFullPaperSubmission: data.enableFullPaperSubmission || false,
+  };
+};
 
 export async function getConferences(options: { activeOnly?: boolean } = {}): Promise<Conference[]> {
     try {
