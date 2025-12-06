@@ -18,7 +18,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, MapPin, Search as SearchIcon, Eye, ArrowRight } from "lucide-react";
-import { getCurrentDateInIndia } from "@/lib/utils";
 import {
   Carousel,
   CarouselContent,
@@ -33,23 +32,17 @@ export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
-
-   useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
 
   const fetchAndFilterConferences = useCallback(async () => {
-    if (!currentDate) return;
-
     setIsLoading(true);
     try {
       const data = await getConferences();
+      const now = new Date();
       const upcoming = data
         .filter(
-          (conf) => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
+          (conf) => conf.dateObject && conf.dateObject.getTime() >= now.getTime()
         )
-        .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
+        .sort((a, b) => a.dateObject!.getTime() - b.dateObject!.getTime());
 
       setUpcomingConferences(upcoming);
     } catch (error) {
@@ -62,7 +55,7 @@ export default function UpcomingConferencesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast, currentDate]);
+  }, [toast]);
 
   useEffect(() => {
     fetchAndFilterConferences();

@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { getConferences } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
-import { getCurrentDateInIndia } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { Logo } from "@/components/icons";
@@ -23,29 +22,22 @@ export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
-
-  useEffect(() => {
-    if (!currentDate) return;
-
     const fetchAndFilterConferences = async () => {
       setIsLoading(true);
       try {
         const allConferences = await getConferences();
-
+        const now = new Date();
         const past = allConferences.filter(
           (conf) =>
             conf.dateObject &&
-            conf.dateObject.getTime() < currentDate.getTime()
+            conf.dateObject.getTime() < now.getTime()
         );
 
         setPastConferences(
           past.sort(
-            (a, b) => b.dateObject.getTime() - a.dateObject.getTime()
+            (a, b) => b.dateObject!.getTime() - a.dateObject!.getTime()
           )
         );
       } catch (error) {
@@ -61,7 +53,7 @@ export default function PastConferencesPage() {
     };
 
     fetchAndFilterConferences();
-  }, [currentDate, toast]);
+  }, [toast]);
 
   return (
     <div className="py-12 md:py-24">

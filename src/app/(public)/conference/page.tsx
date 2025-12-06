@@ -18,7 +18,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Search as SearchIcon, MapPin, ArrowRight, Workflow, FileSignature, Presentation, Handshake, LucideIcon } from "lucide-react";
-import { getCurrentDateInIndia } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -62,26 +61,20 @@ export default function ConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
 
-   useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
-
   const fetchAndFilterConferences = useCallback(async () => {
-    if (!currentDate) return;
-
     setIsLoading(true);
     try {
       const data = await getConferences({ activeOnly: true });
+      const now = new Date();
       const upcoming = data
         .filter(
-          (conf) => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
+          (conf) => conf.dateObject && conf.dateObject.getTime() >= now.getTime()
         )
-        .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
+        .sort((a, b) => a.dateObject!.getTime() - b.dateObject!.getTime());
 
       setUpcomingConferences(upcoming);
     } catch (error) {
@@ -94,7 +87,7 @@ export default function ConferencesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast, currentDate]);
+  }, [toast]);
 
   useEffect(() => {
     fetchAndFilterConferences();
