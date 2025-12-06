@@ -83,8 +83,14 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         return undefined; // Return undefined if format is unknown
     };
 
-    const startDate = getJSDate(data.startDate) || new Date();
-    const endDate = getJSDate(data.endDate) || new Date();
+    const startDate = getJSDate(data.startDate) || new Date(0); // Use epoch as fallback
+    const endDate = getJSDate(data.endDate) || new Date(0);
+    const submissionStartDate = getJSDate(data.submissionStartDate) || new Date(0);
+    const submissionEndDate = getJSDate(data.submissionEndDate) || new Date(0);
+    const fullPaperSubmissionDeadline = getJSDate(data.fullPaperSubmissionDeadline);
+    const registrationDeadline = getJSDate(data.registrationDeadline);
+    const createdAt = getJSDate(data.createdAt) || new Date(0);
+
 
     let dateRange = format(startDate, "PPP");
     if (startDate.getTime() !== endDate.getTime()) {
@@ -117,17 +123,17 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         keywords: data.keywords,
         submissionInstructions: data.submissionInstructions,
         paperTemplateUrl: data.paperTemplateUrl,
-        submissionStartDate: (getJSDate(data.submissionStartDate) || new Date()).toISOString(),
-        submissionEndDate: (getJSDate(data.submissionEndDate) || new Date()).toISOString(),
-        fullPaperSubmissionDeadline: getJSDate(data.fullPaperSubmissionDeadline)?.toISOString(),
-        registrationDeadline: getJSDate(data.registrationDeadline)?.toISOString(),
+        submissionStartDate: submissionStartDate.toISOString(),
+        submissionEndDate: submissionEndDate.toISOString(),
+        fullPaperSubmissionDeadline: fullPaperSubmissionDeadline?.toISOString(),
+        registrationDeadline: registrationDeadline?.toISOString(),
         paperCategories: data.paperCategories || [],
         peerReviewMethod: data.peerReviewMethod,
         registrationFees: data.registrationFees,
         accommodationDetails: data.accommodationDetails,
         faqs: data.faqs,
         editorChoice: data.editorChoice,
-        createdAt: (getJSDate(data.createdAt) || new Date()).toISOString(),
+        createdAt: createdAt.toISOString(),
         dateObject: startDate,
         location,
         // Deprecated fields, kept for compatibility with old data if needed
