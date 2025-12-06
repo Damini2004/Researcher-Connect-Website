@@ -20,6 +20,7 @@ import Link from "next/link";
 import { Calendar, Search as SearchIcon, MapPin, ArrowRight, Workflow, FileSignature, Presentation, Handshake, LucideIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getCurrentDateInIndia } from "@/lib/utils";
 
 const features: { title: string; description: string; icon: LucideIcon }[] = [
     { 
@@ -63,16 +64,21 @@ export default function ConferencesPage() {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setCurrentDate(getCurrentDateInIndia());
+  }, []);
 
 
   const fetchAndFilterConferences = useCallback(async () => {
+    if (!currentDate) return;
     setIsLoading(true);
     try {
       const data = await getConferences({ activeOnly: true });
-      const now = new Date();
       const upcoming = data
         .filter(
-          (conf) => conf.dateObject && conf.dateObject.getTime() >= now.getTime()
+          (conf) => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
         )
         .sort((a, b) => a.dateObject!.getTime() - b.dateObject!.getTime());
 
@@ -87,7 +93,7 @@ export default function ConferencesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast]);
+  }, [toast, currentDate]);
 
   useEffect(() => {
     fetchAndFilterConferences();

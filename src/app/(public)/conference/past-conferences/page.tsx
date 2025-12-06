@@ -10,50 +10,56 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getConferences } from "@/services/conferenceService";
 import type { Conference } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import Link from "next/link";
 import { Logo } from "@/components/icons";
+import { getCurrentDateInIndia } from "@/lib/utils";
 
 export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    const fetchAndFilterConferences = async () => {
-      setIsLoading(true);
-      try {
-        const allConferences = await getConferences();
-        const now = new Date();
-        const past = allConferences.filter(
-          (conf) =>
-            conf.dateObject &&
-            conf.dateObject.getTime() < now.getTime()
-        );
+    setCurrentDate(getCurrentDateInIndia());
+  }, []);
 
-        setPastConferences(
-          past.sort(
-            (a, b) => b.dateObject!.getTime() - a.dateObject!.getTime()
-          )
-        );
-      } catch (error) {
-        console.error("Error fetching conferences:", error);
-        toast({
-          title: "Error",
-          description: "Could not fetch conferences.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchAndFilterConferences = useCallback(async () => {
+    if (!currentDate) return;
+    setIsLoading(true);
+    try {
+      const allConferences = await getConferences();
+      const past = allConferences.filter(
+        (conf) =>
+          conf.dateObject &&
+          conf.dateObject.getTime() < currentDate.getTime()
+      );
 
+      setPastConferences(
+        past.sort(
+          (a, b) => b.dateObject!.getTime() - a.dateObject!.getTime()
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching conferences:", error);
+      toast({
+        title: "Error",
+        description: "Could not fetch conferences.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast, currentDate]);
+  
+  useEffect(() => {
     fetchAndFilterConferences();
-  }, [toast]);
+  }, [fetchAndFilterConferences]);
 
   return (
     <div className="py-12 md:py-24">

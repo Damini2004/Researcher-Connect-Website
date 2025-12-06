@@ -26,21 +26,28 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getCurrentDateInIndia } from "@/lib/utils";
 
 
 export default function UpcomingConferencesPage() {
   const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setCurrentDate(getCurrentDateInIndia());
+  }, []);
+
 
   const fetchAndFilterConferences = useCallback(async () => {
+    if (!currentDate) return;
     setIsLoading(true);
     try {
       const data = await getConferences();
-      const now = new Date();
       const upcoming = data
         .filter(
-          (conf) => conf.dateObject && conf.dateObject.getTime() >= now.getTime()
+          (conf) => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
         )
         .sort((a, b) => a.dateObject!.getTime() - b.dateObject!.getTime());
 
@@ -55,7 +62,7 @@ export default function UpcomingConferencesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast]);
+  }, [toast, currentDate]);
 
   useEffect(() => {
     fetchAndFilterConferences();
