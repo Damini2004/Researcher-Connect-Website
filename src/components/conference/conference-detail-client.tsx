@@ -124,7 +124,7 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
     );
   }
   
-  const renderTracksAsCards = (text?: string) => {
+  const renderTracksAsList = (text?: string) => {
     if (!text) return <p className="text-muted-foreground">Not available.</p>;
     
     if (typeof window === 'undefined') {
@@ -133,21 +133,12 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'text/html');
-    const items = Array.from(doc.body.children).map(element => element.textContent?.trim()).filter(Boolean);
+    const items = Array.from(doc.body.children).map(element => element.innerHTML).filter(Boolean);
 
     if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {items.map((item, index) => (
-          <div key={index} className="bg-gradient-to-br from-primary/10 to-secondary/50 group rounded-lg p-4 flex items-center space-x-4 transition-all duration-300 hover:shadow-md hover:scale-105 hover:border-primary/20 border border-transparent">
-            <div className="p-2 bg-white rounded-md shadow-inner">
-              <ListTree className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12" />
-            </div>
-            <span className="font-medium text-sm text-foreground">{item}</span>
-          </div>
-        ))}
-      </div>
+      <div className="prose prose-sm max-w-none text-muted-foreground" dangerouslySetInnerHTML={{ __html: text }} />
     );
   };
   
@@ -159,64 +150,6 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
           dangerouslySetInnerHTML={{ __html: htmlContent }} 
         />
     );
-  };
-
-  const RenderCommittee = ({ htmlContent }: { htmlContent?: string }) => {
-    if (!htmlContent) return <p className="text-muted-foreground">Not available.</p>;
-    if (typeof window === 'undefined') {
-      return <p className="text-muted-foreground">Loading...</p>;
-    }
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlContent, 'text/html');
-    const members: { src: string; name: string }[] = [];
-    
-    const elements = Array.from(doc.body.children);
-
-    for (let i = 0; i < elements.length; i++) {
-        const element = elements[i];
-        if (element.tagName.toLowerCase() === 'figure' && element.querySelector('img')) {
-            const src = element.querySelector('img')!.src;
-            let name = '';
-            
-            // Look for the next element that is a paragraph
-            if (i + 1 < elements.length && elements[i + 1].tagName.toLowerCase() === 'p') {
-                name = elements[i + 1].textContent?.trim() || '';
-                i++; // Increment to skip the name paragraph in the next iteration
-            }
-            
-            if (src && name) {
-                members.push({ src, name });
-            }
-        }
-    }
-
-    if (members.length > 0) {
-      return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
-          {members.map((member, index) => (
-            <Card key={index} className="text-center group flex flex-col items-center p-4 border hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden shadow-lg">
-                    <Image
-                        src={member.src}
-                        alt={member.name}
-                        data-ai-hint="person portrait"
-                        fill
-                        sizes="(max-width: 768px) 50vw, 33vw"
-                        className="object-cover"
-                    />
-                </div>
-                <CardContent className="p-0">
-                    <h4 className="font-semibold text-sm text-foreground tracking-tight">{member.name}</h4>
-                </CardContent>
-            </Card>
-          ))}
-        </div>
-      );
-    }
-  
-    // Fallback if no image-name pairs are found
-    return <RenderHtmlContent htmlContent={htmlContent} />;
   };
   
   const getPaperCategoryLabel = (id: string) => {
@@ -357,13 +290,13 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
                             <AccordionItem value="item-1" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                                 <AccordionContent>
-                                    <RenderCommittee htmlContent={conference.keynoteSpeakers} />
+                                    <RenderHtmlContent htmlContent={conference.keynoteSpeakers} />
                                 </AccordionContent>
                             </AccordionItem>
                             <AccordionItem value="item-2" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Organizing Committee</AccordionTrigger>
                                 <AccordionContent>
-                                    <RenderCommittee htmlContent={conference.organizingCommittee} />
+                                    <RenderHtmlContent htmlContent={conference.organizingCommittee} />
                                 </AccordionContent>
                             </AccordionItem>
                              <AccordionItem value="item-4" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
@@ -375,7 +308,7 @@ export default function ConferenceDetailClient({ conferenceId }: ConferenceDetai
                             <AccordionItem value="item-3" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
                                 <AccordionContent>
-                                    {renderTracksAsCards(conference.tracks)}
+                                    {renderTracksAsList(conference.tracks)}
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
