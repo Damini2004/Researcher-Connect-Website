@@ -19,7 +19,6 @@ import Link from "next/link";
 import { Calendar, Search as SearchIcon, MapPin, ArrowRight, Workflow, FileSignature, Presentation, Handshake, LucideIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getCurrentDateInIndia } from "@/lib/utils";
 
 const features: { title: string; description: string; icon: LucideIcon }[] = [
     { 
@@ -58,19 +57,19 @@ const usageStats = [
   
 
 export default function ConferencesPage() {
-  const [upcomingConferences, setUpcomingConferences] = useState<Conference[]>([]);
+  const [allConferences, setAllConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
 
-  const fetchAndFilterConferences = useCallback(async () => {
+  const fetchConferences = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Pass the current date directly to the fetching function
-      const data = await getConferences({ activeOnly: true, fromDate: getCurrentDateInIndia() });
-      setUpcomingConferences(data);
+      // Fetch all conferences without any date filtering
+      const data = await getConferences();
+      setAllConferences(data.sort((a, b) => (b.dateObject?.getTime() || 0) - (a.dateObject?.getTime() || 0)));
     } catch (error) {
       console.error("Error fetching conferences:", error);
       toast({
@@ -84,11 +83,11 @@ export default function ConferencesPage() {
   }, [toast]);
 
   useEffect(() => {
-    fetchAndFilterConferences();
-  }, [fetchAndFilterConferences]);
+    fetchConferences();
+  }, [fetchConferences]);
 
-  const totalPages = Math.ceil(upcomingConferences.length / ITEMS_PER_PAGE);
-  const paginatedConferences = upcomingConferences.slice(
+  const totalPages = Math.ceil(allConferences.length / ITEMS_PER_PAGE);
+  const paginatedConferences = allConferences.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
@@ -242,7 +241,7 @@ After the event, we provide professional proceedings preparation, indexing suppo
                             ) : (
                                 <div className="text-center py-16 col-span-1 md:col-span-2 lg:col-span-3">
                                     <p className="text-muted-foreground">
-                                        No upcoming conferences found. Please check back later.
+                                        No conferences found. Please check back later.
                                     </p>
                                 </div>
                             )}
@@ -286,5 +285,3 @@ After the event, we provide professional proceedings preparation, indexing suppo
     </div>
   );
 }
-
-    
