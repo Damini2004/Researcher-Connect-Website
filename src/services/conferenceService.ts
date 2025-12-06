@@ -58,16 +58,22 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
 
     const getJSDate = (field: any): Date | undefined => {
         if (!field) return undefined;
+        // Handle Firestore Timestamp
         if (field && typeof field.toDate === 'function') {
             return field.toDate();
         }
+        // Handle ISO string or number
         if (typeof field === 'string' || typeof field === 'number') {
             const date = new Date(field);
             if (!isNaN(date.getTime())) {
                 return date;
             }
         }
-        return field instanceof Date ? field : undefined;
+        // Handle existing JS Date object
+        if (field instanceof Date) {
+            return field;
+        }
+        return undefined;
     };
     
     const formatDate = (date: Date | undefined) => date ? format(date, "PPP") : undefined;
