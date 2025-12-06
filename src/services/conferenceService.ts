@@ -5,16 +5,16 @@
 import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
 import { format } from 'date-fns';
-import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib/types';
+import { type Conference, conferenceSchema } from '@/lib/types';
 import { z } from 'zod';
 
-interface AddConferencePayload extends AddConferenceData {
+interface AddConferencePayload {
     conferenceLogo: string; // Base64 string for the logo
     paperTemplateUrl?: string; // Base64 string for the brochure
 }
 
 
-export async function addConference(data: AddConferencePayload): Promise<{ success: boolean; message: string; }> {
+export async function addConference(data: z.infer<typeof conferenceSchema> & AddConferencePayload): Promise<{ success: boolean; message: string; }> {
   try {
     const validationResult = conferenceSchema.safeParse(data);
     if (!validationResult.success) {
@@ -56,32 +56,39 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
   }
 }
 
+// Robust date parsing function
+const getJSDate = (field: any): Date | null => {
+  if (!field) return null;
+  // Firestore Timestamp check (most reliable) - checks for the existence of toDate method
+  if (field && typeof field.toDate === 'function') {
+    return field.toDate();
+  }
+  // JavaScript Date object
+  if (field instanceof Date) {
+    return field;
+  }
+  // ISO string or other string representations
+  if (typeof field === 'string') {
+    const d = new Date(field);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  // Fallback for other potential object representations like from serverTimestamp
+  if (typeof field === 'object' && field.seconds) {
+    return new Timestamp(field.seconds, field.nanoseconds).toDate();
+  }
+  return null;
+};
+
+
 const mapDocToConference = (docSnap: any): Conference => {
   // Support either a Firestore snapshot (has .data()) or a plain object
   const data = (typeof docSnap?.data === 'function') ? docSnap.data() : (docSnap || {});
   const id = docSnap?.id ?? data?.id ?? 'unknown-id';
 
-  // Robust date parsing: handles Firestore Timestamp, ISO strings, Date objects
-  const getJSDate = (field: any): Date | null => {
-    if (!field) return null;
-    // Firestore Timestamp check
-    if (field?.toDate && typeof field.toDate === 'function') {
-      return field.toDate();
-    }
-    // JavaScript Date object
-    if (field instanceof Date) return field;
-     // ISO string
-    if (typeof field === 'string') {
-      const d = new Date(field);
-      return isNaN(d.getTime()) ? null : d;
-    }
-    return null;
-  };
-
-  const startDate = getJSDate(data.startDate) || null;
-  const endDate = getJSDate(data.endDate) || null;
-  const submissionStartDate = getJSDate(data.submissionStartDate) || null;
-  const submissionEndDate = getJSDate(data.submissionEndDate) || null;
+  const startDate = getJSDate(data.startDate);
+  const endDate = getJSDate(data.endDate);
+  const submissionStartDate = getJSDate(data.submissionStartDate);
+  const submissionEndDate = getJSDate(data.submissionEndDate);
   const fullPaperSubmissionDeadline = getJSDate(data.fullPaperSubmissionDeadline);
   const registrationDeadline = getJSDate(data.registrationDeadline);
   const createdAt = getJSDate(data.createdAt) || new Date();
@@ -188,7 +195,7 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
     }
 }
 
-export async function updateConference(id: string, data: Partial<AddConferenceData> & { imageSrc?: string, paperTemplateUrl?: string }): Promise<{ success: boolean; message: string }> {
+export async function updateConference(id: string, data: Partial<z.infer<typeof conferenceSchema>> & { imageSrc?: string, paperTemplateUrl?: string }): Promise<{ success: boolean; message: string }> {
     try {
         const validationResult = conferenceSchema.partial().safeParse(data);
         if (!validationResult.success) {
