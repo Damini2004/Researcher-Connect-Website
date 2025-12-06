@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, orderBy, query, serverTimestamp, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
 import { format } from 'date-fns';
 import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib/types';
 import { z } from 'zod';
@@ -32,7 +32,6 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
     // Convert all dates to ISO strings before saving
     const dataToSave: { [key: string]: any } = {
         ...validatedData,
-        status: validatedData.status,
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
         createdAt: new Date().toISOString(),
@@ -62,14 +61,14 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
 const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
     const data = docSnap.data();
 
-    // Robust date parsing function
+    // Robust date parsing function that correctly handles Timestamps, ISO strings, and Date objects.
     const getJSDate = (field: any): Date | null => {
         if (!field) return null;
         // Firestore Timestamp
-        if (typeof field.toDate === 'function') {
+        if (field instanceof Timestamp) {
             return field.toDate();
         }
-        // ISO 8601 String or other date strings
+        // ISO 8601 String or other valid date strings
         if (typeof field === 'string') {
             const date = new Date(field);
             if (!isNaN(date.getTime())) {
@@ -82,6 +81,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         }
         return null;
     };
+
 
     const startDate = getJSDate(data.startDate) || new Date(0);
     const endDate = getJSDate(data.endDate) || new Date(0);
@@ -136,6 +136,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         createdAt: createdAt.toISOString(),
         dateObject: startDate,
         location,
+        // Deprecated fields, kept for compatibility with old data if needed
         description: data.description || data.aboutConference || "",
         fullDescription: data.fullDescription || "",
         venueAddress: data.venueAddress || "",
