@@ -65,22 +65,22 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
     // A more robust date parsing function
     const getJSDate = (field: any): Date | undefined => {
         if (!field) return undefined;
-        // Handle Firestore Timestamp
-        if (field && typeof field.toDate === 'function') {
+        if (typeof field.toDate === 'function') {
             return field.toDate();
         }
-        // Handle ISO string or other date-like strings
+        if (field instanceof Date) {
+            return field;
+        }
         if (typeof field === 'string') {
             const date = new Date(field);
             if (!isNaN(date.getTime())) {
                 return date;
             }
         }
-        // Handle JavaScript Date object (less common from Firestore but good practice)
-        if (field instanceof Date) {
-            return field;
+        if (typeof field === 'object' && field.seconds) {
+            return new Date(field.seconds * 1000 + (field.nanoseconds || 0) / 1000000);
         }
-        return undefined; // Return undefined if format is unknown/invalid
+        return undefined;
     };
 
     const startDate = getJSDate(data.startDate) || new Date(0); // Use epoch as fallback
