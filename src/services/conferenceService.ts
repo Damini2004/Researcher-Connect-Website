@@ -66,7 +66,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
     const getJSDate = (field: any): Date | undefined => {
         if (!field) return undefined;
         // Handle Firestore Timestamp
-        if (typeof field.toDate === 'function') {
+        if (field && typeof field.toDate === 'function') {
             return field.toDate();
         }
         // Handle ISO string or other date-like strings
@@ -76,11 +76,11 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
                 return date;
             }
         }
-        // Handle JavaScript Date object
+        // Handle JavaScript Date object (less common from Firestore but good practice)
         if (field instanceof Date) {
             return field;
         }
-        return undefined; // Return undefined if format is unknown
+        return undefined; // Return undefined if format is unknown/invalid
     };
 
     const startDate = getJSDate(data.startDate) || new Date(0); // Use epoch as fallback
@@ -265,5 +265,7 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
     return { success: false, message: `Failed to update status: ${message}` };
   }
 }
+
+    
 
     
