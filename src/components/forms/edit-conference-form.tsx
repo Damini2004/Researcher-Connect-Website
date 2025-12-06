@@ -54,7 +54,7 @@ const paperCategories = [
 
 const totalSteps = 3;
 
-const parseDate = (dateString?: string): Date | undefined => {
+const parseDate = (dateString?: string | null): Date | undefined => {
     if (!dateString) return undefined;
     const date = new Date(dateString);
     return isNaN(date.getTime()) ? undefined : date;
@@ -424,7 +424,7 @@ export default function EditConferenceForm({ conference, onConferenceUpdated }: 
             </ScrollArea>
         </div>
 
-        <div className="flex-shrink-0 flex justify-between pt-4 border-t">
+        <div className="flex-shrink-0 flex justify-between pt-4 border-t p-6">
             <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>

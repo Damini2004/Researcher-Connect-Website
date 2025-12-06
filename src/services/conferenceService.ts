@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, updateDoc, getDoc, query, where, orderBy, serverTimestamp, Timestamp, startAt } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, updateDoc, getDoc, query, where, orderBy, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
 import { format } from 'date-fns';
@@ -15,16 +15,14 @@ const getJSDate = (field: any): Date | null => {
       const d = new Date(field);
       if (!isNaN(d.getTime())) return d;
     }
-    // Handle Firestore's object representation if it's not a Timestamp instance
     if (typeof field === 'object' && field.seconds !== undefined && field.nanoseconds !== undefined) {
       return new Timestamp(field.seconds, field.nanoseconds).toDate();
     }
     return null;
 };
 
-const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
+const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData, id: string): Conference => {
   const data = typeof docSnap.data === 'function' ? docSnap.data() : docSnap;
-  const id = docSnap.id || 'unknown-id';
 
   const startDate = getJSDate(data.startDate);
   const endDate = getJSDate(data.endDate);
@@ -104,17 +102,16 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
         ...validatedData,
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
-        createdAt: serverTimestamp(),
-        startDate: validatedData.startDate ? Timestamp.fromDate(validatedData.startDate) : null,
-        endDate: validatedData.endDate ? Timestamp.fromDate(validatedData.endDate) : null,
-        submissionStartDate: validatedData.submissionStartDate ? Timestamp.fromDate(validatedData.submissionStartDate) : null,
-        submissionEndDate: validatedData.submissionEndDate ? Timestamp.fromDate(validatedData.submissionEndDate) : null,
-        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? Timestamp.fromDate(validatedData.fullPaperSubmissionDeadline) : null,
-        registrationDeadline: validatedData.registrationDeadline ? Timestamp.fromDate(validatedData.registrationDeadline) : null,
+        createdAt: new Date().toISOString(),
+        startDate: validatedData.startDate?.toISOString() || null,
+        endDate: validatedData.endDate?.toISOString() || null,
+        submissionStartDate: validatedData.submissionStartDate?.toISOString() || null,
+        submissionEndDate: validatedData.submissionEndDate?.toISOString() || null,
+        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline?.toISOString() || null,
+        registrationDeadline: validatedData.registrationDeadline?.toISOString() || null,
     };
     
     delete dataToSave.conferenceLogo;
-
 
     await addDoc(collection(db, 'conferences'), dataToSave);
     return { success: true, message: 'Conference added successfully!' };
@@ -139,7 +136,7 @@ export async function getConferences(options: { activeOnly?: boolean } = {}): Pr
         const q = query(conferencesRef, ...constraints);
         
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(mapDocToConference);
+        return querySnapshot.docs.map(doc => mapDocToConference(doc.data(), doc.id));
     } catch (error) {
         console.error("Error fetching conferences: ", error);
         return [];
@@ -155,7 +152,7 @@ export async function getConferenceById(id: string): Promise<{ success: boolean;
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const conference = mapDocToConference(docSnap);
+      const conference = mapDocToConference(docSnap.data(), docSnap.id);
       return { success: true, conference, message: "Conference fetched successfully." };
     } else {
       return { success: false, message: "Conference not found." };
@@ -175,12 +172,13 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             ...validatedData,
         };
 
-        if (validatedData.startDate) dataToUpdate.startDate = Timestamp.fromDate(validatedData.startDate);
-        if (validatedData.endDate) dataToUpdate.endDate = Timestamp.fromDate(validatedData.endDate);
-        if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = Timestamp.fromDate(validatedData.submissionStartDate);
-        if (validatedData.submissionEndDate) dataToUpdate.submissionEndDate = Timestamp.fromDate(validatedData.submissionEndDate);
-        if (validatedData.fullPaperSubmissionDeadline) dataToUpdate.fullPaperSubmissionDeadline = Timestamp.fromDate(validatedData.fullPaperSubmissionDeadline);
-        if (validatedData.registrationDeadline) dataToUpdate.registrationDeadline = Timestamp.fromDate(validatedData.registrationDeadline);
+        if (validatedData.startDate) dataToUpdate.startDate = validatedData.startDate.toISOString();
+        if (validatedData.endDate) dataToUpdate.endDate = validatedData.endDate.toISOString();
+        if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = validatedData.submissionStartDate.toISOString();
+        if (validatedData.submissionEndDate) dataToUpdate.submissionEndDate = validatedData.submissionEndDate.toISOString();
+        if (validatedData.fullPaperSubmissionDeadline) dataToUpdate.fullPaperSubmissionDeadline = validatedData.fullPaperSubmissionDeadline.toISOString();
+        if (validatedData.registrationDeadline) dataToUpdate.registrationDeadline = validatedData.registrationDeadline.toISOString();
+        dataToUpdate.updatedAt = new Date().toISOString();
 
         if (data.imageSrc) {
             dataToUpdate.imageSrc = data.imageSrc;
@@ -189,10 +187,7 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             dataToUpdate.paperTemplateUrl = data.paperTemplateUrl;
         }
 
-        await updateDoc(conferenceRef, {
-            ...dataToUpdate,
-            updatedAt: serverTimestamp()
-        });
+        await updateDoc(conferenceRef, dataToUpdate);
         return { success: true, message: 'Conference updated successfully!' };
     } catch (error) {
         if (error instanceof z.ZodError) {
