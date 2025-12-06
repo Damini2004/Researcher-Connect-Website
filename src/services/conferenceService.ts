@@ -16,14 +16,26 @@ const mapDocToConference = (docSnap: any): Conference => {
   // Robust date parsing: handles Firestore Timestamp, ISO strings, Date objects
   const getJSDate = (field: any): Date | null => {
     if (!field) return null;
-    if (field?.toDate && typeof field.toDate === 'function') {
+    // Handle Firestore Timestamp
+    if (field.toDate && typeof field.toDate === 'function') {
       return field.toDate();
     }
+    // Handle JS Date object
+    if (field instanceof Date) return field;
+     // Handle ISO 8601 string or other parsable date strings
     if (typeof field === 'string') {
       const d = new Date(field);
-      return isNaN(d.getTime()) ? null : d;
+      if (!isNaN(d.getTime())) {
+        return d;
+      }
     }
-    if (field instanceof Date) return field;
+    // Handle milliseconds number
+    if (typeof field === 'number') {
+      const d = new Date(field);
+       if (!isNaN(d.getTime())) {
+        return d;
+      }
+    }
     return null;
   };
 
@@ -79,6 +91,7 @@ const mapDocToConference = (docSnap: any): Conference => {
     createdAt: createdAt.toISOString(),
     dateObject: startDate ?? undefined,
     location,
+    // Deprecated fields mapped for backward compatibility
     description: data.description || data.aboutConference || "",
     fullDescription: data.fullDescription || "",
     venueAddress: data.venueAddress || "",
@@ -105,6 +118,7 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
         createdAt: serverTimestamp(),
+        // Convert all dates to Firestore Timestamps for consistency
         startDate: validatedData.startDate ? Timestamp.fromDate(validatedData.startDate) : null,
         endDate: validatedData.endDate ? Timestamp.fromDate(validatedData.endDate) : null,
         submissionStartDate: validatedData.submissionStartDate ? Timestamp.fromDate(validatedData.submissionStartDate) : null,
@@ -180,6 +194,7 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             ...validatedData,
         };
 
+        // Convert dates to Timestamps if they exist
         if (validatedData.startDate) dataToUpdate.startDate = Timestamp.fromDate(validatedData.startDate);
         if (validatedData.endDate) dataToUpdate.endDate = Timestamp.fromDate(validatedData.endDate);
         if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = Timestamp.fromDate(validatedData.submissionStartDate);
@@ -232,5 +247,3 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
         return { success: false, message: `Failed to update status: ${message}` };
     }
 }
-
-    
