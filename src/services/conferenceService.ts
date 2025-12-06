@@ -1,3 +1,4 @@
+
 // src/services/conferenceService.ts
 'use server';
 
@@ -14,7 +15,6 @@ interface AddConferencePayload extends AddConferenceData {
 
 export async function addConference(data: AddConferencePayload): Promise<{ success: boolean; message: string; }> {
   try {
-    // We don't validate file objects here, just the string URLs
     const schemaForService = conferenceSchema.extend({
         conferenceLogo: z.string(),
         paperTemplateUrl: z.string().optional(),
@@ -27,18 +27,24 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
         return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
     }
 
-    // Use the validated data, but ensure we use the correct file URLs
+    const validatedData = validationResult.data;
+    
     const dataToSave: { [key: string]: any } = {
-        ...validationResult.data,
-        status: data.status, // Ensure status is explicitly included
-        imageSrc: data.conferenceLogo, // The base64 string for the logo
-        paperTemplateUrl: data.paperTemplateUrl, // The base64 string for the brochure
+        ...validatedData,
+        status: validatedData.status,
+        imageSrc: data.conferenceLogo,
+        paperTemplateUrl: data.paperTemplateUrl,
         createdAt: new Date(),
+        // Ensure all dates are standard JS Date objects before sending to Firestore
+        startDate: new Date(validatedData.startDate),
+        endDate: new Date(validatedData.endDate),
+        submissionStartDate: new Date(validatedData.submissionStartDate),
+        submissionEndDate: new Date(validatedData.submissionEndDate),
+        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? new Date(validatedData.fullPaperSubmissionDeadline) : null,
+        registrationDeadline: validatedData.registrationDeadline ? new Date(validatedData.registrationDeadline) : null,
     };
     
-    // Remove the temporary 'conferenceLogo' fields from the object to be saved
     delete dataToSave.conferenceLogo;
-
 
     await addDoc(collection(db, 'conferences'), dataToSave);
     
@@ -58,21 +64,10 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
 
     const getJSDate = (field: any): Date | undefined => {
         if (!field) return undefined;
-        // Handle Firestore Timestamp
-        if (field && typeof field.toDate === 'function') {
-            return field.toDate();
-        }
-        // Handle ISO string or number
-        if (typeof field === 'string' || typeof field === 'number') {
-            const date = new Date(field);
-            if (!isNaN(date.getTime())) {
-                return date;
-            }
-        }
-        // Handle existing JS Date object
-        if (field instanceof Date) {
-            return field;
-        }
+        if (field instanceof Date) return field;
+        if (field.toDate && typeof field.toDate === 'function') return field.toDate();
+        const date = new Date(field);
+        if (!isNaN(date.getTime())) return date;
         return undefined;
     };
     
@@ -102,7 +97,7 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         modeOfConference: data.modeOfConference || [],
         aboutConference: data.aboutConference,
         conferenceWebsite: data.conferenceWebsite,
-        imageSrc: data.imageSrc, // Use imageSrc from now on
+        imageSrc: data.imageSrc,
         conferenceEmail: data.conferenceEmail,
         organizingCommittee: data.organizingCommittee,
         keynoteSpeakers: data.keynoteSpeakers,
@@ -125,8 +120,6 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         createdAt: (getJSDate(data.createdAt) || new Date()).toISOString(),
         dateObject: startDate,
         location,
-        
-        // --- Fallback fields for old data structure ---
         venueAddress: data.venueAddress || "",
         description: data.description || data.aboutConference || "",
         fullDescription: data.fullDescription || "",
@@ -192,8 +185,9 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             return { success: false, message: `${firstError.path.join('.')} - ${firstError.message}` };
         }
         
+        const validatedData = validationResult.data;
         const dataToSave: { [key: string]: any } = {
-            ...validationResult.data,
+            ...validatedData,
             updatedAt: new Date(),
         };
 
@@ -204,9 +198,16 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
         if (data.paperTemplateUrl) {
             dataToSave.paperTemplateUrl = data.paperTemplateUrl;
         }
+        
+        // Ensure dates are correctly formatted
+        if(validatedData.startDate) dataToSave.startDate = new Date(validatedData.startDate);
+        if(validatedData.endDate) dataToSave.endDate = new Date(validatedData.endDate);
+        if(validatedData.submissionStartDate) dataToSave.submissionStartDate = new Date(validatedData.submissionStartDate);
+        if(validatedData.submissionEndDate) dataToSave.submissionEndDate = new Date(validatedData.submissionEndDate);
+        if(validatedData.fullPaperSubmissionDeadline) dataToSave.fullPaperSubmissionDeadline = new Date(validatedData.fullPaperSubmissionDeadline);
+        if(validatedData.registrationDeadline) dataToSave.registrationDeadline = new Date(validatedData.registrationDeadline);
 
 
-        // Remove file objects if they exist
         delete dataToSave.conferenceLogo;
 
         const conferenceRef = doc(db, 'conferences', id);
@@ -247,3 +248,5 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
     return { success: false, message: `Failed to update status: ${message}` };
   }
 }
+
+    
