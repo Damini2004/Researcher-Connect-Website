@@ -1,4 +1,3 @@
-
 // src/services/conferenceService.ts
 'use server';
 
@@ -109,21 +108,21 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
   try {
     const validatedData = conferenceSchema.parse(data);
 
-    // Convert all date objects to Firestore Timestamps before saving
     const dataToSave: { [key: string]: any } = {
         ...validatedData,
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
-        createdAt: serverTimestamp(),
-        startDate: validatedData.startDate ? Timestamp.fromDate(validatedData.startDate) : null,
-        endDate: validatedData.endDate ? Timestamp.fromDate(validatedData.endDate) : null,
-        submissionStartDate: validatedData.submissionStartDate ? Timestamp.fromDate(validatedData.submissionStartDate) : null,
-        submissionEndDate: validatedData.submissionEndDate ? Timestamp.fromDate(validatedData.submissionEndDate) : null,
-        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? Timestamp.fromDate(validatedData.fullPaperSubmissionDeadline) : null,
-        registrationDeadline: validatedData.registrationDeadline ? Timestamp.fromDate(validatedData.registrationDeadline) : null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        startDate: validatedData.startDate ? validatedData.startDate.toISOString() : null,
+        endDate: validatedData.endDate ? validatedData.endDate.toISOString() : null,
+        submissionStartDate: validatedData.submissionStartDate ? validatedData.submissionStartDate.toISOString() : null,
+        submissionEndDate: validatedData.submissionEndDate ? validatedData.submissionEndDate.toISOString() : null,
+        fullPaperSubmissionDeadline: validatedData.fullPaperSubmissionDeadline ? validatedData.fullPaperSubmissionDeadline.toISOString() : null,
+        registrationDeadline: validatedData.registrationDeadline ? validatedData.registrationDeadline.toISOString() : null,
     };
     
-    delete dataToSave.conferenceLogo; // Remove the file object
+    delete dataToSave.conferenceLogo;
 
     await addDoc(collection(db, 'conferences'), dataToSave);
     return { success: true, message: 'Conference added successfully!' };
@@ -183,17 +182,15 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
         
         const dataToUpdate: { [key: string]: any } = {
             ...validatedData,
-            updatedAt: serverTimestamp(),
+            updatedAt: new Date().toISOString(),
         };
         
-        // Convert dates to Timestamps before updating
-        if (validatedData.startDate) dataToUpdate.startDate = Timestamp.fromDate(validatedData.startDate);
-        if (validatedData.endDate) dataToUpdate.endDate = Timestamp.fromDate(validatedData.endDate);
-        if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = Timestamp.fromDate(validatedData.submissionStartDate);
-        if (validatedData.submissionEndDate) dataToUpdate.submissionEndDate = Timestamp.fromDate(validatedData.submissionEndDate);
-        if (validatedData.fullPaperSubmissionDeadline) dataToUpdate.fullPaperSubmissionDeadline = Timestamp.fromDate(validatedData.fullPaperSubmissionDeadline);
-        if (validatedData.registrationDeadline) dataToUpdate.registrationDeadline = Timestamp.fromDate(validatedData.registrationDeadline);
-
+        if (validatedData.startDate) dataToUpdate.startDate = validatedData.startDate.toISOString();
+        if (validatedData.endDate) dataToUpdate.endDate = validatedData.endDate.toISOString();
+        if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = validatedData.submissionStartDate.toISOString();
+        if (validatedData.submissionEndDate) dataToUpdate.submissionEndDate = validatedData.submissionEndDate.toISOString();
+        if (validatedData.fullPaperSubmissionDeadline) dataToUpdate.fullPaperSubmissionDeadline = validatedData.fullPaperSubmissionDeadline.toISOString();
+        if (validatedData.registrationDeadline) dataToUpdate.registrationDeadline = validatedData.registrationDeadline.toISOString();
 
         if (data.imageSrc) {
             dataToUpdate.imageSrc = data.imageSrc;
@@ -230,12 +227,10 @@ export async function deleteConference(id: string): Promise<{ success: boolean; 
 export async function updateConferenceStatus(id: string, status: 'active' | 'inactive'): Promise<{ success: boolean, message: string }> {
     try {
         const conferenceRef = doc(db, 'conferences', id);
-        await updateDoc(conferenceRef, { status });
+        await updateDoc(conferenceRef, { status, updatedAt: new Date().toISOString() });
         return { success: true, message: `Conference status updated to ${status}.` };
     } catch (error) {
         const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
         return { success: false, message: `Failed to update status: ${message}` };
     }
 }
-
-    
