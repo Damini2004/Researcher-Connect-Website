@@ -62,13 +62,25 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
 const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
     const data = docSnap.data();
 
+    // Robust date parsing function
     const getJSDate = (field: any): Date | null => {
         if (!field) return null;
-        if (typeof field.toDate === 'function') { // Firestore Timestamp
+        // Firestore Timestamp
+        if (typeof field.toDate === 'function') {
             return field.toDate();
         }
-        const date = new Date(field); // Handles ISO strings and JS Date objects
-        return isNaN(date.getTime()) ? null : date;
+        // ISO 8601 String or other date strings
+        if (typeof field === 'string') {
+            const date = new Date(field);
+            if (!isNaN(date.getTime())) {
+                return date;
+            }
+        }
+        // JavaScript Date object
+        if (field instanceof Date) {
+            return field;
+        }
+        return null;
     };
 
     const startDate = getJSDate(data.startDate) || new Date(0);
