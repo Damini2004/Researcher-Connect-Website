@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -64,25 +63,14 @@ export default function ConferencesPage() {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
 
 
   const fetchAndFilterConferences = useCallback(async () => {
-    if (!currentDate) return;
     setIsLoading(true);
     try {
-      const data = await getConferences({ activeOnly: true });
-      const upcoming = data
-        .filter(
-          (conf) => conf.dateObject && conf.dateObject.getTime() >= currentDate.getTime()
-        )
-        .sort((a, b) => a.dateObject!.getTime() - b.dateObject!.getTime());
-
-      setUpcomingConferences(upcoming);
+      // Pass the current date directly to the fetching function
+      const data = await getConferences({ activeOnly: true, fromDate: getCurrentDateInIndia() });
+      setUpcomingConferences(data);
     } catch (error) {
       console.error("Error fetching conferences:", error);
       toast({
@@ -93,7 +81,7 @@ export default function ConferencesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast, currentDate]);
+  }, [toast]);
 
   useEffect(() => {
     fetchAndFilterConferences();
@@ -298,3 +286,5 @@ After the event, we provide professional proceedings preparation, indexing suppo
     </div>
   );
 }
+
+    

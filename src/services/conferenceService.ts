@@ -3,7 +3,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, updateDoc, getDoc, query, where, orderBy, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, DocumentData, QueryDocumentSnapshot, deleteDoc, doc, updateDoc, getDoc, query, where, orderBy, serverTimestamp, Timestamp, startAt } from 'firebase/firestore';
 import { z } from 'zod';
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
 import { format } from 'date-fns';
@@ -128,16 +128,20 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
   }
 }
 
-export async function getConferences(options: { activeOnly?: boolean } = {}): Promise<Conference[]> {
+export async function getConferences(options: { activeOnly?: boolean; fromDate?: Date } = {}): Promise<Conference[]> {
     try {
         const conferencesRef = collection(db, "conferences");
-        let q;
-
+        
+        const constraints = [];
         if (options.activeOnly) {
-            q = query(conferencesRef, where("status", "==", "active"), orderBy("startDate", "asc"));
-        } else {
-            q = query(conferencesRef, orderBy("createdAt", "desc"));
+            constraints.push(where("status", "==", "active"));
         }
+        if (options.fromDate) {
+            constraints.push(where("startDate", ">=", options.fromDate));
+        }
+        constraints.push(orderBy("startDate", "asc"));
+        
+        const q = query(conferencesRef, ...constraints);
         
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map(mapDocToConference);
@@ -228,3 +232,5 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
         return { success: false, message: `Failed to update status: ${message}` };
     }
 }
+
+    
