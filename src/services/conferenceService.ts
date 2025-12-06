@@ -9,18 +9,14 @@ import { type AddConferenceData, type Conference, conferenceSchema } from '@/lib
 import { z } from 'zod';
 
 interface AddConferencePayload extends AddConferenceData {
-    conferenceLogo: string;
-    paperTemplateUrl?: string; // Can be a base64 string
+    conferenceLogo: string; // Base64 string for the logo
+    paperTemplateUrl?: string; // Base64 string for the brochure
 }
+
 
 export async function addConference(data: AddConferencePayload): Promise<{ success: boolean; message: string; }> {
   try {
-    const schemaForService = conferenceSchema.extend({
-        conferenceLogo: z.string(),
-        paperTemplateUrl: z.string().optional(),
-    });
-    
-    const validationResult = schemaForService.safeParse(data);
+    const validationResult = conferenceSchema.safeParse(data);
     if (!validationResult.success) {
         console.error("Zod validation failed:", validationResult.error.errors);
         const firstError = validationResult.error.errors[0];
@@ -43,7 +39,9 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
       registrationDeadline: validatedData.registrationDeadline ? Timestamp.fromDate(validatedData.registrationDeadline) : null,
     };
     
+    // Remove the original file objects to avoid storing them
     delete dataToSave.conferenceLogo;
+   
 
     await addDoc(collection(db, 'conferences'), dataToSave);
     
@@ -66,15 +64,17 @@ const mapDocToConference = (docSnap: any): Conference => {
   // Robust date parsing: handles Firestore Timestamp, ISO strings, Date objects
   const getJSDate = (field: any): Date | null => {
     if (!field) return null;
-    // Firestore Timestamp check (works if imported Timestamp is same runtime class)
+    // Firestore Timestamp check
     if (field?.toDate && typeof field.toDate === 'function') {
       return field.toDate();
     }
+    // JavaScript Date object
+    if (field instanceof Date) return field;
+     // ISO string
     if (typeof field === 'string') {
       const d = new Date(field);
       return isNaN(d.getTime()) ? null : d;
     }
-    if (field instanceof Date) return field;
     return null;
   };
 
@@ -131,6 +131,7 @@ const mapDocToConference = (docSnap: any): Conference => {
     createdAt: createdAt.toISOString(),
     dateObject: startDate ?? undefined,
     location,
+    // Deprecated fields, mapped for backward compatibility
     description: data.description || data.aboutConference || "",
     fullDescription: data.fullDescription || "",
     venueAddress: data.venueAddress || "",
@@ -210,7 +211,7 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             dataToSave.paperTemplateUrl = data.paperTemplateUrl;
         }
         
-        // Ensure dates are correctly formatted as ISO strings
+        // Convert dates to Firestore Timestamps before saving
         if(validatedData.startDate) dataToSave.startDate = Timestamp.fromDate(validatedData.startDate);
         if(validatedData.endDate) dataToSave.endDate = Timestamp.fromDate(validatedData.endDate);
         if(validatedData.submissionStartDate) dataToSave.submissionStartDate = Timestamp.fromDate(validatedData.submissionStartDate);
@@ -259,5 +260,3 @@ export async function updateConferenceStatus(id: string, status: 'active' | 'ina
     return { success: false, message: `Failed to update status: ${message}` };
   }
 }
-
-    
