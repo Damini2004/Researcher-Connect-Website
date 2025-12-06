@@ -62,16 +62,26 @@ export async function addConference(data: AddConferencePayload): Promise<{ succe
 const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
     const data = docSnap.data();
 
+    // A more robust date parsing function
     const getJSDate = (field: any): Date | undefined => {
         if (!field) return undefined;
-        if (field instanceof Date) return field;
-        if (field.toDate && typeof field.toDate === 'function') return field.toDate();
-        const date = new Date(field);
-        if (!isNaN(date.getTime())) return date;
-        return undefined;
+        // Handle Firestore Timestamp
+        if (typeof field.toDate === 'function') {
+            return field.toDate();
+        }
+        // Handle ISO string or other date-like strings
+        if (typeof field === 'string') {
+            const date = new Date(field);
+            if (!isNaN(date.getTime())) {
+                return date;
+            }
+        }
+        // Handle JavaScript Date object
+        if (field instanceof Date) {
+            return field;
+        }
+        return undefined; // Return undefined if format is unknown
     };
-    
-    const formatDate = (date: Date | undefined) => date ? format(date, "PPP") : undefined;
 
     const startDate = getJSDate(data.startDate) || new Date();
     const endDate = getJSDate(data.endDate) || new Date();
@@ -120,14 +130,15 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
         createdAt: (getJSDate(data.createdAt) || new Date()).toISOString(),
         dateObject: startDate,
         location,
-        venueAddress: data.venueAddress || "",
+        // Deprecated fields, kept for compatibility with old data if needed
         description: data.description || data.aboutConference || "",
         fullDescription: data.fullDescription || "",
+        venueAddress: data.venueAddress || "",
         conferenceType: data.conferenceType || "",
         organizerName: data.organizerName || "",
         organizerEmail: data.organizerEmail || "",
         organizerPhone: data.organizerPhone || "",
-        submissionDeadline: formatDate(getJSDate(data.submissionDeadline)) || "N/A",
+        submissionDeadline: "N/A",
         locationType: data.locationType || "Offline",
         audienceType: data.audienceType || "",
         callForPapers: data.callForPapers || false,
