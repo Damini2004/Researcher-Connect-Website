@@ -64,20 +64,17 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
     // Robust date parsing function that correctly handles Timestamps, ISO strings, and Date objects.
     const getJSDate = (field: any): Date | null => {
         if (!field) return null;
-        // Firestore Timestamp
-        if (field instanceof Timestamp) {
+        if (typeof field.toDate === 'function') { // Firestore Timestamp
             return field.toDate();
         }
-        // ISO 8601 String or other valid date strings
-        if (typeof field === 'string') {
+        if (field instanceof Date) { // JavaScript Date object
+            return field;
+        }
+        if (typeof field === 'string') { // ISO 8601 String or other valid date strings
             const date = new Date(field);
             if (!isNaN(date.getTime())) {
                 return date;
             }
-        }
-        // JavaScript Date object
-        if (field instanceof Date) {
-            return field;
         }
         return null;
     };
