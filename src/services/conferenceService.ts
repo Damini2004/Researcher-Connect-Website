@@ -1,4 +1,3 @@
-
 // src/services/conferenceService.ts
 'use server';
 
@@ -8,11 +7,7 @@ import { z } from 'zod';
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
 import { format } from 'date-fns';
 
-const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
-  const data = typeof docSnap.data === 'function' ? docSnap.data() : docSnap;
-  const id = docSnap.id || 'unknown-id';
-
-  const getJSDate = (field: any): Date | null => {
+const getJSDate = (field: any): Date | null => {
     if (!field) return null;
     if (field instanceof Timestamp) return field.toDate();
     if (field instanceof Date) return field;
@@ -25,7 +20,11 @@ const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | Docum
       return new Timestamp(field.seconds, field.nanoseconds).toDate();
     }
     return null;
-  };
+};
+
+const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
+  const data = typeof docSnap.data === 'function' ? docSnap.data() : docSnap;
+  const id = docSnap.id || 'unknown-id';
 
   const startDate = getJSDate(data.startDate);
   const endDate = getJSDate(data.endDate);
