@@ -5,7 +5,14 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { FileText, ShieldCheck, Edit, Search, Calendar, ArrowRight } from "lucide-react";
+import {  ShieldCheck, Calendar, ArrowRight,  Edit,
+    Search,
+    FileText,
+    CheckCircle,
+    Users,
+    Upload,
+    Lightbulb,
+    Quote, } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getWebinars, Webinar } from "@/services/webinarService";
@@ -20,31 +27,48 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const authorServices = [
     {
-        title: "Journal Targeting",
-        description:
-          "Identify the most impactful and suitable journals for your work.",
-        icon: Search,
-      },
-      {
-        title: "Manuscript Preparation",
-        description:
-          "Edit for clarity, compliance, and academic impact.",
-        icon: Edit,
-      },
-      {
-        title: "Peer Review Strategy",
-        description:
-          "Manage revisions and responses for smooth acceptance.",
-        icon: FileText,
-      },
-      {
-        title: "Ethical Publishing",
-        description:
-          "Ensure adherence to best practices and global standards.",
-        icon: ShieldCheck,
-      },
+      title: "Manuscript Editing & Proofreading",
+      description:
+        "Language polishing, grammar correction, and clarity improvement.",
+      icon: Edit,
+    },
+    {
+      title: "Journal Selection Guidance",
+      description:
+        "Identifying the most suitable high-impact journals based on scope, indexing, and impact metrics.",
+      icon: Search,
+    },
+    {
+      title: "Formatting & Referencing",
+      description:
+        "Structuring manuscripts according to journal guidelines (APA, IEEE, Chicago, etc.).",
+      icon: Quote,
+    },
+    {
+      title: "Plagiarism Check & Similarity Reduction",
+      description:
+        "Ensuring originality and compliance with ethical standards.",
+      icon: CheckCircle,
+    },
+    {
+      title: "Peer Review Support",
+      description:
+        "Preparing responses to reviewer comments and revising manuscripts accordingly.",
+      icon: Users,
+    },
+    {
+      title: "Submission Assistance",
+      description:
+        "End-to-end support in preparing cover letters, uploading files, and tracking submissions.",
+      icon: Upload,
+    },
+    {
+      title: "Publication Strategy",
+      description:
+        "Guidance on open access, impact factor, and indexing options for maximum visibility.",
+      icon: Lightbulb,
+    },
   ];
-  
 
 export default function AuthorServicesPage() {
     const [webinars, setWebinars] = React.useState<Webinar[]>([]);
@@ -101,9 +125,9 @@ export default function AuthorServicesPage() {
 
     return (
         <div className="bg-secondary/30">
-            <section className="relative w-full h-[500px] bg-gray-800 text-white">
+            <section className="relative w-full h-[300px] bg-gray-800 text-white">
                 <Image
-                    src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600&h=500&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600&h=300&auto=format&fit=crop"
                     alt="Team reviewing documents"
                     data-ai-hint="writing research"
                     fill
@@ -131,12 +155,12 @@ export default function AuthorServicesPage() {
                         From Manuscript to Impact
                       </h2>
                       <p className="max-w-[600px] text-justify text-muted-foreground">
-                        Our author services are designed to support researchers at every stage of the publication process. We help you navigate the complexities of academic publishing, from selecting the right journal to preparing a manuscript that meets rigorous international standards. Our team provides expert guidance on manuscript structuring, reference formatting, and ethical compliance, significantly improving your chances of acceptance in high-impact journals. We offer critical reviews, language polishing, and strategic support for responding to peer reviewer feedback, ensuring your work is communicated with clarity and precision.
+                      At Researcher Connect, we provide comprehensive Author Services designed to help researchers publish their work in high-impact international journals indexed in Scopus and Web of Science. Our services ensure that every manuscript meets global publishing standards — from writing and editing to submission and peer review support. We help authors navigate the complexities of scholarly communication, increasing their chances of acceptance in reputable journals.
                       </p>
                     </div>
                     <Button asChild size="lg" className="w-fit">
                       <Link href="/contact-us">
-                        Get Publication Support <ArrowRight className="ml-2 h-5 w-5" />
+                        Schedule a Call <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
                     </Button>
                   </div>
@@ -147,7 +171,7 @@ export default function AuthorServicesPage() {
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold tracking-tight">Our Publication Support Services</h2>
+                        <h2 className="text-3xl font-bold tracking-tight">Author Services</h2>
                         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
                             We provide a focused consultancy to help you disseminate your research through high-impact publications.
                         </p>

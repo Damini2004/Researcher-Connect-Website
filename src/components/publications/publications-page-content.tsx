@@ -24,16 +24,11 @@ export default function PublicationsPageContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
 
   const fetchData = useCallback(async () => {
-    if (!currentDate) return;
     setIsLoading(true);
     try {
+      const today = getCurrentDateInIndia();
       const journalsData = getJournals();
       const webinarsData = getWebinars();
 
@@ -42,7 +37,7 @@ export default function PublicationsPageContent() {
       setJournals(journalsResult);
       
       const upcoming = allWebinars
-        .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() >= currentDate.getTime())
+        .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() >= today.getTime())
         .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
       setUpcomingWebinars(upcoming);
 
@@ -56,7 +51,7 @@ export default function PublicationsPageContent() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast, currentDate]);
+  }, [toast]);
 
   useEffect(() => {
     fetchData();

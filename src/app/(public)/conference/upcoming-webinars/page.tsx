@@ -18,21 +18,15 @@ export default function UpcomingWebinarsPage() {
   const [upcomingWebinars, setUpcomingWebinars] = useState<Webinar[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
-
-  useEffect(() => {
-    if (!currentDate) return;
-
     const fetchAndFilterWebinars = async () => {
       setIsLoading(true);
       try {
+        const today = getCurrentDateInIndia();
         const allWebinars = await getWebinars();
         const upcoming = allWebinars
-          .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() >= currentDate.getTime())
+          .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() >= today.getTime())
           .sort((a, b) => a.dateObject.getTime() - b.dateObject.getTime());
         setUpcomingWebinars(upcoming);
       } catch (error) {
@@ -46,7 +40,7 @@ export default function UpcomingWebinarsPage() {
       }
     };
     fetchAndFilterWebinars();
-  }, [toast, currentDate]);
+  }, [toast]);
 
   const handleDownloadBrochure = (brochureUrl: string, webinarName: string) => {
     if (!brochureUrl) return;

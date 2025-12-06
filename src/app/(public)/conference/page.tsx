@@ -67,7 +67,6 @@ export default function ConferencesPage() {
   const fetchConferences = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Fetch all conferences without any date filtering
       const data = await getConferences();
       setAllConferences(data.sort((a, b) => (b.dateObject?.getTime() || 0) - (a.dateObject?.getTime() || 0)));
     } catch (error) {

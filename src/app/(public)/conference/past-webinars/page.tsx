@@ -15,21 +15,15 @@ export default function PastWebinarsPage() {
   const [pastWebinars, setPastWebinars] = useState<Webinar[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
-
-  useEffect(() => {
-    if (!currentDate) return;
-
     const fetchAndFilterWebinars = async () => {
       setIsLoading(true);
       try {
+        const today = getCurrentDateInIndia();
         const allWebinars = await getWebinars();
         const past = allWebinars
-          .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() < currentDate.getTime())
+          .filter(webinar => webinar.dateObject && webinar.dateObject.getTime() < today.getTime())
           .sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime());
         setPastWebinars(past);
       } catch (error) {
@@ -44,7 +38,7 @@ export default function PastWebinarsPage() {
     };
 
     fetchAndFilterWebinars();
-  }, [currentDate, toast]);
+  }, [toast]);
 
   return (
     <div className="py-12 md:py-24">

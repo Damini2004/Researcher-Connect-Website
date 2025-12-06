@@ -23,21 +23,16 @@ export default function PastConferencesPage() {
   const [pastConferences, setPastConferences] = useState<Conference[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setCurrentDate(getCurrentDateInIndia());
-  }, []);
 
   const fetchAndFilterConferences = useCallback(async () => {
-    if (!currentDate) return;
     setIsLoading(true);
     try {
+      const today = getCurrentDateInIndia();
       const allConferences = await getConferences();
       const past = allConferences.filter(
         (conf) =>
           conf.dateObject &&
-          conf.dateObject.getTime() < currentDate.getTime()
+          conf.dateObject.getTime() < today.getTime()
       );
 
       setPastConferences(
@@ -55,7 +50,7 @@ export default function PastConferencesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [toast, currentDate]);
+  }, [toast]);
   
   useEffect(() => {
     fetchAndFilterConferences();

@@ -8,41 +8,29 @@ import { z } from 'zod';
 import { conferenceSchema, type Conference, type AddConferenceData } from '@/lib/types';
 import { format } from 'date-fns';
 
-const mapDocToConference = (docSnap: any): Conference => {
-  // Support either a Firestore snapshot (has .data()) or a plain object
-  const data = (typeof docSnap?.data === 'function') ? docSnap.data() : (docSnap || {});
-  const id = docSnap?.id ?? data?.id ?? 'unknown-id';
+const mapDocToConference = (docSnap: QueryDocumentSnapshot<DocumentData> | DocumentData): Conference => {
+  const data = typeof docSnap.data === 'function' ? docSnap.data() : docSnap;
+  const id = docSnap.id || 'unknown-id';
 
-  // Robust date parsing: handles Firestore Timestamp, ISO strings, Date objects
   const getJSDate = (field: any): Date | null => {
     if (!field) return null;
-    // Handle Firestore Timestamp
-    if (field.toDate && typeof field.toDate === 'function') {
-      return field.toDate();
-    }
-    // Handle JS Date object
+    if (field instanceof Timestamp) return field.toDate();
     if (field instanceof Date) return field;
-     // Handle ISO 8601 string or other parsable date strings
-    if (typeof field === 'string') {
+    if (typeof field === 'string' || typeof field === 'number') {
       const d = new Date(field);
-      if (!isNaN(d.getTime())) {
-        return d;
-      }
+      if (!isNaN(d.getTime())) return d;
     }
-    // Handle milliseconds number
-    if (typeof field === 'number') {
-      const d = new Date(field);
-       if (!isNaN(d.getTime())) {
-        return d;
-      }
+    // Handle Firestore's object representation if it's not a Timestamp instance
+    if (typeof field === 'object' && field.seconds !== undefined && field.nanoseconds !== undefined) {
+      return new Timestamp(field.seconds, field.nanoseconds).toDate();
     }
     return null;
   };
 
-  const startDate = getJSDate(data.startDate) || null;
-  const endDate = getJSDate(data.endDate) || null;
-  const submissionStartDate = getJSDate(data.submissionStartDate) || null;
-  const submissionEndDate = getJSDate(data.submissionEndDate) || null;
+  const startDate = getJSDate(data.startDate);
+  const endDate = getJSDate(data.endDate);
+  const submissionStartDate = getJSDate(data.submissionStartDate);
+  const submissionEndDate = getJSDate(data.submissionEndDate);
   const fullPaperSubmissionDeadline = getJSDate(data.fullPaperSubmissionDeadline);
   const registrationDeadline = getJSDate(data.registrationDeadline);
   const createdAt = getJSDate(data.createdAt) || new Date();
@@ -118,7 +106,6 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
         imageSrc: data.conferenceLogo,
         paperTemplateUrl: data.paperTemplateUrl,
         createdAt: serverTimestamp(),
-        // Convert all dates to Firestore Timestamps for consistency
         startDate: validatedData.startDate ? Timestamp.fromDate(validatedData.startDate) : null,
         endDate: validatedData.endDate ? Timestamp.fromDate(validatedData.endDate) : null,
         submissionStartDate: validatedData.submissionStartDate ? Timestamp.fromDate(validatedData.submissionStartDate) : null,
@@ -127,7 +114,6 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
         registrationDeadline: validatedData.registrationDeadline ? Timestamp.fromDate(validatedData.registrationDeadline) : null,
     };
     
-    // Remove the original file objects before saving
     delete dataToSave.conferenceLogo;
 
 
@@ -142,7 +128,7 @@ export async function addConference(data: any): Promise<{ success: boolean; mess
   }
 }
 
-export async function getConferences(options: { activeOnly?: boolean; fromDate?: Date } = {}): Promise<Conference[]> {
+export async function getConferences(options: { activeOnly?: boolean } = {}): Promise<Conference[]> {
     try {
         const conferencesRef = collection(db, "conferences");
         
@@ -150,10 +136,6 @@ export async function getConferences(options: { activeOnly?: boolean; fromDate?:
         if (options.activeOnly) {
             constraints.push(where("status", "==", "active"));
         }
-        if (options.fromDate) {
-            constraints.push(where("startDate", ">=", options.fromDate));
-        }
-        constraints.push(orderBy("startDate", "asc"));
         
         const q = query(conferencesRef, ...constraints);
         
@@ -194,7 +176,6 @@ export async function updateConference(id: string, data: Partial<AddConferenceDa
             ...validatedData,
         };
 
-        // Convert dates to Timestamps if they exist
         if (validatedData.startDate) dataToUpdate.startDate = Timestamp.fromDate(validatedData.startDate);
         if (validatedData.endDate) dataToUpdate.endDate = Timestamp.fromDate(validatedData.endDate);
         if (validatedData.submissionStartDate) dataToUpdate.submissionStartDate = Timestamp.fromDate(validatedData.submissionStartDate);
