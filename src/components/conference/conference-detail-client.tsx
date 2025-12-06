@@ -21,6 +21,7 @@ interface ConferenceDetailClientProps {
     conference: Conference;
 }
 
+// This is now a "dumb" component that just displays the data it's given.
 export default function ConferenceDetailClient({ conference }: ConferenceDetailClientProps) {
   const { toast } = useToast();
 
@@ -50,24 +51,6 @@ export default function ConferenceDetailClient({ conference }: ConferenceDetailC
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-  
-  const renderTracksAsList = (text?: string) => {
-    if (!text) return <p className="text-muted-foreground">Not available.</p>;
-    
-    if (typeof window === 'undefined') {
-        return <p className="text-muted-foreground">Loading...</p>;
-    }
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, 'text/html');
-    const items = Array.from(doc.body.children).map(element => element.innerHTML).filter(Boolean);
-
-    if (items.length === 0) return <p className="text-muted-foreground">Not available.</p>;
-
-    return (
-      <div className="prose prose-sm max-w-none text-muted-foreground" dangerouslySetInnerHTML={{ __html: text }} />
-    );
   };
   
   const renderRichContent = (htmlContent?: string) => {
@@ -215,6 +198,12 @@ export default function ConferenceDetailClient({ conference }: ConferenceDetailC
                         </div>
                         
                         <Accordion type="single" collapsible className="w-full space-y-2 pt-6">
+                             <AccordionItem value="item-3" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
+                                <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
+                                <AccordionContent>
+                                    <RenderHtmlContent htmlContent={conference.tracks} />
+                                </AccordionContent>
+                            </AccordionItem>
                             <AccordionItem value="item-1" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
                                 <AccordionTrigger className="hover:no-underline">Keynote Speakers</AccordionTrigger>
                                 <AccordionContent>
@@ -231,12 +220,6 @@ export default function ConferenceDetailClient({ conference }: ConferenceDetailC
                                 <AccordionTrigger className="hover:no-underline">Editorial Board Members / Track Chairs</AccordionTrigger>
                                 <AccordionContent>
                                     {renderRichContent(conference.editorialBoard)}
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-3" className="bg-gradient-to-tr from-secondary/50 to-secondary/20 rounded-lg px-4 border-b-0">
-                                <AccordionTrigger className="hover:no-underline">Conference Tracks</AccordionTrigger>
-                                <AccordionContent>
-                                    {renderTracksAsList(conference.tracks)}
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
