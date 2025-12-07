@@ -125,7 +125,7 @@ export default function CollaborationServicesPage() {
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="relative aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                             <Image
-                                src="/centralcollab.jpg"
+                                src="/CollabImage.jpg"
                                 alt="Team working together"
                                 data-ai-hint="teamwork project"
                                 fill
@@ -135,7 +135,11 @@ export default function CollaborationServicesPage() {
                         <div className="space-y-4">
                             <h2 className="text-3xl font-bold tracking-tight">A Central Hub for Global Partnerships</h2>
                             <p className="text-lg text-muted-foreground text-justify">
-                               At Researcher Connect, we act as a central hub to enable seamless faculty exchange, student mobility, joint research, and institutional collaborations across universities worldwide. Our services ensure that every collaboration meets global academic standards — from partnership facilitation to execution, research publication support, and long-term monitoring.
+                            At Researcher Connect, we function as a central facilitation hub that strategically connects universities, research institutions, faculty members, and students across national and international boundaries. Our role goes beyond simple introductions — we design, structure, and manage end-to-end academic collaborations that enable faculty exchange programs, student mobility initiatives, joint research projects, co-supervised theses, shared funding proposals, and long-term institutional partnerships. </p>
+                            <p className="text-lg text-muted-foreground text-justify">
+We ensure that every collaboration is academically rigorous, operationally feasible, and globally compliant. From identifying suitable partner institutions and aligning mutual research interests, to drafting MoUs, coordinating exchange programs, managing timelines, and supporting cross-institutional research teams, Researcher Connect provides complete lifecycle management of collaborations. Our structured approach reduces administrative burden on universities while increasing the quality, impact, and sustainability of partnerships.                            </p>
+                            <p className="text-lg text-muted-foreground text-justify">                         
+In addition, we actively support research execution and publication outcomes by guiding collaborative teams through project design, ethical compliance, indexing-aligned publication strategies (Scopus, Web of Science, etc.), and dissemination of results. Each collaboration is continuously monitored using defined academic and performance indicators to ensure long-term value creation, compliance with international standards, and measurable institutional impact in terms of research output, visibility, rankings, and global engagement.
                             </p>
                             <Button asChild size="lg">
                                 <Link href="/contact-us">
