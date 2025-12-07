@@ -199,7 +199,7 @@ In addition, we actively support research execution and publication outcomes by 
                         </div>
                          <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
                              <Image
-                                src="/partnerwithus.png"
+                                src="/partnerwithusimage.png"
                                 alt="Team planning"
                                 data-ai-hint="team planning"
                                 fill
