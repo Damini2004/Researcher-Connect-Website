@@ -28,6 +28,7 @@ const generalInquirySchema = z.object({
   email: z.string().email("Please enter a valid email address."),
   subject: z.string().min(5, "Subject must be at least 5 characters."),
   message: z.string().min(20, "Message must be at least 20 characters."),
+  captcha: z.string().min(1, "Please answer the security question."),
   // Optional fields that are part of the other schemas
   phone: z.string().optional(),
   city: z.string().optional(),
@@ -66,6 +67,7 @@ const internshipApplicationSchema = z.object({
       "Only PDF, DOC, or DOCX files are allowed."
     ),
   message: z.string().min(20, "Please tell us why you want this internship (min 20 characters)."),
+  captcha: z.string().min(1, "Please answer the security question."),
   consent: z.boolean().refine(val => val === true, {
     message: "You must confirm that the information provided is accurate.",
   }),
@@ -92,6 +94,7 @@ const webinarRegistrationSchema = z.object({
     // Webinar-Specific
     howHeard: z.string().optional(),
     questionsForSpeaker: z.string().optional(),
+    captcha: z.string().min(1, "Please answer the security question."),
     // Preferences & Consent
     futureWebinarsInterest: z.boolean().default(false).optional(),
     consent: z.boolean().refine(val => val === true, {
@@ -121,9 +124,17 @@ const howHeardOptions = ["Email", "Social Media", "Friend/Colleague", "Website",
 export default function ContactForm({ inquiryType, details }: ContactFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [num1, setNum1] = React.useState(0);
+  const [num2, setNum2] = React.useState(0);
   
   const isInternshipApplication = inquiryType === "Internship Application";
   const isWebinarRegistration = inquiryType === "Webinar Registration";
+
+  React.useEffect(() => {
+    // Generate captcha numbers when component mounts
+    setNum1(Math.floor(Math.random() * 10) + 1);
+    setNum2(Math.floor(Math.random() * 10) + 1);
+  }, []);
   
   const getValidationSchema = () => {
     if (isInternshipApplication) return internshipApplicationSchema;
@@ -131,7 +142,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
     return generalInquirySchema;
   }
 
-  const form = useForm<z.infer<typeof webinarRegistrationSchema | typeof internshipApplicationSchema>>({
+  const form = useForm<z.infer<typeof webinarRegistrationSchema | typeof internshipApplicationSchema | typeof generalInquirySchema>>({
     resolver: zodResolver(getValidationSchema()),
     defaultValues: {
       name: "",
@@ -150,6 +161,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
       futureWebinarsInterest: false,
       consent: false,
       privacyConsent: false,
+      captcha: "",
     },
   });
 
@@ -167,6 +179,21 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
 
   async function onSubmit(values: z.infer<typeof webinarRegistrationSchema | typeof internshipApplicationSchema | typeof generalInquirySchema>) {
     setIsSubmitting(true);
+
+    if (parseInt(values.captcha || '0') !== num1 + num2) {
+      toast({
+        title: "Invalid Security Answer",
+        description: "Please solve the math question correctly.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      // Generate new numbers
+      setNum1(Math.floor(Math.random() * 10) + 1);
+      setNum2(Math.floor(Math.random() * 10) + 1);
+      form.setValue('captcha', '');
+      return;
+    }
+
     try {
       let resumeData: string | undefined = undefined;
       if (isInternshipApplication && 'resume' in values && values.resume && values.resume.length > 0) {
@@ -186,6 +213,9 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
           description: isInternshipApplication ? "Thank you for applying. We will review your application and get back to you shortly." : (isWebinarRegistration ? "Thank you for registering. We will send you the details shortly." : "Thank you for contacting us. We will get back to you shortly."),
         });
         form.reset();
+        // Regenerate captcha
+        setNum1(Math.floor(Math.random() * 10) + 1);
+        setNum2(Math.floor(Math.random() * 10) + 1);
         // Close dialog if possible
         const closeButton = document.querySelector('[data-radix-dialog-close]') as HTMLElement;
         if (closeButton) {
@@ -218,6 +248,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
       </div>
       <FormField control={form.control} name="subject" render={({ field }) => ( <FormItem> <FormLabel>Subject</FormLabel> <FormControl><Input placeholder="Regarding my submission..." {...field} /></FormControl> <FormMessage /> </FormItem> )} />
       <FormField control={form.control} name="message" render={({ field }) => ( <FormItem> <FormLabel>Your Message</FormLabel> <FormControl><Textarea placeholder="Please type your message here." className="min-h-[120px]" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+      <FormField control={form.control} name="captcha" render={({ field }) => ( <FormItem> <FormLabel>Security Question: What is {num1} + {num2}?</FormLabel> <FormControl><Input type="number" placeholder="Your answer" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
     </>
   );
 
@@ -237,6 +268,7 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
       </div>
       <FormField control={form.control} name="resume" render={() => ( <FormItem> <FormLabel>Resume (PDF, DOC, DOCX)</FormLabel> <FormControl><Input type="file" accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" {...resumeFileRef} /></FormControl> <FormMessage /> </FormItem> )} />
       <FormField control={form.control} name="message" render={({ field }) => ( <FormItem> <FormLabel>Why do you want this internship?</FormLabel> <FormControl><Textarea placeholder="Briefly explain your interest and qualifications..." className="min-h-[120px]" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+      <FormField control={form.control} name="captcha" render={({ field }) => ( <FormItem> <FormLabel>Security Question: What is {num1} + {num2}?</FormLabel> <FormControl><Input type="number" placeholder="Your answer" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
       <FormField control={form.control} name="consent" render={({ field }) => ( <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm"> <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl> <div className="space-y-1 leading-none"><FormLabel>I confirm that the information provided is accurate.</FormLabel><FormMessage /></div></FormItem> )} />
     </>
   );
@@ -282,7 +314,8 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
                 </FormItem>
             )} />
             <FormField control={form.control} name="questionsForSpeaker" render={({ field }) => ( <FormItem> <FormLabel>Questions for the Speaker (Optional)</FormLabel> <FormControl><Textarea placeholder="Have a question you'd like answered during the webinar?" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-             <FormField control={form.control} name="futureWebinarsInterest" render={({ field }) => (<FormItem className="flex flex-row items-center space-x-3 space-y-0"><FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl><FormLabel className="font-normal">I am interested in receiving information about future webinars.</FormLabel></FormItem>)} />
+            <FormField control={form.control} name="captcha" render={({ field }) => ( <FormItem> <FormLabel>Security Question: What is {num1} + {num2}?</FormLabel> <FormControl><Input type="number" placeholder="Your answer" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+            <FormField control={form.control} name="futureWebinarsInterest" render={({ field }) => (<FormItem className="flex flex-row items-center space-x-3 space-y-0"><FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl><FormLabel className="font-normal">I am interested in receiving information about future webinars.</FormLabel></FormItem>)} />
         </div>
       </div>
       <div className="space-y-4">
@@ -310,3 +343,5 @@ export default function ContactForm({ inquiryType, details }: ContactFormProps) 
     </Form>
   );
 }
+
+    
